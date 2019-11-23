@@ -41,7 +41,19 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Game1.cs" />
+    <Compile Include="eDirection.cs" />
+    <Compile Include="Enemy.cs" />
+    <Compile Include="EnemyLightBlue.cs" />
+    <Compile Include="EnemyPink.cs" />
+    <Compile Include="EnemyYellow.cs" />
+    <Compile Include="BasicEntity.cs" />
+    <Compile Include="EntityFactory.cs" />
+    <Compile Include="SpaceInvadersGame.cs" />
+    <Compile Include="GameEnvironment.cs" />
+    <Compile Include="IEntity.cs" />
+    <Compile Include="IEntityFactory.cs" />
+    <Compile Include="MotherShip.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -14,7 +14,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
         [STAThread]
         static void Main()
         {
-            using (var game = new Game1())
+            using (var game = new SpaceInvadersGame())
                 game.Run();
         }
     }
