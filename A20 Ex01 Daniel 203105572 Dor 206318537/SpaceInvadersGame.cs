@@ -6,19 +6,19 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 {
      public class SpaceInvadersGame : Game
      {
-          private readonly GameEnvironment r_GameEnvironment;
-          private readonly EntityFactory r_EntityFactory;
-          private readonly Player r_Player;
-          private readonly Enemy[,] r_Enemies;
           private const int k_EnemiesRows = 5;
           private const int k_EnemiesCols = 9;
           private const int k_NumOfPinkEnemiesRows = 1;
           private const int k_NumOfLightBlueEnemiesRows = 2;
           private const int k_NumOfYellowEnemiesRows = 2;
           private const float k_EnemiesOffset = 0.6f;
-
-          GraphicsDeviceManager m_Graphics;
-          SpriteBatch m_SpriteBatch;
+          private readonly GameEnvironment r_GameEnvironment;
+          private readonly EntityFactory r_EntityFactory;
+          private readonly Player r_Player;
+          private readonly Enemy[,] r_Enemies;
+          private readonly GraphicsDeviceManager m_Graphics;
+          private SpriteBatch m_SpriteBatch;
+          private int m_EnemyDeathCounter = 0; //TODO
 
           public SpaceInvadersGame()
           {
@@ -29,7 +29,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                m_Graphics.PreferredBackBufferWidth = r_GameEnvironment.WindowWidth;  // set this value to the desired width of your window
                m_Graphics.PreferredBackBufferHeight = r_GameEnvironment.WindowHeight;   // set this value to the desired height of your window
                r_Player = r_EntityFactory.Create(typeof(Player)) as Player;
-               r_Enemies = new Enemy[5, 9];
+               r_Enemies = new Enemy[k_EnemiesRows, k_EnemiesCols];
 
                m_Graphics.ApplyChanges();
                Content.RootDirectory = "Content";
@@ -91,6 +91,15 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                r_Player.KeyboardState = Keyboard.GetState();
                r_Player.GameTime = i_GameTime;
                r_Player.Move();
+
+               Enemy mostRightEnemy = r_Enemies[0, 8];
+               Enemy mostLeftEnemy = r_Enemies[0, 0];
+
+               if(mostRightEnemy.Position.X >= r_GameEnvironment.WindowWidth - mostRightEnemy.Width ||
+                    mostLeftEnemy.Position.X < 0)
+               {
+                    Enemy.HandleCollision(r_Enemies, k_EnemiesRows, k_EnemiesCols);
+               }
 
                base.Update(i_GameTime);
           }

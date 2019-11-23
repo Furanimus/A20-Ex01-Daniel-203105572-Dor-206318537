@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537
 {
@@ -15,11 +16,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
           }
 
           public override void Attack()
-          {
-               throw new NotImplementedException();
-          }
-
-          public override void Move()
           {
                throw new NotImplementedException();
           }

@@ -24,7 +24,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
           {
           }
 
-          public override void Move()
+          public void Move()
           {
                if(KeyboardState.IsKeyDown(Keys.Right))
                {

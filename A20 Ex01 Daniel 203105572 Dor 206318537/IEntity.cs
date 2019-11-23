@@ -22,14 +22,10 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 
           KeyboardState KeyboardState { get; set; }
           
-          eDirection Direction { get; set; }
-
           GameTime GameTime { get; set; }
 
           void Attack();
 
           Vector2 Position { get; set; }
-
-          void Move();
      }
 }
