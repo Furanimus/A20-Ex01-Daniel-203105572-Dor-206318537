@@ -8,15 +8,12 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
      {
           private const int k_EnemiesRows = 5;
           private const int k_EnemiesCols = 9;
-          private const int k_NumOfPinkEnemiesRows = 1;
-          private const int k_NumOfLightBlueEnemiesRows = 2;
-          private const int k_NumOfYellowEnemiesRows = 2;
-          private const float k_EnemiesOffset = 0.6f;
           private readonly GameEnvironment r_GameEnvironment;
           private readonly EntityFactory r_EntityFactory;
           private readonly Player r_Player;
           private readonly Enemy[,] r_Enemies;
           private readonly GraphicsDeviceManager m_Graphics;
+          private EnemyManager m_EnemyManager;
           private SpriteBatch m_SpriteBatch;
           private int m_EnemyDeathCounter = 0; //TODO
 
@@ -26,8 +23,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                r_GameEnvironment = new GameEnvironment();
                r_EntityFactory = new EntityFactory(r_GameEnvironment);
 
-               m_Graphics.PreferredBackBufferWidth = r_GameEnvironment.WindowWidth;  // set this value to the desired width of your window
-               m_Graphics.PreferredBackBufferHeight = r_GameEnvironment.WindowHeight;   // set this value to the desired height of your window
+               m_Graphics.PreferredBackBufferWidth = r_GameEnvironment.WindowWidth;
+               m_Graphics.PreferredBackBufferHeight = r_GameEnvironment.WindowHeight;
                r_Player = r_EntityFactory.Create(typeof(Player)) as Player;
                r_Enemies = new Enemy[k_EnemiesRows, k_EnemiesCols];
 
@@ -49,34 +46,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                r_Player.Position = new Vector2(r_GameEnvironment.WindowWidth - r_Player.Width * 2,
                     r_GameEnvironment.WindowHeight - r_Player.Height * 2);
 
-               float enemyY = 96;
-               float enemyX = 0;
-
-               for(int row = 0; row < k_EnemiesRows; row++)
-               {
-                    for(int col = 0; col < k_EnemiesCols; col++)
-                    {
-                         if(row < k_NumOfPinkEnemiesRows)
-                         {
-                              r_Enemies[row, col] = r_EntityFactory.Create(typeof(EnemyPink)) as Enemy;
-                         }
-                         else if(row < k_NumOfPinkEnemiesRows + k_NumOfLightBlueEnemiesRows)
-                         {
-                              r_Enemies[row, col] = r_EntityFactory.Create(typeof(EnemyLightBlue)) as Enemy;
-                         }
-                         else
-                         {
-                              r_Enemies[row, col] = r_EntityFactory.Create(typeof(EnemyYellow)) as Enemy;
-                         }
-
-                         r_Enemies[row, col].Graphics = Content.Load<Texture2D>(r_Enemies[row, col].GraphicsPath);
-                         r_Enemies[row, col].Position = new Vector2(enemyX, enemyY);
-                         enemyX += r_Enemies[row, col].Width + r_Enemies[row, col].Width * k_EnemiesOffset;
-                    }
-
-                    enemyY += r_Enemies[row, 0].Height + r_Enemies[row, 0].Height * k_EnemiesOffset;
-                    enemyX = 0;
-               }
+               m_EnemyManager = new EnemyManager(Content, k_EnemiesRows, k_EnemiesCols);
           }
 
           protected override void UnloadContent()
@@ -91,15 +61,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                r_Player.KeyboardState = Keyboard.GetState();
                r_Player.GameTime = i_GameTime;
                r_Player.Move();
-
-               Enemy mostRightEnemy = r_Enemies[0, 8];
-               Enemy mostLeftEnemy = r_Enemies[0, 0];
-
-               if(mostRightEnemy.Position.X >= r_GameEnvironment.WindowWidth - mostRightEnemy.Width ||
-                    mostLeftEnemy.Position.X < 0)
-               {
-                    Enemy.HandleCollision(r_Enemies, k_EnemiesRows, k_EnemiesCols);
-               }
 
                base.Update(i_GameTime);
           }
@@ -116,28 +77,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                m_SpriteBatch.Draw(r_Player.Graphics, r_Player.Position, Color.White);
                m_SpriteBatch.End();
 
-               for(int row = 0; row < 5; row++)
-               {
-                    for (int col = 0; col < 9; col++)
-                    {
-                         m_SpriteBatch.Begin();
-
-                         if (row < 1)
-                         {
-                              m_SpriteBatch.Draw(r_Enemies[row, col].Graphics, r_Enemies[row, col].Position, Color.Pink);
-                         }
-                         else if(row < 3)
-                         {
-                              m_SpriteBatch.Draw(r_Enemies[row, col].Graphics, r_Enemies[row, col].Position, Color.LightBlue);
-                         }
-                         else
-                         {
-                              m_SpriteBatch.Draw(r_Enemies[row, col].Graphics, r_Enemies[row, col].Position, Color.LightYellow);
-                         }
-
-                         m_SpriteBatch.End();
-                    }
-               }
+               m_EnemyManager.Draw(m_SpriteBatch);
 
                base.Draw(gameTime);
           }

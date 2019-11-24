@@ -36,5 +36,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
           public GameTime GameTime { get; set; }
 
           public abstract void Attack();
+
+          public abstract void Move();
      }
 }

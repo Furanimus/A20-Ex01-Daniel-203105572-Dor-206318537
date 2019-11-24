@@ -13,15 +13,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
      {
           public static eDirection Direction { get; set; } = eDirection.Right;
 
-          private Timer r_Timer;
-
           public Enemy()
           {
-               r_Timer = new Timer();
-               r_Timer.Interval = 1000;
-               r_Timer.Elapsed += Move;
-               r_Timer.Start();
-
                Velocity = 50;
                Height = 32;
                Width = 32;
@@ -30,7 +23,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 
           public int Score { get; set; }
 
-          public virtual void Move(object sender, ElapsedEventArgs e)
+          public override void Move()
           {
                if (Direction == eDirection.Right)
                {
@@ -39,6 +32,10 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                else if (Direction == eDirection.Left)
                {
                     m_Position.X -= Velocity;
+               }
+               else if(Direction == eDirection.Down)
+               {
+                    m_Position.Y += this.Height / 2;
                }
           }
 
