@@ -49,12 +49,13 @@
     <Compile Include="EnemyPink.cs" />
     <Compile Include="EnemyYellow.cs" />
     <Compile Include="BasicEntity.cs" />
-    <Compile Include="EntityFactory.cs" />
+    <Compile Include="SpriteFactory.cs" />
+    <Compile Include="IShooter.cs" />
     <Compile Include="ISprite.cs" />
     <Compile Include="SpaceInvadersGame.cs" />
     <Compile Include="GameEnvironment.cs" />
     <Compile Include="IEntity.cs" />
-    <Compile Include="IEntityFactory.cs" />
+    <Compile Include="ISpriteFactory.cs" />
     <Compile Include="MotherShip.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />

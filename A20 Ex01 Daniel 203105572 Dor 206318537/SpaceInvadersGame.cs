@@ -9,7 +9,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
           private const int k_EnemiesRows = 5;
           private const int k_EnemiesCols = 9;
           private readonly GameEnvironment r_GameEnvironment;
-          private readonly EntityFactory r_EntityFactory;
+          private readonly ISpriteFactory r_EntityFactory;
           private readonly Player r_Player;
           private readonly Enemy[,] r_Enemies;
           private readonly MotherShip r_Mothership;
@@ -21,7 +21,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
           {
                m_Graphics = new GraphicsDeviceManager(this);
                r_GameEnvironment = new GameEnvironment();
-               r_EntityFactory = new EntityFactory(r_GameEnvironment);
+               r_EntityFactory = new SpriteFactory(r_GameEnvironment);
 
                m_Graphics.PreferredBackBufferWidth = r_GameEnvironment.WindowWidth;
                m_Graphics.PreferredBackBufferHeight = r_GameEnvironment.WindowHeight;

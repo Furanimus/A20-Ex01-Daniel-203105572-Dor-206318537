@@ -1,18 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537
 {
-     class Bullet : BasicEntity, ISprite
+     class Bullet : ISprite
      {
-          public override void Attack()
+          public Bullet()
           {
+               Velocity = 160;
+               GraphicsPath = @"Sprites\Bullet.png";
+               Height = 16;
+               Width = 6;
           }
 
-          public override void Move()
+          public Texture2D Graphics { get; set; }
+
+          public string GraphicsPath { get; set; }
+
+          public GameEnvironment GameEnvironment { get; set; }
+
+          public int Width { get; set; }
+
+          public int Height { get; set; }
+
+          public float Velocity { get; set; }
+
+          public GameTime GameTime { get; set; }
+
+          public void Move()
           {
               
           }

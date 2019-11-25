@@ -1,11 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537
 {
@@ -21,8 +15,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 
           public Vector2 Position { get { return m_Position; } set { m_Position = value; } }
 
-          public KeyboardState KeyboardState { get; set; }
-
           public GameTime GameTime { get; set; }
 
           public Texture2D Graphics { get; set; }
@@ -31,9 +23,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 
           public GameEnvironment GameEnvironment { get ; set ; }
           public int Width { get ; set; }
-          public int Height { get; set ; }
 
-          public abstract void Attack();
+          public int Height { get; set ; }
 
           public abstract void Move();
      }

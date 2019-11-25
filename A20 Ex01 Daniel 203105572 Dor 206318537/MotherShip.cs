@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Timers;
-using Microsoft.Xna.Framework.Content;
-
-namespace A20_Ex01_Daniel_203105572_Dor_206318537
+﻿namespace A20_Ex01_Daniel_203105572_Dor_206318537
 {
      public class MotherShip : Enemy
      {
@@ -22,19 +14,14 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                Velocity = 100;
                Width = 120;
                Height = 32;
-               m_Position.X = 0;
+               m_Position.X = -Width;
                m_Position.Y = 32;
                GraphicsPath = @"Sprites\MotherShip_32x120";
           }
 
-          public override void Attack()
-          {
-               return;
-          }
-          
           public override void Move()
           {
-              m_Position.X += Velocity * (float)GameTime.ElapsedGameTime.TotalSeconds;
+               m_Position.X += Velocity * (float)GameTime.ElapsedGameTime.TotalSeconds;
           }
 
           public void TrySpawn()
@@ -50,26 +37,27 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                if (IsOnScreen)
                {
                     Move();
+
                     if (IsCollideWithRightBound())
-                         {
-                              Reset();
-                         }
+                    {
+                         Reset();
                     }
+               }
                else
                {
                     TrySpawn();
                }
           }
 
-        public bool IsCollideWithRightBound()
-        {
-            return (m_Position.X >= GameEnvironment.WindowWidth);
-        }
+          public bool IsCollideWithRightBound()
+          {
+               return (m_Position.X >= GameEnvironment.WindowWidth);
+          }
 
-        public void Reset()
-        {
-           IsOnScreen = false;
-           m_Position.X = 0;            
-        }
+          public void Reset()
+          {
+               IsOnScreen = false;
+               m_Position.X = 0;            
+          }
      }
 }

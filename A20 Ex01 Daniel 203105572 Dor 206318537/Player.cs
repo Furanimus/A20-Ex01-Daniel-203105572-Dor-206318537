@@ -1,18 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537
 {
-     public class Player : BasicEntity
+     public class Player : BasicEntity, IShooter
      {
-          KeyboardState KeyboardState { get; set; }
-
           private Player()
           {
                Width = 32;
@@ -22,9 +14,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                Velocity = 110;
           }
 
-          public override void Attack()
-          {
-          }
+          public KeyboardState KeyboardState { get; set; }
 
           public override void Move()
           {
@@ -52,6 +42,10 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                {
                     m_Position.X += Velocity * (float)GameTime.ElapsedGameTime.TotalSeconds;
                }
+          }
+
+          public void Shoot()
+          {
           }
      }
 }

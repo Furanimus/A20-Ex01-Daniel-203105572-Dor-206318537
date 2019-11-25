@@ -3,18 +3,18 @@ using System.Reflection;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537
 {
-     public class EntityFactory : IEntityFactory
+     public class SpriteFactory : ISpriteFactory
      {
           private readonly GameEnvironment r_GameEnvironment;
 
-          public EntityFactory(GameEnvironment i_GameEnvironment)
+          public SpriteFactory(GameEnvironment i_GameEnvironment)
           {
                r_GameEnvironment = i_GameEnvironment;
           }
 
-          public IEntity Create(Type i_Type)
+          public ISprite Create(Type i_Type)
           {
-               IEntity result = null;
+               ISprite result = null;
 
                if (typeof(IEntity).IsAssignableFrom(i_Type))
                {
@@ -24,7 +24,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                     {
                          if(ctor.IsPrivate && ctor.GetParameters().Length == 0)
                          {
-                              result = ctor.Invoke(null) as IEntity;
+                              result = ctor.Invoke(null) as ISprite;
                               break;
                          }
                     }
