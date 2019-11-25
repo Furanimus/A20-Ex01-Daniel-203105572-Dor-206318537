@@ -9,19 +9,9 @@ using System.Threading.Tasks;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537
 {
-     public abstract class BasicEntity : IEntity
+     public abstract class BasicEntity : IEntity, ISprite
      {
           protected Vector2 m_Position;
-
-          public Texture2D Graphics { get; set; }
-
-          public string GraphicsPath { get; set; }
-
-          public GameEnvironment GameEnvironment { get; set; }
-
-          public int Width { get; set; }
-
-          public int Height { get; set; }
 
           public int Lives { get; set; }
 
@@ -34,6 +24,14 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
           public KeyboardState KeyboardState { get; set; }
 
           public GameTime GameTime { get; set; }
+
+          public Texture2D Graphics { get; set; }
+
+          public string GraphicsPath { get; set; }
+
+          public GameEnvironment GameEnvironment { get ; set ; }
+          public int Width { get ; set; }
+          public int Height { get; set ; }
 
           public abstract void Attack();
 

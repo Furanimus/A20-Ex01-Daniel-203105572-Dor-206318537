@@ -41,6 +41,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Bullet.cs" />
     <Compile Include="eDirection.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="EnemyLightBlue.cs" />
@@ -49,6 +50,7 @@
     <Compile Include="EnemyYellow.cs" />
     <Compile Include="BasicEntity.cs" />
     <Compile Include="EntityFactory.cs" />
+    <Compile Include="ISprite.cs" />
     <Compile Include="SpaceInvadersGame.cs" />
     <Compile Include="GameEnvironment.cs" />
     <Compile Include="IEntity.cs" />

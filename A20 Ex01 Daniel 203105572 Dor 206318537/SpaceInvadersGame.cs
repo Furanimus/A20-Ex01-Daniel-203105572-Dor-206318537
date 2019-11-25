@@ -16,7 +16,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
           private readonly GraphicsDeviceManager m_Graphics;
           private EnemyManager m_EnemyManager;
           private SpriteBatch m_SpriteBatch;
-          private int m_EnemyDeathCounter = 0; //TODO
 
           public SpaceInvadersGame()
           {
@@ -54,10 +53,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 
           protected override void UnloadContent()
           {
-             if (!r_Mothership.IsOnScreen)
-             {
-               // r_Mothership;
-             }
           }
 
           protected override void Update(GameTime i_GameTime)
@@ -68,9 +63,11 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                r_Player.KeyboardState = Keyboard.GetState();
                r_Player.GameTime = i_GameTime;
                r_Player.Move();
-
+               
                r_Mothership.GameTime = i_GameTime;
-               r_Mothership.HandleMothership();   
+               r_Mothership.HandleMothership();
+
+               Window.Title = m_EnemyManager.EnemiesMatrix[0, 0].Velocity.ToString();
 
                base.Update(i_GameTime);
           }

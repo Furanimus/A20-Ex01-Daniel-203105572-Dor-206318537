@@ -11,6 +11,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 {
      public class Player : BasicEntity
      {
+          KeyboardState KeyboardState { get; set; }
+
           private Player()
           {
                Width = 32;

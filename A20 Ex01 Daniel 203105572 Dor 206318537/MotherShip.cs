@@ -25,7 +25,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                m_Position.X = 0;
                m_Position.Y = 32;
                GraphicsPath = @"Sprites\MotherShip_32x120";
-               m_Random = new Random();
           }
 
           public override void Attack()
@@ -40,33 +39,31 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 
           public void TrySpawn()
           {
-                if(!IsOnScreen)
-                {
-                    if (m_Random.Next(k_RandomMin, k_RandomMax) <= k_RandomFactor)
-                    {
-                        IsOnScreen = true;
-                    }
-                }
+               if (m_Random.Next(k_RandomMin, k_RandomMax) <= k_RandomFactor)
+               {
+                    IsOnScreen = true;
+               }
           }
 
           public void HandleMothership()
           {
                if (IsOnScreen)
                {
-                Move();
-                if (IsCollideWithRightBound())
-                     {
-                        Reset();
-                     }
-                }
+                    Move();
+                    if (IsCollideWithRightBound())
+                         {
+                              Reset();
+                         }
+                    }
                else
                {
-                  TrySpawn();
+                    TrySpawn();
                }
           }
+
         public bool IsCollideWithRightBound()
         {
-            return (m_Position.X + Width >= GameEnvironment.WindowWidth);
+            return (m_Position.X >= GameEnvironment.WindowWidth);
         }
 
         public void Reset()

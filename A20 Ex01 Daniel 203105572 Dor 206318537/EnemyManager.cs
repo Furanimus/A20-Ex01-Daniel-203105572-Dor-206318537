@@ -16,18 +16,21 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
           private static EntityFactory s_EntityFactory = new EntityFactory(s_GameEnvironment);
           private readonly ContentManager r_ContentManager;
           private readonly Timer r_Timer;
+          private int m_EnemyCount; 
 
           public EnemyManager(ContentManager i_ContentManager, int i_EnemyMatrixRows, int i_EnemyMatrixCols)
           {
                r_ContentManager = i_ContentManager;
                EnemyMatrixRows = i_EnemyMatrixRows;
                EnemyMatrixCols = i_EnemyMatrixCols;
+               m_EnemyCount = i_EnemyMatrixCols * i_EnemyMatrixRows;
                EnemiesMatrix = new Enemy[i_EnemyMatrixRows, i_EnemyMatrixCols];
-
+               //private int m_EnemyDeathCounter = 0; //TODO
+     
                loadContent();
 
                r_Timer = new Timer();
-               r_Timer.Interval = 1000;
+               r_Timer.Interval = 500; //500? 2 jupms per second. Each jump should be 16 pixels
                r_Timer.Elapsed += MoveAll;
                r_Timer.Start();
           }
@@ -53,7 +56,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                MoveMatrix();
                MoveMotherShip();
           }
-
+            
           private void MoveMatrix()
           {
                handleCollision();
@@ -101,11 +104,11 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 
           private void fixDirection(Enemy i_MostLeftEnemy, Enemy i_MostRightEnemy)
           {
-               if (i_MostRightEnemy.Position.X >= s_GameEnvironment.WindowWidth - i_MostRightEnemy.Width)
+               if (i_MostRightEnemy.Position.X + i_MostRightEnemy.Width >= s_GameEnvironment.WindowWidth - i_MostRightEnemy.Width)
                {
                     Enemy.Direction = eDirection.Left;
                }
-               else if (i_MostLeftEnemy.Position.X <= 0)
+               else if (i_MostLeftEnemy.Position.X - i_MostLeftEnemy.Width <= 0)
                {
                     Enemy.Direction = eDirection.Right;
                }
@@ -113,8 +116,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 
           private bool isCollideWithLeftOrRightSide(Enemy i_MostLeftEnemy, Enemy i_MostRightEnemy)
           {
-               return i_MostRightEnemy.Position.X >= s_GameEnvironment.WindowWidth - i_MostRightEnemy.Width && Enemy.Direction == eDirection.Right
-                         || i_MostLeftEnemy.Position.X <= 0 && Enemy.Direction == eDirection.Left;
+               return i_MostRightEnemy.Position.X + i_MostRightEnemy.Width >= s_GameEnvironment.WindowWidth - i_MostRightEnemy.Width && Enemy.Direction == eDirection.Right
+                         || i_MostLeftEnemy.Position.X - i_MostLeftEnemy.Width <= 0 && Enemy.Direction == eDirection.Left;
           }
 
           private Enemy findMostCornerEnemy(Func<int, int, bool> i_IsMostCornerFunc, Func<int, bool> i_WhenToStopSearchFunc)
