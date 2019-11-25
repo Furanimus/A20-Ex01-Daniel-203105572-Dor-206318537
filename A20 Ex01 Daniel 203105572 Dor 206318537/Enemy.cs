@@ -11,7 +11,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 {
      public abstract class Enemy: BasicEntity
      {
-          public static eDirection Direction { get; set; } = eDirection.Right;
+        protected Random m_Random;
+
+        public static eDirection Direction { get; set; } = eDirection.Right;
 
           public Enemy()
           {
@@ -19,6 +21,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                Height = 32;
                Width = 32;
                Lives = 1;
+               m_Random = new Random();
           }
 
           public int Score { get; set; }

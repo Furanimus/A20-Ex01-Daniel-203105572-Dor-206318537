@@ -32,13 +32,13 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                r_Timer.Start();
           }
 
-          public Enemy[,] EnemiesMatrix { set; get; }
+          public Enemy[,] EnemiesMatrix { get; set; }
 
           public int EnemyMatrixRows { get; set; }
 
           public int EnemyMatrixCols { get; set; }
 
-          public Enemy MotherShip { set; get; } = s_EntityFactory.Create(typeof(MotherShip)) as Enemy;
+          public Enemy MotherShip { get; set; } = s_EntityFactory.Create(typeof(MotherShip)) as Enemy;
 
           public int NumOfPinkEnemiesRows { get; set; } = 1;
 
@@ -79,6 +79,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                     if (isCollideWithLeftOrRightSide(mostLeftEnemy, mostRightEnemy))
                     {
                          Enemy.Direction = eDirection.Down;
+                         RaiseAllEnemiesSpeed(0.05f);
                     }
                }
                else
@@ -86,6 +87,17 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                     fixDirection(mostLeftEnemy, mostRightEnemy);
                }
           }
+
+            public void RaiseAllEnemiesSpeed(float i_Precentage)
+            {
+                for (int row = 0; row < EnemyMatrixRows; row++)
+                {
+                    for (int col = 0; col < EnemyMatrixCols; col++)
+                    {
+                        EnemiesMatrix[row, col].Velocity += EnemiesMatrix[row, col].Velocity * i_Precentage;
+                    }
+                }
+            }
 
           private void fixDirection(Enemy i_MostLeftEnemy, Enemy i_MostRightEnemy)
           {

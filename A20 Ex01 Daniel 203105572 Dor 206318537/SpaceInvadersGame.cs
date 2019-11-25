@@ -12,6 +12,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
           private readonly EntityFactory r_EntityFactory;
           private readonly Player r_Player;
           private readonly Enemy[,] r_Enemies;
+          private readonly MotherShip r_Mothership;
           private readonly GraphicsDeviceManager m_Graphics;
           private EnemyManager m_EnemyManager;
           private SpriteBatch m_SpriteBatch;
@@ -27,6 +28,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                m_Graphics.PreferredBackBufferHeight = r_GameEnvironment.WindowHeight;
                r_Player = r_EntityFactory.Create(typeof(Player)) as Player;
                r_Enemies = new Enemy[k_EnemiesRows, k_EnemiesCols];
+               r_Mothership = r_EntityFactory.Create(typeof(MotherShip)) as MotherShip;
 
                m_Graphics.ApplyChanges();
                Content.RootDirectory = "Content";
@@ -46,11 +48,16 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                r_Player.Position = new Vector2(r_GameEnvironment.WindowWidth - r_Player.Width * 2,
                     r_GameEnvironment.WindowHeight - r_Player.Height * 2);
 
+               r_Mothership.Graphics = Content.Load<Texture2D>(r_Mothership.GraphicsPath);
                m_EnemyManager = new EnemyManager(Content, k_EnemiesRows, k_EnemiesCols);
           }
 
           protected override void UnloadContent()
           {
+             if (!r_Mothership.IsOnScreen)
+             {
+               // r_Mothership;
+             }
           }
 
           protected override void Update(GameTime i_GameTime)
@@ -61,6 +68,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                r_Player.KeyboardState = Keyboard.GetState();
                r_Player.GameTime = i_GameTime;
                r_Player.Move();
+
+               r_Mothership.GameTime = i_GameTime;
+               r_Mothership.HandleMothership();   
 
                base.Update(i_GameTime);
           }
@@ -76,6 +86,14 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                m_SpriteBatch.Begin();
                m_SpriteBatch.Draw(r_Player.Graphics, r_Player.Position, Color.White);
                m_SpriteBatch.End();
+
+               if (r_Mothership.IsOnScreen)
+               {
+                  m_SpriteBatch.Begin();
+                  m_SpriteBatch.Draw(r_Mothership.Graphics, r_Mothership.Position, Color.Red);
+                  m_SpriteBatch.End();
+               }
+
 
                m_EnemyManager.Draw(m_SpriteBatch);
 

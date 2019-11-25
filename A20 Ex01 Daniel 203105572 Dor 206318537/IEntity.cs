@@ -18,7 +18,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 
           bool IsAlive { get; set; }
 
-          int Velocity { get; set; }
+          float Velocity { get; set; }
 
           KeyboardState KeyboardState { get; set; }
           

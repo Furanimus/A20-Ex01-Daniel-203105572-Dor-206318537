@@ -27,7 +27,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 
           public bool IsAlive { get; set; } = true;
 
-          public int Velocity { get; set; }
+          public float Velocity { get; set; }
 
           public Vector2 Position { get { return m_Position; } set { m_Position = value; } }
 
