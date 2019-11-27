@@ -8,10 +8,10 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 {
      public class EnemyManager
      {
+          private static Vector2 s_MatrixDirection = Sprite.Right;
           private static GameEnvironment s_GameEnvironment = new GameEnvironment();
           private static SpriteFactory s_EntityFactory = new SpriteFactory(s_GameEnvironment);
           private readonly ContentManager r_ContentManager;
-          private readonly Timer r_Timer;
           private int m_EnemyCount; 
 
           public EnemyManager(ContentManager i_ContentManager, int i_EnemyMatrixRows, int i_EnemyMatrixCols)
@@ -24,11 +24,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                //private int m_EnemyDeathCounter = 0; //TODO
      
                loadContent();
-
-               r_Timer = new Timer();
-               r_Timer.Interval = 500; //500? 2 jupms per second. Each jump should be 16 pixels
-               r_Timer.Elapsed += MoveAll;
-               r_Timer.Start();
           }
 
           public Enemy[,] EnemiesMatrix { get; set; }
@@ -47,13 +42,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 
           public float EnemiesOffset { get; set; } = 0.6f;
 
-          private void MoveAll(object sender, ElapsedEventArgs e)
-          {
-               MoveMatrix();
-               MoveMotherShip();
-          }
-            
-          private void MoveMatrix()
+          public void MoveMatrix(GameTime i_GameTime)
           {
                handleCollision();
 
@@ -61,7 +50,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                {
                     for (int col = 0; col < EnemyMatrixCols; col++)
                     {
-                         EnemiesMatrix[row, col].Move();
+                         EnemiesMatrix[row, col].GameTime = i_GameTime;
+                         EnemiesMatrix[row, col].Move(s_MatrixDirection);
                     }
                }
           }
@@ -73,11 +63,11 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                Enemy mostLeftEnemy = findMostCornerEnemy((currentCol, mostLeftCol) => currentCol <= mostLeftCol,
                mostLeftCol => mostLeftCol == 0);
 
-               if (Enemy.Direction == eDirection.Right || Enemy.Direction == eDirection.Left)
+               if (s_MatrixDirection == Sprite.Right || s_MatrixDirection == Sprite.Left)
                {
                     if (isCollideWithLeftOrRightSide(mostLeftEnemy, mostRightEnemy))
                     {
-                         Enemy.Direction = eDirection.Down;
+                         s_MatrixDirection = Sprite.Down;
                          RaiseAllEnemiesSpeed(0.05f);
                     }
                }
@@ -100,20 +90,20 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 
           private void fixDirection(Enemy i_MostLeftEnemy, Enemy i_MostRightEnemy)
           {
-               if (i_MostRightEnemy.Position.X + i_MostRightEnemy.Width >= s_GameEnvironment.WindowWidth - i_MostRightEnemy.Width)
+               if (i_MostRightEnemy.Position.X + i_MostRightEnemy.Width >= s_GameEnvironment.WindowWidth)
                {
-                    Enemy.Direction = eDirection.Left;
+                    s_MatrixDirection = Sprite.Left;
                }
-               else if (i_MostLeftEnemy.Position.X - i_MostLeftEnemy.Width <= 0)
+               else if (i_MostLeftEnemy.Position.X <= 0)
                {
-                    Enemy.Direction = eDirection.Right;
+                    s_MatrixDirection = Sprite.Right;
                }
           }
 
           private bool isCollideWithLeftOrRightSide(Enemy i_MostLeftEnemy, Enemy i_MostRightEnemy)
           {
-               return i_MostRightEnemy.Position.X + i_MostRightEnemy.Width >= s_GameEnvironment.WindowWidth - i_MostRightEnemy.Width && Enemy.Direction == eDirection.Right
-                    || i_MostLeftEnemy.Position.X - i_MostLeftEnemy.Width <= 0 && Enemy.Direction == eDirection.Left;
+               return (i_MostRightEnemy.Position.X + i_MostRightEnemy.Width >= s_GameEnvironment.WindowWidth && s_MatrixDirection == Sprite.Right)
+                    || (i_MostLeftEnemy.Position.X <= 0 && s_MatrixDirection == Sprite.Left);
           }
 
           private Enemy findMostCornerEnemy(Func<int, int, bool> i_IsMostCornerFunc, Func<int, bool> i_WhenToStopSearchFunc)
@@ -142,11 +132,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                }
 
                return mostCornerEnemy;
-          }
-
-          private void MoveMotherShip()
-          {
-
           }
 
           private void loadContent()

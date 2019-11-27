@@ -3,8 +3,10 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537
 {
-     public interface ISprite
+     public abstract class Entity : Sprite 
      {
-          void Move(Vector2 i_Direction);
+          public int Lives { get; set; }
+
+          public bool IsAlive { get; set; } = true;
      }
 }

@@ -1,11 +1,10 @@
-﻿namespace A20_Ex01_Daniel_203105572_Dor_206318537
+﻿using Microsoft.Xna.Framework;
+
+namespace A20_Ex01_Daniel_203105572_Dor_206318537
 {
      public class MotherShip : Enemy
      {
-          private const int k_RandomFactor = 10;
-          private const int k_RandomMin = 0;
-          private const int k_RandomMax= 5000;
-          
+
           public bool IsOnScreen { get; set; } = false;
           
           private MotherShip()
@@ -17,16 +16,17 @@
                m_Position.X = -Width;
                m_Position.Y = 32;
                GraphicsPath = @"Sprites\MotherShip_32x120";
+               m_RandomBehavior = new RandomBehavior();
           }
 
-          public override void Move()
+          public override void Move(Vector2 i_Direction)
           {
-               m_Position.X += Velocity * (float)GameTime.ElapsedGameTime.TotalSeconds;
+               m_Position += i_Direction * Velocity * (float)GameTime.ElapsedGameTime.TotalSeconds;
           }
 
           public void TrySpawn()
           {
-               if (m_Random.Next(k_RandomMin, k_RandomMax) <= k_RandomFactor)
+               if (m_RandomBehavior.Roll())
                {
                     IsOnScreen = true;
                }
@@ -36,7 +36,7 @@
           {
                if (IsOnScreen)
                {
-                    Move();
+                    Move(new Vector2(1, 0));
 
                     if (IsCollideWithRightBound())
                     {
@@ -57,7 +57,7 @@
           public void Reset()
           {
                IsOnScreen = false;
-               m_Position.X = 0;            
+               m_Position.X = 0 - Width;            
           }
      }
 }

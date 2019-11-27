@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537
 {
-     public class Player : BasicEntity, IShooter
+     public class Player : Entity, IShooter
      {
           private Player()
           {
@@ -14,34 +14,14 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                Velocity = 110;
           }
 
-          public KeyboardState KeyboardState { get; set; }
+          public IGun Gun { get ; set; }
 
-          public override void Move()
-          {
-               if(KeyboardState.IsKeyDown(Keys.Right))
-               {
-                    MoveRight();
-               }
-               else if(KeyboardState.IsKeyDown(Keys.Left))
-               {
-                    MoveLeft();
-               }
-          }
+          internal int HeldShots { get; set; } = 2;
 
-          public void MoveLeft()
-          {
-               if(Position.X > 0)
-               {
-                    m_Position.X -= Velocity * (float)GameTime.ElapsedGameTime.TotalSeconds;
-               }
-          }
 
-          public void MoveRight()
+          public override void Move(Vector2 i_Direction)
           {
-               if (Position.X < GameEnvironment.WindowWidth - this.Width)
-               {
-                    m_Position.X += Velocity * (float)GameTime.ElapsedGameTime.TotalSeconds;
-               }
+               Position += i_Direction * Velocity * (float)GameTime.ElapsedGameTime.TotalSeconds;
           }
 
           public void Shoot()

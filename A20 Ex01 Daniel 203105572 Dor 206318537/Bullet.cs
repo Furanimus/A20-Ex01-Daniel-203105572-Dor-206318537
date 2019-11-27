@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537
 {
-     class Bullet : ISprite
+     class Bullet : Sprite
      {
           public Bullet()
           {
@@ -13,21 +13,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                Width = 6;
           }
 
-          public Texture2D Graphics { get; set; }
-
-          public string GraphicsPath { get; set; }
-
-          public GameEnvironment GameEnvironment { get; set; }
-
-          public int Width { get; set; }
-
-          public int Height { get; set; }
-
-          public float Velocity { get; set; }
-
-          public GameTime GameTime { get; set; }
-
-          public void Move()
+          public override void Move(Vector2 i_Direction)
           {
               
           }

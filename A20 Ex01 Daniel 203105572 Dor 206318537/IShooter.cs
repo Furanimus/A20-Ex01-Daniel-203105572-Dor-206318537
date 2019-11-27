@@ -2,6 +2,6 @@
 {
      internal interface IShooter
      {
-          void Shoot();
+          IGun Gun { get; set; }
      }
 }

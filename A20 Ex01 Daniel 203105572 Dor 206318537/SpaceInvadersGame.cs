@@ -5,9 +5,9 @@ using Microsoft.Xna.Framework.Input;
 namespace A20_Ex01_Daniel_203105572_Dor_206318537
 {
      public class SpaceInvadersGame : Game
-     {
+     {          
           private const int k_EnemiesRows = 5;
-          private const int k_EnemiesCols = 9;
+          private const int k_EnemiesCols = 9;              
           private readonly GameEnvironment r_GameEnvironment;
           private readonly ISpriteFactory r_EntityFactory;
           private readonly Player r_Player;
@@ -16,6 +16,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
           private readonly GraphicsDeviceManager m_Graphics;
           private EnemyManager m_EnemyManager;
           private SpriteBatch m_SpriteBatch;
+          private KeyboardState m_KBState;
 
           public SpaceInvadersGame()
           {
@@ -35,6 +36,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 
           protected override void Initialize()
           {
+               IsMouseVisible = true; //Remove at the end
                base.Initialize();
           }
 
@@ -48,7 +50,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                     r_GameEnvironment.WindowHeight - r_Player.Height * 2);
 
                r_Mothership.Graphics = Content.Load<Texture2D>(r_Mothership.GraphicsPath);
-               m_EnemyManager = new EnemyManager(Content, k_EnemiesRows, k_EnemiesCols);
+               m_EnemyManager = new EnemyManager(Content , k_EnemiesRows, k_EnemiesCols);
           }
 
           protected override void UnloadContent()
@@ -60,16 +62,34 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                Exit();
 
-               r_Player.KeyboardState = Keyboard.GetState();
+               m_KBState= Keyboard.GetState();
                r_Player.GameTime = i_GameTime;
-               r_Player.Move();
-               
+               r_Player.Move(getDirection());
+
+               m_EnemyManager.MoveMatrix(i_GameTime);
+
                r_Mothership.GameTime = i_GameTime;
                r_Mothership.HandleMothership();
 
                Window.Title = m_EnemyManager.EnemiesMatrix[0, 0].Velocity.ToString();
 
                base.Update(i_GameTime);
+          }
+
+          private Vector2 getDirection()
+          {
+               Vector2 direction = new Vector2(0, 0);
+
+               if (m_KBState.IsKeyDown(Keys.Right))
+               {
+                    direction = Sprite.Right;
+               }
+               else if (m_KBState.IsKeyDown(Keys.Left))
+               {
+                    direction = Sprite.Left;
+               }
+
+               return direction;
           }
 
           protected override void Draw(GameTime gameTime)

@@ -16,7 +16,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
           {
                ISprite result = null;
 
-               if (typeof(IEntity).IsAssignableFrom(i_Type))
+               if (typeof(ISprite).IsAssignableFrom(i_Type))
                {
                     ConstructorInfo[] ctors = i_Type.GetConstructors(BindingFlags.NonPublic | BindingFlags.Instance);
 
@@ -29,7 +29,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                          }
                     }
 
-                    result.GameEnvironment = r_GameEnvironment;
+                    (result as Sprite).GameEnvironment = r_GameEnvironment;
                }
 
                return result;
