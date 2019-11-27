@@ -9,7 +9,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
           private const int k_EnemiesRows = 5;
           private const int k_EnemiesCols = 9;              
           private readonly GameEnvironment r_GameEnvironment;
-          private readonly ISpriteFactory r_EntityFactory;
+          private readonly ISpriteFactory r_SpriteFactory;
           private readonly Player r_Player;
           private readonly Enemy[,] r_Enemies;
           private readonly MotherShip r_Mothership;
@@ -17,18 +17,19 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
           private EnemyManager m_EnemyManager;
           private SpriteBatch m_SpriteBatch;
           private KeyboardState m_KBState;
+          private Texture2D m_BulletTexture;
 
           public SpaceInvadersGame()
           {
                m_Graphics = new GraphicsDeviceManager(this);
                r_GameEnvironment = new GameEnvironment();
-               r_EntityFactory = new SpriteFactory(r_GameEnvironment);
+               r_SpriteFactory = Singelton<SpriteFactory>.Instance;
 
                m_Graphics.PreferredBackBufferWidth = r_GameEnvironment.WindowWidth;
                m_Graphics.PreferredBackBufferHeight = r_GameEnvironment.WindowHeight;
-               r_Player = r_EntityFactory.Create(typeof(Player)) as Player;
+               r_Player = r_SpriteFactory.Create(typeof(Player)) as Player;
                r_Enemies = new Enemy[k_EnemiesRows, k_EnemiesCols];
-               r_Mothership = r_EntityFactory.Create(typeof(MotherShip)) as MotherShip;
+               r_Mothership = r_SpriteFactory.Create(typeof(MotherShip)) as MotherShip;
 
                m_Graphics.ApplyChanges();
                Content.RootDirectory = "Content";
@@ -37,6 +38,10 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
           protected override void Initialize()
           {
                IsMouseVisible = true; //Remove at the end
+
+               r_Player.Gun = new Gun();
+               r_Player.Gun.BulletType = typeof(Bullet);
+
                base.Initialize();
           }
 

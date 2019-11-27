@@ -9,6 +9,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 {
      public interface IGun
      {
-          void Shoot(Vector2 i_Direction);
+          Type BulletType { get; set; }
+
+          ISprite Shoot(Vector2 i_Direction);
      }
 }

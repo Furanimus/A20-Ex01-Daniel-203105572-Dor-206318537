@@ -10,7 +10,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
      {
           private static Vector2 s_MatrixDirection = Sprite.Right;
           private static GameEnvironment s_GameEnvironment = new GameEnvironment();
-          private static SpriteFactory s_EntityFactory = new SpriteFactory(s_GameEnvironment);
+          private static SpriteFactory s_EntityFactory = Singelton<SpriteFactory>.Instance;
           private readonly ContentManager r_ContentManager;
           private int m_EnemyCount; 
 

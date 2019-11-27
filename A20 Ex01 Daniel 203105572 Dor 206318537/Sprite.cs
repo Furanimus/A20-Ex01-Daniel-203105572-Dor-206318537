@@ -1,10 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537
 {
@@ -24,7 +19,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 
           public string GraphicsPath { get; set; }
 
-          public GameEnvironment GameEnvironment { get; set; }
+          public IGameEnvironment GameEnvironment { get; set; }
 
           public int Width { get; set; }
 
@@ -42,7 +37,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                }
                set
                {
-                    if (value.X >= 0 && value.X + Width <= GameEnvironment.WindowWidth + 1)
+                    if (value.X >= -1 && value.X + Width <= GameEnvironment.WindowWidth + 1)
                     {
                          m_Position = value;
                     }

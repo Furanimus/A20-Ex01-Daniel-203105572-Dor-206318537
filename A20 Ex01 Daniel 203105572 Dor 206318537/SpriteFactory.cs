@@ -5,12 +5,11 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 {
      public class SpriteFactory : ISpriteFactory
      {
-          private readonly GameEnvironment r_GameEnvironment;
-
-          public SpriteFactory(GameEnvironment i_GameEnvironment)
+          private SpriteFactory()
           {
-               r_GameEnvironment = i_GameEnvironment;
           }
+
+          public IGameEnvironment GameEnvironment { get; set; } = new GameEnvironment();
 
           public ISprite Create(Type i_Type)
           {
@@ -29,7 +28,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                          }
                     }
 
-                    (result as Sprite).GameEnvironment = r_GameEnvironment;
+                    (result as Sprite).GameEnvironment = GameEnvironment;
                }
 
                return result;

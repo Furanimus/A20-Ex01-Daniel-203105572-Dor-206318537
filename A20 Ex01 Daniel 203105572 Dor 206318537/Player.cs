@@ -18,14 +18,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 
           internal int HeldShots { get; set; } = 2;
 
-
           public override void Move(Vector2 i_Direction)
           {
                Position += i_Direction * Velocity * (float)GameTime.ElapsedGameTime.TotalSeconds;
-          }
-
-          public void Shoot()
-          {
           }
      }
 }

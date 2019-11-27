@@ -42,7 +42,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Bullet.cs" />
-    <Compile Include="eDirection.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="EnemyLightBlue.cs" />
     <Compile Include="EnemyManager.cs" />
@@ -50,8 +49,11 @@
     <Compile Include="EnemyYellow.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="Gun.cs" />
+    <Compile Include="IBullet.cs" />
+    <Compile Include="IGameEnvironment.cs" />
     <Compile Include="IGun.cs" />
     <Compile Include="ShooterEnemy.cs" />
+    <Compile Include="Singelton.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="SpriteFactory.cs" />
     <Compile Include="IShooter.cs" />

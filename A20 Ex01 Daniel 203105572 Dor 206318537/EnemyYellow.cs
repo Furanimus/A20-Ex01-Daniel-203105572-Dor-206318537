@@ -10,11 +10,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                Score = 100;
           }
 
-          public IGun Gun { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-          public void Shoot()
-          {
-               throw new NotImplementedException();
-          }
+          public IGun Gun { get; set; }
      }
 }

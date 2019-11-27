@@ -14,15 +14,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                m_Bullet = new Bullet();
           }
 
-          public IGun Gun { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-          public void Shoot()
-          {
-               if (m_RandomBehavior.Roll())
-               {
-                    //m_Bullet.Position.X = Position.X + Width * 0.5;
-                    //m_Bullet.Position.Y = Position.Y + Height;
-               }
-          }
+          public IGun Gun { get; set; }
      }
 }

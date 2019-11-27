@@ -4,9 +4,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 {
      public class MotherShip : Enemy
      {
-
-          public bool IsOnScreen { get; set; } = false;
-          
           private MotherShip()
           {
                Score = 800;
@@ -18,6 +15,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                GraphicsPath = @"Sprites\MotherShip_32x120";
                m_RandomBehavior = new RandomBehavior();
           }
+
+          public bool IsOnScreen { get; set; } = false;
 
           public override void Move(Vector2 i_Direction)
           {

@@ -2,7 +2,7 @@
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537
 {
-     public class GameEnvironment
+     public class GameEnvironment: IGameEnvironment
      {
           public int WindowHeight { get; set; } = 768;
 
