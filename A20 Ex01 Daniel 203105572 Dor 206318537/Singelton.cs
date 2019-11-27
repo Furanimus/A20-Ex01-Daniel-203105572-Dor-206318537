@@ -6,7 +6,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
      public static class Singelton<T> where T : class
      {
           private static T m_Instance = null;
-          private static object m_lock = new object();
+          private static object m_Lock = new object();
 
           public static T Instance
           {
@@ -14,7 +14,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                {
                     if (m_Instance == null)
                     {
-                         lock (m_lock)
+                         lock (m_Lock)
                          {
                               if (m_Instance == null)
                               {

@@ -11,13 +11,11 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
           private readonly GameEnvironment r_GameEnvironment;
           private readonly ISpriteFactory r_SpriteFactory;
           private readonly Player r_Player;
-          private readonly Enemy[,] r_Enemies;
           private readonly MotherShip r_Mothership;
           private readonly GraphicsDeviceManager m_Graphics;
           private EnemyManager m_EnemyManager;
           private SpriteBatch m_SpriteBatch;
           private KeyboardState m_KBState;
-          private Texture2D m_BulletTexture;
 
           public SpaceInvadersGame()
           {
@@ -28,7 +26,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                m_Graphics.PreferredBackBufferWidth = r_GameEnvironment.WindowWidth;
                m_Graphics.PreferredBackBufferHeight = r_GameEnvironment.WindowHeight;
                r_Player = r_SpriteFactory.Create(typeof(Player)) as Player;
-               r_Enemies = new Enemy[k_EnemiesRows, k_EnemiesCols];
                r_Mothership = r_SpriteFactory.Create(typeof(MotherShip)) as MotherShip;
 
                m_Graphics.ApplyChanges();
@@ -53,7 +50,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                r_Player.Graphics = Content.Load<Texture2D>(r_Player.GraphicsPath);
                r_Player.Position = new Vector2(r_GameEnvironment.WindowWidth - r_Player.Width * 2,
                     r_GameEnvironment.WindowHeight - r_Player.Height * 2);
-
+               
                r_Mothership.Graphics = Content.Load<Texture2D>(r_Mothership.GraphicsPath);
                m_EnemyManager = new EnemyManager(Content , k_EnemiesRows, k_EnemiesCols);
           }
@@ -71,12 +68,12 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                r_Player.GameTime = i_GameTime;
                r_Player.Move(getDirection());
 
+
                m_EnemyManager.MoveMatrix(i_GameTime);
+               m_EnemyManager.EnemiesTryAttack(i_GameTime);
 
                r_Mothership.GameTime = i_GameTime;
                r_Mothership.HandleMothership();
-
-               Window.Title = m_EnemyManager.EnemiesMatrix[0, 0].Velocity.ToString();
 
                base.Update(i_GameTime);
           }

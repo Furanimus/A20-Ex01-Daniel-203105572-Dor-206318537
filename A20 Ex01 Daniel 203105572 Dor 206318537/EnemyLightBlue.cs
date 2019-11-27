@@ -2,14 +2,13 @@
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537
 {
-     public class EnemyLightBlue : Enemy, IShooter
+     public class EnemyLightBlue : ShooterEnemy
      {
           private EnemyLightBlue()
           {
                GraphicsPath = @"Sprites\Enemy0201_32x32";
                Score = 150;
+               //m_RandomBehavior = new RandomBehavior(10, 0, 5010);
           }
-
-          public IGun Gun { get; set; }
      }
 }
