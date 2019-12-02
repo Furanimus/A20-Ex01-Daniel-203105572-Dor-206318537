@@ -27,9 +27,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
           {
                bool isRemove = false;
 
-               foreach(Sprite bullet in Bullets)
+               foreach (Sprite bullet in Bullets)
                {
-                    if(bullet.Position.Y >= GameEnvironment.WindowWidth)
+                    if (bullet.Position.Y >= GameEnvironment.WindowWidth)
                     {
                          isRemove = true;
                          break;
@@ -41,7 +41,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                     }
                }
 
-               if(isRemove)
+               if (isRemove)
                {
                     Bullets.RemoveFirst();
                }

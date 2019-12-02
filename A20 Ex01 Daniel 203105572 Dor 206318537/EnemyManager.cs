@@ -117,12 +117,12 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                     {
                          Enemy current = EnemiesMatrix[row, col];
 
-                         if(current.IsAlive && i_IsMostCornerFunc.Invoke(col, mostCornerCol))
+                         if (current.IsAlive && i_IsMostCornerFunc.Invoke(col, mostCornerCol))
                          {
                               mostCornerEnemy = current;
                               mostCornerCol = col;
 
-                              if(i_WhenToStopSearchFunc.Invoke(mostCornerCol))
+                              if (i_WhenToStopSearchFunc.Invoke(mostCornerCol))
                               {
                                    isFound = true;
                               }
