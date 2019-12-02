@@ -15,7 +15,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
           private readonly GraphicsDeviceManager m_Graphics;
           private EnemyManager m_EnemyManager;
           private SpriteBatch m_SpriteBatch;
-          private KeyboardState m_KBState;
+          //private KeyboardState m_KBState;
 
           public SpaceInvadersGame()
           {
@@ -51,6 +51,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                r_Player.Position = new Vector2(r_GameEnvironment.WindowWidth - r_Player.Width * 2,
                     r_GameEnvironment.WindowHeight - r_Player.Height * 2);
                
+               
                r_Mothership.Graphics = Content.Load<Texture2D>(r_Mothership.GraphicsPath);
                m_EnemyManager = new EnemyManager(Content , k_EnemiesRows, k_EnemiesCols);
           }
@@ -64,9 +65,11 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                Exit();
 
-               m_KBState= Keyboard.GetState();
-               r_Player.GameTime = i_GameTime;
-               r_Player.Move(getDirection());
+               r_Player.UpdatePlayerMovement(i_GameTime);
+
+               //m_KBState= Keyboard.GetState();
+               //r_Player.GameTime = i_GameTime;
+               //r_Player.Move(getDirection());
 
 
                m_EnemyManager.MoveMatrix(i_GameTime);
@@ -78,21 +81,21 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                base.Update(i_GameTime);
           }
 
-          private Vector2 getDirection()
-          {
-               Vector2 direction = new Vector2(0, 0);
+          //private Vector2 getDirection()
+          //{
+          //     Vector2 direction = new Vector2(0, 0);
 
-               if (m_KBState.IsKeyDown(Keys.Right))
-               {
-                    direction = Sprite.Right;
-               }
-               else if (m_KBState.IsKeyDown(Keys.Left))
-               {
-                    direction = Sprite.Left;
-               }
+          //     if (m_KBState.IsKeyDown(Keys.Right))
+          //     {
+          //          direction = Sprite.Right;
+          //     }
+          //     else if (m_KBState.IsKeyDown(Keys.Left))
+          //     {
+          //          direction = Sprite.Left;
+          //     }
 
-               return direction;
-          }
+          //     return direction;
+          //}
 
           protected override void Draw(GameTime gameTime)
           {

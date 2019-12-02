@@ -8,7 +8,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
      {
           public ShooterEnemy()
           {
-               m_RandomBehavior = new RandomBehavior(275, 0, 5010);
+               //m_RandomBehavior = new RandomBehavior(275, 0, 5010);
           }
 
           public IGun Gun { get; set; } = new Gun();

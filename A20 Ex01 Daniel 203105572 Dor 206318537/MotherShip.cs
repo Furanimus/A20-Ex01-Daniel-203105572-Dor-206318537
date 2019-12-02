@@ -4,6 +4,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 {
      public class MotherShip : Enemy
      {
+          private RandomBehavior m_RandomBehavior = new RandomBehavior();
+
           private MotherShip()
           {
                Score = 800;
@@ -13,7 +15,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                m_Position.X = -Width;
                m_Position.Y = 32;
                GraphicsPath = @"Sprites\MotherShip_32x120";
-               m_RandomBehavior = new RandomBehavior();
           }
 
           public bool IsOnScreen { get; set; } = false;
@@ -25,7 +26,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 
           public void TrySpawn()
           {
-               if (m_RandomBehavior.Roll())
+               if (50 >= m_RandomBehavior.GetRandomNumber(0, 50000))
                {
                     IsOnScreen = true;
                }
@@ -35,7 +36,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
           {
                if (IsOnScreen)
                {
-                    Move(new Vector2(1, 0));
+                    Move(Sprite.Right);
 
                     if (IsCollideWithRightBound())
                     {
