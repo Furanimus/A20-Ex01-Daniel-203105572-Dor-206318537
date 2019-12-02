@@ -9,8 +9,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
           {
           }
 
-          public IGameEnvironment GameEnvironment { get; set; } = new GameEnvironment();
-
           public ISprite Create(Type i_Type)
           {
                ISprite result = null;
@@ -27,8 +25,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                               break;
                          }
                     }
-
-                    (result as Sprite).GameEnvironment = GameEnvironment;
                }
 
                return result;

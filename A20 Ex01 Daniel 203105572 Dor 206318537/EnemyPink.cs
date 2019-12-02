@@ -9,7 +9,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
           {
                GraphicsPath = @"Sprites\Enemy0101_32x32";
                Score = 250;
-               //m_RandomBehavior = new RandomBehavior(200, 0, 1500);
           }
      }
 }

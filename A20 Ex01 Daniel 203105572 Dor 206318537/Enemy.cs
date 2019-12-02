@@ -39,7 +39,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 
           public override void Move(Vector2 i_Direction)
           {
-               if(Position.X + Width < GameEnvironment.WindowWidth && i_Direction == Sprite.Right || Position.X > 0 && i_Direction == Sprite.Left || i_Direction == Sprite.Down)
+               if(!CollisionDetector.IsCollideWithRightEdge(this) && i_Direction == Sprite.Right ||
+                    !CollisionDetector.IsCollideWithLeftEdge(this) && i_Direction == Sprite.Left ||
+                    !CollisionDetector.IsCollideWithBottomEdge(this) && i_Direction == Sprite.Down)
                {
                     if (i_Direction == Sprite.Down)
                     {

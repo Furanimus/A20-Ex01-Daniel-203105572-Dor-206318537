@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -9,6 +8,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 {
      public class Player : Entity, IShooter
      {
+          private const int k_MaxShotInMidAir = 2;
+
           private Player()
           {
                Width = 32;
@@ -19,22 +20,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                Velocity = 110;
           }
 
-          public KeyboardState CurrKBState { get; set; }
-
-          public KeyboardState PrevKBState { get; set; }
-
-          public MouseState CurrMouseState { get; set; }
-
-          public MouseState PrevMouseState { get; set; } = Mouse.GetState();
-
-          public IGun Gun { get; set; } = new Gun();
-
-          public int Score { get; set; }
-
-          internal int MaxShotsMidAir { get; set; } = 50;
-
-          public LinkedList<ISprite> Bullets { get; } = new LinkedList<ISprite>();
-
           public override void Move(Vector2 i_Direction)
           {
                Position += i_Direction * Velocity * (float)GameTime.ElapsedGameTime.TotalSeconds;
@@ -42,11 +27,12 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 
           public void Shoot(ContentManager i_ContentManager)
           {
-               if (Bullets.Count < MaxShotsMidAir)
+               Sprite bullet = Gun.Shoot() as Sprite;
+
+               if(bullet != null)
                {
-                    Sprite bullet = Gun.Shoot() as Sprite;
                     bullet.Position = this.Position;
-                    bullet.Position += new Vector2(Width / 2, 0);
+                    bullet.Position += new Vector2((Width / 2) - (bullet.Width / 2), 0);
                     bullet.Graphics = i_ContentManager.Load<Texture2D>(bullet.GraphicsPath);
                     Bullets.AddLast(bullet);
                }
@@ -55,6 +41,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
           public void HandlePlayerAction(EnemyManager i_EnemyManager, ContentManager i_ContentManager, GameTime i_GameTime)
           {
                updatePlayerMovement(i_GameTime);
+
                if (CurrKBState.IsKeyDown(Keys.Enter) && PrevKBState.IsKeyUp(Keys.Enter))
                {
                     Shoot(i_ContentManager);
@@ -68,7 +55,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
           {
                bool isbulletOutOfWindowBounds = false;
                LinkedList<Sprite> bulletsToRemove = new LinkedList<Sprite>();
-               bool isItersected;
 
                foreach (Sprite bullet in Bullets)
                {
@@ -76,10 +62,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                     {
                          if(enemy.IsAlive)
                          {
-                              isItersected = new Rectangle((int)bullet.Position.X, (int)bullet.Position.Y, bullet.Width, bullet.Height).Intersects(
-                              new Rectangle((int)enemy.Position.X, (int)enemy.Position.Y, enemy.Width, enemy.Height));
-
-                              if (isItersected)
+                              if (CollisionDetector.IsCollide(bullet, enemy))
                               {
                                    bulletsToRemove.AddLast(bullet);
                                    enemy.IsAlive = false;
@@ -88,22 +71,16 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                          }
                     }
 
-                    isItersected = new Rectangle((int)bullet.Position.X, (int)bullet.Position.Y, bullet.Width, bullet.Height).Intersects(
-                             new Rectangle((int) (i_EnemyManager.MotherShip as Sprite).Position.X, 
-                             (int)(i_EnemyManager.MotherShip as Sprite).Position.Y,
-                             (i_EnemyManager.MotherShip as Sprite).Width, (i_EnemyManager.MotherShip as Sprite).Height));
-
-                    if (isItersected)
+                    if (CollisionDetector.IsCollide(bullet, i_EnemyManager.MotherShip))
                     {
                          bulletsToRemove.AddLast(bullet);
-                         (i_EnemyManager.MotherShip as Enemy).IsAlive = false;
-                         Score += (i_EnemyManager.MotherShip as Enemy).Score;
+                         i_EnemyManager.MotherShip.IsAlive = false;
+                         Score += i_EnemyManager.MotherShip.Score;
                     }
 
                     if (bullet.Position.Y <= 0)
                     {
                          isbulletOutOfWindowBounds = true;
-                         break;
                     }
                     else
                     {
@@ -115,11 +92,13 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                if (isbulletOutOfWindowBounds)
                {
                     Bullets.RemoveFirst();
+                    Gun.Reload();
                }
 
                foreach (Sprite bullet in bulletsToRemove)
                {
                     Bullets.Remove(bullet);
+                    Gun.Reload();
                }
           }
 
@@ -186,5 +165,19 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 
                return direction;
           }
+
+          public KeyboardState CurrKBState { get; set; }
+
+          public KeyboardState PrevKBState { get; set; }
+
+          public MouseState CurrMouseState { get; set; }
+
+          public MouseState PrevMouseState { get; set; } = Mouse.GetState();
+
+          public IGun Gun { get; set; } = new Gun(k_MaxShotInMidAir);
+
+          public int Score { get; set; }
+
+          public LinkedList<ISprite> Bullets { get; } = new LinkedList<ISprite>();
      }
 }
