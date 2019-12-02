@@ -52,7 +52,6 @@
     <Compile Include="IBullet.cs" />
     <Compile Include="IGameEnvironment.cs" />
     <Compile Include="IGun.cs" />
-    <Compile Include="RandomBehavior.cs" />
     <Compile Include="ShooterEnemy.cs" />
     <Compile Include="Singelton.cs" />
     <Compile Include="Sprite.cs" />
