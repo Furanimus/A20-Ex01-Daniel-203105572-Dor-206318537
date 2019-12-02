@@ -5,7 +5,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 {
      public class RandomBehavior
      {
-          private readonly Random r_Random = new Random();
+          protected readonly Random r_Random;
           protected readonly int r_RandomFactor = 10;
           protected readonly int r_RandomMin = 0;
           protected readonly int r_RandomMax = 5000;
@@ -28,6 +28,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
           {
                return r_Random.Next(r_RandomMin, r_RandomMax) < r_RandomFactor;
           }
+
 
           public Action DelayedAction { get; set; }
 
