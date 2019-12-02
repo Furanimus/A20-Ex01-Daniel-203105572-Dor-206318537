@@ -13,7 +13,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                m_Position.X = -Width;
                m_Position.Y = 32;
                GraphicsPath = @"Sprites\MotherShip_32x120";
-               m_RandomBehavior = new RandomBehavior();
           }
 
           public bool IsOnScreen { get; set; } = false;
