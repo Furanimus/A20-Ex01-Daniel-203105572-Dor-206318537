@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
+using System.Timers;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537
 {
@@ -12,7 +14,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
           private static SpriteFactory s_EntityFactory = Singelton<SpriteFactory>.Instance;
           private readonly ContentManager r_ContentManager;
           private int m_EnemyCount;
-          private RandomBehavior m_RandomBehavior = new RandomBehavior();
+          private int m_EnemyDeathCounter = 0;
 
           public EnemyManager(ContentManager i_ContentManager, int i_EnemyMatrixRows, int i_EnemyMatrixCols)
           {
@@ -167,22 +169,17 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 
           public void EnemiesTryAttack(GameTime i_GameTime)
           {
-               m_RandomBehavior.DelayedAction = chooseRandomEnemyToShoot;
-               m_RandomBehavior.TryInvokeDelayedAction(i_GameTime);
+               Random random = new Random();
+               int row = random.Next(0, EnemyMatrixRows);
+               int col = random.Next(0, EnemyMatrixCols);
 
+               (EnemiesMatrix[row, col] as ShooterEnemy).Shoot(r_ContentManager);
+                                          
                foreach (ShooterEnemy shooterEnemy in EnemiesMatrix)
                {
                     shooterEnemy.GameTime = i_GameTime;
                     shooterEnemy.UpdateBulletsLocation();
                }
-          }
-
-          private void chooseRandomEnemyToShoot()
-          {
-               int row = m_RandomBehavior.GetRandomNumber(0, EnemyMatrixRows);
-               int col = m_RandomBehavior.GetRandomNumber(0, EnemyMatrixCols);
-
-               (EnemiesMatrix[row, col] as ShooterEnemy).Shoot(r_ContentManager);
           }
 
           public void Draw(SpriteBatch i_SpriteBatch)

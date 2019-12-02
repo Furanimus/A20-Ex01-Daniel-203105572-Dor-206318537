@@ -5,7 +5,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 {
      public abstract class Enemy: Entity
      {
-          protected Enemy.RandomBehavior m_RandomBehavior = new Enemy.RandomBehavior();
+          protected RandomBehavior m_RandomBehavior;
 
           public Enemy()
           {
@@ -13,6 +13,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                Height = 32;
                Width = 32;
                Lives = 1;
+               m_RandomBehavior = new RandomBehavior();
           }
 
           public int Score { get; set; }
