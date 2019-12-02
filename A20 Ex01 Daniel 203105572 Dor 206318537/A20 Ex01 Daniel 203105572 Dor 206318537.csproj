@@ -41,30 +41,30 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Bullet.cs" />
-    <Compile Include="CollisionDetector.cs" />
-    <Compile Include="Enemy.cs" />
-    <Compile Include="EnemyLightBlue.cs" />
-    <Compile Include="EnemyManager.cs" />
-    <Compile Include="EnemyPink.cs" />
-    <Compile Include="EnemyYellow.cs" />
-    <Compile Include="Entity.cs" />
-    <Compile Include="Gun.cs" />
-    <Compile Include="IGun.cs" />
-    <Compile Include="IMotherShip.cs" />
-    <Compile Include="RandomBehavior.cs" />
-    <Compile Include="RedMotherShip.cs" />
-    <Compile Include="ShooterEnemy.cs" />
-    <Compile Include="Singelton.cs" />
-    <Compile Include="Sprite.cs" />
-    <Compile Include="SpriteFactory.cs" />
-    <Compile Include="IShooter.cs" />
-    <Compile Include="ISprite.cs" />
+    <Compile Include="Models\Bullet.cs" />
+    <Compile Include="Utils\CollisionDetector.cs" />
+    <Compile Include="Models\Enemy.cs" />
+    <Compile Include="Models\EnemyLightBlue.cs" />
+    <Compile Include="Models\EnemyManager.cs" />
+    <Compile Include="Models\EnemyPink.cs" />
+    <Compile Include="Models\EnemyYellow.cs" />
+    <Compile Include="Models\Entity.cs" />
+    <Compile Include="Models\Gun.cs" />
+    <Compile Include="Interfaces\IGun.cs" />
+    <Compile Include="Interfaces\IMotherShip.cs" />
+    <Compile Include="Utils\RandomBehavior.cs" />
+    <Compile Include="Models\RedMotherShip.cs" />
+    <Compile Include="Models\ShooterEnemy.cs" />
+    <Compile Include="Utils\Singelton.cs" />
+    <Compile Include="Models\Sprite.cs" />
+    <Compile Include="Utils\SpriteFactory.cs" />
+    <Compile Include="Interfaces\IShooter.cs" />
+    <Compile Include="Interfaces\ISprite.cs" />
     <Compile Include="SpaceInvadersGame.cs" />
-    <Compile Include="GameEnvironment.cs" />
-    <Compile Include="ISpriteFactory.cs" />
-    <Compile Include="MotherShip.cs" />
-    <Compile Include="Player.cs" />
+    <Compile Include="Utils\GameEnvironment.cs" />
+    <Compile Include="Interfaces\ISpriteFactory.cs" />
+    <Compile Include="Models\MotherShip.cs" />
+    <Compile Include="Models\Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
