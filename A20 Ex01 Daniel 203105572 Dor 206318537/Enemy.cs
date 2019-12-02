@@ -5,15 +5,34 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 {
      public abstract class Enemy: Entity
      {
+          private bool m_IsAlive;
           protected RandomBehavior m_RandomBehavior;
+          public event Action<Enemy> Destroyed;
 
           public Enemy()
           {
+               m_IsAlive = true;
                Velocity = 50;
                Height = 32;
                Width = 32;
                Lives = 1;
                m_RandomBehavior = new RandomBehavior();
+          }
+
+          public new bool IsAlive {
+               get
+               {
+                    return m_IsAlive;
+               }
+               set
+               {
+                    m_IsAlive = value;
+
+                    if (value == false && Destroyed != null)
+                    {
+                         Destroyed.Invoke(this);
+                    }
+               }
           }
 
           public int Score { get; set; }

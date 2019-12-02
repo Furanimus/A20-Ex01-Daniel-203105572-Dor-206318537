@@ -5,6 +5,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 {
      public abstract class Sprite : ISprite
      {
+          private int m_Width;
+          private int m_Height;
+
           public static Vector2 Right { get; } = new Vector2(1, 0);
 
           public static Vector2 Left { get; } = new Vector2(-1, 0);
@@ -21,7 +24,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 
           public IGameEnvironment GameEnvironment { get; set; }
 
-          public int Width { get; set; }
+          public int Width {get; set; }
 
           public int Height { get; set; }
 
@@ -37,10 +40,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                }
                set
                {
-                    if (value.X >= -1 && value.X + Width <= GameEnvironment.WindowWidth + 1)
-                    {
-                         m_Position = value;
-                    }
+                    value.X = MathHelper.Clamp(value.X, 0, GameEnvironment.WindowWidth - this.Width);
+                    m_Position = value;
                }
           }
 

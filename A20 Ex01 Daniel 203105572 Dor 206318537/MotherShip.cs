@@ -2,10 +2,8 @@
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537
 {
-     public class MotherShip : Enemy
+     public class MotherShip : Enemy, IMotherShip
      {
-          private RandomBehavior m_RandomBehavior = new RandomBehavior();
-
           private MotherShip()
           {
                Score = 800;
@@ -16,7 +14,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                m_Position.Y = 32;
                GraphicsPath = @"Sprites\MotherShip_32x120";
           }
-
           public bool IsOnScreen { get; set; } = false;
 
           public override void Move(Vector2 i_Direction)
@@ -24,40 +21,48 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                m_Position += i_Direction * Velocity * (float)GameTime.ElapsedGameTime.TotalSeconds;
           }
 
-          public void TrySpawn()
+          private void trySpawn()
           {
-               if (50 >= m_RandomBehavior.GetRandomNumber(0, 50000))
+               if (m_RandomBehavior.Roll())
                {
                     IsOnScreen = true;
+                    IsAlive = true;
                }
           }
 
-          public void HandleMothership()
+          public void HandleMotherShip(GameTime i_GameTime)
           {
+               if(IsOnScreen && !IsAlive)
+               {
+                    reset();
+               }
+
+               GameTime = i_GameTime;
+
                if (IsOnScreen)
                {
                     Move(Sprite.Right);
 
-                    if (IsCollideWithRightBound())
+                    if (isCollideWithRightBound())
                     {
-                         Reset();
+                         reset();
                     }
                }
                else
                {
-                    TrySpawn();
+                    trySpawn();
                }
           }
 
-          public bool IsCollideWithRightBound()
+          private bool isCollideWithRightBound()
           {
                return (m_Position.X >= GameEnvironment.WindowWidth);
           }
 
-          public void Reset()
+          private void reset()
           {
                IsOnScreen = false;
-               m_Position.X = 0 - Width;            
+               m_Position.X = -Width;            
           }
      }
 }

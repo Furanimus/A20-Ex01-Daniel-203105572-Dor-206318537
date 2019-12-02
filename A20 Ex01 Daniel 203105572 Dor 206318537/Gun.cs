@@ -13,7 +13,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 
           public Type BulletType { get; set; }
 
-          public ISprite Shoot(Vector2 i_Direction)
+          public ISprite Shoot()
           {
                if(BulletType == null)
                {
