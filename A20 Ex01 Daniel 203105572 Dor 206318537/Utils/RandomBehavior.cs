@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 
-namespace A20_Ex01_Daniel_203105572_Dor_206318537
+namespace A20_Ex01_Daniel_203105572_Dor_206318537.Utils
 {
      public class RandomBehavior
      {
@@ -38,9 +38,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 
           private GameTime GameTime { get; set; }
 
-          public void TryInvokeDelayedAction(GameTime i_GameTime)
+          public void TryInvokeDelayedAction()
           {
-               GameTime = i_GameTime;
+               GameTime = BaseGame.GameTime;
 
                if (Delay == 0)
                {

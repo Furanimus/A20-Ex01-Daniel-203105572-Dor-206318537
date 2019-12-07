@@ -1,21 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace A20_Ex01_Daniel_203105572_Dor_206318537
+namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
      public class Bullet : Sprite
      {
-          private Bullet()
+          private const string k_GraphicPath = @"Sprites\Bullet";
+
+          private Bullet(Game i_Game) : base (k_GraphicPath, i_Game)
           {
                Velocity = 160;
-               GraphicsPath = @"Sprites\Bullet";
                Height = 16;
                Width = 6;
-          }
-
-          public override void Move(Vector2 i_Direction)
-          {
-               Position += i_Direction * Velocity * (float)GameTime.ElapsedGameTime.TotalSeconds;
           }
      }
 }

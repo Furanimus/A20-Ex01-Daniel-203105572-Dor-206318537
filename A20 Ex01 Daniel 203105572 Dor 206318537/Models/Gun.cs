@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
 
-namespace A20_Ex01_Daniel_203105572_Dor_206318537
+namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
      public class Gun : IGun
      {
@@ -33,9 +30,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                }
           }
 
-          public ISprite Shoot()
+          public Sprite Shoot()
           {
-               ISprite bullet = null;
+               Sprite bullet = null;
 
                if(BulletType == null)
                {

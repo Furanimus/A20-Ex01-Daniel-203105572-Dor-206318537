@@ -1,23 +1,29 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace A20_Ex01_Daniel_203105572_Dor_206318537
+namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
      public abstract class MotherShip : Enemy
      {
-          public bool IsOnScreen { get; set; } = false;        
-
-          public virtual void HandleMotherShip(GameTime i_GameTime)
+          public MotherShip (string i_GraphicsPath, Game i_Game) : base (i_GraphicsPath, i_Game)
           {
-               if(IsOnScreen && !IsAlive)
+               Direction = Sprite.Right;
+               Visible = false;
+          }
+
+          //public bool IsOnScreen { get; set; } = false;        
+
+          public override void Update(GameTime i_GameTime)
+          {
+               if(Visible && !IsAlive)
                {
                     reset();
                }
 
-               GameTime = i_GameTime;
+               GameTime = BaseGame.GameTime;
 
-               if (IsOnScreen)
+               if (Visible)
                {
-                    Move(Sprite.Right);
+                    Position += Direction * Velocity * (float)i_GameTime.ElapsedGameTime.TotalSeconds;
 
                     if (isCollideWithRightBound())
                     {
@@ -34,7 +40,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
           {
                if (m_RandomBehavior.Roll())
                {
-                    IsOnScreen = true;
+                    Visible = true;
                     IsAlive = true;
                }
           }
@@ -46,7 +52,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 
           private void reset()
           {
-               IsOnScreen = false;
+               Visible = false;
                m_Position.X = -Width;            
           }
      }

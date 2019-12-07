@@ -1,7 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
+using Microsoft.Xna.Framework;
 using System;
 
-namespace A20_Ex01_Daniel_203105572_Dor_206318537
+namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
      public abstract class Enemy: Entity
      {
@@ -9,7 +10,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
           protected RandomBehavior m_RandomBehavior;
           public event Action<Enemy> Destroyed;
 
-          public Enemy()
+          public Enemy(string i_GraphicsPath, Game i_Game) : base (i_GraphicsPath, i_Game)
           {
                m_IsAlive = true;
                Velocity = 50;
@@ -37,19 +38,19 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 
           public int Score { get; set; }
 
-          public override void Move(Vector2 i_Direction)
+          public override void Update(GameTime i_GameTime)
           {
-               if(!CollisionDetector.IsCollideWithRightEdge(this) && i_Direction == Sprite.Right ||
-                    !CollisionDetector.IsCollideWithLeftEdge(this) && i_Direction == Sprite.Left ||
-                    !CollisionDetector.IsCollideWithBottomEdge(this) && i_Direction == Sprite.Down)
+               if(!CollisionDetector.IsCollideWithRightEdge(this) && Direction == Sprite.Right ||
+                    !CollisionDetector.IsCollideWithLeftEdge(this) && Direction == Sprite.Left ||
+                    !CollisionDetector.IsCollideWithBottomEdge(this) && Direction == Sprite.Down)
                {
-                    if (i_Direction == Sprite.Down)
+                    if (Direction == Sprite.Down)
                     {
-                         Position += i_Direction * (Height / 2);
+                         Position += Direction * (Height / 2);
                     }
                     else
                     {
-                         Position += i_Direction * Velocity * (float)GameTime.ElapsedGameTime.TotalSeconds;
+                         Position += Direction * Velocity * (float)GameTime.ElapsedGameTime.TotalSeconds;
                     }
                }
           }

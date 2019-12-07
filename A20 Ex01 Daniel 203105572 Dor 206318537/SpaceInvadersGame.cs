@@ -1,11 +1,14 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537
 {
-     public class SpaceInvadersGame : Game
+     public class SpaceInvadersGame : BaseGame
      {          
           private const int k_EnemiesRows = 5;
           private const int k_EnemiesCols = 9;              
@@ -25,9 +28,16 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                m_Graphics.PreferredBackBufferWidth = r_GameEnvironment.WindowWidth;
                m_Graphics.PreferredBackBufferHeight = r_GameEnvironment.WindowHeight;
                r_Player = r_SpriteFactory.Create(typeof(Player)) as Player;
-
+               
                m_Graphics.ApplyChanges();
                Content.RootDirectory = "Content";
+          }
+          public EnemyManager EnemyManager
+          {
+               get
+               {
+                    return m_EnemyManager;
+               }
           }
 
           protected override void Initialize()
@@ -46,6 +56,13 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                r_Player.Graphics = Content.Load<Texture2D>(r_Player.GraphicsPath);
                r_Player.Position = new Vector2(r_GameEnvironment.WindowWidth - r_Player.Width * 2,
                     r_GameEnvironment.WindowHeight - r_Player.Height * 2);
+
+               this.Components.Add(r_Player);
+               foreach (Enemy enemy in EnemyManager.EnemiesMatrix)
+               {
+                    this.Components.Add(enemy);
+               }
+               this.Components.Add(EnemyManager.MotherShip);
           }
 
           protected override void UnloadContent()
@@ -59,17 +76,17 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                     Exit();
                }
 
-               r_Player.HandlePlayerAction(m_EnemyManager, Content, i_GameTime);
                r_Player.CurrKBState = Keyboard.GetState();
                r_Player.CurrMouseState = Mouse.GetState();
+               //r_Player.HandlePlayerAction(m_EnemyManager, Content, i_GameTime);
 
-               m_EnemyManager.MoveMatrix(i_GameTime);
-               m_EnemyManager.EnemiesTryAttack(i_GameTime);
-               m_EnemyManager.HandleMotherShip(i_GameTime);
+               m_EnemyManager.UpdateMatrixDirection();
+               m_EnemyManager.EnemiesTryAttack();
+               //m_EnemyManager.HandleMotherShip(i_GameTime);
 
                Window.Title = r_Player.Score.ToString();
 
-               base.Update(i_GameTime);
+               base.Update(BaseGame.GameTime);
           }
 
           protected override void Draw(GameTime gameTime)

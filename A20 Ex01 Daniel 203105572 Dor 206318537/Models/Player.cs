@@ -1,31 +1,32 @@
 ﻿using System.Collections.Generic;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace A20_Ex01_Daniel_203105572_Dor_206318537
+namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
-     public class Player : Entity, IShooter
+     public class Player : BasePlayer, IShooter
      {
           private const int k_MaxShotInMidAir = 2;
+          private const string k_GraphicsPath = @"Sprites\Ship01_32x32";
 
-          private Player()
+          private Player(Game i_Game) : base(k_GraphicsPath, i_Game) 
           {
                Width = 32;
                Height = 32;
-               GraphicsPath = @"Sprites\Ship01_32x32";
                Lives = 3;
                Score = 0;
                Velocity = 110;
           }
 
-          public override void Move(Vector2 i_Direction)
-          {
-               Position += i_Direction * Velocity * (float)GameTime.ElapsedGameTime.TotalSeconds;
-          }
+          //public override void Move(Vector2 i_Direction)
+          //{
+          //     Position += i_Direction * Velocity * (float)GameTime.ElapsedGameTime.TotalSeconds;
+          //}
 
-          public void Shoot(ContentManager i_ContentManager)
+          public void Shoot()
           {
                Sprite bullet = Gun.Shoot() as Sprite;
 
@@ -33,22 +34,23 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                {
                     bullet.Position = this.Position;
                     bullet.Position += new Vector2((Width / 2) - (bullet.Width / 2), 0);
-                    bullet.Graphics = i_ContentManager.Load<Texture2D>(bullet.GraphicsPath);
+                    bullet.Graphics = Game.Content.Load<Texture2D>(bullet.GraphicsPath);
                     Bullets.AddLast(bullet);
                }
           }
 
-          public void HandlePlayerAction(EnemyManager i_EnemyManager, ContentManager i_ContentManager, GameTime i_GameTime)
+          public override void Update(GameTime i_GameTime)
           {
                updatePlayerMovement(i_GameTime);
 
                if (CurrKBState.IsKeyDown(Keys.Enter) && PrevKBState.IsKeyUp(Keys.Enter))
                {
-                    Shoot(i_ContentManager);
+                    Shoot();
                }
 
                PrevKBState = CurrKBState;
-               updateBulletsPosition(i_EnemyManager, i_GameTime);
+               updateBulletsPosition((Game as SpaceInvadersGame).EnemyManager, i_GameTime);
+               base.Update(i_GameTime);
           }
 
           private void updateBulletsPosition(EnemyManager i_EnemyManager, GameTime i_GameTime)
@@ -85,7 +87,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                     else
                     {
                          bullet.GameTime = i_GameTime;
-                         bullet.Move(Sprite.Up);
+                         bullet.Direction = Sprite.Up;
+                         bullet.Update(i_GameTime);
                     }
                }
 
@@ -102,7 +105,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                }
           }
 
-          private void updatePlayerMovement(GameTime i_GameTime)
+          public void updatePlayerMovement(GameTime i_GameTime)
           {
                updateKBMovement(i_GameTime);
                //Position = getMouseLocation();
@@ -131,7 +134,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                if(CurrKBState.GetPressedKeys().Length != 0)
                {
                     GameTime = i_GameTime;
-                    Move(getDirection());
+                    updateDirection();
                }
           }
 
@@ -150,20 +153,18 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                return retVal;
           }
 
-          private Vector2 getDirection()
+          private void updateDirection()
           {
-               Vector2 direction = new Vector2(0, 0);
+               Direction = Vector2.Zero;
 
                if (CurrKBState.IsKeyDown(Keys.Right))
                {
-                    direction = Sprite.Right;
+                    Direction = Sprite.Right;
                }
                else if (CurrKBState.IsKeyDown(Keys.Left))
                {
-                    direction = Sprite.Left;
+                    Direction = Sprite.Left;
                }
-
-               return direction;
           }
 
           public KeyboardState CurrKBState { get; set; }
@@ -178,6 +179,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 
           public int Score { get; set; }
 
-          public LinkedList<ISprite> Bullets { get; } = new LinkedList<ISprite>();
+          public LinkedList<Sprite> Bullets { get; } = new LinkedList<Sprite>();
      }
 }

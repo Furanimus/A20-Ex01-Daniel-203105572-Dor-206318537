@@ -1,14 +1,15 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 
-namespace A20_Ex01_Daniel_203105572_Dor_206318537
+namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
      public class EnemyYellow : ShooterEnemy
      {
-          private EnemyYellow()
+          private const string k_GraphicsPath = @"Sprites\Enemy0301_32x32";
+
+          private EnemyYellow(Game i_Game) : base (k_GraphicsPath, i_Game)
           {
-               GraphicsPath = @"Sprites\Enemy0301_32x32";
                Score = 100;
-               
           }
      }
 }

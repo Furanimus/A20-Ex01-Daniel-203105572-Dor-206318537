@@ -1,10 +1,11 @@
-﻿using Microsoft.Xna.Framework;
+﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 
-namespace A20_Ex01_Daniel_203105572_Dor_206318537
+namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
      public class EnemyManager
      {
@@ -49,7 +50,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 
           public float EnemiesOffset { get; set; } = 0.6f;
 
-          public void MoveMatrix(GameTime i_GameTime)
+          public void UpdateMatrixDirection()
           {
                handleCollision();
 
@@ -57,16 +58,16 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                {
                     if(enemy.IsAlive)
                     {
-                         enemy.GameTime = i_GameTime;
-                         enemy.Move(s_MatrixDirection);
+                         enemy.GameTime = BaseGame.GameTime;
+                         enemy.Direction = s_MatrixDirection;
                     }
                }
           }
 
-          public void HandleMotherShip(GameTime i_GameTime)
-          {
-               MotherShip.HandleMotherShip(i_GameTime);
-          }
+          //public void HandleMotherShip()
+          //{
+          //     MotherShip.Update(BaseGame.GameTime);
+          //}
 
           private void handleCollision()
           {
@@ -200,14 +201,14 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                }
           }
 
-          public void EnemiesTryAttack(GameTime i_GameTime)
+          public void EnemiesTryAttack()
           {
                m_RandomBehavior.DelayedAction = chooseRandomEnemyToShoot;
-               m_RandomBehavior.TryInvokeDelayedAction(i_GameTime);
+               m_RandomBehavior.TryInvokeDelayedAction();
 
                foreach (ShooterEnemy shooterEnemy in EnemiesMatrix)
                {
-                    shooterEnemy.GameTime = i_GameTime;
+                    shooterEnemy.GameTime = BaseGame.GameTime;
                     shooterEnemy.UpdateBulletsLocation();
                }
           }
@@ -225,7 +226,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                     int populatedRowsIndex = m_RandomBehavior.GetRandomNumber(0, populatedRowsCount);
                     int populatedColsIndex = m_RandomBehavior.GetRandomNumber(0, populatedColsCount);
 
-                    (EnemiesMatrix[populatedRows[populatedRowsIndex], populatedCols[populatedColsIndex]] as ShooterEnemy).Shoot(r_ContentManager);
+                    (EnemiesMatrix[populatedRows[populatedRowsIndex], populatedCols[populatedColsIndex]] as ShooterEnemy).Shoot();
                }
           }
 
@@ -269,7 +270,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 
           public void Draw(SpriteBatch i_SpriteBatch)
           {
-               if (MotherShip.IsOnScreen && MotherShip.IsAlive)
+               if (MotherShip.Visible && MotherShip.IsAlive)
                {
                     i_SpriteBatch.Draw(MotherShip.Graphics, MotherShip.Position, Color.Red);
                }

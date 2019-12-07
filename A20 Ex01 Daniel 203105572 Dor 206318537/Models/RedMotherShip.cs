@@ -5,11 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace A20_Ex01_Daniel_203105572_Dor_206318537
+namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
      public class RedMotherShip : MotherShip
      {
-          private RedMotherShip()
+          private const string k_GraphicsPath = @"Sprites\MotherShip_32x120";
+
+
+          private RedMotherShip(Game i_Game) : base(k_GraphicsPath, i_Game)
           {
                Score = 800;
                Velocity = 100;
@@ -17,12 +20,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                Height = 32;
                m_Position.X = -Width;
                m_Position.Y = 32;
-               GraphicsPath = @"Sprites\MotherShip_32x120";
-          }
-
-          public override void Move(Vector2 i_Direction)
-          {
-               m_Position += i_Direction * Velocity * (float)GameTime.ElapsedGameTime.TotalSeconds;
           }
      }
 }
