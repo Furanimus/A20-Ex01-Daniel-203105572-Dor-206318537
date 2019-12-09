@@ -86,12 +86,12 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                }
 
                GameTime = i_GameTime;
-               r_Player.CurrKBState = Keyboard.GetState();
-               r_Player.CurrMouseState = Mouse.GetState();
+                              
                m_EnemyManager.UpdateMatrixDirection();
                m_EnemyManager.EnemiesTryAttack();
                m_EnemyManager.DestroyPlayerIfBulletsOrEnemiesCollidedWithPlayer(r_Player);
-               Window.Title = r_Player.Lives.ToString();
+
+               Window.Title = r_Player.Score.ToString();
 
                base.Update(i_GameTime);
           }
@@ -106,7 +106,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 
           private bool CheckIfGameOver()
           {
-
                return r_Player.Lives == 0 || EnemyManager.IsEnemyCollidedWithPlayer;
           }
      }

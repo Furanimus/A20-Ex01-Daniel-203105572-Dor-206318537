@@ -69,12 +69,13 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           private void checkMouseForShooting()
           {
-              if(CurrMouseState.LeftButton == ButtonState.Pressed && PrevMouseState.LeftButton == ButtonState.Released)
-              {
+               if(ShootingMouseState.LeftButton == ButtonState.Pressed && PrevShootingMouseState.LeftButton == ButtonState.Released)
+               {
                     Shoot();
-              }
-          }
+               }
 
+               PrevShootingMouseState = ShootingMouseState;
+          }
 
           private void RemoveBulletsCollided()
           {
@@ -173,24 +174,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                }
           }
 
-          private Vector2 getMouseLocation()
-          {
-               Vector2 retVal = Vector2.Zero;
-
-               if (PrevMouseState != CurrMouseState)
-               {
-                    retVal.X = CurrMouseState.X;
-                    retVal.Y = Position.Y;
-               }
-               else
-               {
-                    retVal = Position;
-                    PrevMouseState = CurrMouseState;
-               }
-
-               return retVal;
-          }
-          
           private void checkKBForMovements()
           {
                if(CurrKBState.GetPressedKeys().Length != 0)

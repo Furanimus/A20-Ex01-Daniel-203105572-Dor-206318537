@@ -26,23 +26,53 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           public KeyboardState PrevKBState { get; set; }
 
-          public MouseState CurrMouseState { get; set; }
+          public MouseState MovingMouseState { get; set; }
 
-          public MouseState PrevMouseState { get; set; } = Mouse.GetState();
+          protected MouseState PrevMovingMouseState { get; set; }
+
+          public MouseState ShootingMouseState { get; set; }
+
+          protected MouseState PrevShootingMouseState { get; set; }
 
           protected Vector2 getMousePositionDelta()
           {
                Vector2 retVal = Vector2.Zero;
-               m_Position.X = Mouse.GetState().X;
 
-               if (PrevMouseState != null)
+               if (PrevMovingMouseState != null)
                {
-                    retVal.X = (CurrMouseState.X - PrevMouseState.X);
+                    retVal.X = (MovingMouseState.X - PrevMovingMouseState.X);
                }
 
-               PrevMouseState = CurrMouseState;
+               PrevMovingMouseState = MovingMouseState;
 
                return retVal;
+          }
+
+          protected Vector2 getMouseLocation()
+          {
+               Vector2 retVal = Vector2.Zero;
+
+               if (PrevMovingMouseState != MovingMouseState)
+               {
+                    retVal.X = MovingMouseState.X;
+                    retVal.Y = Position.Y;
+               }
+               else
+               {
+                    retVal = Position;
+                    PrevMovingMouseState = MovingMouseState;
+               }
+
+               return retVal;
+          }
+
+          public override void Update(GameTime gameTime)
+          {
+               this.CurrKBState = Keyboard.GetState();
+               this.MovingMouseState = Mouse.GetState();
+               this.ShootingMouseState = Mouse.GetState();
+
+               base.Update(gameTime);
           }
 
           public abstract void Destroyed();
