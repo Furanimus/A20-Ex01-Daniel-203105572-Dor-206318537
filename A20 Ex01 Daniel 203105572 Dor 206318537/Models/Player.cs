@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
 using Microsoft.Xna.Framework;
@@ -9,6 +10,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
      public class Player : BasePlayer, IShooter
      {
           private const int k_MaxShotInMidAir = 2;
+          private const int k_ScoreLostOnDestroyed = 1200;
+          private readonly Vector2 r_StartingPosition;
           private const string k_GraphicsPath = @"Sprites\Ship01_32x32";
 
           private Player(Game i_Game) : base(k_GraphicsPath, i_Game) 
@@ -18,16 +21,17 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                Lives = 3;
                Score = 0;
                Velocity = 110;
-               Position = new Vector2(GameEnvironment.WindowWidth - Width * 2,
-                    GameEnvironment.WindowHeight - Height * 2);
+               r_StartingPosition = new Vector2(GameEnvironment.WindowWidth - Width * 2, GameEnvironment.WindowHeight - Height * 2);
+               Position = r_StartingPosition;
           }
 
           public void Shoot()
           {
-               Sprite bullet = Gun.Shoot() as Sprite;
+               BaseBullet bullet = Gun.Shoot();
 
                if(bullet != null)
                {
+                    bullet.LeftWindowBounds += OnLeftWindowBounds;
                     bullet.SpriteBatch = m_SpriteBatch;
                     bullet.Direction = Sprite.Up;
                     bullet.Position += this.Position + new Vector2((Width / 2) - (bullet.Width / 2), 0);
@@ -40,24 +44,82 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           {
                checkKeyboard();
                PrevKBState = CurrKBState;
-               updateBulletsPosition(i_GameTime);
+
+               checkMouse();
+
+               RemoveBulletsCollided();
                base.Update(i_GameTime);
           }
 
-          private void updateBulletsPosition(GameTime i_GameTime)
+          private void checkMouse()
           {
-               EnemyManager enemyManager = (Game as SpaceInvadersGame).EnemyManager;
-               LinkedList<Sprite> bulletsToRemove = new LinkedList<Sprite>();
+               checkMouseForMovement();
+               checkMouseForShooting();
+          }
 
-               foreach (Sprite bullet in Bullets)
+          private void checkMouseForMovement()
+          {
+               Vector2 MovementDelta = getMousePositionDelta();
+
+               if (MovementDelta != Vector2.Zero) //PrevMouseState.Position != CurrMouseState.Position
                {
-                    foreach(Enemy enemy in enemyManager.EnemiesMatrix)
+                    Position += MovementDelta; 
+               }
+          }
+
+          private void checkMouseForShooting()
+          {
+              if(CurrMouseState.LeftButton == ButtonState.Pressed && PrevMouseState.LeftButton == ButtonState.Released)
+              {
+                    Shoot();
+              }
+          }
+
+
+          private void RemoveBulletsCollided()
+          {
+               LinkedList<BaseBullet> bulletsToRemove;
+               bulletsToRemove = FindBulletsToRemove();
+
+               foreach(BaseBullet bullet in bulletsToRemove)
+               {
+                    RemoveBullet(bullet);
+               }
+          }
+
+          public override void Destroyed()
+          {
+               if (Lives > 0)
+               {
+                    Lives--;
+               }
+
+               if (Score >= k_ScoreLostOnDestroyed)
+               {
+                    Score -= k_ScoreLostOnDestroyed;
+               }
+               else
+               {
+                    Score = 0;
+               }
+
+               Position = r_StartingPosition;
+          }
+
+          private LinkedList<BaseBullet> FindBulletsToRemove()
+          { 
+               EnemyManager enemyManager = (Game as SpaceInvadersGame).EnemyManager;
+               LinkedList<BaseBullet> toRemove = new LinkedList<BaseBullet>();
+
+               foreach (BaseBullet bullet in Bullets)
+               {
+                    foreach (Enemy enemy in enemyManager.EnemiesMatrix)
                     {
-                         if(enemy.IsAlive)
+                         if (enemy.IsAlive)
                          {
                               if (CollisionDetector.IsCollide(bullet, enemy))
                               {
-                                   bulletsToRemove.AddLast(bullet);
+                                   toRemove.AddLast(bullet);
                                    enemy.IsAlive = false;
                                    Score += enemy.Score;
                               }
@@ -66,23 +128,34 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
                     if (CollisionDetector.IsCollide(bullet, enemyManager.MotherShip))
                     {
-                         bulletsToRemove.AddLast(bullet);
+                         toRemove.AddLast(bullet);
                          enemyManager.MotherShip.IsAlive = false;
                          Score += enemyManager.MotherShip.Score;
                     }
 
                     if (bullet.Position.Y <= 0)
                     {
-                         bulletsToRemove.AddLast(bullet);
+                         toRemove.AddLast(bullet);
                     }
                }
 
-               foreach (Sprite bullet in bulletsToRemove)
+               return toRemove;
+          }
+
+          private void OnLeftWindowBounds(BaseBullet i_Bullet)
+          {
+               RemoveBullet(i_Bullet);
+          }
+
+          private void RemoveBullet(BaseBullet i_Bullet)
+          {
+               if (i_Bullet != null)
                {
-                    bullet.Visible = false;
-                    Bullets.Remove(bullet);
-                    Game.Components.Remove(bullet);
-                    Gun.Reload();
+                    i_Bullet.Visible = false;
+                    i_Bullet.Position = Vector2.Zero;
+                    Bullets.Remove(i_Bullet);
+                    Game.Components.Remove(i_Bullet);
+                    Gun.ReloadBullet();
                }
           }
 
@@ -90,7 +163,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           {
                checkKBForMovements();
                checkKBForShooting();
-               //Position = getMouseLocation();
           }
 
           private void checkKBForShooting()
@@ -139,34 +211,11 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                     Direction = Vector2.Zero;
                }
           }
-
-          private Vector2 getMousePositionDelta()
-          {
-               Vector2 retVal = Vector2.Zero;
-               m_Position.X = Mouse.GetState().X;
-
-               if (PrevMouseState != null)
-               {
-                    retVal.X = (CurrMouseState.X - PrevMouseState.X);
-               }
-
-               PrevMouseState = CurrMouseState;
-
-               return retVal;
-          }
-
-          public KeyboardState CurrKBState { get; set; }
-
-          public KeyboardState PrevKBState { get; set; }
-
-          public MouseState CurrMouseState { get; set; }
-
-          public MouseState PrevMouseState { get; set; } = Mouse.GetState();
-
+         
           public IGun Gun { get; set; } = new Gun(k_MaxShotInMidAir);
 
           public int Score { get; set; }
 
-          public LinkedList<Sprite> Bullets { get; } = new LinkedList<Sprite>();
+          public LinkedList<BaseBullet> Bullets { get; } = new LinkedList<BaseBullet>();
      }
 }

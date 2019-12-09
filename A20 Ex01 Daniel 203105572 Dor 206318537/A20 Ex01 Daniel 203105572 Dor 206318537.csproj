@@ -43,8 +43,11 @@
   <ItemGroup>
     <Compile Include="BaseGame.cs" />
     <Compile Include="Models\Background.cs" />
+    <Compile Include="Models\BaseBullet.cs" />
+    <Compile Include="Models\BaseGun.cs" />
     <Compile Include="Models\BasePlayer.cs" />
     <Compile Include="Models\Bullet.cs" />
+    <Compile Include="Models\MessageBox.cs" />
     <Compile Include="Utils\CollisionDetector.cs" />
     <Compile Include="Models\Enemy.cs" />
     <Compile Include="Models\EnemyLightBlue.cs" />

@@ -14,14 +14,15 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           public IGun Gun { get; set; } = new Gun(k_MaxShotInMidAir);
 
-          public LinkedList<Sprite> Bullets { get; } = new LinkedList<Sprite>();
+          public LinkedList<BaseBullet> Bullets { get; } = new LinkedList<BaseBullet>();
 
           public void Shoot()
           {
-               Sprite bullet = Gun.Shoot() as Sprite;
+               BaseBullet bullet = Gun.Shoot();
 
                if (bullet != null)
                {
+                    bullet.LeftWindowBounds += OnLeftWindowBounds;
                     bullet.Direction = Sprite.Down;
                     bullet.SpriteBatch = m_SpriteBatch;
                     bullet.Position = this.Position + new Vector2((Width / 2) - (bullet.Width / 2), Height);
@@ -30,23 +31,12 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                }
           }
 
-          public void UpdateBulletsLocation()
-          {
-               Sprite bulletToRemove = null;
-
-               foreach (Sprite bullet in Bullets)
-               { 
-                    if (bullet.Position.Y >= GameEnvironment.WindowWidth)
-                    {
-                         bulletToRemove = bullet;
-                         break;
-                    }
-               }
-
-               if (bulletToRemove != null)
+          private void OnLeftWindowBounds(BaseBullet i_Bullet)
+          {              
+               if (i_Bullet != null)
                {
-                    this.Game.Components.Remove(bulletToRemove);
-                    this.Bullets.Remove(bulletToRemove);
+                    this.Game.Components.Remove(i_Bullet);
+                    this.Bullets.Remove(i_Bullet);
                }
           }
      }

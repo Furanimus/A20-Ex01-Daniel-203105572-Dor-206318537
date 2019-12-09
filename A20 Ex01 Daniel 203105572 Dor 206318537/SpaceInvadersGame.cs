@@ -25,7 +25,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 
                r_GameEnvironment = Singelton<GameEnvironment>.Instance;
                r_SpriteFactory = Singelton<SpriteFactory>.Instance;
-               r_SpriteFactory.Game = this;
+               (r_SpriteFactory as SpriteFactory).Game = this;
 
                m_Graphics.PreferredBackBufferWidth = r_GameEnvironment.WindowWidth;
                m_Graphics.PreferredBackBufferHeight = r_GameEnvironment.WindowHeight;
@@ -74,8 +74,14 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 
           protected override void Update(GameTime i_GameTime)
           {
-               if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+               bool isGameOver = CheckIfGameOver();
+               if (isGameOver || Keyboard.GetState().IsKeyDown(Keys.Escape))
                {
+                    if (isGameOver)
+                    {
+                         //DisplayExitMsg();
+                    }
+
                     Exit();
                }
 
@@ -84,7 +90,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                r_Player.CurrMouseState = Mouse.GetState();
                m_EnemyManager.UpdateMatrixDirection();
                m_EnemyManager.EnemiesTryAttack();
-               Window.Title = r_Player.Score.ToString();
+               m_EnemyManager.DestroyPlayerIfBulletsOrEnemiesCollidedWithPlayer(r_Player);
+               Window.Title = r_Player.Lives.ToString();
 
                base.Update(i_GameTime);
           }
@@ -95,6 +102,12 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                m_SpriteBatch.Begin();
                base.Draw(gameTime);
                m_SpriteBatch.End();
+          }
+
+          private bool CheckIfGameOver()
+          {
+
+               return r_Player.Lives == 0 || EnemyManager.IsEnemyCollidedWithPlayer;
           }
      }
 }

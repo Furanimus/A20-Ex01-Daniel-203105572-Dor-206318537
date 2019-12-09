@@ -32,6 +32,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                loadContent();
           }
 
+          public bool IsEnemyCollidedWithPlayer { get; private set; }
+
           public Enemy[,] EnemiesMatrix { get; set; }
 
           public int EnemyMatrixRows { get; set; }
@@ -93,6 +95,23 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                          EnemiesMatrix[row, col].Velocity += EnemiesMatrix[row, col].Velocity * i_Precentage;
                     }
                }
+          }
+
+          public void DestroyPlayerIfBulletsOrEnemiesCollidedWithPlayer(BasePlayer i_Player)
+          {
+               foreach (ShooterEnemy enemy in EnemiesMatrix)
+               {
+                    foreach (Bullet bullet in enemy.Bullets)
+                    {
+                         if(CollisionDetector.IsCollide(i_Player, bullet))
+                         {
+                              i_Player.Destroyed();
+                         }
+                    }
+
+                    IsEnemyCollidedWithPlayer = CollisionDetector.IsCollide(enemy, i_Player);
+               }
+
           }
 
           private void fixDirection(Enemy i_MostLeftEnemy, Enemy i_MostRightEnemy)
@@ -202,11 +221,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           {
                m_RandomBehavior.DelayedAction = chooseRandomEnemyToShoot;
                m_RandomBehavior.TryInvokeDelayedAction();
-
-               foreach (ShooterEnemy shooterEnemy in EnemiesMatrix)
-               {
-                    shooterEnemy.UpdateBulletsLocation();
-               }
           }
 
           private void chooseRandomEnemyToShoot()

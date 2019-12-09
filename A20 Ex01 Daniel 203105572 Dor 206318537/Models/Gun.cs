@@ -4,17 +4,15 @@ using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
-     public class Gun : IGun
+     public class Gun : BaseGun
      {
           public int Capacity { get; set; } = 2;
 
           public int BulletShot { get; set; }
 
-          public Type BulletType { get; set; } = typeof(Bullet);
-
           public Gun()
           {
-
+               BulletType = typeof(Bullet);
           }
 
           public Gun(int i_Capacity)
@@ -22,7 +20,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                Capacity = i_Capacity;
           }
 
-          public void Reload()
+          public override void ReloadBullet()
           {
                if(BulletShot >= 0)
                {
@@ -30,9 +28,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                }
           }
 
-          public Sprite Shoot()
+          public override BaseBullet Shoot()
           {
-               Sprite bullet = null;
+               BaseBullet bullet = null;
 
                if(BulletType == null)
                {
@@ -41,7 +39,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
                if(BulletShot < Capacity)
                {
-                    bullet = Singelton<SpriteFactory>.Instance.Create(BulletType);
+                    bullet = Singelton<SpriteFactory>.Instance.Create(BulletType) as Bullet;
                     BulletShot++;
                }
 

@@ -1,8 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
-     public class Bullet : Sprite
+     public class Bullet : BaseBullet
      {
           private const string k_GraphicPath = @"Sprites\Bullet";
 
