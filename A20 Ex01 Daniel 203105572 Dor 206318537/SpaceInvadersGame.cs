@@ -1,5 +1,4 @@
-﻿using System;
-using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
+﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
 using Microsoft.Xna.Framework;
@@ -22,15 +21,17 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
           public SpaceInvadersGame()
           {
                m_Graphics = new GraphicsDeviceManager(this);
+               Content.RootDirectory = "Content";
+
                r_GameEnvironment = Singelton<GameEnvironment>.Instance;
                r_SpriteFactory = Singelton<SpriteFactory>.Instance;
+               r_SpriteFactory.Game = this;
 
                m_Graphics.PreferredBackBufferWidth = r_GameEnvironment.WindowWidth;
                m_Graphics.PreferredBackBufferHeight = r_GameEnvironment.WindowHeight;
                r_Player = r_SpriteFactory.Create(typeof(Player)) as Player;
                
                m_Graphics.ApplyChanges();
-               Content.RootDirectory = "Content";
           }
           public EnemyManager EnemyManager
           {
@@ -42,31 +43,33 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 
           protected override void Initialize()
           {
-               IsMouseVisible = true; //Remove at the end
+               IsMouseVisible = true;
+               m_SpriteBatch = new SpriteBatch(GraphicsDevice);
+               m_EnemyManager = new EnemyManager(this, k_EnemiesRows, k_EnemiesCols);
+               r_GameEnvironment.Background = new Background(this);
 
-               m_SpriteBatch            = new SpriteBatch(GraphicsDevice);
-               m_EnemyManager           = new EnemyManager(Content, k_EnemiesRows, k_EnemiesCols);
+               this.Components.Add(r_GameEnvironment.Background);
+               this.Components.Add(EnemyManager.MotherShip);
+               this.Components.Add(r_Player);
+
+               foreach (Enemy enemy in EnemyManager.EnemiesMatrix)
+               {
+                    this.Components.Add(enemy);
+               }
 
                base.Initialize();
           }
 
           protected override void LoadContent()
           {
-               r_GameEnvironment.Background = Content.Load<Texture2D>(r_GameEnvironment.BackgroundPath);
-               r_Player.Graphics = Content.Load<Texture2D>(r_Player.GraphicsPath);
-               r_Player.Position = new Vector2(r_GameEnvironment.WindowWidth - r_Player.Width * 2,
-                    r_GameEnvironment.WindowHeight - r_Player.Height * 2);
+               r_Player.SpriteBatch = m_SpriteBatch;
 
-               this.Components.Add(r_Player);
-               foreach (Enemy enemy in EnemyManager.EnemiesMatrix)
+               foreach (IGameComponent component in this.Components)
                {
-                    this.Components.Add(enemy);
+                    (component as Sprite).SpriteBatch = m_SpriteBatch;
                }
-               this.Components.Add(EnemyManager.MotherShip);
-          }
 
-          protected override void UnloadContent()
-          {
+               base.LoadContent();
           }
 
           protected override void Update(GameTime i_GameTime)
@@ -76,35 +79,22 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                     Exit();
                }
 
+               GameTime = i_GameTime;
                r_Player.CurrKBState = Keyboard.GetState();
                r_Player.CurrMouseState = Mouse.GetState();
-               //r_Player.HandlePlayerAction(m_EnemyManager, Content, i_GameTime);
-
                m_EnemyManager.UpdateMatrixDirection();
                m_EnemyManager.EnemiesTryAttack();
-               //m_EnemyManager.HandleMotherShip(i_GameTime);
-
                Window.Title = r_Player.Score.ToString();
 
-               base.Update(BaseGame.GameTime);
+               base.Update(i_GameTime);
           }
 
           protected override void Draw(GameTime gameTime)
           {
                GraphicsDevice.Clear(Color.White);
                m_SpriteBatch.Begin();
-
-               m_SpriteBatch.Draw(r_GameEnvironment.Background, r_GameEnvironment.BackgroundPosition, Color.White);
-               m_SpriteBatch.Draw(r_Player.Graphics, r_Player.Position, Color.White);
-               m_EnemyManager.Draw(m_SpriteBatch);
-
-               foreach(Sprite bullet in r_Player.Bullets)
-               {
-                    m_SpriteBatch.Draw(bullet.Graphics,bullet.Position, Color.Red);
-               }
-
-               m_SpriteBatch.End();
                base.Draw(gameTime);
+               m_SpriteBatch.End();
           }
      }
 }

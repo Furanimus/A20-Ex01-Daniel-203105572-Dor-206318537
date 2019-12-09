@@ -42,6 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="BaseGame.cs" />
+    <Compile Include="Models\Background.cs" />
     <Compile Include="Models\BasePlayer.cs" />
     <Compile Include="Models\Bullet.cs" />
     <Compile Include="Utils\CollisionDetector.cs" />

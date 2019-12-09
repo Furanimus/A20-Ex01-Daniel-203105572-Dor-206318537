@@ -11,7 +11,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
      {
           private static Vector2 s_MatrixDirection = Sprite.Right;
           private static SpriteFactory s_EntityFactory = Singelton<SpriteFactory>.Instance;
-          private readonly ContentManager r_ContentManager;
+          private readonly Game r_Game;
           private readonly int r_EnemyCount;
           private const int k_NumOfDeadEnemiesToIncreaseVelocity = 5;
           private const float k_PercentageToIncreaseVelocityOnRowDescend = 0.05f;
@@ -21,9 +21,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           private RandomBehavior m_RandomBehavior = new RandomBehavior();
 
-          public EnemyManager(ContentManager i_ContentManager, int i_EnemyMatrixRows, int i_EnemyMatrixCols)
+          public EnemyManager(Game i_Game, int i_EnemyMatrixRows, int i_EnemyMatrixCols)
           {
-               r_ContentManager = i_ContentManager;
+               r_Game = i_Game;
                EnemyMatrixRows = i_EnemyMatrixRows;
                EnemyMatrixCols = i_EnemyMatrixCols;
                r_EnemyCount = i_EnemyMatrixCols * i_EnemyMatrixRows;
@@ -58,16 +58,10 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                {
                     if(enemy.IsAlive)
                     {
-                         enemy.GameTime = BaseGame.GameTime;
                          enemy.Direction = s_MatrixDirection;
                     }
                }
           }
-
-          //public void HandleMotherShip()
-          //{
-          //     MotherShip.Update(BaseGame.GameTime);
-          //}
 
           private void handleCollision()
           {
@@ -178,7 +172,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
                          Enemy enemy = EnemiesMatrix[row, col];
 
-                         enemy.Graphics = r_ContentManager.Load<Texture2D>(enemy.GraphicsPath);
                          enemy.Position = new Vector2(enemyX, enemyY);
                          enemyX += enemy.Width + enemy.Width * EnemiesOffset;
                          enemy.Destroyed += OnDestroyed;
@@ -188,7 +181,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                     enemyX = k_EnemiesStartingX;
                }
 
-               MotherShip.Graphics = r_ContentManager.Load<Texture2D>(MotherShip.GraphicsPath);
                MotherShip.Destroyed += OnDestroyed;
           }
 
@@ -199,6 +191,11 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                {
                     IncreaseAllEnemiesVelocity(k_PercentageToIncreaseVelocityOnNumOfDeadEnemies);
                }
+
+               if(!(i_Enemy is MotherShip))
+               {
+                    r_Game.Components.Remove(i_Enemy);
+               }
           }
 
           public void EnemiesTryAttack()
@@ -208,31 +205,27 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
                foreach (ShooterEnemy shooterEnemy in EnemiesMatrix)
                {
-                    shooterEnemy.GameTime = BaseGame.GameTime;
                     shooterEnemy.UpdateBulletsLocation();
                }
           }
 
           private void chooseRandomEnemyToShoot()
           {
-               List<int> populatedCols = getEnemiesMatrixPopulatedCols();
-               List<int> populatedRows = getEnemiesMatrixPopulatedRows();
+               List<List<int>> populatedCoords = getEnemiesMatrixPopulatedCoord();
 
-               int populatedRowsCount = populatedRows.Count;
-               int populatedColsCount = populatedCols.Count;
+               int populatedCoordsCount = populatedCoords.Count;
 
-               if(populatedColsCount > 0 || populatedRowsCount > 0)
+               if(populatedCoordsCount > 0)
                {
-                    int populatedRowsIndex = m_RandomBehavior.GetRandomNumber(0, populatedRowsCount);
-                    int populatedColsIndex = m_RandomBehavior.GetRandomNumber(0, populatedColsCount);
+                    int populatedCoordIndex = m_RandomBehavior.GetRandomNumber(0, populatedCoordsCount);
 
-                    (EnemiesMatrix[populatedRows[populatedRowsIndex], populatedCols[populatedColsIndex]] as ShooterEnemy).Shoot();
+                    (EnemiesMatrix[populatedCoords[populatedCoordIndex][0], populatedCoords[populatedCoordIndex][1]] as ShooterEnemy).Shoot();
                }
           }
 
-          private List<int> getEnemiesMatrixPopulatedRows()
+          private List<List<int>> getEnemiesMatrixPopulatedCoord()
           {
-               List<int> rows = new List<int>();
+               List<List<int>> rows = new List<List<int>>();
 
                for(int row = 0; row < EnemyMatrixRows; row++)
                {
@@ -240,8 +233,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                     {
                          if(EnemiesMatrix[row, col].IsAlive)
                          {
-                              rows.Add(row);
-                              break;
+                              rows.Add(new List<int>() { row, col });
                          }
                     }
                }

@@ -1,9 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
@@ -11,9 +6,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
      {
           private const string k_GraphicsPath = @"Sprites\MotherShip_32x120";
 
-
           private RedMotherShip(Game i_Game) : base(k_GraphicsPath, i_Game)
           {
+               TintColor = Color.Red;
                Score = 800;
                Velocity = 100;
                Width = 120;

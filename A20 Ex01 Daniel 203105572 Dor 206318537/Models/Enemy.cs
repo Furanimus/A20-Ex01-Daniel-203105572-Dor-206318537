@@ -50,7 +50,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                     }
                     else
                     {
-                         Position += Direction * Velocity * (float)GameTime.ElapsedGameTime.TotalSeconds;
+                         Position += Direction * Velocity * (float)i_GameTime.ElapsedGameTime.TotalSeconds;
                     }
                }
           }

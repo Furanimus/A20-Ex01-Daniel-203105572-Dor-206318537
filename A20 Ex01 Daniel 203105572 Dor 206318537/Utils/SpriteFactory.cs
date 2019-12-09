@@ -8,12 +8,11 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Utils
 {
      public class SpriteFactory : ISpriteFactory
      {
-          private readonly Game r_Game;
-
-          private SpriteFactory(Game i_Game)
+          private SpriteFactory()
           {
-               r_Game = i_Game;
           }
+
+          public Game Game { get; set; }
 
           public Sprite Create(Type i_Type)
           {
@@ -29,7 +28,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Utils
                          {
                               if(ctor.GetParameters()[0].ParameterType == typeof(Game))
                               {
-                                   result = ctor.Invoke(new object[] { r_Game }) as Sprite;
+                                   result = ctor.Invoke(new object[] { Game }) as Sprite;
                                    break;
                               }
                          }

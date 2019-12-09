@@ -10,8 +10,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                Visible = false;
           }
 
-          //public bool IsOnScreen { get; set; } = false;        
-
           public override void Update(GameTime i_GameTime)
           {
                if(Visible && !IsAlive)
@@ -19,11 +17,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                     reset();
                }
 
-               GameTime = BaseGame.GameTime;
-
                if (Visible)
                {
-                    Position += Direction * Velocity * (float)i_GameTime.ElapsedGameTime.TotalSeconds;
+                    m_Position += Direction * Velocity * (float)i_GameTime.ElapsedGameTime.TotalSeconds;
 
                     if (isCollideWithRightBound())
                     {
@@ -53,7 +49,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           private void reset()
           {
                Visible = false;
-               m_Position.X = -Width;            
+               m_Position.X = -Width;
           }
      }
 }

@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using System;
+﻿using System;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Utils
 {
@@ -36,18 +35,14 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Utils
 
           private double Timer { get; set; }
 
-          private GameTime GameTime { get; set; }
-
           public void TryInvokeDelayedAction()
           {
-               GameTime = BaseGame.GameTime;
-
                if (Delay == 0)
                {
                     Delay = r_Random.Next(1, 10) / 6;
                }
 
-               Timer += GameTime.ElapsedGameTime.TotalSeconds;
+               Timer += BaseGame.GameTime.ElapsedGameTime.TotalSeconds;
 
                if (Timer >= Delay)
                {

@@ -2,7 +2,6 @@
 using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
@@ -19,12 +18,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                Lives = 3;
                Score = 0;
                Velocity = 110;
+               Position = new Vector2(GameEnvironment.WindowWidth - Width * 2,
+                    GameEnvironment.WindowHeight - Height * 2);
           }
-
-          //public override void Move(Vector2 i_Direction)
-          //{
-          //     Position += i_Direction * Velocity * (float)GameTime.ElapsedGameTime.TotalSeconds;
-          //}
 
           public void Shoot()
           {
@@ -32,35 +28,30 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
                if(bullet != null)
                {
-                    bullet.Position = this.Position;
-                    bullet.Position += new Vector2((Width / 2) - (bullet.Width / 2), 0);
-                    bullet.Graphics = Game.Content.Load<Texture2D>(bullet.GraphicsPath);
+                    bullet.SpriteBatch = m_SpriteBatch;
+                    bullet.Direction = Sprite.Up;
+                    bullet.Position += this.Position + new Vector2((Width / 2) - (bullet.Width / 2), 0);
                     Bullets.AddLast(bullet);
+                    this.Game.Components.Add(bullet);
                }
           }
 
           public override void Update(GameTime i_GameTime)
           {
-               updatePlayerMovement(i_GameTime);
-
-               if (CurrKBState.IsKeyDown(Keys.Enter) && PrevKBState.IsKeyUp(Keys.Enter))
-               {
-                    Shoot();
-               }
-
+               checkKeyboard();
                PrevKBState = CurrKBState;
-               updateBulletsPosition((Game as SpaceInvadersGame).EnemyManager, i_GameTime);
+               updateBulletsPosition(i_GameTime);
                base.Update(i_GameTime);
           }
 
-          private void updateBulletsPosition(EnemyManager i_EnemyManager, GameTime i_GameTime)
+          private void updateBulletsPosition(GameTime i_GameTime)
           {
-               bool isbulletOutOfWindowBounds = false;
+               EnemyManager enemyManager = (Game as SpaceInvadersGame).EnemyManager;
                LinkedList<Sprite> bulletsToRemove = new LinkedList<Sprite>();
 
                foreach (Sprite bullet in Bullets)
                {
-                    foreach(Enemy enemy in i_EnemyManager.EnemiesMatrix)
+                    foreach(Enemy enemy in enemyManager.EnemiesMatrix)
                     {
                          if(enemy.IsAlive)
                          {
@@ -73,42 +64,41 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                          }
                     }
 
-                    if (CollisionDetector.IsCollide(bullet, i_EnemyManager.MotherShip))
+                    if (CollisionDetector.IsCollide(bullet, enemyManager.MotherShip))
                     {
                          bulletsToRemove.AddLast(bullet);
-                         i_EnemyManager.MotherShip.IsAlive = false;
-                         Score += i_EnemyManager.MotherShip.Score;
+                         enemyManager.MotherShip.IsAlive = false;
+                         Score += enemyManager.MotherShip.Score;
                     }
 
                     if (bullet.Position.Y <= 0)
                     {
-                         isbulletOutOfWindowBounds = true;
+                         bulletsToRemove.AddLast(bullet);
                     }
-                    else
-                    {
-                         bullet.GameTime = i_GameTime;
-                         bullet.Direction = Sprite.Up;
-                         bullet.Update(i_GameTime);
-                    }
-               }
-
-               if (isbulletOutOfWindowBounds)
-               {
-                    Bullets.RemoveFirst();
-                    Gun.Reload();
                }
 
                foreach (Sprite bullet in bulletsToRemove)
                {
+                    bullet.Visible = false;
                     Bullets.Remove(bullet);
+                    Game.Components.Remove(bullet);
                     Gun.Reload();
                }
           }
 
-          public void updatePlayerMovement(GameTime i_GameTime)
+          public void checkKeyboard()
           {
-               updateKBMovement(i_GameTime);
+               checkKBForMovements();
+               checkKBForShooting();
                //Position = getMouseLocation();
+          }
+
+          private void checkKBForShooting()
+          {
+               if (CurrKBState.IsKeyDown(Keys.Enter) && PrevKBState.IsKeyUp(Keys.Enter))
+               {
+                    Shoot();
+               }
           }
 
           private Vector2 getMouseLocation()
@@ -129,12 +119,24 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                return retVal;
           }
           
-          private void updateKBMovement(GameTime i_GameTime)
+          private void checkKBForMovements()
           {
                if(CurrKBState.GetPressedKeys().Length != 0)
                {
-                    GameTime = i_GameTime;
-                    updateDirection();
+                    Direction = Vector2.Zero;
+
+                    if (CurrKBState.IsKeyDown(Keys.Right))
+                    {
+                         Direction = Sprite.Right;
+                    }
+                    else if (CurrKBState.IsKeyDown(Keys.Left))
+                    {
+                         Direction = Sprite.Left;
+                    }
+               }
+               else
+               {
+                    Direction = Vector2.Zero;
                }
           }
 
@@ -151,20 +153,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                PrevMouseState = CurrMouseState;
 
                return retVal;
-          }
-
-          private void updateDirection()
-          {
-               Direction = Vector2.Zero;
-
-               if (CurrKBState.IsKeyDown(Keys.Right))
-               {
-                    Direction = Sprite.Right;
-               }
-               else if (CurrKBState.IsKeyDown(Keys.Left))
-               {
-                    Direction = Sprite.Left;
-               }
           }
 
           public KeyboardState CurrKBState { get; set; }

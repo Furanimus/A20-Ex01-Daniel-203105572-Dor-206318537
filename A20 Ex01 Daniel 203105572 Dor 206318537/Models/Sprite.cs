@@ -6,17 +6,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
      public abstract class Sprite : DrawableGameComponent
      {
-          public static Vector2 Right { get; } = new Vector2(1, 0);
-
-          public static Vector2 Left { get; } = new Vector2(-1, 0);
-
-          public static Vector2 Up { get; } = new Vector2(0, -1);
-
-          public static Vector2 Down { get; } = new Vector2(0, 1);
-
-          protected Vector2 m_Position = Vector2.Zero;
-
           private bool m_UseSharedSpriteBatch = false;
+          protected Vector2 m_Position = Vector2.Zero;
           protected SpriteBatch m_SpriteBatch = null;
 
           public Sprite(string i_GraphicsPath, Game i_Game, int i_UpdateOrder, int i_DrawOrder)
@@ -35,7 +26,15 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
               : this(i_GraphicsPath, i_Game, int.MaxValue)
           { }
 
-          public Texture2D Graphics { get; set; } //Texture
+          public static Vector2 Right { get; } = new Vector2(1, 0);
+
+          public static Vector2 Left { get; } = new Vector2(-1, 0);
+
+          public static Vector2 Up { get; } = new Vector2(0, -1);
+
+          public static Vector2 Down { get; } = new Vector2(0, 1);
+
+          public Texture2D Graphics { get; set; }
 
           public SpriteBatch SpriteBatch {
                set
@@ -45,7 +44,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                }
           }
 
-          public string GraphicsPath { get; set; } //AssetName
+          public string GraphicsPath { get; set; }
 
           public GameEnvironment GameEnvironment { get; set; } = Singelton<GameEnvironment>.Instance;
 
@@ -56,8 +55,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           public int Height { get; set; }
 
           public float Velocity { get; set; }
-
-          public GameTime GameTime { get; set; }
 
           public Vector2 Direction { get; set; }
 
@@ -74,7 +71,10 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                }
           }
 
-          //public abstract void Move(Vector2 i_Direction);
+          public override void Initialize()
+          {
+               base.Initialize();
+          }
 
           protected override void LoadContent()
           {

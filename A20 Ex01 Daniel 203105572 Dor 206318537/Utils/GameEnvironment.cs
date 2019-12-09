@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Utils
@@ -10,14 +11,12 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Utils
 
           }
 
-          public Vector2 BackgroundPosition { get; set; } = new Vector2(0, 0);
+          public Vector2 BackgroundPosition { get; set; } = Vector2.Zero;
 
           public int WindowHeight { get; set; } = 768;
 
           public int WindowWidth { get; set; } = 1024;
 
-          public string BackgroundPath { get; set; } = @"Sprites\BG_Space01_1024x768";
-
-          public Texture2D Background { get; set; }
+          public Background Background { get; set; }
      }
 }

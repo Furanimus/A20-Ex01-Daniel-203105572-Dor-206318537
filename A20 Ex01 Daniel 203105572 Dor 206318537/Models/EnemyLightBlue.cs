@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
@@ -9,6 +8,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           private EnemyLightBlue(Game i_Game) : base(k_GraphicsPath, i_Game)
           {
+               TintColor = Color.LightBlue;
                Score = 150;
           }
      }
