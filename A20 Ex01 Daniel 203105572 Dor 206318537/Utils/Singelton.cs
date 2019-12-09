@@ -1,23 +1,22 @@
-﻿using Microsoft.Xna.Framework;
-using System;
+﻿using System;
 using System.Reflection;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Utils
 {
      public static class Singelton<T> where T : class
      {
-          private static T m_Instance = null;
-          private static object m_Lock = new object();
+          private static T s_Instance = null;
+          private static object s_Lock = new object();
 
           public static T Instance
           {
                get
                {
-                    if (m_Instance == null)
+                    if (s_Instance == null)
                     {
-                         lock (m_Lock)
+                         lock (s_Lock)
                          {
-                              if (m_Instance == null)
+                              if (s_Instance == null)
                               {
                                    Type type = typeof(T);
                                    ConstructorInfo[] ctors = type.GetConstructors(BindingFlags.NonPublic | BindingFlags.Instance);
@@ -26,7 +25,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Utils
                                    {
                                         if (ctor.IsPrivate && ctor.GetParameters().Length == 0)
                                         {
-                                             m_Instance = (T)ctor.Invoke(null);
+                                             s_Instance = (T)ctor.Invoke(null);
                                              break;
                                         }
                                    }
@@ -34,7 +33,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Utils
                          }
                     }
 
-                    return m_Instance;
+                    return s_Instance;
                }
           }
      }

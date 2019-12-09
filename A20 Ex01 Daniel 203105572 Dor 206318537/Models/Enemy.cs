@@ -1,16 +1,18 @@
-﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
+﻿using System;
 using Microsoft.Xna.Framework;
-using System;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
-     public abstract class Enemy: Entity
+     public abstract class Enemy : Entity
      {
-          private bool m_IsAlive;
-          protected RandomBehavior m_RandomBehavior;
           public event Action<Enemy> Destroyed;
 
-          public Enemy(string i_GraphicsPath, Game i_Game) : base (i_GraphicsPath, i_Game)
+          private bool m_IsAlive;
+          protected RandomBehavior m_RandomBehavior;
+
+          public Enemy(string i_GraphicsPath, Game i_Game) 
+               : base(i_GraphicsPath, i_Game)
           {
                m_IsAlive = true;
                Velocity = 50;
@@ -20,11 +22,13 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                m_RandomBehavior = new RandomBehavior();
           }
 
-          public new bool IsAlive {
+          public new bool IsAlive
+          {
                get
                {
                     return m_IsAlive;
                }
+
                set
                {
                     m_IsAlive = value;
@@ -40,9 +44,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           public override void Update(GameTime i_GameTime)
           {
-               if(!CollisionDetector.IsCollideWithRightEdge(this) && Direction == Sprite.Right ||
-                    !CollisionDetector.IsCollideWithLeftEdge(this) && Direction == Sprite.Left ||
-                    !CollisionDetector.IsCollideWithBottomEdge(this) && Direction == Sprite.Down)
+               if((!CollisionDetector.IsCollideWithRightEdge(this) && Direction == Sprite.Right) ||
+                    (!CollisionDetector.IsCollideWithLeftEdge(this) && Direction == Sprite.Left) ||
+                    (!CollisionDetector.IsCollideWithBottomEdge(this) && Direction == Sprite.Down))
                {
                     if (Direction == Sprite.Down)
                     {

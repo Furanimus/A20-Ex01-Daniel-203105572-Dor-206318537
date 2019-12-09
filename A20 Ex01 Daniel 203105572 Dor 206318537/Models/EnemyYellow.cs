@@ -6,7 +6,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
      {
           private const string k_GraphicsPath = @"Sprites\Enemy0301_32x32";
 
-          private EnemyYellow(Game i_Game) : base (k_GraphicsPath, i_Game)
+          private EnemyYellow(Game i_Game) 
+               : base(k_GraphicsPath, i_Game)
           {
                TintColor = Color.LightYellow;
                Score = 100;

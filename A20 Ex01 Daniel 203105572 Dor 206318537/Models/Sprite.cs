@@ -1,6 +1,6 @@
-﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
@@ -20,11 +20,13 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           public Sprite(string i_GraphicsPath, Game i_Game, int i_CallsOrder)
               : this(i_GraphicsPath, i_Game, i_CallsOrder, i_CallsOrder)
-          { }
+          {
+          }
 
           public Sprite(string i_GraphicsPath, Game i_Game)
               : this(i_GraphicsPath, i_Game, int.MaxValue)
-          { }
+          {
+          }
 
           public static Vector2 Right { get; } = new Vector2(1, 0);
 
@@ -36,7 +38,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           public Texture2D Graphics { get; set; }
 
-          public SpriteBatch SpriteBatch {
+          public SpriteBatch SpriteBatch
+          {
                set
                {
                     m_SpriteBatch = value;
@@ -50,7 +53,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           public Color TintColor { get; set; } = Color.White;
 
-          public int Width {get; set; }
+          public int Width { get; set; }
 
           public int Height { get; set; }
 
@@ -64,6 +67,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                {
                     return m_Position;
                }
+
                set
                {
                     value.X = MathHelper.Clamp(value.X, 0, GameEnvironment.WindowWidth - this.Width);
@@ -109,6 +113,5 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
                base.Draw(gameTime);
           }
-
      }
 }

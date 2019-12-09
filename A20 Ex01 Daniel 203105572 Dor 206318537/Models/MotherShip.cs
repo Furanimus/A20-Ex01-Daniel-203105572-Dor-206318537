@@ -4,7 +4,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
      public abstract class MotherShip : Enemy
      {
-          public MotherShip (string i_GraphicsPath, Game i_Game) : base (i_GraphicsPath, i_Game)
+          public MotherShip(string i_GraphicsPath, Game i_Game) 
+               : base(i_GraphicsPath, i_Game)
           {
                Direction = Sprite.Right;
                Visible = false;
@@ -43,7 +44,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           private bool isCollideWithRightBound()
           {
-               return (m_Position.X >= GameEnvironment.WindowWidth);
+               return m_Position.X >= GameEnvironment.WindowWidth;
           }
 
           private void reset()

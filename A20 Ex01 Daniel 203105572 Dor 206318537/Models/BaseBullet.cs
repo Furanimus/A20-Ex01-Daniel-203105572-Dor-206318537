@@ -1,9 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using Microsoft.Xna.Framework;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
@@ -11,8 +7,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
      {
           public event Action<BaseBullet> LeftWindowBounds;
 
-          public BaseBullet(string i_GraphicPath, Game i_Game) : 
-               base (i_GraphicPath, i_Game)
+          public BaseBullet(string i_GraphicPath, Game i_Game) 
+               : base(i_GraphicPath, i_Game)
           {
           }
 

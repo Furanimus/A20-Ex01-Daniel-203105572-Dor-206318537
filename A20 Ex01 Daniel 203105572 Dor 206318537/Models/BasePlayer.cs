@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
@@ -34,13 +29,13 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           protected MouseState PrevShootingMouseState { get; set; }
 
-          protected Vector2 getMousePositionDelta()
+          protected Vector2 GetMousePositionDelta()
           {
                Vector2 retVal = Vector2.Zero;
 
                if (PrevMovingMouseState != null)
                {
-                    retVal.X = (MovingMouseState.X - PrevMovingMouseState.X);
+                    retVal.X = MovingMouseState.X - PrevMovingMouseState.X;
                }
 
                PrevMovingMouseState = MovingMouseState;
@@ -48,10 +43,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                return retVal;
           }
 
-          protected Vector2 getMouseLocation()
+          protected Vector2 GetMouseLocation()
           {
                Vector2 retVal = Vector2.Zero;
-
                if (PrevMovingMouseState != MovingMouseState)
                {
                     retVal.X = MovingMouseState.X;

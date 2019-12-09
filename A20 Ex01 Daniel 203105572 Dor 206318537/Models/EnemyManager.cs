@@ -1,25 +1,23 @@
-﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
      public class EnemyManager
      {
-          private static Vector2 s_MatrixDirection = Sprite.Right;
-          private static SpriteFactory s_EntityFactory = Singelton<SpriteFactory>.Instance;
-          private readonly Game r_Game;
-          private readonly int r_EnemyCount;
           private const int k_NumOfDeadEnemiesToIncreaseVelocity = 5;
           private const float k_PercentageToIncreaseVelocityOnRowDescend = 0.05f;
           private const float k_PercentageToIncreaseVelocityOnNumOfDeadEnemies = 0.03f;
           private const float k_EnemiesStartingY = 96;
           private const float k_EnemiesStartingX = 0;
-
-          private RandomBehavior m_RandomBehavior = new RandomBehavior();
+          private static Vector2 s_MatrixDirection = Sprite.Right;
+          private static SpriteFactory s_EntityFactory = Singelton<SpriteFactory>.Instance;
+          private readonly RandomBehavior r_RandomBehavior = new RandomBehavior();
+          private readonly Game r_Game;
+          private readonly int r_EnemyCount;
 
           public EnemyManager(Game i_Game, int i_EnemyMatrixRows, int i_EnemyMatrixCols)
           {
@@ -67,10 +65,12 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           private void handleCollision()
           {
-               Enemy mostRightEnemy = findMostCornerEnemy((currentCol, mostRightCol) => currentCol > mostRightCol,
-               mostRightCol => mostRightCol == EnemyMatrixCols - 1);
-               Enemy mostLeftEnemy = findMostCornerEnemy((currentCol, mostLeftCol) => currentCol < mostLeftCol,
-               mostLeftCol => mostLeftCol == 0);
+               Enemy mostRightEnemy = findMostCornerEnemy(
+                    (currentCol, mostRightCol) => currentCol > mostRightCol,
+                    mostRightCol => mostRightCol == EnemyMatrixCols - 1);
+               Enemy mostLeftEnemy = findMostCornerEnemy(
+                    (currentCol, mostLeftCol) => currentCol < mostLeftCol,
+                    mostLeftCol => mostLeftCol == 0);
 
                if (s_MatrixDirection == Sprite.Right || s_MatrixDirection == Sprite.Left)
                {
@@ -103,7 +103,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                {
                     foreach (Bullet bullet in enemy.Bullets)
                     {
-                         if(CollisionDetector.IsCollide(i_Player, bullet))
+                         if (CollisionDetector.IsCollide(i_Player, bullet))
                          {
                               i_Player.Destroyed();
                          }
@@ -111,7 +111,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
                     IsEnemyCollidedWithPlayer = CollisionDetector.IsCollide(enemy, i_Player);
                }
-
           }
 
           private void fixDirection(Enemy i_MostLeftEnemy, Enemy i_MostRightEnemy)
@@ -192,18 +191,18 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                          Enemy enemy = EnemiesMatrix[row, col];
 
                          enemy.Position = new Vector2(enemyX, enemyY);
-                         enemyX += enemy.Width + enemy.Width * EnemiesOffset;
-                         enemy.Destroyed += OnDestroyed;
+                         enemyX += enemy.Width + (enemy.Width * EnemiesOffset);
+                         enemy.Destroyed += onDestroyed;
                     }
 
-                    enemyY += EnemiesMatrix[row, 0].Height + EnemiesMatrix[row, 0].Height * EnemiesOffset;
+                    enemyY += EnemiesMatrix[row, 0].Height + (EnemiesMatrix[row, 0].Height * EnemiesOffset);
                     enemyX = k_EnemiesStartingX;
                }
 
-               MotherShip.Destroyed += OnDestroyed;
+               MotherShip.Destroyed += onDestroyed;
           }
 
-          private void OnDestroyed(Enemy i_Enemy)
+          private void onDestroyed(Enemy i_Enemy)
           {
                EnemiesDied++;
                if (EnemiesDied % k_NumOfDeadEnemiesToIncreaseVelocity == 0)
@@ -219,8 +218,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           public void EnemiesTryAttack()
           {
-               m_RandomBehavior.DelayedAction = chooseRandomEnemyToShoot;
-               m_RandomBehavior.TryInvokeDelayedAction();
+               r_RandomBehavior.DelayedAction = chooseRandomEnemyToShoot;
+               r_RandomBehavior.TryInvokeDelayedAction();
           }
 
           private void chooseRandomEnemyToShoot()
@@ -231,7 +230,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
                if(populatedCoordsCount > 0)
                {
-                    int populatedCoordIndex = m_RandomBehavior.GetRandomNumber(0, populatedCoordsCount);
+                    int populatedCoordIndex = r_RandomBehavior.GetRandomNumber(0, populatedCoordsCount);
 
                     (EnemiesMatrix[populatedCoords[populatedCoordIndex][0], populatedCoords[populatedCoordIndex][1]] as ShooterEnemy).Shoot();
                }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
 using Microsoft.Xna.Framework;
@@ -11,8 +10,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
      {
           private const int k_MaxShotInMidAir = 2;
           private const int k_ScoreLostOnDestroyed = 1200;
-          private readonly Vector2 r_StartingPosition;
           private const string k_GraphicsPath = @"Sprites\Ship01_32x32";
+          private readonly Vector2 r_StartingPosition;
 
           private Player(Game i_Game) : base(k_GraphicsPath, i_Game) 
           {
@@ -21,7 +20,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                Lives = 3;
                Score = 0;
                Velocity = 110;
-               r_StartingPosition = new Vector2(GameEnvironment.WindowWidth - Width * 2, GameEnvironment.WindowHeight - Height * 2);
+               r_StartingPosition = new Vector2(GameEnvironment.WindowWidth - (Width * 2), GameEnvironment.WindowHeight - (Height * 2));
                Position = r_StartingPosition;
           }
 
@@ -31,7 +30,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
                if(bullet != null)
                {
-                    bullet.LeftWindowBounds += OnLeftWindowBounds;
+                    bullet.LeftWindowBounds += onLeftWindowBounds;
                     bullet.SpriteBatch = m_SpriteBatch;
                     bullet.Direction = Sprite.Up;
                     bullet.Position += this.Position + new Vector2((Width / 2) - (bullet.Width / 2), 0);
@@ -42,12 +41,12 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           public override void Update(GameTime i_GameTime)
           {
-               checkKeyboard();
+               CheckKeyboard();
                PrevKBState = CurrKBState;
 
                checkMouse();
 
-               RemoveBulletsCollided();
+               removeBulletsCollided();
                base.Update(i_GameTime);
           }
 
@@ -59,9 +58,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           private void checkMouseForMovement()
           {
-               Vector2 MovementDelta = getMousePositionDelta();
+               Vector2 MovementDelta = GetMousePositionDelta();
 
-               if (MovementDelta != Vector2.Zero) //PrevMouseState.Position != CurrMouseState.Position
+               if(MovementDelta != Vector2.Zero)
                {
                     Position += MovementDelta; 
                }
@@ -77,14 +76,14 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                PrevShootingMouseState = ShootingMouseState;
           }
 
-          private void RemoveBulletsCollided()
+          private void removeBulletsCollided()
           {
                LinkedList<BaseBullet> bulletsToRemove;
-               bulletsToRemove = FindBulletsToRemove();
+               bulletsToRemove = findBulletsToRemove();
 
                foreach(BaseBullet bullet in bulletsToRemove)
                {
-                    RemoveBullet(bullet);
+                    removeBullet(bullet);
                }
           }
 
@@ -107,7 +106,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                Position = r_StartingPosition;
           }
 
-          private LinkedList<BaseBullet> FindBulletsToRemove()
+          private LinkedList<BaseBullet> findBulletsToRemove()
           { 
                EnemyManager enemyManager = (Game as SpaceInvadersGame).EnemyManager;
                LinkedList<BaseBullet> toRemove = new LinkedList<BaseBullet>();
@@ -143,12 +142,12 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                return toRemove;
           }
 
-          private void OnLeftWindowBounds(BaseBullet i_Bullet)
+          private void onLeftWindowBounds(BaseBullet i_Bullet)
           {
-               RemoveBullet(i_Bullet);
+               removeBullet(i_Bullet);
           }
 
-          private void RemoveBullet(BaseBullet i_Bullet)
+          private void removeBullet(BaseBullet i_Bullet)
           {
                if (i_Bullet != null)
                {
@@ -160,7 +159,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                }
           }
 
-          public void checkKeyboard()
+          public void CheckKeyboard()
           {
                checkKBForMovements();
                checkKBForShooting();

@@ -4,10 +4,12 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Utils
 {
      public class RandomBehavior
      {
-          protected readonly Random r_Random;
-          protected readonly int r_RandomFactor = 10;
-          protected readonly int r_RandomMin = 0;
-          protected readonly int r_RandomMax = 5000;
+          private readonly Random r_Random;
+          private readonly int r_RandomFactor = 10;
+          private readonly int r_RandomMin = 0;
+          private readonly int r_RandomMax = 5000;
+          private double m_Delay;
+          private double m_Timer;
 
           public RandomBehavior()
           {
@@ -20,7 +22,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Utils
                r_RandomFactor = i_RandomFactor;
                r_RandomMin = i_RandomMin;
                r_RandomMax = i_RandomMax;
-
           }
 
           public bool Roll()
@@ -28,27 +29,22 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Utils
                return r_Random.Next(r_RandomMin, r_RandomMax) < r_RandomFactor;
           }
 
-
           public Action DelayedAction { get; set; }
-
-          private double Delay { get; set; }
-
-          private double Timer { get; set; }
 
           public void TryInvokeDelayedAction()
           {
-               if (Delay == 0)
+               if (m_Delay == 0)
                {
-                    Delay = r_Random.Next(1, 10) / 6;
+                    m_Delay = r_Random.Next(1, 10) / 6;
                }
 
-               Timer += BaseGame.GameTime.ElapsedGameTime.TotalSeconds;
+               m_Timer += BaseGame.GameTime.ElapsedGameTime.TotalSeconds;
 
-               if (Timer >= Delay)
+               if (m_Timer >= m_Delay)
                {
-                    Timer -= Delay;
-                    Delay = 0;
-
+                    m_Timer -= m_Delay;
+                    m_Delay = 0;
+              
                     DelayedAction.Invoke();
                }
           }

@@ -1,51 +1,45 @@
-﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
-using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
-using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537
 {
      public class SpaceInvadersGame : BaseGame
-     {          
+     {
           private const int k_EnemiesRows = 5;
-          private const int k_EnemiesCols = 9;              
+          private const int k_EnemiesCols = 9;
           private readonly GameEnvironment r_GameEnvironment;
           private readonly ISpriteFactory r_SpriteFactory;
           private readonly Player r_Player;
-          private readonly GraphicsDeviceManager m_Graphics;
-          private EnemyManager m_EnemyManager;
+          private readonly GraphicsDeviceManager r_Graphics;
           private SpriteBatch m_SpriteBatch;
 
           public SpaceInvadersGame()
           {
-               m_Graphics = new GraphicsDeviceManager(this);
+               r_Graphics = new GraphicsDeviceManager(this);
                Content.RootDirectory = "Content";
 
                r_GameEnvironment = Singelton<GameEnvironment>.Instance;
                r_SpriteFactory = Singelton<SpriteFactory>.Instance;
-               (r_SpriteFactory as SpriteFactory).Game = this;
+               r_SpriteFactory.Game = this;
 
-               m_Graphics.PreferredBackBufferWidth = r_GameEnvironment.WindowWidth;
-               m_Graphics.PreferredBackBufferHeight = r_GameEnvironment.WindowHeight;
+               r_Graphics.PreferredBackBufferWidth = r_GameEnvironment.WindowWidth;
+               r_Graphics.PreferredBackBufferHeight = r_GameEnvironment.WindowHeight;
                r_Player = r_SpriteFactory.Create(typeof(Player)) as Player;
-               
-               m_Graphics.ApplyChanges();
+
+               r_Graphics.ApplyChanges();
           }
-          public EnemyManager EnemyManager
-          {
-               get
-               {
-                    return m_EnemyManager;
-               }
-          }
+
+          public EnemyManager EnemyManager { get; private set; }
 
           protected override void Initialize()
           {
                IsMouseVisible = true;
                m_SpriteBatch = new SpriteBatch(GraphicsDevice);
-               m_EnemyManager = new EnemyManager(this, k_EnemiesRows, k_EnemiesCols);
+               EnemyManager = new EnemyManager(this, k_EnemiesRows, k_EnemiesCols);
                r_GameEnvironment.Background = new Background(this);
 
                this.Components.Add(r_GameEnvironment.Background);
@@ -77,19 +71,18 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                bool isGameOver = CheckIfGameOver();
                if (isGameOver || Keyboard.GetState().IsKeyDown(Keys.Escape))
                {
-                    if (isGameOver)
-                    {
-                         //DisplayExitMsg();
-                    }
-
+                    // if (isGameOver)
+                    // {
+                    // //DisplayExitMsg();
+                    // }
                     Exit();
                }
 
                GameTime = i_GameTime;
-                              
-               m_EnemyManager.UpdateMatrixDirection();
-               m_EnemyManager.EnemiesTryAttack();
-               m_EnemyManager.DestroyPlayerIfBulletsOrEnemiesCollidedWithPlayer(r_Player);
+
+               EnemyManager.UpdateMatrixDirection();
+               EnemyManager.EnemiesTryAttack();
+               EnemyManager.DestroyPlayerIfBulletsOrEnemiesCollidedWithPlayer(r_Player);
 
                Window.Title = r_Player.Score.ToString();
 
