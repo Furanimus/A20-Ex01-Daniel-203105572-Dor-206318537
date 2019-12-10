@@ -37,7 +37,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 
           protected override void Initialize()
           {
-               IsMouseVisible = true;
                m_SpriteBatch = new SpriteBatch(GraphicsDevice);
                EnemyManager = new EnemyManager(this, k_EnemiesRows, k_EnemiesCols);
                r_GameEnvironment.Background = new Background(this);
@@ -69,12 +68,14 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
           protected override void Update(GameTime i_GameTime)
           {
                bool isGameOver = CheckIfGameOver();
+
                if (isGameOver || Keyboard.GetState().IsKeyDown(Keys.Escape))
                {
-                    // if (isGameOver)
-                    // {
-                    // //DisplayExitMsg();
-                    // }
+                    if (isGameOver)
+                    {
+                         DisplayExitMsg();
+                    }
+
                     Exit();
                }
 
@@ -84,9 +85,26 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                EnemyManager.EnemiesTryAttack();
                EnemyManager.DestroyPlayerIfBulletsOrEnemiesCollidedWithPlayer(r_Player);
 
-               Window.Title = r_Player.Score.ToString();
+               Window.Title = "Space Invaders - Score: " + r_Player.Score + " | Lives: " + r_Player.Lives;
 
                base.Update(i_GameTime);
+          }
+
+          private void DisplayExitMsg()
+          {
+               string score = "Your score is: " + r_Player.Score.ToString();
+               string title = string.Empty;
+
+               if (r_Player.Lives == 0 || EnemyManager.IsEnemyCollidedWithPlayer)
+               {
+                    title = "Game over";
+               }
+               else if (EnemyManager.EnemiesDied == EnemyManager.EnemyCount)
+               {
+                    title = "You won";
+               }
+
+               System.Windows.Forms.MessageBox.Show(score, title);
           }
 
           protected override void Draw(GameTime gameTime)
@@ -99,7 +117,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 
           private bool CheckIfGameOver()
           {
-               return r_Player.Lives == 0 || EnemyManager.IsEnemyCollidedWithPlayer;
+               return r_Player.Lives == 0 || EnemyManager.IsEnemyCollidedWithPlayer || 
+                    EnemyManager.EnemiesDied == EnemyManager.EnemyCount;
           }
      }
 }

@@ -34,6 +34,14 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           public Enemy[,] EnemiesMatrix { get; set; }
 
+          public int EnemyCount
+          {
+               get
+               {
+                    return r_EnemyCount;
+               }
+          }
+
           public int EnemyMatrixRows { get; set; }
 
           public int EnemyMatrixCols { get; set; }
@@ -150,7 +158,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                     {
                          Enemy current = EnemiesMatrix[row, col];
 
-                         if (current.IsAlive && (mostCornerEnemy == null || i_IsMostCornerFunc.Invoke(col, mostCornerCol)))
+                         if (current.IsAlive && (mostCornerEnemy == null || 
+                              i_IsMostCornerFunc.Invoke(col, mostCornerCol)))
                          {
                               mostCornerEnemy = current;
                               mostCornerCol = col;
@@ -204,7 +213,11 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           private void onDestroyed(Enemy i_Enemy)
           {
-               EnemiesDied++;
+               if (i_Enemy is ShooterEnemy)
+               {
+                    EnemiesDied++;
+               }
+
                if (EnemiesDied % k_NumOfDeadEnemiesToIncreaseVelocity == 0)
                {
                     IncreaseAllEnemiesVelocity(k_PercentageToIncreaseVelocityOnNumOfDeadEnemies);

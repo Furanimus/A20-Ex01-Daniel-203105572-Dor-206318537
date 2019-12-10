@@ -8,7 +8,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
      public class Player : BasePlayer, IShooter
      {
-          private const int k_MaxShotInMidAir = 2;
+          private const int k_MaxShotInMidAir = 20;
           private const int k_ScoreLostOnDestroyed = 1200;
           private const string k_GraphicsPath = @"Sprites\Ship01_32x32";
           private readonly Vector2 r_StartingPosition;
