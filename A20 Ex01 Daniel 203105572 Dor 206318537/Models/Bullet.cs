@@ -6,13 +6,18 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
      {
           private const string k_GraphicPath = @"Sprites\Bullet";
 
-          private Bullet(Game i_Game) 
+          public Bullet(Game i_Game) 
               : base(k_GraphicPath, i_Game)
           {
                TintColor = Color.Red;
-               Velocity = 160;
-               Height = 16;
-               Width = 6;
+               Velocity = new Vector2(0, 160);
+          }
+
+          public override void Initialize()
+          {
+               this.Enabled = false;
+               this.Visible = false;
+               base.Initialize();
           }
      }
 }

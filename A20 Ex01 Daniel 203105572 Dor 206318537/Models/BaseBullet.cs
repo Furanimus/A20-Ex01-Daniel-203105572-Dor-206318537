@@ -1,31 +1,47 @@
 ﻿using System;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
 using Microsoft.Xna.Framework;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
-     public abstract class BaseBullet : Sprite
+     public abstract class BaseBullet : Sprite, ICollidable2D
      {
-          public event Action<BaseBullet> LeftWindowBounds;
+          public event EventHandler LeftWindowBounds;
 
-          public BaseBullet(string i_GraphicPath, Game i_Game) 
+          protected BaseBullet(string i_GraphicPath, Game i_Game) 
                : base(i_GraphicPath, i_Game)
           {
+               this.LeftWindowBounds += onLeftBounds;
+          }
+
+          protected virtual void onLeftBounds(object i_Sender, EventArgs i_Args)
+          {
+               
           }
 
           public override void Update(GameTime gameTime)
           {
                if (LeftWindowBounds != null)
                {
-                    if (this.Position.Y > GameEnvironment.WindowHeight ||
+                    if (this.Position.Y > this.Game.GraphicsDevice.Viewport.Height ||
                     this.Position.Y < 0 ||
-                    this.Position.X > GameEnvironment.WindowWidth ||
+                    this.Position.X > this.Game.GraphicsDevice.Viewport.Width ||
                     this.Position.X < 0)
                     {
-                         LeftWindowBounds.Invoke(this);
+                         LeftWindowBounds.Invoke(this, null);
                     }
                }
 
                base.Update(gameTime);
+          }
+
+          public override void Collided(ICollidable i_Collidable)
+          {
+               if(i_Collidable != null)
+               {
+                    this.Enabled = false;
+                    this.Visible = false;
+               }
           }
      }
 }

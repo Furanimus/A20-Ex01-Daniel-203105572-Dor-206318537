@@ -1,21 +1,23 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Managers;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
-     public abstract class Enemy : Entity
+     public abstract class Enemy : Entity, ICollidable2D
      {
           public event Action<Enemy> Destroyed;
 
           private bool m_IsAlive;
           protected RandomBehavior m_RandomBehavior;
 
-          public Enemy(string i_GraphicsPath, Game i_Game) 
-               : base(i_GraphicsPath, i_Game)
+          public Enemy(string i_AssetName, Game i_Game) 
+               : base(i_AssetName, i_Game)
           {
                m_IsAlive = true;
-               Velocity = 50;
+               Velocity = new Vector2(50,0);
                Height = 32;
                Width = 32;
                Lives = 1;
@@ -44,17 +46,19 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           public override void Update(GameTime i_GameTime)
           {
-               if((!CollisionDetector.IsCollideWithRightEdge(this) && Direction == Sprite.Right) ||
-                    (!CollisionDetector.IsCollideWithLeftEdge(this) && Direction == Sprite.Left) ||
-                    (!CollisionDetector.IsCollideWithBottomEdge(this) && Direction == Sprite.Down))
+               CollisionsManager collisionManager = this.Game.Services.GetService(typeof(CollisionsManager)) as CollisionsManager;
+
+               if ((!collisionManager.IsCollideWithWindowRightEdge(this) && MoveDirection == Sprite.Right) ||
+                    (!collisionManager.IsCollideWithWindowLeftEdge(this) && MoveDirection == Sprite.Left) ||
+                    (!collisionManager.IsCollideWithWindowBottomEdge(this) && MoveDirection == Sprite.Down))
                {
-                    if (Direction == Sprite.Down)
+                    if (MoveDirection == Sprite.Down)
                     {
-                         Position += Direction * (Height / 2);
+                         Position += MoveDirection * (Height / 2);
                     }
                     else
                     {
-                         Position += Direction * Velocity * (float)i_GameTime.ElapsedGameTime.TotalSeconds;
+                         Position += MoveDirection * Velocity * (float)i_GameTime.ElapsedGameTime.TotalSeconds;
                     }
                }
           }

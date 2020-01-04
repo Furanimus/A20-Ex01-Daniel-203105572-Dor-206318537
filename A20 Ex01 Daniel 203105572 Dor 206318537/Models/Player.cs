@@ -6,37 +6,35 @@ using Microsoft.Xna.Framework.Input;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
-     public class Player : BasePlayer, IShooter
+     public class Player : BasePlayer, IShooter, ICollidable2D
      {
+          private readonly Vector2 r_Velocity = new Vector2(110, 0);
           private const int k_MaxShotInMidAir = 2;
           private const int k_ScoreLostOnDestroyed = 1200;
-          private const string k_GraphicsPath = @"Sprites\Ship01_32x32";
-          private readonly Vector2 r_StartingPosition;
+          private const string k_AssetName = @"Sprites\Ship01_32x32";
+          private Vector2 m_StartingPosition;
 
-          private Player(Game i_Game) : base(k_GraphicsPath, i_Game) 
+          public Player(Game i_Game) : base(k_AssetName, i_Game) 
           {
-               Width = 32;
-               Height = 32;
+               ViewDirection = Sprite.Up;
                Lives = 3;
                Score = 0;
-               Velocity = 110;
-               r_StartingPosition = new Vector2(GameEnvironment.WindowWidth - (Width * 2), GameEnvironment.WindowHeight - (Height * 2));
-               Position = r_StartingPosition;
+               Gun = new Gun(k_MaxShotInMidAir, this);
+          }
+
+          protected override void InitOrigins()
+          {
+               m_StartingPosition = new Vector2(
+                    GraphicsDevice.Viewport.Width - (Width * 2),
+                    GraphicsDevice.Viewport.Height - (Height * 2));
+               Position = m_StartingPosition;
+
+               base.InitOrigins();
           }
 
           public void Shoot()
           {
-               BaseBullet bullet = Gun.Shoot();
-
-               if(bullet != null)
-               {
-                    bullet.LeftWindowBounds += onLeftWindowBounds;
-                    bullet.SpriteBatch = m_SpriteBatch;
-                    bullet.Direction = Sprite.Up;
-                    bullet.Position += this.Position + new Vector2((Width / 2) - (bullet.Width / 2), 0);
-                    Bullets.AddLast(bullet);
-                    this.Game.Components.Add(bullet);
-               }
+               Gun.Shoot();
           }
 
           public override void Update(GameTime i_GameTime)
@@ -46,7 +44,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
                checkMouse();
 
-               removeBulletsCollided();
+               //removeBulletsCollided();
                base.Update(i_GameTime);
           }
 
@@ -76,88 +74,96 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                PrevShootingMouseState = ShootingMouseState;
           }
 
-          private void removeBulletsCollided()
-          {
-               LinkedList<BaseBullet> bulletsToRemove;
-               bulletsToRemove = findBulletsToRemove();
+          //private void removeBulletsCollided()
+          //{
+          //     LinkedList<BaseBullet> bulletsToRemove;
+          //     bulletsToRemove = findBulletsToRemove();
 
-               foreach(BaseBullet bullet in bulletsToRemove)
+          //     foreach(BaseBullet bullet in bulletsToRemove)
+          //     {
+          //          removeBullet(bullet);
+          //     }
+          //}
+
+          public override void Collided(ICollidable i_Collidable)
+          {
+               if (i_Collidable != null)
                {
-                    removeBullet(bullet);
+                    if (i_Collidable is BaseBullet)
+                    {
+                         onCollidedWithBullet();
+                    }
+                    else if (i_Collidable is Enemy)
+                    {
+                         onCollidedWithEnemy();
+                    }
                }
           }
 
-          public override void Destroyed()
+          private void onCollidedWithBullet()
           {
                if (Lives > 0)
                {
                     Lives--;
-               }
 
-               if (Score >= k_ScoreLostOnDestroyed)
-               {
-                    Score -= k_ScoreLostOnDestroyed;
-               }
-               else
-               {
-                    Score = 0;
-               }
+                    if (Lives == 0)
+                    {
+                         this.Enabled = false;
+                         this.Visible = false;
+                    }
 
-               Position = r_StartingPosition;
+                    if (Score >= k_ScoreLostOnDestroyed)
+                    {
+                         Score -= k_ScoreLostOnDestroyed;
+                    }
+                    else
+                    {
+                         Score = 0;
+                    }
+               }
           }
 
-          private LinkedList<BaseBullet> findBulletsToRemove()
-          { 
-               EnemyManager enemyManager = (Game as SpaceInvadersGame).EnemyManager;
-               LinkedList<BaseBullet> toRemove = new LinkedList<BaseBullet>();
-
-               foreach (BaseBullet bullet in Bullets)
-               {
-                    foreach (Enemy enemy in enemyManager.EnemiesMatrix)
-                    {
-                         if (enemy.IsAlive)
-                         {
-                              if (CollisionDetector.IsCollide(bullet, enemy))
-                              {
-                                   toRemove.AddLast(bullet);
-                                   enemy.IsAlive = false;
-                                   Score += enemy.Score;
-                              }
-                         }
-                    }
-
-                    if (CollisionDetector.IsCollide(bullet, enemyManager.MotherShip))
-                    {
-                         toRemove.AddLast(bullet);
-                         enemyManager.MotherShip.IsAlive = false;
-                         Score += enemyManager.MotherShip.Score;
-                    }
-
-                    if (bullet.Position.Y <= 0)
-                    {
-                         toRemove.AddLast(bullet);
-                    }
-               }
-
-               return toRemove;
-          }
-
-          private void onLeftWindowBounds(BaseBullet i_Bullet)
+          private void onCollidedWithEnemy()
           {
-               removeBullet(i_Bullet);
+               Lives = 0;
+
           }
 
-          private void removeBullet(BaseBullet i_Bullet)
-          {
-               if (i_Bullet != null)
-               {
-                    i_Bullet.Visible = false;
-                    i_Bullet.Position = Vector2.Zero;
-                    Bullets.Remove(i_Bullet);
-                    Game.Components.Remove(i_Bullet);
-                    Gun.ReloadBullet();
-               }
-          }
+          //private LinkedList<BaseBullet> findBulletsToRemove()
+          //{ 
+          //     EnemyManager enemyManager = (Game as SpaceInvadersGame).EnemyManager;
+          //     LinkedList<BaseBullet> toRemove = new LinkedList<BaseBullet>();
+
+          //     foreach (BaseBullet bullet in Bullets)
+          //     {
+          //          foreach (Enemy enemy in enemyManager.EnemiesMatrix)
+          //          {
+          //               if (enemy.IsAlive)
+          //               {
+          //                    if (CollisionDetector.IsCollide(bullet, enemy))
+          //                    {
+          //                         toRemove.AddLast(bullet);
+          //                         enemy.IsAlive = false;
+          //                         Score += enemy.Score;
+          //                    }
+          //               }
+          //          }
+
+          //          if (CollisionDetector.IsCollide(bullet, enemyManager.MotherShip))
+          //          {
+          //               toRemove.AddLast(bullet);
+          //               enemyManager.MotherShip.IsAlive = false;
+          //               Score += enemyManager.MotherShip.Score;
+          //          }
+
+          //          if (bullet.Position.Y <= 0)
+          //          {
+          //               toRemove.AddLast(bullet);
+          //          }
+          //     }
+
+          //     return toRemove;
+          //}
 
           public void CheckKeyboard()
           {
@@ -177,27 +183,23 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           {
                if(CurrKBState.GetPressedKeys().Length != 0)
                {
-                    Direction = Vector2.Zero;
-
                     if (CurrKBState.IsKeyDown(Keys.Right))
                     {
-                         Direction = Sprite.Right;
+                         Velocity = r_Velocity * Sprite.Right;
                     }
                     else if (CurrKBState.IsKeyDown(Keys.Left))
                     {
-                         Direction = Sprite.Left;
+                         Velocity = r_Velocity * Sprite.Left;
                     }
                }
                else
                {
-                    Direction = Vector2.Zero;
+                    Velocity = Vector2.Zero;
                }
           }
          
-          public IGun Gun { get; set; } = new Gun(k_MaxShotInMidAir);
+          public IGun Gun { get; set; }
 
           public int Score { get; set; }
-
-          public LinkedList<BaseBullet> Bullets { get; } = new LinkedList<BaseBullet>();
      }
 }

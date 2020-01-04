@@ -11,55 +11,55 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
      {
           private const int k_EnemiesRows = 5;
           private const int k_EnemiesCols = 9;
-          private readonly GameEnvironment r_GameEnvironment;
-          private readonly ISpriteFactory r_SpriteFactory;
-          private readonly Player r_Player;
+          //private readonly ISpriteFactory r_SpriteFactory;
+          private Player m_Player;
           private readonly GraphicsDeviceManager r_Graphics;
+          private readonly Background r_Background;
           private SpriteBatch m_SpriteBatch;
 
           public SpaceInvadersGame()
           {
                r_Graphics = new GraphicsDeviceManager(this);
                Content.RootDirectory = "Content";
+               r_Background = new Background(this);
 
-               r_GameEnvironment = Singelton<GameEnvironment>.Instance;
-               r_SpriteFactory = Singelton<SpriteFactory>.Instance;
-               r_SpriteFactory.Game = this;
+               r_Graphics.PreferredBackBufferWidth = (int)r_Background.Width;
+               r_Graphics.PreferredBackBufferHeight = (int)r_Background.Height;
+               //r_SpriteFactory = Singelton<SpriteFactory>.Instance;
+               //r_SpriteFactory.Game = this;
 
-               r_Graphics.PreferredBackBufferWidth = r_GameEnvironment.WindowWidth;
-               r_Graphics.PreferredBackBufferHeight = r_GameEnvironment.WindowHeight;
-               r_Player = r_SpriteFactory.Create(typeof(Player)) as Player;
+               //r_SpriteFactory.Create(typeof(Player)) as Player;
 
                r_Graphics.ApplyChanges();
           }
 
-          public EnemyManager EnemyManager { get; private set; }
+        //  public EnemyManager EnemyManager { get; private set; }
 
           protected override void Initialize()
           {
+
                m_SpriteBatch = new SpriteBatch(GraphicsDevice);
-               EnemyManager = new EnemyManager(this, k_EnemiesRows, k_EnemiesCols);
-               r_GameEnvironment.Background = new Background(this);
+               m_Player = new Player(this);
 
-               this.Components.Add(r_GameEnvironment.Background);
-               this.Components.Add(EnemyManager.MotherShip);
-               this.Components.Add(r_Player);
+               //EnemyManager = new EnemyManager(this, k_EnemiesRows, k_EnemiesCols);
+               //r_GameEnvironment.Background = new Background(this);
 
-               foreach (Enemy enemy in EnemyManager.EnemiesMatrix)
-               {
-                    this.Components.Add(enemy);
-               }
-
+               //this.Components.Add(r_GameEnvironment.Background);
+               //this.Components.Add(EnemyManager.MotherShip);
                base.Initialize();
+
+               //foreach (Enemy enemy in EnemyManager.EnemiesMatrix)
+               //{
+               //     this.Components.Add(enemy);
+               //}
           }
 
           protected override void LoadContent()
           {
-               r_Player.SpriteBatch = m_SpriteBatch;
 
-               foreach (IGameComponent component in this.Components)
+               foreach (Sprite component in this.Components)
                {
-                    (component as Sprite).SpriteBatch = m_SpriteBatch;
+                    component.SpriteBatch = m_SpriteBatch;
                }
 
                base.LoadContent();
@@ -81,28 +81,28 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 
                GameTime = i_GameTime;
 
-               EnemyManager.UpdateMatrixDirection();
-               EnemyManager.EnemiesTryAttack();
-               EnemyManager.DestroyPlayerIfBulletsOrEnemiesCollidedWithPlayer(r_Player);
+               //EnemyManager.UpdateMatrixDirection();
+               //EnemyManager.EnemiesTryAttack();
+               //EnemyManager.DestroyPlayerIfBulletsOrEnemiesCollidedWithPlayer(r_Player);
 
-               Window.Title = "Space Invaders - Score: " + r_Player.Score + " | Lives: " + r_Player.Lives;
+               Window.Title = "Space Invaders - Score: " + m_Player.Score + " | Lives: " + m_Player.Lives;
 
                base.Update(i_GameTime);
           }
 
           private void DisplayExitMsg()
           {
-               string score = "Your score is: " + r_Player.Score.ToString();
+               string score = "Your score is: " + m_Player.Score.ToString();
                string title = string.Empty;
 
-               if (r_Player.Lives == 0 || EnemyManager.IsEnemyCollidedWithPlayer)
-               {
-                    title = "Game over";
-               }
-               else if (EnemyManager.EnemiesDied == EnemyManager.EnemyCount)
-               {
-                    title = "You won";
-               }
+               //if (r_Player.Lives == 0 || EnemyManager.IsEnemyCollidedWithPlayer)
+               //{
+               //     title = "Game over";
+               //}
+               //else if (EnemyManager.EnemiesDestroyed == EnemyManager.StartingEnemyCount)
+               //{
+               //     title = "You won";
+               //}
 
                System.Windows.Forms.MessageBox.Show(score, title);
           }
@@ -117,8 +117,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 
           private bool CheckIfGameOver()
           {
-               return r_Player.Lives == 0 || EnemyManager.IsEnemyCollidedWithPlayer || 
-                    EnemyManager.EnemiesDied == EnemyManager.EnemyCount;
+               return false;
+               //return r_Player.Lives == 0 || EnemyManager.IsEnemyCollidedWithPlayer || 
+               //     EnemyManager.EnemiesDestroyed == EnemyManager.StartingEnemyCount;
           }
      }
 }

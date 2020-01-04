@@ -4,10 +4,10 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
      public abstract class MotherShip : Enemy
      {
-          public MotherShip(string i_GraphicsPath, Game i_Game) 
-               : base(i_GraphicsPath, i_Game)
+          public MotherShip(string i_AssetName, Game i_Game) 
+               : base(i_AssetName, i_Game)
           {
-               Direction = Sprite.Right;
+               MoveDirection = Sprite.Right;
                Visible = false;
           }
 
@@ -20,7 +20,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
                if (Visible)
                {
-                    m_Position += Direction * Velocity * (float)i_GameTime.ElapsedGameTime.TotalSeconds;
+                    m_Position += MoveDirection * Velocity * (float)i_GameTime.ElapsedGameTime.TotalSeconds;
 
                     if (isCollideWithRightBound())
                     {
@@ -44,7 +44,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           private bool isCollideWithRightBound()
           {
-               return m_Position.X >= GameEnvironment.WindowWidth;
+               return m_Position.X >= Game.GraphicsDevice.Viewport.Width;
           }
 
           private void reset()

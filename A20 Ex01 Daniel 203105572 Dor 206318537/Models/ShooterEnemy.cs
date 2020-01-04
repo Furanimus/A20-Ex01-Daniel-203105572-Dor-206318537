@@ -6,38 +6,18 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
      public abstract class ShooterEnemy : Enemy, IShooter
      {
-          private const int k_MaxShotInMidAir = 100;
+          private const int k_MaxShotInMidAir = 1;
 
-          public ShooterEnemy(string i_GraphicsPath, Game i_Game) : base(i_GraphicsPath, i_Game)
+          public ShooterEnemy(string i_AssetName, Game i_Game) : base(i_AssetName, i_Game)
           {
+               Gun = new Gun(k_MaxShotInMidAir, this);
           }
 
-          public IGun Gun { get; set; } = new Gun(k_MaxShotInMidAir);
-
-          public LinkedList<BaseBullet> Bullets { get; } = new LinkedList<BaseBullet>();
+          public IGun Gun { get; set; }
 
           public void Shoot()
           {
-               BaseBullet bullet = Gun.Shoot();
-
-               if (bullet != null)
-               {
-                    bullet.LeftWindowBounds += OnLeftWindowBounds;
-                    bullet.Direction = Sprite.Down;
-                    bullet.SpriteBatch = m_SpriteBatch;
-                    bullet.Position = this.Position + new Vector2((Width / 2) - (bullet.Width / 2), Height);
-                    Bullets.AddLast(bullet);
-                    this.Game.Components.Add(bullet);
-               }
-          }
-
-          private void OnLeftWindowBounds(BaseBullet i_Bullet)
-          {              
-               if (i_Bullet != null)
-               {
-                    this.Game.Components.Remove(i_Bullet);
-                    this.Bullets.Remove(i_Bullet);
-               }
+               Gun.Shoot();
           }
      }
 }
