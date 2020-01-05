@@ -12,11 +12,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           private readonly Vector2 r_Velocity = new Vector2(145, 0);
           private const int k_MaxShotInMidAir = 2;
           private const int k_ScoreLostOnDestroyed = 1200;
-          private const string k_AssetName = @"Sprites\Ship01_32x32";
-          private Vector2 m_StartingPosition;
           private readonly IInputManager r_InputManager;
 
-          public Player(Game i_Game, Keys i_KBMoveLeftButton, Keys i_KBMoveRightButton, Keys i_ShootButton, bool i_MouseControllable) : base(k_AssetName, i_Game) 
+          public Player(string i_AssetName, Keys i_KBMoveLeftButton, Keys i_KBMoveRightButton, Keys i_ShootButton, bool i_MouseControllable, Game i_Game) : base(i_AssetName, i_Game) 
           {
                ViewDirection = Sprite.Up;
                Lives = 3;
@@ -28,6 +26,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                KBShootButton = i_ShootButton;
                IsMouseControllable = i_MouseControllable;
           }
+
+          public Vector2 StartingPosition { get; set; } = Vector2.Zero;
 
           public Keys KBMoveLeftButton { get; private set; }
 
@@ -41,10 +41,10 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           protected override void InitOrigins()
           {
-               m_StartingPosition = new Vector2(
+               StartingPosition += new Vector2(
                     GraphicsDevice.Viewport.Width - (Width * 2),
                     GraphicsDevice.Viewport.Height - (Height * 2));
-               m_Position = m_StartingPosition;
+               m_Position = StartingPosition;
 
                base.InitOrigins();
           }

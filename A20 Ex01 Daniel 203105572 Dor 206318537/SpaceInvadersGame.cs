@@ -13,7 +13,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
           private const int k_EnemiesRows = 5;
           private const int k_EnemiesCols = 9;
           //private readonly ISpriteFactory r_SpriteFactory;
-          private Player m_Player;
+          private Player m_Player1;
+          private Player m_Player2;
           private readonly GraphicsDeviceManager r_Graphics;
           private readonly Background r_Background;
           private SpriteBatch m_SpriteBatch;
@@ -39,9 +40,10 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 
           protected override void Initialize()
           {
-
                m_SpriteBatch = new SpriteBatch(GraphicsDevice);
-               m_Player = new Player(this, Keys.H, Keys.K, Keys.U, true);
+               m_Player1 = new Player(@"Sprites\Ship01_32x32", Keys.H, Keys.K, Keys.U, true, this);
+               m_Player2 = new Player(@"Sprites\Ship02_32x32", Keys.A, Keys.D, Keys.W, false, this);
+               m_Player2.StartingPosition -= new Vector2(m_Player1.Width * 2, 0);
                m_MonitorForm.Show();
                //EnemyManager = new EnemyManager(this, k_EnemiesRows, k_EnemiesCols);
                //r_GameEnvironment.Background = new Background(this);
@@ -78,7 +80,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                {
                     if (isGameOver)
                     {
-                         DisplayExitMsg();
                     }
 
                     Exit();
@@ -88,27 +89,10 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                //EnemyManager.EnemiesTryAttack();
                //EnemyManager.DestroyPlayerIfBulletsOrEnemiesCollidedWithPlayer(r_Player);
 
-               Window.Title = "Space Invaders - Score: " + m_Player.Score + " | Lives: " + m_Player.Lives;
+               Window.Title = "Space Invaders";
 
 
                base.Update(i_GameTime);
-          }
-
-          private void DisplayExitMsg()
-          {
-               string score = "Your score is: " + m_Player.Score.ToString();
-               string title = string.Empty;
-
-               //if (r_Player.Lives == 0 || EnemyManager.IsEnemyCollidedWithPlayer)
-               //{
-               //     title = "Game over";
-               //}
-               //else if (EnemyManager.EnemiesDestroyed == EnemyManager.StartingEnemyCount)
-               //{
-               //     title = "You won";
-               //}
-
-               System.Windows.Forms.MessageBox.Show(score, title);
           }
 
           protected override void Draw(GameTime gameTime)
