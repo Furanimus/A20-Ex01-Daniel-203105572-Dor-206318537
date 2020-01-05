@@ -54,7 +54,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           public float HeightBeforeScale { get; set; }
 
-          public Vector2 Position
+          public virtual Vector2 Position
           {
                get { return m_Position; }
                set

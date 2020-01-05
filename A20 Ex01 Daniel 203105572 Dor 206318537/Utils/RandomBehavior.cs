@@ -1,8 +1,10 @@
-﻿using System;
+﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
+using Microsoft.Xna.Framework;
+using System;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Utils
 {
-     public class RandomBehavior
+     public class RandomBehavior : GameService
      {
           private readonly Random r_Random;
           private readonly int r_RandomFactor = 10;
@@ -11,12 +13,12 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Utils
           private double m_Delay;
           private double m_Timer;
 
-          public RandomBehavior()
+          public RandomBehavior(Game i_Game) : base(i_Game)
           {
                r_Random = new Random();
           }
 
-          public RandomBehavior(int i_RandomFactor, int i_RandomMin, int i_RandomMax)
+          public RandomBehavior(int i_RandomFactor, int i_RandomMin, int i_RandomMax, Game i_Game) : base(i_Game)
           {
                r_Random = new Random();
                r_RandomFactor = i_RandomFactor;
@@ -38,7 +40,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Utils
                     m_Delay = r_Random.Next(1, 10) / 6;
                }
 
-               m_Timer += BaseGame.GameTime.ElapsedGameTime.TotalSeconds;
+               m_Timer += (this.Game as BaseGame).GameTime.ElapsedGameTime.TotalSeconds;
 
                if (m_Timer >= m_Delay)
                {

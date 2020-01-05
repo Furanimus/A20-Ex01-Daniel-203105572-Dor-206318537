@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
-     public abstract class ShooterEnemy : Enemy, IShooter
+     public abstract class ShooterEnemy : Enemy
      {
           private const int k_MaxShotInMidAir = 1;
 

@@ -74,13 +74,14 @@
     <Compile Include="Interfaces\ICollidable3D.cs" />
     <Compile Include="Interfaces\ICollisionsManager.cs" />
     <Compile Include="Interfaces\IInputManager.cs" />
+    <Compile Include="MonitorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MonitorForm.designer.cs" />
     <Compile Include="Utils\RandomBehavior.cs" />
     <Compile Include="Models\RedMotherShip.cs" />
     <Compile Include="Models\ShooterEnemy.cs" />
-    <Compile Include="Utils\Singelton.cs" />
     <Compile Include="Models\Sprite.cs" />
-    <Compile Include="Utils\SpriteFactory.cs" />
-    <Compile Include="Interfaces\IShooter.cs" />
     <Compile Include="SpaceInvadersGame.cs" />
     <Compile Include="Interfaces\ISpriteFactory.cs" />
     <Compile Include="Models\MotherShip.cs" />
@@ -93,6 +94,7 @@
       <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -102,6 +104,9 @@
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="app.manifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MonitorForm.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />

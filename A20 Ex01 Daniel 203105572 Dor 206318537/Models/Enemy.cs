@@ -21,7 +21,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                Height = 32;
                Width = 32;
                Lives = 1;
-               m_RandomBehavior = new RandomBehavior();
+               m_RandomBehavior = new RandomBehavior(i_Game);
           }
 
           public new bool IsAlive

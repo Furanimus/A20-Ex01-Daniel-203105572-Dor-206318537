@@ -326,3 +326,27 @@
 //          }
 //     }
 //}
+
+
+using System;
+using Microsoft.Xna.Framework;
+
+namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
+{
+     public class EnemyManager : GameService
+     {
+          public EnemyManager(Game i_Game) : base(i_Game)
+          {
+          }
+
+          public override void Initialize()
+          {
+               base.Initialize();
+          }
+
+          public override void Update(GameTime gameTime)
+          {
+               base.Update(gameTime);
+          }
+     }
+}

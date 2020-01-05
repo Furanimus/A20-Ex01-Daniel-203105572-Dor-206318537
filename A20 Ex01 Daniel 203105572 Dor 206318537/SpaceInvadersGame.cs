@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Enums;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537
 {
@@ -16,6 +17,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
           private readonly GraphicsDeviceManager r_Graphics;
           private readonly Background r_Background;
           private SpriteBatch m_SpriteBatch;
+          MonitorForm m_MonitorForm;
 
           public SpaceInvadersGame()
           {
@@ -29,7 +31,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                //r_SpriteFactory.Game = this;
 
                //r_SpriteFactory.Create(typeof(Player)) as Player;
-
+               m_MonitorForm = new MonitorForm();
                r_Graphics.ApplyChanges();
           }
 
@@ -39,8 +41,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
           {
 
                m_SpriteBatch = new SpriteBatch(GraphicsDevice);
-               m_Player = new Player(this);
-
+               m_Player = new Player(this, Keys.H, Keys.K, Keys.U, true);
+               m_MonitorForm.Show();
                //EnemyManager = new EnemyManager(this, k_EnemiesRows, k_EnemiesCols);
                //r_GameEnvironment.Background = new Background(this);
 
@@ -57,9 +59,12 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
           protected override void LoadContent()
           {
 
-               foreach (Sprite component in this.Components)
+               foreach (GameComponent component in this.Components)
                {
-                    component.SpriteBatch = m_SpriteBatch;
+                    if (component is Sprite)
+                    {
+                         (component as Sprite).SpriteBatch = m_SpriteBatch;
+                    }
                }
 
                base.LoadContent();
@@ -79,13 +84,12 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                     Exit();
                }
 
-               GameTime = i_GameTime;
-
                //EnemyManager.UpdateMatrixDirection();
                //EnemyManager.EnemiesTryAttack();
                //EnemyManager.DestroyPlayerIfBulletsOrEnemiesCollidedWithPlayer(r_Player);
 
                Window.Title = "Space Invaders - Score: " + m_Player.Score + " | Lives: " + m_Player.Lives;
+
 
                base.Update(i_GameTime);
           }
@@ -113,6 +117,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                m_SpriteBatch.Begin();
                base.Draw(gameTime);
                m_SpriteBatch.End();
+
+               string inputToString = (this.Services.GetService(typeof(IInputManager)) as IInputManager).ToString();
+               m_MonitorForm.MonitorText = inputToString;
           }
 
           private bool CheckIfGameOver()
