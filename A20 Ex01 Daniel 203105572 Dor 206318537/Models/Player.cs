@@ -19,6 +19,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                ViewDirection = Sprite.Up;
                Lives = 3;
                Score = 0;
+               Height = 32;
+               Width = 32;
                Gun = new Gun(k_MaxShotInMidAir, this);
                r_InputManager = this.Game.Services.GetService(typeof(IInputManager)) as IInputManager;
                KBMoveLeftButton = i_KBMoveLeftButton;
@@ -26,8 +28,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                KBShootButton = i_ShootButton;
                IsMouseControllable = i_MouseControllable;
           }
-
-          public Vector2 StartingPosition { get; set; } = Vector2.Zero;
 
           public Keys KBMoveLeftButton { get; private set; }
 
@@ -38,16 +38,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           public eInputButtons MouseShootButton { get; set; } = eInputButtons.Left;
 
           public bool IsMouseControllable { get; set; } = true;
-
-          protected override void InitOrigins()
-          {
-               StartingPosition += new Vector2(
-                    GraphicsDevice.Viewport.Width - (Width * 2),
-                    GraphicsDevice.Viewport.Height - (Height * 2));
-               m_Position = StartingPosition;
-
-               base.InitOrigins();
-          }
 
           public override void Update(GameTime i_GameTime)
           {
@@ -137,7 +127,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           private void onCollidedWithEnemy()
           {
                Lives = 0;
-
           }
 
           public IGun Gun { get; set; }

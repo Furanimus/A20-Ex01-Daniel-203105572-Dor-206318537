@@ -1,9 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
      public abstract class Entity : Sprite
      {
+          protected int m_Lives;
+
+          public event Action<Entity> Destroyed;
+
           public Entity(string i_AssetName, Game i_Game)
                : base(i_AssetName, i_Game)
           {
@@ -19,7 +24,27 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           {
           }
 
-          public int Lives { get; set; }
+          public int Lives
+          {
+               get
+               {
+                    return m_Lives;
+               }
+               set
+               {
+                    m_Lives = value;
+
+                    if(m_Lives == 0)
+                    {
+                         IsAlive = false;
+
+                         if(Destroyed != null)
+                         {
+                              Destroyed.Invoke(this);
+                         }
+                    }
+               }
+          }
 
           public bool IsAlive { get; set; } = true;
      }

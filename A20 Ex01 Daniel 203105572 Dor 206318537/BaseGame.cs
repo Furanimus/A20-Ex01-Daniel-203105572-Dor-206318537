@@ -7,10 +7,13 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
      public abstract class BaseGame : Game
      {
           protected IInputManager m_InputManager;
+          protected ICollisionsManager m_CollisionManager;
 
           protected BaseGame()
           {
                m_InputManager = new InputManager(this);
+               m_CollisionManager = new CollisionsManager(this);
+
           }
 
           public GameTime GameTime { get; set; }

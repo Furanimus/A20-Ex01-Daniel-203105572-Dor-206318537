@@ -8,16 +8,6 @@
 //{
 //     public class EnemyManager
 //     {
-//          private const int k_NumOfDeadEnemiesToIncreaseVelocity = 5;
-//          private const float k_PercentageToIncreaseVelocityOnRowDescend = 0.05f;
-//          private const float k_PercentageToIncreaseVelocityOnNumOfDeadEnemies = 0.03f;
-//          private const float k_EnemiesStartingY = 96;
-//          private const float k_EnemiesStartingX = 0;
-//          private static Vector2 s_MatrixDirection = Sprite.Right;
-//          private static SpriteFactory s_EntityFactory = Singelton<SpriteFactory>.Instance;
-//          private readonly RandomBehavior r_RandomBehavior = new RandomBehavior();
-//          private readonly Game r_Game;
-//          private readonly int r_StartingEnemyCount;
 
 
 
@@ -329,24 +319,182 @@
 
 
 using System;
+using System.Collections.Generic;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
 using Microsoft.Xna.Framework;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
-     public class EnemyManager : GameService
+     public class EnemyManager : GameComponent
      {
+          private const int k_NumOfDeadEnemiesToIncreaseVelocity = 5;
+          private const int k_MatrixRows = 5;
+          private const int k_MatrixCols = 9;
+          private const float k_PercentageToIncreaseVelocityOnRowDescend = 0.05f;
+          private const float k_PercentageToIncreaseVelocityOnNumOfDeadEnemies = 0.03f;
+          private const float k_EnemiesStartingY = 96;
+          private const float k_EnemiesStartingX = 0;
+          private const float k_SpaceBetweenEnemies = 32f * 0.6f;
+          private Enemy m_LeftMostRepresentetive;
+          private Enemy m_RightMostRepresentetive;
+          private bool m_IsDirectionChanged = false;
+          private readonly ICollisionsManager r_CollisionsManager;
+          private readonly List<List<Enemy>> r_EnemyMatrix;
+
           public EnemyManager(Game i_Game) : base(i_Game)
           {
+               //Init EnemyMatrix
+               r_EnemyMatrix = new List<List<Enemy>>(k_MatrixRows);
+               this.Game.Components.Add(this);
+               r_CollisionsManager = this.Game.Services.GetService(typeof(ICollisionsManager)) as ICollisionsManager;
           }
 
           public override void Initialize()
           {
+               initMatrix();
+               populateMatrix();
+               setRepresentetives();
+             
                base.Initialize();
+          }
+
+          private void setRepresentetives()
+          {
+               setLeftRepresentetive();
+               setRightRepresentetive();
+          }
+
+          private void setRightRepresentetive()
+          {
+               for (int col = 0; col < k_MatrixCols; col++)
+               {
+                    for (int row = 0; row < k_MatrixRows; row++)
+                    {
+                         if (r_EnemyMatrix[row][col].IsAlive)
+                         {
+                              m_LeftMostRepresentetive = r_EnemyMatrix[row][col];
+                              break;
+                         }
+                    }
+               }
+          }
+
+          private void setLeftRepresentetive()
+          {
+               for (int col = k_MatrixCols - 1; col >= 0; col--)
+               {
+                    for (int row = 0; row < k_MatrixRows; row++)
+                    {
+                         if (r_EnemyMatrix[row][col].IsAlive)
+                         {
+                              m_RightMostRepresentetive = r_EnemyMatrix[row][col];
+                              break;
+                         }
+                    }
+               }
+          }
+
+          private void initMatrix()
+          {
+               for (int i = 0; i < r_EnemyMatrix.Capacity; i++)
+               {
+                    r_EnemyMatrix.Add(new List<Enemy>(k_MatrixCols));
+               }
           }
 
           public override void Update(GameTime gameTime)
           {
+               checkWindowCollision(m_RightMostRepresentetive);
+               checkWindowCollision(m_LeftMostRepresentetive);
+
                base.Update(gameTime);
+          }
+
+          private void checkWindowCollision(Sprite i_Enemy)
+          {
+               bool isCollidedWithRightEdge = r_CollisionsManager.IsCollideWithWindowRightEdge(i_Enemy);
+               bool isCollidedWithLeftEdge = r_CollisionsManager.IsCollideWithWindowLeftEdge(i_Enemy);
+
+               if (isCollidedWithRightEdge && i_Enemy.MoveDirection == Sprite.Right ||
+                    isCollidedWithLeftEdge && i_Enemy.MoveDirection == Sprite.Left)
+               {
+                    bounceDown();
+
+                    if (isCollidedWithRightEdge)
+                    {
+                         changeSpriteDirection(Sprite.Left);
+                    }
+                    else
+                    {
+                         changeSpriteDirection(Sprite.Right);
+                    }
+               }
+          }
+
+          private void populateMatrix()
+          {
+               float top = k_EnemiesStartingY;
+
+               for (int row = 0; row < k_MatrixRows; row++)
+               {
+                    float left = 0;
+
+                    for (int col = 0; col < k_MatrixCols; col++)
+                    {
+                         if (row < 1)
+                         {
+                              r_EnemyMatrix[row].Add(new EnemyPink(this.Game));
+                         }
+                         else if (row < 3)
+                         {
+                              r_EnemyMatrix[row].Add(new EnemyLightBlue(this.Game));
+                         }
+                         else
+                         {
+                              r_EnemyMatrix[row].Add(new EnemyYellow(this.Game));
+                         }
+
+                         r_EnemyMatrix[row][col].StartingPosition = new Vector2(left, top);
+                         r_EnemyMatrix[row][col].Destroyed += OnDestroyed;
+                         left += r_EnemyMatrix[row][col].Width + k_SpaceBetweenEnemies;
+                    }
+
+                    top += r_EnemyMatrix[row][0].Height + k_SpaceBetweenEnemies;
+               }
+          }
+
+          private void OnDestroyed(Entity i_Enemy)
+          {
+               if(i_Enemy == m_LeftMostRepresentetive)
+               {
+                    setLeftRepresentetive();
+               }
+               else if(i_Enemy == m_RightMostRepresentetive)
+               {
+                    setRightRepresentetive();
+               }
+          }
+
+          private void changeSpriteDirection(Vector2 i_Direction)
+          {
+               for(int row = 0; row < k_MatrixRows; row++)
+               {
+                    for (int col = 0; col < k_MatrixCols; col++)
+                    {
+                         r_EnemyMatrix[row][col].MoveDirection = i_Direction;
+                    }
+               }
+          }
+
+          private void bounceDown()
+          {
+               for (int row = 0; row < k_MatrixRows; row++)
+               {
+                    for (int col = 0; col < k_MatrixCols; col++)
+                    {
+                         r_EnemyMatrix[row][col].Position += Sprite.Down * (r_EnemyMatrix[row][col].Height / 2);
+                    }
+               }
           }
      }
 }

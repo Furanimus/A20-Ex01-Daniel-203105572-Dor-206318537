@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Models.Animators;
+using System;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
@@ -49,6 +50,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                get { return HeightBeforeScale * m_Scales.Y; }
                set { HeightBeforeScale = value / m_Scales.Y; }
           }
+
+          public Vector2 StartingPosition { get; set; } = Vector2.Zero;
 
           public float WidthBeforeScale { get; set; }
 
@@ -165,23 +168,19 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           protected override void InitBounds()
           {
-               WidthBeforeScale = Texture.Width;
-               HeightBeforeScale = Texture.Height;
-
                InitSourceRectangle();
-
                InitOrigins();
           }
 
           protected virtual void InitOrigins()
           {
+               m_Position = StartingPosition;
           }
 
           protected virtual void InitSourceRectangle()
           {
                SourceRectangle = new Rectangle(0, 0, (int)WidthBeforeScale, (int)HeightBeforeScale);
           }
-
 
           private bool m_UseSharedBatch = true;
 
