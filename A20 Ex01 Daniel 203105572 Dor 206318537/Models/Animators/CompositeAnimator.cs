@@ -7,21 +7,15 @@ namespace Models.Animators
 {
     public class CompositeAnimator : SpriteAnimator
     {
-        private readonly Dictionary<string, SpriteAnimator> m_AnimationsDictionary = 
-            new Dictionary<string, SpriteAnimator>();
-
+        private readonly Dictionary<string, SpriteAnimator> m_AnimationsDictionary = new Dictionary<string, SpriteAnimator>();
         protected readonly List<SpriteAnimator> m_AnimationsList = new List<SpriteAnimator>();
 
-        // CTORs
-
-        // CTOR: Me as an AnimationsMamager
         public CompositeAnimator(Sprite i_BoundSprite)
-            : this("AnimationsMamager", TimeSpan.Zero, i_BoundSprite, new SpriteAnimator[]{})
+            : this("AnimationsManager", TimeSpan.Zero, i_BoundSprite, new SpriteAnimator[]{})
         {
-            this.Enabled = false;
+               this.Enabled = false;
         }
         
-        // CTOR: me as a ParallelAnimations animation:
         public CompositeAnimator(
             string i_Name,
             TimeSpan i_AnimationLength,

@@ -8,6 +8,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
      public abstract class LoadableDrawableComponent : DrawableGameComponent
      {
           public event EventHandler<EventArgs> Disposed;
+
           protected virtual void OnDisposed(object sender, EventArgs args)
           {
                if (Disposed != null)
@@ -15,6 +16,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                     Disposed.Invoke(sender, args);
                }
           }
+
           protected override void Dispose(bool disposing)
           {
                base.Dispose(disposing);
@@ -23,13 +25,11 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 
           protected string m_AssetName;
 
-          // used to load the sprite:
           protected ContentManager ContentManager
           {
                get { return this.Game.Content; }
           }
 
-          // TODO 11: Implement the PositionChanged event:
           public event EventHandler<EventArgs> PositionChanged;
           protected virtual void OnPositionChanged()
           {
@@ -47,7 +47,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                     SizeChanged(this, EventArgs.Empty);
                }
           }
-          // -- end of TODO 11
 
           public string AssetName
           {
@@ -62,8 +61,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                this.AssetName = i_AssetName;
                this.UpdateOrder = i_UpdateOrder;
                this.DrawOrder = i_DrawOrder;
-
-               // register in the game:
                this.Game.Components.Add(this);
           }
 
@@ -78,7 +75,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
           {
                base.Initialize();
 
-               // TODO 12: Register in the collisions manager:
                if (this is ICollidable)
                {
                     ICollisionsManager collisionMgr =
@@ -90,14 +86,10 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                          collisionMgr.AddObjectToMonitor(this as ICollidable);
                     }
                }
-               // -- end of TODO 12
-
-               // After everything is loaded and initialzied,
-               // lets init graphical aspects:
-               InitBounds();   // a call to an abstract method;
+               
+               InitBounds(); 
           }
 
-          // TODO 02: Show/Hide Bounding box
 #if DEBUG
           protected bool m_ShowBoundingBox = true;
 #else
@@ -109,11 +101,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                get { return m_ShowBoundingBox; }
                set { m_ShowBoundingBox = value; }
           }
-          // -- end of TODO 02
 
           protected abstract void InitBounds();
 
-          // TODO 03: enforce the logic of drawing the bounding box to the derivies:
           public override void Draw(GameTime gameTime)
           {
                DrawBoundingBox();
@@ -121,6 +111,5 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
           }
 
           protected abstract void DrawBoundingBox();
-          // -- end of TODO 03
      }
 }

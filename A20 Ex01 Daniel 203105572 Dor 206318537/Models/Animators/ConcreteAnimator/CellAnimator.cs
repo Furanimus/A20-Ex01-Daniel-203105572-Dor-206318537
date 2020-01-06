@@ -11,9 +11,8 @@ namespace Models.Animators.ConcreteAnimators
         private int m_CurrCellIdx = 0;
         private readonly int r_NumOfCells = 1;
 
-        // CTORs
         public CellAnimator(TimeSpan i_CellTime, int i_NumOfCells, TimeSpan i_AnimationLength)
-            : base("CelAnimation", i_AnimationLength)
+            : base("CellAnimation", i_AnimationLength)
         {
             this.m_CellTime = i_CellTime;
             this.m_TimeLeftForCell = i_CellTime;
@@ -25,6 +24,7 @@ namespace Models.Animators.ConcreteAnimators
         private void goToNextFrame()
         {
             m_CurrCellIdx++;
+
             if (m_CurrCellIdx >= r_NumOfCells)
             {
                 if (m_Loop)
@@ -33,7 +33,7 @@ namespace Models.Animators.ConcreteAnimators
                 }
                 else
                 {
-                    m_CurrCellIdx = r_NumOfCells - 1; /// lets stop at the last frame
+                    m_CurrCellIdx = r_NumOfCells - 1;
                     this.IsFinished = true;
                 }
             }
@@ -49,16 +49,16 @@ namespace Models.Animators.ConcreteAnimators
             if (m_CellTime != TimeSpan.Zero)
             {
                 m_TimeLeftForCell -= i_GameTime.ElapsedGameTime;
+
                 if (m_TimeLeftForCell.TotalSeconds <= 0)
                 {
-                    /// we have elapsed, so blink
                     goToNextFrame();
                     m_TimeLeftForCell = m_CellTime;
                 }
             }
 
             this.BoundSprite.SourceRectangle = new Rectangle(
-                m_CurrCellIdx * this.BoundSprite.SourceRectangle.Width,
+                m_CurrCellIdx * this.BoundSprite.SourceRectangle.Width + this.BoundSprite.SourceRectangle.Left,
                 this.BoundSprite.SourceRectangle.Top,
                 this.BoundSprite.SourceRectangle.Width,
                 this.BoundSprite.SourceRectangle.Height);

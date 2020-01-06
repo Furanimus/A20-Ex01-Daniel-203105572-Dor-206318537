@@ -15,9 +15,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           public override void Initialize()
           {
+               base.Initialize();
                this.Enabled = false;
                this.Visible = false;
-               base.Initialize();
           }
      }
 }

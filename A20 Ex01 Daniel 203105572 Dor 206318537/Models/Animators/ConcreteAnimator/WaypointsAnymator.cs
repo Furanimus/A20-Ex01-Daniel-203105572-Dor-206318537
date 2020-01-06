@@ -9,9 +9,8 @@ namespace Models.Animators.ConcreteAnimator
         private Vector2[] m_Waypoints;
         private int m_CurrentWaypointIdx = 0;
         private bool m_Loop = false;
-
-        // CTORs
-        public WaypointsAnymator(
+        
+          public WaypointsAnymator(
             float i_VelocityPerSecond,
             TimeSpan i_AnimationLength,
             bool i_Loop,
@@ -42,16 +41,11 @@ namespace Models.Animators.ConcreteAnimator
 
         protected override void DoFrame(GameTime i_GameTime)
         {
-            // This offset is how much we need to move based on how much time 
-            // has elapsed.
             float maxDistance = (float)i_GameTime.ElapsedGameTime.TotalSeconds * m_VelocityPerSecond;
 
-            // The vector that is left to get to the current waypoint
             Vector2 remainingVector = m_Waypoints[m_CurrentWaypointIdx] - this.BoundSprite.Position;
             if (remainingVector.Length() > maxDistance)
             {
-                // The vector is longer than we can travel,
-                // so limit to our maximum travel distance
                 remainingVector.Normalize();
                 remainingVector *= maxDistance;
             }
@@ -69,12 +63,10 @@ namespace Models.Animators.ConcreteAnimator
         {
             if (reachedLastWaypoint() && !m_Loop)
             {
-                // No more waypoints, so this animation is finished
                 base.IsFinished = true;
             }
             else
             {
-                // We have more waypoints to go. NEXT!
                 m_CurrentWaypointIdx++;
                 m_CurrentWaypointIdx %= m_Waypoints.Length;
             }

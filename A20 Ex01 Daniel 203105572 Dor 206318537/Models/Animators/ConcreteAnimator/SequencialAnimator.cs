@@ -12,7 +12,8 @@ namespace Models.Animators.ConcreteAnimators
             Sprite i_BoundSprite,
             params SpriteAnimator[] i_Animations)
             : base(i_Name, i_AnimationLength, i_BoundSprite, i_Animations)
-        {}
+        {
+        }
 
         protected override void DoFrame(GameTime i_GameTime)
         {
@@ -23,7 +24,7 @@ namespace Models.Animators.ConcreteAnimators
                 {
                     animation.Update(i_GameTime);
                     allFinished = false;
-                    break; // we are not going to call all our animations until this one is done
+                    break;
                 }
             }
 

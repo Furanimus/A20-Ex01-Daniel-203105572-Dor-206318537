@@ -15,7 +15,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
 
           public CollisionsManager(Game i_Game) :
               base(i_Game, int.MaxValue)
-          { }
+          { 
+          }
 
           protected override void RegisterAsService()
           {
@@ -54,7 +55,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
           private void collidable_Changed(object sender, EventArgs e)
           {
                if (sender is ICollidable)
-               {// to be on the safe side :)
+               {
                     checkCollision(sender as ICollidable);
                }
           }
@@ -65,7 +66,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                {
                     List<ICollidable> collidedComponents = new List<ICollidable>();
 
-                    // finding who collided with i_Source:
                     foreach (ICollidable target in m_Collidables)
                     {
                          if (i_Source != target && target.Visible)
@@ -77,7 +77,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                          }
                     }
 
-                    // Informing i_Source and all the collided targets about the collision:
                     foreach (ICollidable target in collidedComponents)
                     {
                          target.Collided(i_Source);

@@ -220,19 +220,19 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                base.LoadContent();
           }
 
-          public override void Update(GameTime gameTime)
+          public override void Update(GameTime i_GameTime)
           {
-               float totalSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
+               float totalSeconds = (float)i_GameTime.ElapsedGameTime.TotalSeconds;
 
                this.Position += this.Velocity * totalSeconds;
                this.Rotation += this.AngularVelocity * totalSeconds;
 
                if(this.Animations != null)
                {
-                    this.Animations.Update(gameTime);
+                    this.Animations.Update(i_GameTime);
                }
 
-               base.Update(gameTime);
+               base.Update(i_GameTime);
           }
 
           public override void Draw(GameTime i_GameTime)

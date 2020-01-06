@@ -337,15 +337,13 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           private const float k_SpaceBetweenEnemies = 32f * 0.6f;
           private Enemy m_LeftMostRepresentetive;
           private Enemy m_RightMostRepresentetive;
-          private bool m_IsDirectionChanged = false;
           private readonly ICollisionsManager r_CollisionsManager;
           private readonly List<List<Enemy>> r_EnemyMatrix;
 
           public EnemyManager(Game i_Game) : base(i_Game)
           {
-               //Init EnemyMatrix
-               r_EnemyMatrix = new List<List<Enemy>>(k_MatrixRows);
                this.Game.Components.Add(this);
+               r_EnemyMatrix = new List<List<Enemy>>(k_MatrixRows);
                r_CollisionsManager = this.Game.Services.GetService(typeof(ICollisionsManager)) as ICollisionsManager;
           }
 
@@ -354,7 +352,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                initMatrix();
                populateMatrix();
                setRepresentetives();
-             
+
                base.Initialize();
           }
 

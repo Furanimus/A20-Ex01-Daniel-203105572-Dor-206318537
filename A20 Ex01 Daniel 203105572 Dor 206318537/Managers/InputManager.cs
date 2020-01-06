@@ -51,14 +51,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
           }
 
           public InputManager(Game i_Game)
-              // we want this component to be updated first!
               : base(i_Game, int.MinValue)
           { }
 
-          /// <summary>
-          /// Allows the game component to perform any initialization it needs to before starting
-          /// to run.  This is where it can query for any required services and load content.
-          /// </summary>
           public override void Initialize()
           {
                m_PrevKeyboardState = Keyboard.GetState();
@@ -76,10 +71,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                Game.Services.AddService(typeof(IInputManager), this);
           }
 
-          /// <summary>
-          /// Allows the game component to update itself.
-          /// </summary>
-          /// <param name="gameTime">Provides a snapshot of timing values.</param>
           public override void Update(GameTime gameTime)
           {
                m_PrevKeyboardState = m_KeyboardState;
@@ -92,22 +83,11 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                m_GamePadState = GamePad.GetState(PlayerIndex.One);
           }
 
-          #region Keyboard Services
-          /// <summary>
-          /// Checks if the provided key was pressed for the last two frames.
-          /// </summary>
-          /// <param name="key"></param>
-          /// <returns>Returns true if held.</returns>
           public bool KeyHeld(Keys i_Key)
           {
                return (m_KeyboardState.IsKeyDown(i_Key) && m_PrevKeyboardState.IsKeyDown(i_Key));
           }
 
-          /// <summary>
-          /// Checks if the provided key was released this frame.
-          /// </summary>
-          /// <param name="key"></param>
-          /// <returns>Return true if so.</returns>
           public bool KeyReleased(Keys i_Key)
           {
                return (
@@ -116,28 +96,11 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                    m_KeyboardState.IsKeyUp(i_Key));
           }
 
-          /// <summary>
-          /// Checks if the provided key was pressed at this frame.
-          /// </summary>
-          /// <param name="key"></param>
-          /// <returns>Return true if so.</returns>
           public bool KeyPressed(Keys i_Key)
           {
                return (m_PrevKeyboardState.IsKeyUp(i_Key) && m_KeyboardState.IsKeyDown(i_Key));
           }
-          #endregion Keyboard Services
 
-          /// <summary>
-          /// Returns if the provided button(s) was PRESSED at this frame.
-          /// </summary>
-          /// <param name="i_Buttons">
-          /// Buttons to query.
-          /// Specify a single button, or combine multiple buttons using
-          /// a bitwise OR operation.</param>
-          /// <returns>
-          /// true if one of the specified buttons (or more) was just PRESSED.
-          /// false otherwise
-          /// </returns>
           public bool ButtonPressed(eInputButtons i_Buttons)
           {
                const bool v_OneIsEnough = true;
@@ -145,17 +108,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                return ButtonStateChanged(i_Buttons, ButtonState.Pressed, v_OneIsEnough);
           }
 
-          /// <summary>
-          /// Returns if the provided button(s) was RELEASED at this frame.
-          /// </summary>
-          /// <param name="i_Buttons">
-          /// Buttons to query.
-          /// Specify a single button, or combine multiple buttons using
-          /// a bitwise OR operation.</param>
-          /// <returns>
-          /// true if one of the specified buttons (or more) was just RELEASED.
-          /// false otherwise
-          /// </returns>
           public bool ButtonReleased(eInputButtons i_Buttons)
           {
                const bool v_OneIsEnough = true;
@@ -163,17 +115,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                return ButtonStateChanged(i_Buttons, ButtonState.Released, v_OneIsEnough);
           }
 
-          /// <summary>
-          /// Returns if the provided button(s) were PRESSED at this frame.
-          /// </summary>
-          /// <param name="i_Buttons">
-          /// Buttons to query.
-          /// Specify a single button, or combine multiple buttons using
-          /// a bitwise OR operation.</param>
-          /// <returns>
-          /// true if all of the specified buttons were just PRESSED.
-          /// false otherwise
-          /// </returns>
           public bool ButtonsPressed(eInputButtons i_Buttons)
           {
                const bool v_OneIsEnough = true;
@@ -181,17 +122,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                return ButtonStateChanged(i_Buttons, ButtonState.Pressed, !v_OneIsEnough);
           }
 
-          /// <summary>
-          /// Returns if the provided button(s) were RELEASED at this frame.
-          /// </summary>
-          /// <param name="i_Buttons">
-          /// Buttons to query.
-          /// Specify a single button, or combine multiple buttons using
-          /// a bitwise OR operation.</param>
-          /// <returns>
-          /// true if all of the specified buttons were just RELEASED.
-          /// false otherwise
-          /// </returns>
           public bool ButtonsReleased(eInputButtons i_Buttons)
           {
                const bool v_OneIsEnough = true;
@@ -199,17 +129,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                return ButtonStateChanged(i_Buttons, ButtonState.Released, !v_OneIsEnough);
           }
 
-          /// <summary>
-          /// Returns if the provided button(s) state was just changed in this frame (release->pressed / pressed->release)
-          /// </summary>
-          /// <param name="i_Buttons">
-          /// Buttons to query.
-          /// Specify a single button, or combine multiple buttons using
-          /// a bitwise OR operation.</param>
-          /// <returns>
-          /// true if one of the specified buttons state was just changed (release->pressed / pressed->release).
-          /// false otherwise
-          /// </returns>
           public bool ButtonStateChanged(eInputButtons i_Buttons)
           {
                const bool v_OneIsEnough = true;
@@ -513,56 +432,24 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
 
           }
 
-          /// <summary>
-          /// Returns if one (or more) of the provided button(s) are down at this frame
-          /// </summary>
-          /// <param name="button"></param>
-          /// <returns>
-          /// true if one of the specified buttons is currently down.
-          /// false otherwise
-          /// </returns>
           public bool ButtonIsDown(eInputButtons i_MouseButtons)
           {
                const bool v_OneIsEnough = true;
                return checkButtonsState(i_MouseButtons, ButtonState.Pressed, v_OneIsEnough);
           }
 
-          /// <summary>
-          /// Returns if all of the provided buttons are down at this frame
-          /// </summary>
-          /// <param name="button"></param>
-          /// <returns>
-          /// true if all of the specified buttons are currently down.
-          /// false otherwise
-          /// </returns>
           public bool ButtonsAreDown(eInputButtons i_MouseButtons)
           {
                const bool v_OneIsEnough = true;
                return checkButtonsState(i_MouseButtons, ButtonState.Pressed, !v_OneIsEnough);
           }
 
-          /// <summary>
-          /// Returns if one (or more) of the provided button(s) are up at this frame
-          /// </summary>
-          /// <param name="button"></param>
-          /// <returns>
-          /// true if one of the specified buttons is currently up.
-          /// false otherwise
-          /// </returns>
           public bool ButtonIsUp(eInputButtons i_MouseButtons)
           {
                const bool v_OneIsEnough = true;
                return checkButtonsState(i_MouseButtons, ButtonState.Released, v_OneIsEnough);
           }
 
-          /// <summary>
-          /// Returns if all of the provided buttons are up at this frame
-          /// </summary>
-          /// <param name="button"></param>
-          /// <returns>
-          /// true if all of the specified buttons are currently up.
-          /// false otherwise
-          /// </returns>
           public bool ButtonsAreUp(eInputButtons i_MouseButtons)
           {
                const bool v_OneIsEnough = true;
