@@ -31,12 +31,18 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 
           protected override void Initialize()
           {
-               m_SpriteBatch              = new SpriteBatch(GraphicsDevice);
-               m_EnemyManager             = new EnemyManager(this);
-               m_Player1                  = new Player(@"Sprites\Ship01_32x32", Keys.H, Keys.K, Keys.U, true, this);
-               m_Player2                  = new Player(@"Sprites\Ship02_32x32", Keys.A, Keys.D, Keys.W, false, this);
-               m_Player1.StartingPosition = new Vector2(GraphicsDevice.Viewport.Width - (m_Player1.Width * 2), GraphicsDevice.Viewport.Height - (m_Player1.Height * 2));
-               m_Player2.StartingPosition = m_Player1.StartingPosition - new Vector2(m_Player2.Width * 2, 0);
+               m_SpriteBatch                 = new SpriteBatch(GraphicsDevice);
+               m_EnemyManager                = new EnemyManager(this);
+               
+               m_Player1                     = new Player(@"Sprites\Ship01_32x32", this);
+               m_Player1.StartingPosition    = new Vector2(GraphicsDevice.Viewport.Width - (m_Player1.Width * 2), GraphicsDevice.Viewport.Height - (m_Player1.Height * 2));
+               
+               m_Player2                     = new Player(@"Sprites\Ship02_32x32", this);
+               m_Player2.StartingPosition    = m_Player1.StartingPosition - new Vector2(m_Player2.Width * 2, 0);
+               m_Player2.MoveLeftKey         = Keys.A;
+               m_Player2.MoveRightKey        = Keys.D;
+               m_Player2.ShootKey            = Keys.W;
+               m_Player2.IsMouseControllable = false;
                //m_MonitorForm.Show();
 
                base.Initialize();

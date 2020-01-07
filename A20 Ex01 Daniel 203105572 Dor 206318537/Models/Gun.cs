@@ -52,11 +52,12 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                     {
                          if(!Bullets[i].Enabled)
                          {
-                              Bullets[i].LeftWindowBounds += onLeftWindowBounds;
-                              Bullets[i].Enabled = true;
-                              Bullets[i].Visible = true;
-                              Bullets[i].Position = r_Shooter.Position;
-                              Bullets[i].Velocity = this.GunDirection * this.BulletsVelocity;
+                              Bullets[i].LeftWindowBounds     += onLeftWindowBounds;
+                              Bullets[i].Enabled               = true;
+                              Bullets[i].Visible               = true;
+                              Bullets[i].Position              = r_Shooter.Position;
+                              Bullets[i].NoneCollisionGroupKey = r_Shooter;
+                              Bullets[i].MoveDirection         = this.GunDirection;
                               BulletShot++;
                               break;
                          }

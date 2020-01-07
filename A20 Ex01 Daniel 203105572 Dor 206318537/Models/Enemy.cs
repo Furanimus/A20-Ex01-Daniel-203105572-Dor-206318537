@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Managers;
+using System.Collections.Generic;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
@@ -17,13 +18,12 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                Velocity = new Vector2(50,0);
                Lives = 1;
                m_RandomBehavior = new RandomBehavior(i_Game);
+               ViewDirection = Sprite.Down;
+               NoneCollisionGroupKey = this;
           }
 
           public int Score { get; set; }
 
-          public override void Update(GameTime i_GameTime)
-          {
-               Position += MoveDirection * Velocity * (float)i_GameTime.ElapsedGameTime.TotalSeconds;
-          }
+          public object NoneCollisionGroupKey { get; set; }
      }
 }

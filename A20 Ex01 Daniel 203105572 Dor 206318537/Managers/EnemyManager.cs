@@ -441,20 +441,22 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                     {
                          if (row < 1)
                          {
-                              r_EnemyMatrix[row].Add(new EnemyPink(this.Game));
+                              r_EnemyMatrix[row].Add(new ShooterEnemy(new Rectangle(0, 0, 32, 32), 250, Color.Pink, this.Game));
                          }
                          else if (row < 3)
                          {
-                              r_EnemyMatrix[row].Add(new EnemyLightBlue(this.Game));
+                              r_EnemyMatrix[row].Add(new ShooterEnemy(new Rectangle(64, 0, 32, 32), 150, Color.LightBlue, this.Game));
                          }
                          else
                          {
-                              r_EnemyMatrix[row].Add(new EnemyYellow(this.Game));
+                              r_EnemyMatrix[row].Add(new ShooterEnemy(new Rectangle(96, 0, 32, 32), 100, Color.LightYellow, this.Game));
                          }
 
-                         r_EnemyMatrix[row][col].StartingPosition = new Vector2(left, top);
-                         r_EnemyMatrix[row][col].Destroyed += OnDestroyed;
-                         left += r_EnemyMatrix[row][col].Width + k_SpaceBetweenEnemies;
+                         Enemy enemy = r_EnemyMatrix[row][col];
+                         enemy.StartingPosition = new Vector2(left, top);
+                         enemy.Destroyed += OnDestroyed;
+                         enemy.NoneCollisionGroupKey = this;
+                         left += enemy.Width + k_SpaceBetweenEnemies;
                     }
 
                     top += r_EnemyMatrix[row][0].Height + k_SpaceBetweenEnemies;

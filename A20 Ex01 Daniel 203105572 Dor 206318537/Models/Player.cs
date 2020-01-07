@@ -14,26 +14,23 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           private const int k_ScoreLostOnDestroyed = 1200;
           private readonly IInputManager r_InputManager;
 
-          public Player(string i_AssetName, Keys i_KBMoveLeftButton, Keys i_KBMoveRightButton, Keys i_ShootButton, bool i_MouseControllable, Game i_Game) : base(i_AssetName, i_Game) 
+          public Player(string i_AssetName, Game i_Game) : base(i_AssetName, i_Game) 
           {
-               ViewDirection = Sprite.Up;
-               Lives = 3;
-               Score = 0;
-               Height = 32;
-               Width = 32;
-               Gun = new Gun(k_MaxShotInMidAir, this);
-               r_InputManager = this.Game.Services.GetService(typeof(IInputManager)) as IInputManager;
-               KBMoveLeftButton = i_KBMoveLeftButton;
-               KBMoveRightButton = i_KBMoveRightButton;
-               KBShootButton = i_ShootButton;
-               IsMouseControllable = i_MouseControllable;
+               ViewDirection         = Sprite.Up;
+               Lives                 = 3;
+               Score                 = 0;
+               Height                = 32;
+               Width                 = 32;
+               Gun                   = new Gun(k_MaxShotInMidAir, this);
+               r_InputManager        = this.Game.Services.GetService(typeof(IInputManager)) as IInputManager;
+               NoneCollisionGroupKey = this;
           }
 
-          public Keys KBMoveLeftButton { get; private set; }
+          public Keys MoveLeftKey { get; set; } = Keys.H;
 
-          public Keys KBMoveRightButton { get; private set; }
+          public Keys MoveRightKey { get; set; } = Keys.K;
 
-          public Keys KBShootButton { get; private set; }
+          public Keys ShootKey { get; set; } = Keys.U;
 
           public eInputButtons MouseShootButton { get; set; } = eInputButtons.Left;
 
@@ -41,11 +38,11 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           public override void Update(GameTime i_GameTime)
           {
-               if(r_InputManager.KeyboardState.IsKeyDown(KBMoveLeftButton))
+               if(r_InputManager.KeyboardState.IsKeyDown(MoveLeftKey))
                {
                     Velocity = r_Velocity * Sprite.Left;
                }
-               else if (r_InputManager.KeyboardState.IsKeyDown(KBMoveRightButton))
+               else if (r_InputManager.KeyboardState.IsKeyDown(MoveRightKey))
                {
                     Velocity = r_Velocity * Sprite.Right;
                }
@@ -54,7 +51,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                     Velocity = Vector2.Zero;
                }
 
-               if (r_InputManager.KeyPressed(KBShootButton) ||
+               if (r_InputManager.KeyPressed(ShootKey) ||
                     (IsMouseControllable && r_InputManager.ButtonPressed(MouseShootButton)))
                {
                     Gun.Shoot();
@@ -132,5 +129,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           public IGun Gun { get; set; }
 
           public int Score { get; set; }
+
+          public object NoneCollisionGroupKey { get; set; }
      }
 }

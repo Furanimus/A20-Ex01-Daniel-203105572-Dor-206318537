@@ -48,6 +48,7 @@
     <Compile Include="Models\Animators\CompositeAnimator.cs" />
     <Compile Include="Models\Animators\ConcreteAnimator\BlinkAnimator.cs" />
     <Compile Include="Models\Animators\ConcreteAnimator\CellAnimator.cs" />
+    <Compile Include="Models\Animators\ConcreteAnimator\RotationAnimator.cs" />
     <Compile Include="Models\Animators\ConcreteAnimator\SequencialAnimator.cs" />
     <Compile Include="Models\Animators\ConcreteAnimator\WaypointsAnymator.cs" />
     <Compile Include="Models\Animators\SpriteAnimator.cs" />
@@ -61,10 +62,7 @@
     <Compile Include="Models\RegisteredComponent.cs" />
     <Compile Include="Models\SpritetFont.cs" />
     <Compile Include="Models\Enemy.cs" />
-    <Compile Include="Models\EnemyLightBlue.cs" />
     <Compile Include="Managers\EnemyManager.cs" />
-    <Compile Include="Models\EnemyPink.cs" />
-    <Compile Include="Models\EnemyYellow.cs" />
     <Compile Include="Models\Entity.cs" />
     <Compile Include="Models\Gun.cs" />
     <Compile Include="Interfaces\IGun.cs" />
@@ -83,7 +81,6 @@
     <Compile Include="Models\ShooterEnemy.cs" />
     <Compile Include="Models\Sprite.cs" />
     <Compile Include="SpaceInvadersGame.cs" />
-    <Compile Include="Interfaces\ISpriteFactory.cs" />
     <Compile Include="Models\MotherShip.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="Program.cs" />

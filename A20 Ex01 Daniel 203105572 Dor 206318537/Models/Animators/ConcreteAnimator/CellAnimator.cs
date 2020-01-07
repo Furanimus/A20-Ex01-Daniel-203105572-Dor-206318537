@@ -58,7 +58,7 @@ namespace Models.Animators.ConcreteAnimators
             }
 
             this.BoundSprite.SourceRectangle = new Rectangle(
-                m_CurrCellIdx * this.BoundSprite.SourceRectangle.Width + this.BoundSprite.SourceRectangle.Left,
+                m_OriginalSpriteInfo.SourceRectangle.Left + (m_CurrCellIdx * this.BoundSprite.SourceRectangle.Width),
                 this.BoundSprite.SourceRectangle.Top,
                 this.BoundSprite.SourceRectangle.Width,
                 this.BoundSprite.SourceRectangle.Height);

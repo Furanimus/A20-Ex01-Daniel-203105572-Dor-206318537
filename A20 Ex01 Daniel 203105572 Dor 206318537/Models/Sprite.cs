@@ -224,7 +224,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           {
                float totalSeconds = (float)i_GameTime.ElapsedGameTime.TotalSeconds;
 
-               this.Position += this.Velocity * totalSeconds;
+               this.Position += this.MoveDirection * this.Velocity * totalSeconds;
                this.Rotation += this.AngularVelocity * totalSeconds;
 
                if(this.Animations != null)
@@ -255,11 +255,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                base.Draw(i_GameTime);
           }
 
-          protected override void DrawBoundingBox()
-          {
-               // not implemented yet
-          }
-
           public virtual bool CheckCollision(ICollidable i_Source)
           {
                bool collided = false;
@@ -275,13 +270,16 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           public virtual void Collided(ICollidable i_Collidable)
           {
-               // defualt behavior - change direction:
                this.Velocity *= -1;
           }
 
           public Sprite ShallowClone()
           {
                return this.MemberwiseClone() as Sprite;
+          }
+
+          protected override void DrawBoundingBox()
+          {
           }
      }
 }

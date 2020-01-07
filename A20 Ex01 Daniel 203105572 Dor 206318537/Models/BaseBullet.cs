@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
 using Microsoft.Xna.Framework;
 
@@ -13,14 +14,17 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           {
                this.LeftWindowBounds += onLeftBounds;
           }
+          
+          public object NoneCollisionGroupKey { get; set; }
 
           protected virtual void onLeftBounds(object i_Sender, EventArgs i_Args)
           {
-               
           }
 
           public override void Update(GameTime gameTime)
           {
+               base.Update(gameTime);
+
                if (LeftWindowBounds != null)
                {
                     if (this.Position.Y > this.Game.GraphicsDevice.Viewport.Height ||
@@ -32,7 +36,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                     }
                }
 
-               base.Update(gameTime);
+               this.Game.Window.Title = this.Position.Y.ToString();
           }
 
           public override void Collided(ICollidable i_Collidable)
