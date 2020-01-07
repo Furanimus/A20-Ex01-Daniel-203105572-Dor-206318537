@@ -1,4 +1,5 @@
-﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
+﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -52,11 +53,15 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                     {
                          if(!Bullets[i].Enabled)
                          {
+                              if(r_Shooter is ICollidable)
+                              {
+                                   Bullets[i].NoneCollisionGroupKey = (r_Shooter as ICollidable).NoneCollisionGroupKey;
+                              }
+
                               Bullets[i].LeftWindowBounds     += onLeftWindowBounds;
                               Bullets[i].Enabled               = true;
                               Bullets[i].Visible               = true;
                               Bullets[i].Position              = r_Shooter.Position;
-                              Bullets[i].NoneCollisionGroupKey = r_Shooter;
                               Bullets[i].MoveDirection         = this.GunDirection;
                               BulletShot++;
                               break;

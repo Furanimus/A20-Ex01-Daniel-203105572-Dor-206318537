@@ -339,6 +339,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           private Enemy m_RightMostRepresentetive;
           private readonly ICollisionsManager r_CollisionsManager;
           private readonly List<List<Enemy>> r_EnemyMatrix;
+          private int m_DeadEnemiesCounter = 0;
 
           public EnemyManager(Game i_Game) : base(i_Game)
           {
@@ -454,7 +455,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
                          Enemy enemy = r_EnemyMatrix[row][col];
                          enemy.StartingPosition = new Vector2(left, top);
-                         enemy.Destroyed += OnDestroyed;
+                         enemy.Destroyed += enemy_Destroyed;
                          enemy.NoneCollisionGroupKey = this;
                          left += enemy.Width + k_SpaceBetweenEnemies;
                     }
@@ -463,7 +464,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                }
           }
 
-          private void OnDestroyed(Entity i_Enemy)
+          private void enemy_Destroyed(Entity i_Enemy)
           {
                if(i_Enemy == m_LeftMostRepresentetive)
                {
@@ -472,6 +473,30 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                else if(i_Enemy == m_RightMostRepresentetive)
                {
                     setRightRepresentetive();
+               }
+
+               m_DeadEnemiesCounter++;
+
+               if (isIncreaseEnemiesSpeed())
+               {
+                    increaseAllEnemiesVelocity();
+               }
+          }
+
+          private bool isIncreaseEnemiesSpeed()
+          {
+               return m_DeadEnemiesCounter % k_NumOfDeadEnemiesToIncreaseVelocity == 0;
+          }
+
+          private void increaseAllEnemiesVelocity()
+          {
+               for (int row = 0; row < k_MatrixRows; row++)
+               {
+                    for (int col = 0; col < k_MatrixCols; col++)
+                    {
+                         Enemy enemy = r_EnemyMatrix[row][col];
+                         enemy.Velocity += enemy.Velocity * k_PercentageToIncreaseVelocityOnNumOfDeadEnemies;
+                    }
                }
           }
 
@@ -492,7 +517,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                {
                     for (int col = 0; col < k_MatrixCols; col++)
                     {
-                         r_EnemyMatrix[row][col].Position += Sprite.Down * (r_EnemyMatrix[row][col].Height / 2);
+                         Enemy enemy = r_EnemyMatrix[row][col];
+                         enemy.Velocity += enemy.Velocity * k_PercentageToIncreaseVelocityOnRowDescend;
+                         enemy.Position += Sprite.Down * (enemy.Height / 2);
                     }
                }
           }

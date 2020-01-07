@@ -19,7 +19,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           public ShooterEnemy(Rectangle i_SourceRectangle, Game i_Game) : this(i_SourceRectangle, k_DefaultScoreWorth, Color.White, i_Game)
           {
-               Gun = new Gun(k_MaxShotInMidAir, this);
           }
 
           public ShooterEnemy(Rectangle i_SourceRectangle, int i_ScoreWorth, Color i_TintColor, Game i_Game) : base(k_AssetName, i_Game)
@@ -30,6 +29,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                this.Gun = new Gun(k_MaxShotInMidAir, this);
                this.Score = i_ScoreWorth;
                this.TintColor = i_TintColor;
+               this.RotationOrigin = new Vector2(Width / 2, Height / 2); 
           }
 
           public IGun Gun { get; set; }
@@ -42,18 +42,40 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           public override void Initialize()
           {
                base.Initialize();
-
+               RotationAnimator rotationAnimator = new RotationAnimator(6, TimeSpan.FromSeconds(1.2));
                this.Animations.Add(new CellAnimator(TimeSpan.FromSeconds(0.5), 2, TimeSpan.Zero));
+               this.Animations.Add(rotationAnimator);
+               ShrinkAnimator shrinkAnimator = new ShrinkAnimator(TimeSpan.FromSeconds(1.2));
+               this.Animations.Add(shrinkAnimator);
+               rotationAnimator.Finished += RotationAnimator_Finished;
+
+               shrinkAnimator.Enabled = false;
+               rotationAnimator.Enabled = false;
+
                this.Animations.Enabled = true;
+          }
+
+          private void RotationAnimator_Finished(object sender, EventArgs e)
+          {
+               this.Enabled = false;
+               this.Visible = false;
+               this.Lives--;
           }
 
           public override void Collided(ICollidable i_Collidable)
           {
                if (i_Collidable.NoneCollisionGroupKey != this.NoneCollisionGroupKey)
                {
-                    if (this.Animations["RotationAnimator"] == null)
+                    SpriteAnimator rotationAnimator = this.Animations["RotationAnimator"];
+                    SpriteAnimator shrinkAnimator = this.Animations["ShrinkAnimator"];
+
+                    if (rotationAnimator != null)
                     {
-                         this.Animations.Add(new RotationAnimator(6, TimeSpan.FromSeconds(1), TimeSpan.Zero));
+                         rotationAnimator.Enabled = true;
+                    }
+                    if (shrinkAnimator != null)
+                    {
+                         shrinkAnimator.Enabled = true;
                     }
                }
           }

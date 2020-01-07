@@ -14,7 +14,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           public Enemy(string i_AssetName, Game i_Game) 
                : base(i_AssetName, i_Game)
           {
-               IsAlive = true;
                Velocity = new Vector2(50,0);
                Lives = 1;
                m_RandomBehavior = new RandomBehavior(i_Game);

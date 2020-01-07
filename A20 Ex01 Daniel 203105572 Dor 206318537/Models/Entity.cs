@@ -43,9 +43,13 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                               Destroyed.Invoke(this);
                          }
                     }
+                    else
+                    {
+                         IsAlive = true;
+                    }
                }
           }
-
-          public bool IsAlive { get; set; } = true;
+          
+          public bool IsAlive { get; private set; } = true;
      }
 }
