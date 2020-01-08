@@ -43,6 +43,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                m_Player2.MoveLeftKey         = Keys.A;
                m_Player2.MoveRightKey        = Keys.D;
                m_Player2.ShootKey            = Keys.W;
+               m_Player2.GroupRepresentative = m_Player1;
                //m_MonitorForm.Show();
 
                base.Initialize();

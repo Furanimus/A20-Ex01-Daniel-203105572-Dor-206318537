@@ -45,6 +45,7 @@
     <Compile Include="Enums\eInputButtons.cs" />
     <Compile Include="Managers\CollisionsManager.cs" />
     <Compile Include="Managers\InputManager.cs" />
+    <Compile Include="Models\AlienMatrixEnemy.cs" />
     <Compile Include="Models\Animators\CompositeAnimator.cs" />
     <Compile Include="Models\Animators\ConcreteAnimator\BlinkAnimator.cs" />
     <Compile Include="Models\Animators\ConcreteAnimator\CellAnimator.cs" />
