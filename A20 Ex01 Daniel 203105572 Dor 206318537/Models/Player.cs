@@ -34,7 +34,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           public eInputButtons MouseShootButton { get; set; } = eInputButtons.Left;
 
-          public bool IsMouseControllable { get; set; } = true;
+          public bool IsMouseControllable { get; set; }
 
           public override void Update(GameTime i_GameTime)
           {
