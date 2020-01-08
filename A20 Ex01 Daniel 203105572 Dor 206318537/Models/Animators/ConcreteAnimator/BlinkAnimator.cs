@@ -43,5 +43,11 @@ namespace Models.Animators.ConcreteAnimators
         {
             this.BoundSprite.Visible = m_OriginalSpriteInfo.Visible;
         }
-    }
+
+          protected override void OnFinished()
+          {
+               base.OnFinished();
+               IsFinished = false;
+          }
+     }
 }

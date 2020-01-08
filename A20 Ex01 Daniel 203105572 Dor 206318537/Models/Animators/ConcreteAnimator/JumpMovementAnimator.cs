@@ -20,7 +20,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnima
           }
 
           public JumpMovementAnimator(TimeSpan i_JumpsIntervals, TimeSpan i_AnimationLength)
-               : this("JumpMovementAnimator", i_AnimationLength)
+               : this("JumpMovement", i_AnimationLength)
           {
                m_TimeUntilNextJump = m_JumpIntervals = i_JumpsIntervals;
           }

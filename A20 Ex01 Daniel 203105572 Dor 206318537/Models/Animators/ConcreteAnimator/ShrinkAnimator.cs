@@ -13,20 +13,19 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnima
           private const int k_InitialScale = 1;
 
           public ShrinkAnimator(TimeSpan i_AnimationLength)
-               : this("ShrinkAnimator" , i_AnimationLength)
+               : this("Shrink" , i_AnimationLength)
           {
           }
 
           public ShrinkAnimator(string i_Name, TimeSpan i_AnimationLength)
               : base(i_Name, i_AnimationLength)
           {
-               this.ResetAfterFinish = false;
           }
           
           protected override void DoFrame(GameTime i_GameTime)
           {
                float totalSeconds = (float)i_GameTime.ElapsedGameTime.TotalSeconds;
-               float removeFromScale = (1 / this.AnimationLength.Seconds) * totalSeconds;
+               float removeFromScale = (k_InitialScale / (float)this.AnimationLength.TotalSeconds) * totalSeconds;
                float newScaleX = MathHelper.Clamp(this.BoundSprite.Scales.X - removeFromScale, 0, 1);
                float newScaleY = MathHelper.Clamp(this.BoundSprite.Scales.Y - removeFromScale, 0, 1);
 
@@ -36,6 +35,12 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnima
           protected override void RevertToOriginal()
           {
                this.BoundSprite.Scales = m_OriginalSpriteInfo.Scales;
+          }
+
+          protected override void OnFinished()
+          {
+               base.OnFinished();
+               IsFinished = false;
           }
      }
 }

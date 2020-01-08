@@ -56,7 +56,14 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
           {
                if (sender is ICollidable)
                {
-                    checkCollision(sender as ICollidable);
+                    Entity entity = sender as Entity;
+                    bool isEntity = entity != null;
+                    bool isEntityAlive = isEntity && entity.IsAlive;
+
+                    if (!isEntity || isEntityAlive)
+                    {
+                         checkCollision(sender as ICollidable);
+                    }
                }
           }
 
@@ -68,7 +75,11 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
 
                     foreach (ICollidable target in m_Collidables)
                     {
-                         if (i_Source != target && target.Visible)
+                         Entity entity = target as Entity;
+                         bool isEntity = entity != null;
+                         bool isEntityAlive = isEntity && entity.IsAlive;
+
+                         if (i_Source != target && (!isEntity && target.Visible || isEntityAlive))
                          {
                               if (target.CheckCollision(i_Source))
                               {

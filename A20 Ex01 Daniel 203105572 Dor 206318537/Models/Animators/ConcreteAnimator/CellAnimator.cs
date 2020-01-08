@@ -12,7 +12,7 @@ namespace Models.Animators.ConcreteAnimators
         private readonly int r_NumOfCells = 1;
 
         public CellAnimator(TimeSpan i_CellTime, int i_NumOfCells, TimeSpan i_AnimationLength)
-            : base("CellAnimation", i_AnimationLength)
+            : base("Cell", i_AnimationLength)
         {
             this.m_CellTime = i_CellTime;
             this.m_TimeLeftForCell = i_CellTime;
