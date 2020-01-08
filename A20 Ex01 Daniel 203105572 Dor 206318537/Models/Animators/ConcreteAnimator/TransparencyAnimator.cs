@@ -14,15 +14,15 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnima
           private readonly Color r_TintColor;
           private const float k_AlphaMaxValue = 255;
 
-          public TransparencyAnimator(Color i_BoundSpriteTineColor, TimeSpan i_AnimationLength) 
-               : this("Transparency", i_BoundSpriteTineColor, i_AnimationLength)
+          public TransparencyAnimator(Color i_BoundSpriteTintColor, TimeSpan i_AnimationLength) 
+               : this("Transparency", i_BoundSpriteTintColor, i_AnimationLength)
           {
           }
 
-          public TransparencyAnimator(string i_Name, Color i_BoundSpriteTineColor, TimeSpan i_AnimationLength) 
+          public TransparencyAnimator(string i_Name, Color i_BoundSpriteTintColor, TimeSpan i_AnimationLength) 
                : base(i_Name, i_AnimationLength)
           {
-               r_TintColor = i_BoundSpriteTineColor;
+               r_TintColor = i_BoundSpriteTintColor;
                m_Alpha = (float)r_TintColor.A;
           }
 

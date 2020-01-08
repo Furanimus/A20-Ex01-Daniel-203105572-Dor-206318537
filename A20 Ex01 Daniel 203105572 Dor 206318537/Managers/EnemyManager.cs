@@ -23,7 +23,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           private readonly List<List<Enemy>> r_EnemyMatrix;
           private readonly ICollisionsManager r_CollisionsManager;
           private readonly IRandomBehavior r_RandomBehavior;
-
+          private readonly MotherShip r_MotherShip;
           private int m_DeadEnemiesCounter = 0;
 
           public EnemyManager(Game i_Game) : base(i_Game)
@@ -32,6 +32,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                r_EnemyMatrix = new List<List<Enemy>>(k_MatrixRows);
                r_CollisionsManager = this.Game.Services.GetService(typeof(ICollisionsManager)) as ICollisionsManager;
                r_RandomBehavior = this.Game.Services.GetService(typeof(IRandomBehavior)) as IRandomBehavior;
+               r_MotherShip = new RedMotherShip(i_Game);
           }
 
           public override void Initialize()

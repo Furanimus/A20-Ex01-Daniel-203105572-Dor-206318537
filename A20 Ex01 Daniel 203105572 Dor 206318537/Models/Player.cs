@@ -21,13 +21,14 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           public Player(string i_AssetName, Game i_Game) : base(i_AssetName, i_Game) 
           {
                r_InputManager             = this.Game.Services.GetService(typeof(IInputManager)) as IInputManager;
-               this.r_Gun                   = new Gun(k_MaxShotInMidAir, this);
+               this.r_Gun                 = new Gun(k_MaxShotInMidAir, this);
                this.Lives                 = 3;
                this.Score                 = 0;
                this.Width                 = 32;
                this.Height                = 32;
                this.ViewDirection         = Sprite.Up;
                this.GroupRepresentative = this;
+               this.RotationOrigin = new Vector2(this.Width / 2, this.Height / 2);
           }
 
           public override void Initialize()
@@ -35,11 +36,39 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                base.Initialize();
 
                RotationAnimator rotationAnimator = new RotationAnimator(4, TimeSpan.FromSeconds(2.5));
-               this.Animations.Add(rotationAnimator);
-               this.Animations["RotationAnimator"].Enabled = false;
                BlinkAnimator blinkAnimator = new BlinkAnimator(TimeSpan.FromSeconds(1/6), TimeSpan.FromSeconds(2.5));
+               TransparencyAnimator transparency = new TransparencyAnimator(this.TintColor, TimeSpan.FromSeconds(2.5));
+
+               this.Animations.Add(rotationAnimator);
                this.Animations.Add(blinkAnimator);
-               this.Animations["BlinkAnimator"].Enabled = false;
+               this.Animations.Add(transparency);
+               this.Animations["Rotation"].Enabled = false;
+               this.Animations["Blink"].Enabled = false;
+               this.Animations["Transparency"].Enabled = false;
+               this.Animations.Enabled = true;
+               this.Animations.Finished += animations_Finished;
+               rotationAnimator.Finished += rotationAnimator_Finished;
+               rotationAnimator.Finished += blinkAnimator_Finished;
+
+          }
+
+          private void blinkAnimator_Finished(object sender, EventArgs e)
+          {
+               Position = StartingPosition;
+          }
+
+          private void rotationAnimator_Finished(object sender, EventArgs e)
+          {
+               this.Enabled = false;
+               this.Visible = false;
+               this.Animations.UnableAllAnimation();
+               this.Lives--;
+          }
+
+          private void animations_Finished(object sender, EventArgs e)
+          {
+               this.Enabled = false;
+               this.Visible = false;
           }
 
           public Keys MoveLeftKey { get; set; } = Keys.H;
@@ -54,32 +83,35 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           public override void Update(GameTime i_GameTime)
           {
-               if(r_InputManager.KeyboardState.IsKeyDown(MoveLeftKey))
+               if (IsAlive)
                {
-                    Velocity = r_Velocity * Sprite.Left;
-               }
-               else if (r_InputManager.KeyboardState.IsKeyDown(MoveRightKey))
-               {
-                    Velocity = r_Velocity * Sprite.Right;
-               }
-               else
-               {
-                    Velocity = Vector2.Zero;
-               }
-
-               if (r_InputManager.KeyPressed(ShootKey) ||
-                    (IsMouseControllable && r_InputManager.ButtonPressed(MouseShootButton)))
-               {
-                    r_Gun.Shoot();
-               }
-
-               if(IsMouseControllable)
-               {
-                    Vector2 mouseDelta = r_InputManager.MousePositionDelta;
-
-                    if(mouseDelta != Vector2.Zero)
+                    if (r_InputManager.KeyboardState.IsKeyDown(MoveLeftKey))
                     {
-                         Position += mouseDelta;
+                         Velocity = r_Velocity * Sprite.Left;
+                    }
+                    else if (r_InputManager.KeyboardState.IsKeyDown(MoveRightKey))
+                    {
+                         Velocity = r_Velocity * Sprite.Right;
+                    }
+                    else
+                    {
+                         Velocity = Vector2.Zero;
+                    }
+
+                    if (r_InputManager.KeyPressed(ShootKey) ||
+                         (IsMouseControllable && r_InputManager.ButtonPressed(MouseShootButton)))
+                    {
+                         r_Gun.Shoot();
+                    }
+
+                    if (IsMouseControllable)
+                    {
+                         Vector2 mouseDelta = r_InputManager.MousePositionDelta;
+
+                         if (mouseDelta != Vector2.Zero)
+                         {
+                              Position += mouseDelta;
+                         }
                     }
                }
 
@@ -122,13 +154,13 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
                     if (Lives == 0)
                     {
-                         this.Animations["RotationAnimator"].Enabled = true;
-                         this.Enabled = false;
-                         this.Visible = false;
+                         this.IsAlive = false;
+                         this.Animations["Rotation"].Enabled = true;
+                         this.Animations["Transparency"].Enabled = true;
                     }
                     else
                     {
-                         this.Animations["BlinkAnimator"].Enabled = true;
+                         this.Animations["Blink"].Enabled = false; //Bugged
                     }
 
                     if (Score >= k_ScoreLostOnDestroyed)

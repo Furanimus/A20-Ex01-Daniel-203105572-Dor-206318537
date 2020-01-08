@@ -1,6 +1,7 @@
 ﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnimator;
 using Microsoft.Xna.Framework;
+using Models.Animators;
 using Models.Animators.ConcreteAnimators;
 using System;
 using System.Collections.Generic;
@@ -56,6 +57,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           {
                this.Enabled = false;
                this.Visible = false;
+               this.Animations.UnableAllAnimation();
                this.Lives--;
           }
 

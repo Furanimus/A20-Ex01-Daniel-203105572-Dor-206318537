@@ -34,8 +34,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           {
                if (i_Collidable.GroupRepresentative != this.GroupRepresentative && (i_Collidable is Bullet))
                {
-                    SpriteAnimator rotationAnimator = this.Animations["RotationAnimator"];
-                    SpriteAnimator shrinkAnimator = this.Animations["ShrinkAnimator"];
+                    SpriteAnimator rotationAnimator = this.Animations["Rotation"];
+                    SpriteAnimator shrinkAnimator = this.Animations["Shrink"];
 
                     if (rotationAnimator != null)
                     {
@@ -45,10 +45,16 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                     {
                          shrinkAnimator.Enabled = true;
                     }
+
+                    Lives--;
                }
                else if(i_Collidable is Player)
                {
                     this.Game.Exit();
+               }
+               else if(i_Collidable is Barrier)
+               {
+                    //TODO
                }
           }
 
