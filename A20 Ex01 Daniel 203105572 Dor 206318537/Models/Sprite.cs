@@ -262,7 +262,15 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
                if (source != null)
                {
-                    collided = source.Bounds.Intersects(this.Bounds);
+                    ICollidable2D thisSprite = this as ICollidable2D;
+
+                    if(thisSprite != null)
+                    {
+                         if (source.GroupRepresentative != thisSprite.GroupRepresentative)
+                         {
+                              collided = source.Bounds.Intersects(this.Bounds);
+                         }
+                    }
                }
 
                return collided;

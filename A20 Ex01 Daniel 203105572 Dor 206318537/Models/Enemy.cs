@@ -18,11 +18,11 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                Lives = 1;
                m_RandomBehavior = new RandomBehavior(i_Game);
                ViewDirection = Sprite.Down;
-               NoneCollisionGroupKey = this;
+               GroupRepresentative = this;
           }
 
           public int Score { get; set; }
 
-          public object NoneCollisionGroupKey { get; set; }
+          public object GroupRepresentative { get; set; }
      }
 }

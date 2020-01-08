@@ -15,7 +15,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                this.LeftWindowBounds += onLeftBounds;
           }
           
-          public object NoneCollisionGroupKey { get; set; }
+          public object GroupRepresentative { get; set; }
 
           protected virtual void onLeftBounds(object i_Sender, EventArgs i_Args)
           {

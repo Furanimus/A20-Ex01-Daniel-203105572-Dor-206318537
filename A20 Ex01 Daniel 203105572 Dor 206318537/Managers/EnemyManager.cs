@@ -456,7 +456,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                          Enemy enemy = r_EnemyMatrix[row][col];
                          enemy.StartingPosition = new Vector2(left, top);
                          enemy.Destroyed += enemy_Destroyed;
-                         enemy.NoneCollisionGroupKey = this;
+                         enemy.GroupRepresentative = this;
                          left += enemy.Width + k_SpaceBetweenEnemies;
                     }
 

@@ -16,14 +16,14 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           public Player(string i_AssetName, Game i_Game) : base(i_AssetName, i_Game) 
           {
-               ViewDirection         = Sprite.Up;
-               Lives                 = 3;
-               Score                 = 0;
-               Height                = 32;
-               Width                 = 32;
-               Gun                   = new Gun(k_MaxShotInMidAir, this);
-               r_InputManager        = this.Game.Services.GetService(typeof(IInputManager)) as IInputManager;
-               NoneCollisionGroupKey = this;
+               r_InputManager             = this.Game.Services.GetService(typeof(IInputManager)) as IInputManager;
+               this.Gun                   = new Gun(k_MaxShotInMidAir, this);
+               this.Lives                 = 3;
+               this.Score                 = 0;
+               this.Width                 = 32;
+               this.Height                = 32;
+               this.ViewDirection         = Sprite.Up;
+               this.GroupRepresentative = this;
           }
 
           public Keys MoveLeftKey { get; set; } = Keys.H;
@@ -130,6 +130,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           public int Score { get; set; }
 
-          public object NoneCollisionGroupKey { get; set; }
+          public object GroupRepresentative { get; set; }
      }
 }

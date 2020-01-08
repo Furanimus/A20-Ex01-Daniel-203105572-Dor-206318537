@@ -24,12 +24,12 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           public ShooterEnemy(Rectangle i_SourceRectangle, int i_ScoreWorth, Color i_TintColor, Game i_Game) : base(k_AssetName, i_Game)
           {
                r_SourceRectangle = i_SourceRectangle;
-               this.Width = k_DefaultWidth;
-               this.Height = k_DefaultHeight;
                this.Gun = new Gun(k_MaxShotInMidAir, this);
                this.Score = i_ScoreWorth;
                this.TintColor = i_TintColor;
-               this.RotationOrigin = new Vector2(Width / 2, Height / 2); 
+               this.Width = k_DefaultWidth;
+               this.Height = k_DefaultHeight;
+               this.RotationOrigin = new Vector2(Width / 2, Height / 2);
           }
 
           public IGun Gun { get; set; }
@@ -64,7 +64,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           public override void Collided(ICollidable i_Collidable)
           {
-               if (i_Collidable.NoneCollisionGroupKey != this.NoneCollisionGroupKey)
+               if (i_Collidable.GroupRepresentative != this.GroupRepresentative)
                {
                     SpriteAnimator rotationAnimator = this.Animations["RotationAnimator"];
                     SpriteAnimator shrinkAnimator = this.Animations["ShrinkAnimator"];
@@ -82,7 +82,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           protected override void InitSourceRectangle()
           {
-               base.InitSourceRectangle();
                this.SourceRectangle = r_SourceRectangle;
           }
      }

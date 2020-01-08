@@ -12,6 +12,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces
           bool Visible { get; }
           bool CheckCollision(ICollidable i_Source);
           void Collided(ICollidable i_Collidable);
-          object NoneCollisionGroupKey { get; set; }
+          object GroupRepresentative { get; set; }
      }
 }
