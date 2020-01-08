@@ -223,16 +223,20 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           public override void Update(GameTime i_GameTime)
           {
                float totalSeconds = (float)i_GameTime.ElapsedGameTime.TotalSeconds;
+               OnUpdate(totalSeconds);
 
-               this.Position += this.MoveDirection * this.Velocity * totalSeconds;
-               this.Rotation += this.AngularVelocity * totalSeconds;
-
-               if(this.Animations != null)
+               if (this.Animations != null)
                {
                     this.Animations.Update(i_GameTime);
                }
 
                base.Update(i_GameTime);
+          }
+
+          protected virtual void OnUpdate(float i_TotalSeconds)
+          {
+               this.Position += this.MoveDirection * this.Velocity * i_TotalSeconds;
+               this.Rotation += this.AngularVelocity * i_TotalSeconds;
           }
 
           public override void Draw(GameTime i_GameTime)

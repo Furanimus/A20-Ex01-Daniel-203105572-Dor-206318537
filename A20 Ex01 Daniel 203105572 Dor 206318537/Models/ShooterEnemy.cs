@@ -47,6 +47,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                this.Animations.Add(rotationAnimator);
                ShrinkAnimator shrinkAnimator = new ShrinkAnimator(TimeSpan.FromSeconds(1.2));
                this.Animations.Add(shrinkAnimator);
+               this.Animations.Add(new JumpMovementAnimator(TimeSpan.FromSeconds(0.5), TimeSpan.Zero));
                rotationAnimator.Finished += RotationAnimator_Finished;
 
                shrinkAnimator.Enabled = false;
@@ -83,6 +84,11 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           protected override void InitSourceRectangle()
           {
                this.SourceRectangle = r_SourceRectangle;
+          }
+
+          protected override void OnUpdate(float i_TotalSeconds)
+          {
+               this.Rotation += this.AngularVelocity * i_TotalSeconds;
           }
      }
 }
