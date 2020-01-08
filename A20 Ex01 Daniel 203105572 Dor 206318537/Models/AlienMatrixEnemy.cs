@@ -1,4 +1,5 @@
-﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnimator;
+﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnimator;
 using Microsoft.Xna.Framework;
 using Models.Animators.ConcreteAnimators;
 using System;
@@ -61,6 +62,18 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           protected override void OnUpdate(float i_TotalSeconds)
           {
                this.Rotation += this.AngularVelocity * i_TotalSeconds;
+          }
+
+          public override bool CheckCollision(ICollidable i_Source)
+          {
+               bool isCollide = false;
+
+               if(IsAlive)
+               {
+                    isCollide = base.CheckCollision(i_Source);
+               }
+
+               return isCollide;
           }
      }
 }

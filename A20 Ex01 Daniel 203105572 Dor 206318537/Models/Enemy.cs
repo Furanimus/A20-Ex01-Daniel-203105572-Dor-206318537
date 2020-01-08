@@ -16,7 +16,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           {
                Velocity = new Vector2(32, 0);
                Lives = 1;
-               m_RandomBehavior = new RandomBehavior(i_Game);
                ViewDirection = Sprite.Down;
                GroupRepresentative = this;
           }

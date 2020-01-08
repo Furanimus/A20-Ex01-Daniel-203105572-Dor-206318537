@@ -5,6 +5,7 @@ using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Enums;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Managers;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537
 {
@@ -27,6 +28,10 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                r_Graphics.PreferredBackBufferWidth  = (int)r_Background.Width;
                r_Graphics.PreferredBackBufferHeight = (int)r_Background.Height;
                r_Graphics.ApplyChanges();
+
+               IInputManager inputManager = new InputManager(this);
+               ICollisionsManager collisionsManager = new CollisionsManager(this);
+               IRandomBehavior randomBehavior = new RandomBehavior(this);
           }
 
           protected override void Initialize()

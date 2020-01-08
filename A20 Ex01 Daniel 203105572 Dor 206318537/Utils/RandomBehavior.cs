@@ -4,7 +4,7 @@ using System;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Utils
 {
-     public class RandomBehavior
+     public class RandomBehavior : GameService, IRandomBehavior
      {
           private readonly Random r_Random;
           private readonly int r_RandomFactor = 10;
@@ -15,12 +15,14 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Utils
           private readonly Game r_Game;
 
           public RandomBehavior(Game i_Game)
+               : base(i_Game)
           {
                r_Game = i_Game;
                r_Random = new Random();
           }
 
           public RandomBehavior(int i_RandomFactor, int i_RandomMin, int i_RandomMax, Game i_Game)
+               : base(i_Game)
           {
                r_Random = new Random();
                r_RandomFactor = i_RandomFactor;
@@ -31,6 +33,11 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Utils
           public bool Roll()
           {
                return r_Random.Next(r_RandomMin, r_RandomMax) < r_RandomFactor;
+          }
+
+          public bool Roll(int i_RandomFactor, int i_RandomMin, int i_RandomMax)
+          {
+               return r_Random.Next(i_RandomMin, i_RandomMax) < i_RandomFactor;
           }
 
           public Action DelayedAction { get; set; }

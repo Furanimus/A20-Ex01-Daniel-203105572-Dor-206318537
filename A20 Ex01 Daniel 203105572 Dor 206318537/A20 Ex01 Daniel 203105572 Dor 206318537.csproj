@@ -79,6 +79,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MonitorForm.designer.cs" />
+    <Compile Include="Interfaces\IRandomBehavior.cs" />
     <Compile Include="Utils\RandomBehavior.cs" />
     <Compile Include="Models\RedMotherShip.cs" />
     <Compile Include="Models\ShooterEnemy.cs" />

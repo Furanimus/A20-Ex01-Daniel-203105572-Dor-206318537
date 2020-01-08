@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
 using Microsoft.Xna.Framework;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
@@ -19,6 +20,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           private Enemy m_RightMostRepresentetive;
           private readonly ICollisionsManager r_CollisionsManager;
           private readonly List<List<Enemy>> r_EnemyMatrix;
+          private readonly IRandomBehavior r_RandomBehavior;
+
           private int m_DeadEnemiesCounter = 0;
 
           public EnemyManager(Game i_Game) : base(i_Game)
@@ -26,6 +29,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                this.Game.Components.Add(this);
                r_EnemyMatrix = new List<List<Enemy>>(k_MatrixRows);
                r_CollisionsManager = this.Game.Services.GetService(typeof(ICollisionsManager)) as ICollisionsManager;
+               r_RandomBehavior = this.Game.Services.GetService(typeof(IRandomBehavior)) as IRandomBehavior;
           }
 
           public override void Initialize()
@@ -87,14 +91,17 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           public override void Update(GameTime gameTime)
           {
-               //checkWindowCollision(m_RightMostRepresentetive);
-               //checkWindowCollision(m_LeftMostRepresentetive);
+               
                checkWindowCollision();
+               chooseEnemyShoot();
 
                base.Update(gameTime);
           }
 
-
+          private void chooseEnemyShoot()
+          {
+              throw new NotImplementedException();
+          }
 
           private void checkWindowCollision()
           {
