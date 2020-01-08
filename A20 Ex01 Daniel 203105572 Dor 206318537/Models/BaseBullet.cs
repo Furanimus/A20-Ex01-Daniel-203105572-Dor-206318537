@@ -35,8 +35,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                          LeftWindowBounds.Invoke(this, null);
                     }
                }
-
-               this.Game.Window.Title = this.Position.Y.ToString();
           }
 
           public override void Collided(ICollidable i_Collidable)

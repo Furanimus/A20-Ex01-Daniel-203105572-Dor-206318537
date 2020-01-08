@@ -60,12 +60,12 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                                    Bullets[i].GroupRepresentative = (r_Shooter as ICollidable).GroupRepresentative;
                               }
 
+                              bullet.Position          = getShootOrigin(bullet);
                               bullet.LeftWindowBounds += onLeftWindowBounds;
+                              bullet.VisibleChanged   += Bullet_VisibleChanged;
+                              bullet.MoveDirection     = this.GunDirection;
                               bullet.Enabled           = true;
                               bullet.Visible           = true;
-                              bullet.Position          = getShootOrigin(bullet);
-                              bullet.MoveDirection     = this.GunDirection;
-                              bullet.VisibleChanged   += Bullet_VisibleChanged;
                               BulletShot++;
                               break;
                          }
