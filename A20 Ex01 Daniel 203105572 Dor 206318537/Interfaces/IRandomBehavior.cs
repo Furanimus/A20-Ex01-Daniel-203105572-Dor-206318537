@@ -13,5 +13,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Utils
           void TryInvokeDelayedAction();
 
           int GetRandomNumber(int i_Min, int i_Max);
+
+          TimeSpan GetRandomIntervalMilliseconds(int i_MillisecondsMaxVal);
+
+          TimeSpan GetRandomIntervalSeconds(int i_SecondsMaxVal);
      }
 }

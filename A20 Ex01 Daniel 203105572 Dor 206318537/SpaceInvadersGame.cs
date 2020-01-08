@@ -16,6 +16,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
           private Player m_Player1;
           private Player m_Player2;
           private EnemyManager m_EnemyManager;
+          private BarrierManager m_BarrierManager;
           private SpriteBatch m_SpriteBatch;
           //MonitorForm m_MonitorForm;
 
@@ -38,6 +39,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
           {
                m_SpriteBatch                 = new SpriteBatch(GraphicsDevice);
                m_EnemyManager                = new EnemyManager(this);
+               m_BarrierManager              = new BarrierManager(this);
                
                m_Player1                     = new Player(@"Sprites\Ship01_32x32", this);
                m_Player1.StartingPosition    = new Vector2(GraphicsDevice.Viewport.Width - (m_Player1.Width * 2), GraphicsDevice.Viewport.Height - (m_Player1.Height * 2));

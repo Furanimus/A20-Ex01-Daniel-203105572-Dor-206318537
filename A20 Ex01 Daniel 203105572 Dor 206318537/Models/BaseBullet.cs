@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
 using Microsoft.Xna.Framework;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {

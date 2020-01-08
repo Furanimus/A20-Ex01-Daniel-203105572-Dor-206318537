@@ -38,8 +38,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           {
                base.Initialize();
 
-               RotationAnimator rotationAnimator = new RotationAnimator(6, TimeSpan.FromSeconds(1.2));
                this.Animations.Add(new CellAnimator(TimeSpan.FromSeconds(0.5), 2, TimeSpan.Zero));
+               RotationAnimator rotationAnimator = new RotationAnimator(6, TimeSpan.FromSeconds(1.2));
                this.Animations.Add(rotationAnimator);
                ShrinkAnimator shrinkAnimator = new ShrinkAnimator(TimeSpan.FromSeconds(1.2));
                this.Animations.Add(shrinkAnimator);

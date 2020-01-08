@@ -18,7 +18,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                r_SourceRectangle = i_SourceRectangle;
           }
 
-          public IGun Gun { get; set; }
+          public BaseGun Gun { get; set; }
 
           public void Shoot()
           {
@@ -28,13 +28,11 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           public override void Initialize()
           {
                base.Initialize();
-          }
-
-     
+          }               
 
           public override void Collided(ICollidable i_Collidable)
           {
-               if (i_Collidable.GroupRepresentative != this.GroupRepresentative)
+               if (i_Collidable.GroupRepresentative != this.GroupRepresentative && (i_Collidable is Bullet))
                {
                     SpriteAnimator rotationAnimator = this.Animations["RotationAnimator"];
                     SpriteAnimator shrinkAnimator = this.Animations["ShrinkAnimator"];
@@ -47,6 +45,10 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                     {
                          shrinkAnimator.Enabled = true;
                     }
+               }
+               else if(i_Collidable is Player)
+               {
+                    this.Game.Exit();
                }
           }
 

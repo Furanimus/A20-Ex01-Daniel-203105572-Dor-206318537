@@ -18,8 +18,10 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           private const float k_SpaceBetweenEnemies = 32f * 0.6f;
           private Enemy m_LeftMostRepresentetive;
           private Enemy m_RightMostRepresentetive;
-          private readonly ICollisionsManager r_CollisionsManager;
+          private TimeSpan m_IntervalToNextShoot;
+          private const int k_MaxMillisecondToRoll = 500;
           private readonly List<List<Enemy>> r_EnemyMatrix;
+          private readonly ICollisionsManager r_CollisionsManager;
           private readonly IRandomBehavior r_RandomBehavior;
 
           private int m_DeadEnemiesCounter = 0;
@@ -89,18 +91,48 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                }
           }
 
-          public override void Update(GameTime gameTime)
+          public override void Update(GameTime i_GameTime)
           {
-               
                checkWindowCollision();
-               chooseEnemyShoot();
+               handleEnemyToShoot(i_GameTime);
 
-               base.Update(gameTime);
+               base.Update(i_GameTime);
           }
 
-          private void chooseEnemyShoot()
+          private void handleEnemyToShoot(GameTime i_GameTime)
           {
-              throw new NotImplementedException();
+               m_IntervalToNextShoot -= i_GameTime.ElapsedGameTime;
+
+               if(m_IntervalToNextShoot <= TimeSpan.Zero)
+               {
+                    ShooterEnemy enemy = chooseEnemyShoot();
+                    bool isShoot = tryShoot(enemy);
+
+                    if(isShoot)
+                    {
+                         m_IntervalToNextShoot = r_RandomBehavior.GetRandomIntervalMilliseconds(k_MaxMillisecondToRoll);
+                    }
+               }
+          }
+
+          private bool tryShoot(ShooterEnemy enemy)
+          {
+               bool isShoot = false;
+               if (enemy.IsAlive && (enemy as ShooterEnemy).Gun.BulletShot < (enemy as ShooterEnemy).Gun.Capacity)
+               {
+                    (enemy as ShooterEnemy).Shoot();
+                    isShoot = true;
+               }
+
+               return isShoot;
+          }
+
+          private ShooterEnemy chooseEnemyShoot()
+          {
+               int randomRow = r_RandomBehavior.GetRandomNumber(0, k_MatrixRows - 1);
+               int randomCol = r_RandomBehavior.GetRandomNumber(0, k_MatrixCols - 1);
+               Enemy enemy = r_EnemyMatrix[randomRow][randomCol];
+               return enemy as ShooterEnemy;
           }
 
           private void checkWindowCollision()

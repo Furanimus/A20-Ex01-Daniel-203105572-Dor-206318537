@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="BaseGame.cs" />
     <Compile Include="Enums\eInputButtons.cs" />
+    <Compile Include="Managers\BarrierManager.cs" />
     <Compile Include="Managers\CollisionsManager.cs" />
     <Compile Include="Managers\InputManager.cs" />
     <Compile Include="Models\AlienMatrixEnemy.cs" />
@@ -68,13 +69,13 @@
     <Compile Include="Managers\EnemyManager.cs" />
     <Compile Include="Models\Entity.cs" />
     <Compile Include="Models\Gun.cs" />
-    <Compile Include="Interfaces\IGun.cs" />
     <Compile Include="Interfaces\IMotherShip.cs" />
     <Compile Include="Interfaces\ICollidable.cs" />
     <Compile Include="Interfaces\ICollidable2D.cs" />
     <Compile Include="Interfaces\ICollidable3D.cs" />
     <Compile Include="Interfaces\ICollisionsManager.cs" />
     <Compile Include="Interfaces\IInputManager.cs" />
+    <Compile Include="Models\Barrier.cs" />
     <Compile Include="MonitorForm.cs">
       <SubType>Form</SubType>
     </Compile>

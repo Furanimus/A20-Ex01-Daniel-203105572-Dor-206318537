@@ -9,16 +9,10 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
      public class Gun : BaseGun
      {
-          public int Capacity { get; }
-
-          public List<BaseBullet> Bullets;
-
-          public int BulletShot { get; set; }
-
-          public Gun(int i_Capacity, Sprite i_Shooter) : base(i_Shooter)
+          public Gun(int i_Capacity, Sprite i_Shooter) 
+               : base(i_Shooter)
           {
                Capacity = i_Capacity;
-               Bullets = new List<BaseBullet>(i_Capacity);
                BulletType = typeof(Bullet);
                initBullets();
           }
@@ -27,9 +21,18 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           {
                ConstructorInfo[] constructors = BulletType.GetConstructors();
 
-               for (int bullet = 0; bullet < Capacity; bullet++)
+               for (int i = 0; i < Capacity; i++)
                {
                     Bullets.Add(constructors[0].Invoke(new object[] { r_Shooter.Game }) as BaseBullet);
+
+                    if(r_Shooter is Player)
+                    {
+                         Bullets[i].TintColor = Color.Red;
+                    }
+                    else if(r_Shooter is Enemy)
+                    {
+                         Bullets[i].TintColor = Color.Blue;
+                    }
                }
 
                BulletsVelocity = Bullets[0].Velocity;

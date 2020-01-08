@@ -19,6 +19,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Utils
           {
                r_Game = i_Game;
                r_Random = new Random();
+               this.Game.Services.AddService(typeof(IRandomBehavior), this);
           }
 
           public RandomBehavior(int i_RandomFactor, int i_RandomMin, int i_RandomMax, Game i_Game)
@@ -63,6 +64,16 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Utils
           public int GetRandomNumber(int i_Min, int i_Max)
           {
                return r_Random.Next(i_Min, i_Max);
+          }
+
+          public TimeSpan GetRandomIntervalMilliseconds(int i_MillisecondsMaxVal)
+          {
+               return new TimeSpan(0, 0, 0, 0, new Random().Next(i_MillisecondsMaxVal));
+          }
+
+          public TimeSpan GetRandomIntervalSeconds(int i_SecondsMaxVal)
+          {
+               return new TimeSpan(0, 0, new Random().Next(i_SecondsMaxVal));
           }
      }
 }
