@@ -17,11 +17,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
           private Player m_Player2;
           private EnemyManager m_EnemyManager;
           private SpriteBatch m_SpriteBatch;
-          //MonitorForm m_MonitorForm;
 
           public SpaceInvadersGame()
           {
-               //m_MonitorForm = new MonitorForm();
                Content.RootDirectory                = "Content";
                r_Background                         = new Background(this);
                r_Graphics                           = new GraphicsDeviceManager(this);
@@ -49,7 +47,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                m_Player2.MoveRightKey        = Keys.D;
                m_Player2.ShootKey            = Keys.W;
                m_Player2.GroupRepresentative = m_Player1;
-               //m_MonitorForm.Show();
 
                base.Initialize();
           }
@@ -89,12 +86,11 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
           protected override void Draw(GameTime gameTime)
           {
                GraphicsDevice.Clear(Color.White);
-               m_SpriteBatch.Begin();
+               m_SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
                base.Draw(gameTime);
                m_SpriteBatch.End();
 
                string inputToString = (this.Services.GetService(typeof(IInputManager)) as IInputManager).ToString();
-               //m_MonitorForm.MonitorText = inputToString;
           }
 
           private bool CheckIfGameOver()

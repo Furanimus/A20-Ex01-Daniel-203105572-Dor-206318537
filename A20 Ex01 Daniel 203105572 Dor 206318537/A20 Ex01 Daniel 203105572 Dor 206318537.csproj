@@ -53,6 +53,7 @@
     <Compile Include="Models\Animators\ConcreteAnimator\RotationAnimator.cs" />
     <Compile Include="Models\Animators\ConcreteAnimator\SequencialAnimator.cs" />
     <Compile Include="Models\Animators\ConcreteAnimator\ShrinkAnimator.cs" />
+    <Compile Include="Models\Animators\ConcreteAnimator\TransparencyAnimator.cs" />
     <Compile Include="Models\Animators\ConcreteAnimator\WaypointsAnymator.cs" />
     <Compile Include="Models\Animators\SpriteAnimator.cs" />
     <Compile Include="Models\Background.cs" />

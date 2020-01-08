@@ -223,6 +223,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           public override void Update(GameTime i_GameTime)
           {
                float totalSeconds = (float)i_GameTime.ElapsedGameTime.TotalSeconds;
+
                OnUpdate(totalSeconds);
 
                if (this.Animations != null)

@@ -1,56 +1,61 @@
-﻿using Microsoft.Xna.Framework;
+﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
+using Microsoft.Xna.Framework;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
      public abstract class MotherShip : Enemy
      {
+          private readonly IRandomBehavior r_RandomBehavior;
+          private readonly int r_MaxLives;
+
           public MotherShip(string i_AssetName, Game i_Game) 
                : base(i_AssetName, i_Game)
           {
+               r_RandomBehavior = this.Game.Services.GetService(typeof(IRandomBehavior)) as IRandomBehavior;
                MoveDirection = Sprite.Right;
                Visible = false;
+               r_MaxLives = Lives;
           }
 
-          public override void Update(GameTime i_GameTime)
+          protected bool IsDuringAnimation { get; set; } = false;
+
+          protected override void OnUpdate(float i_TotalSeconds)
           {
-               if(Visible && !IsAlive)
+               if (!IsDuringAnimation)
                {
-                    reset();
-               }
-
-               if (Visible)
-               {
-                    m_Position += MoveDirection * Velocity * (float)i_GameTime.ElapsedGameTime.TotalSeconds;
-
-                    if (isCollideWithRightBound())
+                    if (Visible && IsAlive)
                     {
-                         reset();
+                         m_Position += MoveDirection * Velocity * i_TotalSeconds;
+
+                         if (isCollideWithRightBound())
+                         {
+                              Visible = false;
+                         }
                     }
-               }
-               else
-               {
-                    trySpawn();
+                    else if(!Visible)
+                    {
+                         trySpawn();
+                    }
                }
           }
 
           private void trySpawn()
           {
-               if (m_RandomBehavior.Roll())
+               if (r_RandomBehavior.Roll(1, 0, 1))
                {
+                    m_Position.X = -Width;
                     Visible = true;
-                    Lives++;
+
+                    if(Lives < r_MaxLives)
+                    {
+                         Lives++;
+                    }
                }
           }
 
           private bool isCollideWithRightBound()
           {
                return m_Position.X >= Game.GraphicsDevice.Viewport.Width;
-          }
-
-          private void reset()
-          {
-               Visible = false;
-               m_Position.X = -Width;
           }
      }
 }

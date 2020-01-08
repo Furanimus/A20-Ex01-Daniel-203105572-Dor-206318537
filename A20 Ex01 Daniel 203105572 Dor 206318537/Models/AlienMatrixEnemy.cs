@@ -1,6 +1,7 @@
 ﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnimator;
 using Microsoft.Xna.Framework;
+using Models.Animators;
 using Models.Animators.ConcreteAnimators;
 using System;
 using System.Collections.Generic;
@@ -39,16 +40,14 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                base.Initialize();
 
                RotationAnimator rotationAnimator = new RotationAnimator(6, TimeSpan.FromSeconds(1.2));
-               this.Animations.Add(new CellAnimator(TimeSpan.FromSeconds(0.5), 2, TimeSpan.Zero));
-               this.Animations.Add(rotationAnimator);
                ShrinkAnimator shrinkAnimator = new ShrinkAnimator(TimeSpan.FromSeconds(1.2));
+               this.Animations.Add(rotationAnimator);
                this.Animations.Add(shrinkAnimator);
+               this.Animations.Add(new CellAnimator(TimeSpan.FromSeconds(0.5), 2, TimeSpan.Zero));
                this.Animations.Add(new JumpMovementAnimator(TimeSpan.FromSeconds(0.5), TimeSpan.Zero));
                rotationAnimator.Finished += RotationAnimator_Finished;
-
                shrinkAnimator.Enabled = false;
                rotationAnimator.Enabled = false;
-
                this.Animations.Enabled = true;
           }
 
@@ -74,6 +73,23 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                }
 
                return isCollide;
+          }
+
+          public override void Collided(ICollidable i_Collidable)
+          {
+               SpriteAnimator rotationAnimator = this.Animations["Rotation"];
+               SpriteAnimator shrinkAnimator = this.Animations["Shrink"];
+
+               if (rotationAnimator != null)
+               {
+                    rotationAnimator.Enabled = true;
+               }
+               if (shrinkAnimator != null)
+               {
+                    shrinkAnimator.Enabled = true;
+               }
+
+               Lives--;
           }
      }
 }

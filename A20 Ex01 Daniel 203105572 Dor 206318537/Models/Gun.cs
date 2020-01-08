@@ -92,7 +92,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           private Vector2 getShootOrigin(BaseBullet i_Bullet)
           {
                Vector2 shooterCenterWidth = new Vector2(r_Shooter.Width / 2, 0);
-               Vector2 bulletCenterWidth = new Vector2(r_Shooter.Width / 2, 0);
+               Vector2 bulletCenterWidth = new Vector2(i_Bullet.Width / 2, 0);
 
                return r_Shooter.Position + shooterCenterWidth - bulletCenterWidth;
           }

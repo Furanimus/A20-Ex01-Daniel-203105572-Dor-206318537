@@ -19,6 +19,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Utils
           {
                r_Game = i_Game;
                r_Random = new Random();
+               this.Game.Services.AddService(typeof(IRandomBehavior), this);
           }
 
           public RandomBehavior(int i_RandomFactor, int i_RandomMin, int i_RandomMax, Game i_Game)

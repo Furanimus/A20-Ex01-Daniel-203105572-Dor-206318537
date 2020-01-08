@@ -16,17 +16,18 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           private const float k_EnemiesStartingY = 96;
           private const float k_EnemiesStartingX = 0;
           private const float k_SpaceBetweenEnemies = 32f * 0.6f;
-          private Enemy m_LeftMostRepresentetive;
-          private Enemy m_RightMostRepresentetive;
           private readonly ICollisionsManager r_CollisionsManager;
           private readonly List<List<Enemy>> r_EnemyMatrix;
           private readonly IRandomBehavior r_RandomBehavior;
-
+          private Enemy m_LeftMostRepresentetive;
+          private Enemy m_RightMostRepresentetive;
           private int m_DeadEnemiesCounter = 0;
+          private readonly MotherShip r_MotherShip;
 
           public EnemyManager(Game i_Game) : base(i_Game)
           {
                this.Game.Components.Add(this);
+               r_MotherShip = new RedMotherShip(i_Game);
                r_EnemyMatrix = new List<List<Enemy>>(k_MatrixRows);
                r_CollisionsManager = this.Game.Services.GetService(typeof(ICollisionsManager)) as ICollisionsManager;
                r_RandomBehavior = this.Game.Services.GetService(typeof(IRandomBehavior)) as IRandomBehavior;
@@ -100,7 +101,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           private void chooseEnemyShoot()
           {
-              throw new NotImplementedException();
           }
 
           private void checkWindowCollision()

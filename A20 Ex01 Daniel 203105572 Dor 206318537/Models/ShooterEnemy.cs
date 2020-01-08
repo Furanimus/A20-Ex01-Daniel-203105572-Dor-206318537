@@ -25,31 +25,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                Gun.Shoot();
           }
 
-          public override void Initialize()
-          {
-               base.Initialize();
-          }
-
-     
-
-          public override void Collided(ICollidable i_Collidable)
-          {
-               if (i_Collidable.GroupRepresentative != this.GroupRepresentative)
-               {
-                    SpriteAnimator rotationAnimator = this.Animations["RotationAnimator"];
-                    SpriteAnimator shrinkAnimator = this.Animations["ShrinkAnimator"];
-
-                    if (rotationAnimator != null)
-                    {
-                         rotationAnimator.Enabled = true;
-                    }
-                    if (shrinkAnimator != null)
-                    {
-                         shrinkAnimator.Enabled = true;
-                    }
-               }
-          }
-
           protected override void InitSourceRectangle()
           {
                this.SourceRectangle = r_SourceRectangle;
