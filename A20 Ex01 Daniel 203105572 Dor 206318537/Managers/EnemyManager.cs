@@ -100,7 +100,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           {
                checkWindowCollision();
                handleEnemyToShoot(i_GameTime);
-
                base.Update(i_GameTime);
           }
 
@@ -166,6 +165,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                     {
                          Enemy enemy = r_EnemyMatrix[row][col];
                          enemy.Position += new Vector2(0, enemy.Height / 2);
+
+                         enemy.Velocity += enemy.Velocity * k_IncVelocityOnRowDecendPercentage;
                          enemy.MoveDirection = i_DirectionChangeTo;
                     }
                }
