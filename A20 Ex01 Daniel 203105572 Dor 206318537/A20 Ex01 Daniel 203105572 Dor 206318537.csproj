@@ -43,7 +43,7 @@
   <ItemGroup>
     <Compile Include="BaseGame.cs" />
     <Compile Include="Enums\eInputButtons.cs" />
-    <Compile Include="Managers\ObsticleManager.cs" />
+    <Compile Include="Managers\BarrierManager.cs" />
     <Compile Include="Managers\CollisionsManager.cs" />
     <Compile Include="Managers\InputManager.cs" />
     <Compile Include="Managers\ScoreManager.cs" />

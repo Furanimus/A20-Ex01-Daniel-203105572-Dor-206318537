@@ -81,7 +81,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                     updateScore();
                }
 
-               Position = StartingPosition;
           }
 
           private void updateScore()
@@ -105,6 +104,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           private void executeLostLifeAnimation()
           {
+               Position = StartingPosition;
                this.Animations["Blink"].Restart();
           }
 

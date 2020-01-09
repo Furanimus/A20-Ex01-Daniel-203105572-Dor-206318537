@@ -15,7 +15,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           private const float k_EnemiesStartingX                        = 0;
           private const int k_MaxRowForBlueEnemies                      = 3;
           private const int k_MaxRowForPinkEnemies                      = 1;
-          private const int k_MaxMillisecondToRoll                      = 500;
+          private const int k_MaxMillisecondToRoll                      = 1000;
           private const float k_SpaceBetweenEnemies                     = 32f * 0.6f;
           private const int k_NumOfDeadEnemiesToIncreaseVelocity        = 5;
           private const float k_IncVelocityOnRowDecendPercentage        = 0.05f;
@@ -178,7 +178,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                for (int row = 0; row < k_MatrixRows; row++)
                {
                     float left          = k_EnemiesStartingX;
-                    bool isStartFromEnd = row % 2 == 0;
+                    bool isStartAnimationFromSecondCell = row % 2 == 0;
                     Color color;
                     int scoreWorth;
                     Rectangle sourceRectangle;
@@ -207,7 +207,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                          r_EnemyMatrix[row].Add(new AlienMatrixEnemy(sourceRectangle, scoreWorth, color, this.Game));
 
                          AlienMatrixEnemy enemy      = r_EnemyMatrix[row][col] as AlienMatrixEnemy;
-                         enemy.CellAnimation         = new CellAnimator(isStartFromEnd, TimeSpan.FromSeconds(0.5), 2, TimeSpan.Zero);
+                         enemy.CellAnimation         = new CellAnimator(isStartAnimationFromSecondCell, TimeSpan.FromSeconds(0.5), 2, TimeSpan.Zero);
                          enemy.StartingPosition      = new Vector2(left, top);
                          enemy.VisibleChanged       += enemy_VisibleChanged;
                          enemy.GroupRepresentative   = this;

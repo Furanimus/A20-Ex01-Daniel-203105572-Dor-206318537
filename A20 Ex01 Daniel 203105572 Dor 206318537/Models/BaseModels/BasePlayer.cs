@@ -84,11 +84,14 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.BaseModels
           {
                if (i_Collidable != null)
                {
-                    if (i_Collidable is BaseBullet)
+                    BaseBullet bullet  = i_Collidable as BaseBullet;
+                    Enemy enemy = i_Collidable as Enemy;
+
+                    if (bullet != null && bullet.Visible)
                     {
                          OnCollidedWithBullet();
                     }
-                    else if (i_Collidable is Enemy)
+                    else if (enemy != null && enemy.Visible)
                     {
                          OnCollidedWithEnemy();
                     }

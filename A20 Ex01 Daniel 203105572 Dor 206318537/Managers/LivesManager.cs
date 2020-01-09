@@ -75,7 +75,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
           {
                foreach(BasePlayer player in r_Players)
                {
-                    if(player.IsAlive)
+                    if(player.IsAlive || player.Visible)
                     {
                          m_IsAllPlayerAlive = true;
                          break;
