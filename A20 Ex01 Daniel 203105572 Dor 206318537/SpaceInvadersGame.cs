@@ -16,7 +16,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
           private Player m_Player1;
           private Player m_Player2;
           private EnemyManager m_EnemyManager;
-          private ObsticleManager m_BarrierManager;
+          private BarrierManager m_BarrierManager;
           private SpriteBatch m_SpriteBatch;
           private LivesManager m_LivesManager;
 
@@ -39,8 +39,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                m_SpriteBatch = new SpriteBatch(GraphicsDevice);
                this.Services.AddService(typeof(SpriteBatch), m_SpriteBatch);
 
-               m_EnemyManager = new EnemyManager(this);
-               m_BarrierManager              = new ObsticleManager(this);
+               m_EnemyManager                = new EnemyManager(this);
                m_LivesManager                = new LivesManager(this);
 
                m_Player1                     = new Player(@"Sprites\Ship01_32x32", this);
@@ -57,12 +56,14 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                m_LivesManager.AddPlayer(m_Player1);
                m_LivesManager.AddPlayer(m_Player2);
 
+               m_BarrierManager = new BarrierManager(this, m_Player1.StartingPosition.Y, m_Player1.Height);
+
                base.Initialize();
           }
 
           protected override void LoadContent()
           {
-
+               //m_BarrierManager.initPixelData();
                base.LoadContent();
           }
 

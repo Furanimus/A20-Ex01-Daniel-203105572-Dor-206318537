@@ -14,7 +14,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           private const float k_EnemiesStartingX                        = 0;
           private const int k_MaxRowForBlueEnemies                      = 3;
           private const int k_MaxRowForPinkEnemies                      = 1;
-          private const int k_MaxMillisecondToRoll                      = 500;
+          private const int k_MaxMillisecondToRoll                      = 1000;
           private const float k_SpaceBetweenEnemies                     = 32f * 0.6f;
           private const int k_NumOfDeadEnemiesToIncreaseVelocity        = 5;
           private const float k_IncVelocityOnRowDecendPercentage        = 0.05f;
@@ -207,7 +207,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
                          Enemy enemy               = r_EnemyMatrix[row][col];
                          enemy.StartingPosition    = new Vector2(left, top);
-                         enemy.VisibleChanged += Enemy_VisibleChanged;
+                         enemy.VisibleChanged     += Enemy_VisibleChanged;
                          enemy.GroupRepresentative = this;
                          left                     += enemy.Width + k_SpaceBetweenEnemies;
                     }
