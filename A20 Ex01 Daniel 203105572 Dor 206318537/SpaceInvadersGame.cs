@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Input;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
-using A20_Ex01_Daniel_203105572_Dor_206318537.Enums;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Managers;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537
@@ -19,6 +18,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
           private ObsticleManager m_BarrierManager;
           private SpriteBatch m_SpriteBatch;
           private LivesManager m_LivesManager;
+          private ScoreManager m_ScoreManager;
 
           public SpaceInvadersGame()
           {
@@ -39,9 +39,10 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                m_SpriteBatch = new SpriteBatch(GraphicsDevice);
                this.Services.AddService(typeof(SpriteBatch), m_SpriteBatch);
 
-               m_EnemyManager = new EnemyManager(this);
+               m_EnemyManager                = new EnemyManager(this);
                m_BarrierManager              = new ObsticleManager(this);
                m_LivesManager                = new LivesManager(this);
+               m_ScoreManager                = new ScoreManager(this);
 
                m_Player1                     = new Player(@"Sprites\Ship01_32x32", this);
                m_Player1.StartingPosition    = new Vector2(GraphicsDevice.Viewport.Width - (m_Player1.Width * 2), GraphicsDevice.Viewport.Height - (m_Player1.Height * 2));
@@ -56,26 +57,21 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 
                m_LivesManager.AddPlayer(m_Player1);
                m_LivesManager.AddPlayer(m_Player2);
-
+               m_LivesManager.AllPlayersDied += () => Exit();
+               m_ScoreManager.AddPlayer(m_Player1, Color.Blue);
+               m_ScoreManager.AddPlayer(m_Player2, Color.Green);
                base.Initialize();
           }
 
           protected override void LoadContent()
           {
-
                base.LoadContent();
           }
 
           protected override void Update(GameTime i_GameTime)
           {
-               bool isGameOver = CheckIfGameOver();
-
-               if (isGameOver || Keyboard.GetState().IsKeyDown(Keys.Escape))
+               if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                {
-                    if (isGameOver)
-                    {
-                    }
-
                     Exit();
                }
 
@@ -90,13 +86,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                m_SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
                base.Draw(gameTime);
                m_SpriteBatch.End();
-
-               string inputToString = (this.Services.GetService(typeof(IInputManager)) as IInputManager).ToString();
-          }
-
-          private bool CheckIfGameOver()
-          {
-               return false;
           }
      }
 }

@@ -18,11 +18,15 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           private const int k_DefaultHeight = 32;
           private const int k_DefaultScoreWorth = 0;
           private const string k_AssetName = @"Sprites\EnemySpriteSheet_192x32";
+          private const bool k_IsStartCellAnimationFromEnd = false;
 
           public AlienMatrixEnemy(Rectangle i_SourceRectangle, Game i_Game)
                :this(i_SourceRectangle, k_DefaultScoreWorth, Color.White, i_Game)
           {
+               CellAnimation = new CellAnimator(k_IsStartCellAnimationFromEnd, TimeSpan.FromSeconds(0.5), 2, TimeSpan.Zero);
           }
+
+          public CellAnimator CellAnimation { get; set; }
 
           public AlienMatrixEnemy(Rectangle i_SourceRectangle, int i_ScoreWorth, Color i_TintColor, Game i_Game)
                :base(k_AssetName, i_SourceRectangle, i_Game)
@@ -39,16 +43,18 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           {
                base.Initialize();
 
-               this.Animations.Add(new CellAnimator(TimeSpan.FromSeconds(0.5), 2, TimeSpan.Zero));
-               RotationAnimator rotationAnimator = new RotationAnimator(6, TimeSpan.FromSeconds(1.2));
-               this.Animations.Add(rotationAnimator);
-               ShrinkAnimator shrinkAnimator = new ShrinkAnimator(TimeSpan.FromSeconds(1.2));
-               this.Animations.Add(shrinkAnimator);
-               this.Animations.Add(new JumpMovementAnimator(TimeSpan.FromSeconds(0.5), TimeSpan.Zero));
-               rotationAnimator.Finished += RotationAnimator_Finished;
+               RotationAnimator rotation = new RotationAnimator(6, TimeSpan.FromSeconds(1.2));
+               ShrinkAnimator shrink = new ShrinkAnimator(TimeSpan.FromSeconds(1.2));
+               JumpMovementAnimator jump = new JumpMovementAnimator(TimeSpan.FromSeconds(0.5), TimeSpan.Zero);
+               this.Animations.Add(CellAnimation);
+               this.Animations.Add(rotation);
+               this.Animations.Add(shrink);
+               this.Animations.Add(jump);
+               this.Animations.Pause();
 
-               shrinkAnimator.Enabled = false;
-               rotationAnimator.Enabled = false;
+               CellAnimation.Resume();
+               jump.Resume();
+               rotation.Finished += RotationAnimator_Finished;
 
                this.Animations.Enabled = true;
           }

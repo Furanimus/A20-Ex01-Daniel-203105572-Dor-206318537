@@ -59,12 +59,12 @@
     <Compile Include="Models\Animators\ConcreteAnimator\WaypointsAnymator.cs" />
     <Compile Include="Models\Animators\SpriteAnimator.cs" />
     <Compile Include="Models\Background.cs" />
-    <Compile Include="Models\BaseBullet.cs" />
-    <Compile Include="Models\BaseGun.cs" />
-    <Compile Include="Models\BasePlayer.cs" />
+    <Compile Include="Models\BaseModels\BaseBullet.cs" />
+    <Compile Include="Models\BaseModels\BaseGun.cs" />
+    <Compile Include="Models\BaseModels\BasePlayer.cs" />
     <Compile Include="Models\Bullet.cs" />
     <Compile Include="Models\GameService.cs" />
-    <Compile Include="Models\LivesManager.cs" />
+    <Compile Include="Managers\LivesManager.cs" />
     <Compile Include="Models\LoadableDrawableComponent.cs" />
     <Compile Include="Models\RegisteredComponent.cs" />
     <Compile Include="Models\ShooterPlayer.cs" />
@@ -84,6 +84,7 @@
     </Compile>
     <Compile Include="MonitorForm.designer.cs" />
     <Compile Include="Interfaces\IRandomBehavior.cs" />
+    <Compile Include="Utils\Pair.cs" />
     <Compile Include="Utils\RandomBehavior.cs" />
     <Compile Include="Models\RedMotherShip.cs" />
     <Compile Include="Models\ShooterEnemy.cs" />

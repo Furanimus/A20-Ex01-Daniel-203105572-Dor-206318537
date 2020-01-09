@@ -30,7 +30,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           public override void Initialize()
           {
                base.Initialize();
-               
+
                BlinkAnimator lostLife = new BlinkAnimator(TimeSpan.FromSeconds(1/6), TimeSpan.FromSeconds(2.5));
                CompositeAnimator dead = new CompositeAnimator(
                     "Dead",
@@ -113,7 +113,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                Lives = 0;
           }
 
-          public int Score { get; set; }
 
           public object GroupRepresentative { get; set; }
      }

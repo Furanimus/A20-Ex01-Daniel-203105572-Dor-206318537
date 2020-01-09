@@ -3,7 +3,7 @@ using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
+namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.BaseModels
 {
      public abstract class BasePlayer : Entity
      {
@@ -12,7 +12,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           public BasePlayer(string i_AssetName, Game i_Game) : this(i_AssetName, i_Game, int.MaxValue)
           {
-
           }
 
           public BasePlayer(string i_AssetName, Game i_Game, int i_CallsOrder) : this(i_AssetName, i_Game, int.MaxValue, int.MaxValue)
@@ -24,6 +23,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                r_InputManager = this.Game.Services.GetService(typeof(IInputManager)) as IInputManager;
                r_Velocity = new Vector2(145, 0);
           }
+
+          public int Score { get; set; }
 
           public bool IsMouseControllable { get; set; }
 

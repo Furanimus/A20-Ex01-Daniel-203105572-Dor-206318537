@@ -3,18 +3,20 @@ using System.Collections.Generic;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
 using Microsoft.Xna.Framework;
 
-namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
+namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.BaseModels
 {
      public abstract class BaseGun : GameComponent
      {
           protected readonly Sprite r_Shooter;
           private readonly LinkedList<BaseBullet> r_Bullets;
+          private readonly Action<ICollidable> r_ExecuteOnBulletCollided;
           private int m_BulletsAdded;
 
-          protected BaseGun(Sprite i_Shooter) : base(i_Shooter.Game)
+          protected BaseGun(Sprite i_Shooter, Action<ICollidable> i_ExecuteOnBulletCollided) : base(i_Shooter.Game)
           {
                r_Shooter = i_Shooter;
                r_Bullets = new LinkedList<BaseBullet>();
+               r_ExecuteOnBulletCollided = i_ExecuteOnBulletCollided;
                this.Game.Components.Add(this);
           }
 
@@ -22,6 +24,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           {
                if (m_BulletsAdded < Capacity)
                {
+                    i_Bullet.CollidedWithSprite += r_ExecuteOnBulletCollided;
                     m_BulletsAdded++;
                     r_Bullets.AddLast(i_Bullet);
                }

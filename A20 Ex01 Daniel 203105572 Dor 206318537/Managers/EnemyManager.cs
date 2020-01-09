@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
 using Microsoft.Xna.Framework;
+using Models.Animators.ConcreteAnimators;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
@@ -176,47 +177,48 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
                for (int row = 0; row < k_MatrixRows; row++)
                {
-                    float left = k_EnemiesStartingX;
+                    float left          = k_EnemiesStartingX;
+                    bool isStartFromEnd = row % 2 == 0;
+                    Color color;
+                    int scoreWorth;
+                    Rectangle sourceRectangle;
+
+                    if (row < k_MaxRowForPinkEnemies)
+                    {
+                         color = Color.Pink;
+                         scoreWorth = 250;
+                         sourceRectangle = new Rectangle(0, 0, 32, 32);
+                    }
+                    else if (row < k_MaxRowForBlueEnemies)
+                    {
+                         color = Color.LightBlue;
+                         scoreWorth = 150;
+                         sourceRectangle = new Rectangle(64, 0, 32, 32);
+                    }
+                    else
+                    {
+                         color = Color.LightYellow;
+                         scoreWorth = 100;
+                         sourceRectangle = new Rectangle(128, 0, 32, 32);
+                    }
 
                     for (int col = 0; col < k_MatrixCols; col++)
                     {
-                         Color color;
-                         int scoreWorth;
-                         Rectangle sourceRectangle;
-
-                         if (row < k_MaxRowForPinkEnemies)
-                         {
-                              color           = Color.Pink;
-                              scoreWorth      = 250;
-                              sourceRectangle = new Rectangle(0, 0, 32, 32);
-                         }
-                         else if (row < k_MaxRowForBlueEnemies)
-                         {
-                              color           = Color.LightBlue;
-                              scoreWorth      = 150;
-                              sourceRectangle = new Rectangle(64, 0, 32, 32);
-                         }
-                         else
-                         {
-                              color           = Color.LightYellow;
-                              scoreWorth      = 100;
-                              sourceRectangle = new Rectangle(128, 0, 32, 32);
-                         }
-
                          r_EnemyMatrix[row].Add(new AlienMatrixEnemy(sourceRectangle, scoreWorth, color, this.Game));
 
-                         Enemy enemy               = r_EnemyMatrix[row][col];
-                         enemy.StartingPosition    = new Vector2(left, top);
-                         enemy.VisibleChanged += Enemy_VisibleChanged;
-                         enemy.GroupRepresentative = this;
-                         left                     += enemy.Width + k_SpaceBetweenEnemies;
+                         AlienMatrixEnemy enemy      = r_EnemyMatrix[row][col] as AlienMatrixEnemy;
+                         enemy.CellAnimation         = new CellAnimator(isStartFromEnd, TimeSpan.FromSeconds(0.5), 2, TimeSpan.Zero);
+                         enemy.StartingPosition      = new Vector2(left, top);
+                         enemy.VisibleChanged       += enemy_VisibleChanged;
+                         enemy.GroupRepresentative   = this;
+                         left                       += enemy.Width + k_SpaceBetweenEnemies;
                     }
 
                     top += r_EnemyMatrix[row][0].Height + k_SpaceBetweenEnemies;
                }
           }
 
-          private void Enemy_VisibleChanged(object sender, EventArgs e)
+          private void enemy_VisibleChanged(object sender, EventArgs e)
           {
                Enemy enemy = sender as Enemy;
 
