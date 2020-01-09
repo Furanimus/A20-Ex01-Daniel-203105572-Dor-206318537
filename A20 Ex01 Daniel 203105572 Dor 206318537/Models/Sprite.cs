@@ -243,7 +243,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           {
                if (!m_UseSharedBatch)
                {
-                    m_SpriteBatch.Begin();
+                    m_SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
                }
 
                m_SpriteBatch.Draw(Texture, this.PositionForDraw, this.SourceRectangle, this.TintColor,

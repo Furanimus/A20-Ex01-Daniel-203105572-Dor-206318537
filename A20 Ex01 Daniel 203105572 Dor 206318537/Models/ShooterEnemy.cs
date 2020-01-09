@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnimator;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Models.BaseModels;
 using Microsoft.Xna.Framework;
 using Models.Animators;
 using Models.Animators.ConcreteAnimators;

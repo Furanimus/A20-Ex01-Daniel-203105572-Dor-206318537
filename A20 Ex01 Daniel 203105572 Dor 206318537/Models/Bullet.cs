@@ -1,4 +1,5 @@
 ﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Models.BaseModels;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
 using Microsoft.Xna.Framework;
 using System;
@@ -30,23 +31,18 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           public override void Collided(ICollidable i_Collidable)
           {
-               if(i_Collidable is Bullet && i_Collidable.GroupRepresentative is Player && this.GroupRepresentative is EnemyManager)
+
+               if (i_Collidable is Bullet && i_Collidable.GroupRepresentative is BasePlayer && this.GroupRepresentative is EnemyManager)
                {
                     if(r_RandomBehavior.Roll(k_RandomFactor, k_MinRandom, k_MaxRandom))
                     {
-                         OnCollided();
+                         base.Collided(i_Collidable);
                     }
                }
                else
                {
-                    OnCollided();
+                    base.Collided(i_Collidable);
                }
-          }
-
-          private void OnCollided()
-          {
-               this.Visible = false;
-               this.Enabled = false;
           }
      }
 }

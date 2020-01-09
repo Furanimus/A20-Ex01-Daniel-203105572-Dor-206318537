@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Models.BaseModels;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -6,16 +7,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
+namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
 {
      public class LivesManager : LoadableDrawableComponent
      {
+          public event Action AllPlayersDied;
+
           private readonly LinkedList<BasePlayer> r_Players = new LinkedList<BasePlayer>();
-          private readonly Vector2 m_LivesScale = new Vector2(0.5f, 0.5f);
-          private const int k_IncreaseLivesY = 32;
+          private readonly Vector2 r_LivesScale = new Vector2(0.5f, 0.5f);
+          private readonly Color r_Color = new Color(Color.White, k_LivesAlpha);
           private const int k_SpaceBetweenLives = 10;
           private const int k_LivesStartingY = 10;
-          private const int k_LivesStartingX = 10;
+          private const float k_LivesAlpha = 0.5f;
+          private bool m_IsAllPlayerAlive;
 
           public LivesManager(string i_AssetName, Game i_Game, int i_UpdateOrder, int i_DrawOrder) 
                : base(i_AssetName, i_Game, i_UpdateOrder, i_DrawOrder)
@@ -67,11 +71,32 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                base.LoadContent();
           }
 
+          public override void Update(GameTime i_GameTime)
+          {
+               foreach(BasePlayer player in r_Players)
+               {
+                    if(player.IsAlive)
+                    {
+                         m_IsAllPlayerAlive = true;
+                         break;
+                    }
+               }
+
+               if(!m_IsAllPlayerAlive && AllPlayersDied != null)
+               {
+                    AllPlayersDied.Invoke();
+               }
+          
+               m_IsAllPlayerAlive = false;
+
+               base.Update(i_GameTime);
+          }
+
           public override void Draw(GameTime i_GameTime)
           {
                if (!UseSharedSpriteBatch)
                {
-                    SpriteBatch.Begin();
+                    SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
                }
 
                float yPos = k_LivesStartingY;
@@ -83,12 +108,12 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                          float xPos = this.Game.GraphicsDevice.Viewport.Width - (life * player.Width);
                          Vector2 positionForDraw = new Vector2(xPos, yPos);
 
-                         SpriteBatch.Draw(player.Texture, positionForDraw, player.SourceRectangle, Color.White,
-                              0, Vector2.Zero, m_LivesScale, SpriteEffects.None, player.LayerDepth);
+                         SpriteBatch.Draw(player.Texture, positionForDraw, player.SourceRectangle, r_Color,
+                              0, Vector2.Zero, r_LivesScale, SpriteEffects.None, player.LayerDepth);
 
                     }
 
-                    float nextLivesPos = (player.Height * m_LivesScale.Y) + k_SpaceBetweenLives;
+                    float nextLivesPos = (player.Height * r_LivesScale.Y) + k_SpaceBetweenLives;
                     yPos += nextLivesPos;
                }
 

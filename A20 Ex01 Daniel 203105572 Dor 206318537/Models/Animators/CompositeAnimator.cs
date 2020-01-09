@@ -9,8 +9,6 @@ namespace Models.Animators
      {
           private readonly Dictionary<string, SpriteAnimator> m_AnimationsDictionary = new Dictionary<string, SpriteAnimator>();
           protected readonly List<SpriteAnimator> m_AnimationsList = new List<SpriteAnimator>();
-          private int m_AnimationsCount = 0;
-          private int m_FinishedAnimations = 0;
 
           public CompositeAnimator(Sprite i_BoundSprite)
                : this("AnimationsManager", TimeSpan.Zero, i_BoundSprite, new SpriteAnimator[]{})
@@ -31,8 +29,6 @@ namespace Models.Animators
 
           public void Add(SpriteAnimator i_Animation)
           {
-               m_AnimationsCount++;
-
                i_Animation.BoundSprite = this.BoundSprite;
                i_Animation.Enabled = true;
                m_AnimationsDictionary.Add(i_Animation.Name, i_Animation);
@@ -41,7 +37,6 @@ namespace Models.Animators
 
           public void Remove(string i_AnimationName)
           {
-               m_AnimationsCount--;
                SpriteAnimator animationToRemove;
                m_AnimationsDictionary.TryGetValue(i_AnimationName, out animationToRemove);
 

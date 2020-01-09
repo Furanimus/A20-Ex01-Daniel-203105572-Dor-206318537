@@ -3,65 +3,99 @@ using Microsoft.Xna.Framework;
 
 namespace Models.Animators.ConcreteAnimators
 {
-    public class CellAnimator : SpriteAnimator
-    {
-        private TimeSpan m_CellTime;
-        private TimeSpan m_TimeLeftForCell;
-        private bool m_Loop = true;
-        private int m_CurrCellIdx = 0;
-        private readonly int r_NumOfCells = 1;
+     public class CellAnimator : SpriteAnimator
+     {
+          private TimeSpan m_CellTime;
+          private TimeSpan m_TimeLeftForCell;
+          private bool m_Loop = true;
+          private int m_CurrCellIdx = 0;
+          private readonly int r_NumOfCells = 1;
+          private readonly bool r_IsStartFromEnd;
 
-        public CellAnimator(TimeSpan i_CellTime, int i_NumOfCells, TimeSpan i_AnimationLength)
-            : base("Cell", i_AnimationLength)
-        {
-            this.m_CellTime = i_CellTime;
-            this.m_TimeLeftForCell = i_CellTime;
-            this.r_NumOfCells = i_NumOfCells;
+          public CellAnimator(bool i_IsStartFromEnd, TimeSpan i_CellTime, int i_NumOfCells, TimeSpan i_AnimationLength)
+               : base("Cell", i_AnimationLength)
+          {
+               this.m_CellTime = i_CellTime;
+               this.m_TimeLeftForCell = i_CellTime;
+               this.r_NumOfCells = i_NumOfCells;
 
-            m_Loop = i_AnimationLength == TimeSpan.Zero;
-        }
+               r_IsStartFromEnd = i_IsStartFromEnd;
 
-        private void goToNextFrame()
-        {
-            m_CurrCellIdx++;
+               if(r_IsStartFromEnd)
+               {
+                    m_CurrCellIdx = i_NumOfCells - 1;
+               }
 
-            if (m_CurrCellIdx >= r_NumOfCells)
-            {
-                if (m_Loop)
-                {
-                    m_CurrCellIdx = 0;
-                }
-                else
-                {
-                    m_CurrCellIdx = r_NumOfCells - 1;
-                    this.IsFinished = true;
-                }
-            }
-        }
+               m_Loop = i_AnimationLength == TimeSpan.Zero;
+          }
 
-        protected override void RevertToOriginal()
-        {
-            this.BoundSprite.SourceRectangle = m_OriginalSpriteInfo.SourceRectangle;
-        }
+          private void goToNextFrameFromStart()
+          {
+               m_CurrCellIdx++;
 
-        protected override void DoFrame(GameTime i_GameTime)
-        {
-            if (m_CellTime != TimeSpan.Zero)
-            {
-                m_TimeLeftForCell -= i_GameTime.ElapsedGameTime;
+               if (m_CurrCellIdx >= r_NumOfCells)
+               {
+                    if (m_Loop)
+                    {
+                         m_CurrCellIdx = 0;
+                    }
+                    else
+                    {
+                         m_CurrCellIdx = r_NumOfCells - 1;
+                         this.IsFinished = true;
+                    }
+               }
+          }
 
-                if (m_TimeLeftForCell.TotalSeconds <= 0)
-                {
-                    goToNextFrame();
-                    m_TimeLeftForCell = m_CellTime;
-                }
-            }
+          private void goToNextFrameFromEnd()
+          {
+               m_CurrCellIdx--;
 
-            this.BoundSprite.SourceRectangle = new Rectangle(
-                m_OriginalSpriteInfo.SourceRectangle.Left + (m_CurrCellIdx * this.BoundSprite.SourceRectangle.Width),
-                this.BoundSprite.SourceRectangle.Top,
-                this.BoundSprite.SourceRectangle.Width,
-                this.BoundSprite.SourceRectangle.Height);
-        }
-    }
+               if (m_CurrCellIdx < 0)
+               {
+                    if (m_Loop)
+                    {
+                         m_CurrCellIdx = r_NumOfCells - 1;
+                    }
+                    else
+                    {
+                         m_CurrCellIdx = 0;
+                         this.IsFinished = true;
+                    }
+               }
+          }
+
+          protected override void RevertToOriginal()
+          {
+               this.BoundSprite.SourceRectangle = m_OriginalSpriteInfo.SourceRectangle;
+          }
+
+          protected override void DoFrame(GameTime i_GameTime)
+          {
+               if (m_CellTime != TimeSpan.Zero)
+               {
+                    m_TimeLeftForCell -= i_GameTime.ElapsedGameTime;
+
+                    if (m_TimeLeftForCell.TotalSeconds <= 0)
+                    {
+                         if (r_IsStartFromEnd)
+                         {
+                              goToNextFrameFromEnd();
+                         }
+                         else
+                         {
+                              goToNextFrameFromStart();
+                         }
+
+                         m_TimeLeftForCell = m_CellTime;
+                    }
+               }
+
+               this.BoundSprite.SourceRectangle = new Rectangle(
+               m_OriginalSpriteInfo.SourceRectangle.Left + (m_CurrCellIdx * this.BoundSprite.SourceRectangle.Width),
+               this.BoundSprite.SourceRectangle.Top,
+               this.BoundSprite.SourceRectangle.Width,
+               this.BoundSprite.SourceRectangle.Height);
+          }
+     }
 }

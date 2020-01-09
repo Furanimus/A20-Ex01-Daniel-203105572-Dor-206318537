@@ -2,11 +2,12 @@
 using Microsoft.Xna.Framework;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
 
-namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
+namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.BaseModels
 {
      public abstract class BaseBullet : Sprite, ICollidable2D
      {
           public event EventHandler LeftWindowBounds;
+          public event Action<ICollidable> CollidedWithSprite;
 
           protected BaseBullet(string i_GraphicPath, Game i_Game) 
                : base(i_GraphicPath, i_Game)
@@ -46,6 +47,11 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           {
                this.Enabled = false;
                this.Visible = false;
+
+               if(CollidedWithSprite != null)
+               {
+                    CollidedWithSprite.Invoke(i_Collidable);
+               }
           }
      }
 }
