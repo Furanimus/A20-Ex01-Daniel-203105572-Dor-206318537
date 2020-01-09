@@ -20,36 +20,17 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                this.Height = 32;
                this.StartingPosition = new Vector2(-Width, 32);
                this.RotationOrigin = new Vector2(this.Width / 2, this.Height / 2);
+               this.PausePositionDuringAnimation = true;
           }
-
-          public override void Collided(ICollidable i_Collidable)
-          {
-               if (Lives > 0)
-               {
-                    this.IsDuringAnimation = true;
-                    this.Lives--;
-                    this.Animations["Blink"].Enabled = true;
-                    this.Animations["Shrink"].Enabled = true;
-                    this.Animations["Transparency"].Enabled = true;
-               }
-          }
-
 
           public override void Initialize()
           {
                base.Initialize();
 
-               BlinkAnimator blinkAnimator = new BlinkAnimator(TimeSpan.FromSeconds(0.1), TimeSpan.FromSeconds(2.2));
-               ShrinkAnimator shrinkAnimtor = new ShrinkAnimator(TimeSpan.FromSeconds(2.2));
-               TransparencyAnimator transparencyAnimator = new TransparencyAnimator(this.TintColor, TimeSpan.FromSeconds(2.2));
-
-               this.Animations.Add(blinkAnimator);
-               this.Animations.Add(shrinkAnimtor);
-               this.Animations.Add(transparencyAnimator);
-
-               blinkAnimator.Enabled        = false;
-               shrinkAnimtor.Enabled        = false;
-               transparencyAnimator.Enabled = false;
+               this.Animations.Add(new BlinkAnimator(TimeSpan.FromSeconds(0.1), TimeSpan.FromSeconds(2.2)));
+               this.Animations.Add(new ShrinkAnimator(TimeSpan.FromSeconds(2.2)));
+               this.Animations.Add(new TransparencyAnimator(this.TintColor, TimeSpan.FromSeconds(2.2)));
+               this.Animations.Pause();
                this.Animations.Finished += animators_Finished;
                this.Animations.Enabled = true;
           }
@@ -57,7 +38,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           private void animators_Finished(object sender, EventArgs e)
           {
                CompositeAnimator spriteAnimator = sender as CompositeAnimator;
-               spriteAnimator.UnableAllAnimation();
+               spriteAnimator.Pause();
                this.Visible = false;
                this.IsDuringAnimation = false;
           }

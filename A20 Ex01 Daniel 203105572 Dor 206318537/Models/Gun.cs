@@ -9,95 +9,35 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
      public class Gun : BaseGun
      {
-          public Gun(int i_Capacity, Sprite i_Shooter) 
-               : base(i_Shooter)
+          public Gun(int i_Capacity, Sprite i_Shooter) : base(i_Shooter)
           {
                Capacity = i_Capacity;
                BulletType = typeof(Bullet);
-               initBullets();
           }
 
-          private void initBullets()
+          protected override void InitializeBullets()
           {
                ConstructorInfo[] constructors = BulletType.GetConstructors();
 
                for (int i = 0; i < Capacity; i++)
                {
-                    Bullets.Add(constructors[0].Invoke(new object[] { r_Shooter.Game }) as BaseBullet);
+                    BaseBullet bullet = constructors[0].Invoke(new object[] { r_Shooter.Game }) as BaseBullet;
+                    this.AddBullet(bullet);
 
-                    if(r_Shooter is Player)
+                    if (r_Shooter is Player)
                     {
-                         Bullets[i].TintColor = Color.Red;
+                         bullet.TintColor = Color.Red;
                     }
                     else if(r_Shooter is Enemy)
                     {
-                         Bullets[i].TintColor = Color.Blue;
+                         bullet.TintColor = Color.Blue;
                     }
-               }
 
-               BulletsVelocity = Bullets[0].Velocity;
-          }
-
-          public override void ReloadBullet()
-          {
-               if(BulletShot >= 0)
-               {
-                    BulletShot--;
-               }
-          }
-
-          public override void Shoot()
-          {
-               this.GunDirection = r_Shooter.ViewDirection;
-
-               if(BulletShot < Capacity)
-               {
-                    for(int i = 0; i < Capacity; i++)
+                    if(BulletsVelocity == Vector2.Zero)
                     {
-                         BaseBullet bullet = Bullets[i];
-
-                         if (!bullet.Enabled)
-                         {
-                              if(r_Shooter is ICollidable)
-                              {
-                                   Bullets[i].GroupRepresentative = (r_Shooter as ICollidable).GroupRepresentative;
-                              }
-
-                              bullet.Position          = getShootOrigin(bullet);
-                              bullet.LeftWindowBounds += onLeftWindowBounds;
-                              bullet.VisibleChanged   += Bullet_VisibleChanged;
-                              bullet.MoveDirection     = this.GunDirection;
-                              bullet.Enabled           = true;
-                              bullet.Visible           = true;
-                              BulletShot++;
-                              break;
-                         }
+                         BulletsVelocity = bullet.Velocity;
                     }
                }
-          }
-
-          private void Bullet_VisibleChanged(object sender, EventArgs e)
-          {
-               ReloadBullet();
-          }
-
-          private void onLeftWindowBounds(object i_Sender, EventArgs i_Args)
-          {
-               if (i_Sender != null && i_Sender is BaseBullet)
-               {
-                    BaseBullet bullet = i_Sender as BaseBullet;
-                    bullet.Visible = false;
-                    bullet.Enabled = false;
-                    ReloadBullet();
-               }
-          }
-
-          private Vector2 getShootOrigin(BaseBullet i_Bullet)
-          {
-               Vector2 shooterCenterWidth = new Vector2(r_Shooter.Width / 2, 0);
-               Vector2 bulletCenterWidth = new Vector2(i_Bullet.Width / 2, 0);
-
-               return r_Shooter.Position + shooterCenterWidth - bulletCenterWidth;
           }
      }
 }

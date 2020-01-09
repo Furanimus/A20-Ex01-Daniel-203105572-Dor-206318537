@@ -5,23 +5,19 @@ using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnimator;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Models.Animators;
 using Models.Animators.ConcreteAnimators;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
-     public class Player : BasePlayer, ICollidable2D
+     public class Player : ShooterPlayer, ICollidable2D
      {
-          private readonly Vector2 r_Velocity = new Vector2(145, 0);
-          private const int k_MaxShotInMidAir = 2;
-          private readonly Gun r_Gun;
           private const int k_ScoreLostOnDestroyed = 1200;
-          private readonly IInputManager r_InputManager;
 
           public Player(string i_AssetName, Game i_Game) : base(i_AssetName, i_Game) 
           {
-               r_InputManager             = this.Game.Services.GetService(typeof(IInputManager)) as IInputManager;
-               this.r_Gun                 = new Gun(k_MaxShotInMidAir, this);
                this.Lives                 = 3;
                this.Score                 = 0;
                this.Width                 = 32;
@@ -34,119 +30,40 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           public override void Initialize()
           {
                base.Initialize();
+               
+               BlinkAnimator lostLife = new BlinkAnimator(TimeSpan.FromSeconds(1/6), TimeSpan.FromSeconds(2.5));
+               CompositeAnimator dead = new CompositeAnimator(
+                    "Dead",
+                    TimeSpan.FromSeconds(2.5),
+                    this,
+                    new RotationAnimator(4, TimeSpan.FromSeconds(2.5)),
+                    new TransparencyAnimator(this.TintColor, TimeSpan.FromSeconds(2.5)));
 
-               RotationAnimator rotationAnimator = new RotationAnimator(4, TimeSpan.FromSeconds(2.5));
-               BlinkAnimator blinkAnimator = new BlinkAnimator(TimeSpan.FromSeconds(1/6), TimeSpan.FromSeconds(2.5));
-               TransparencyAnimator transparency = new TransparencyAnimator(this.TintColor, TimeSpan.FromSeconds(2.5));
-
-               this.Animations.Add(rotationAnimator);
-               this.Animations.Add(blinkAnimator);
-               this.Animations.Add(transparency);
-               this.Animations["Rotation"].Enabled = false;
-               this.Animations["Blink"].Enabled = false;
-               this.Animations["Transparency"].Enabled = false;
+               dead.Finished += dead_Finished;
+               lostLife.Finished += lostLife_Finished;
+               
+               this.Animations.Add(dead);
+               this.Animations.Add(lostLife);
+               this.Animations.Pause();
                this.Animations.Enabled = true;
-               this.Animations.Finished += animations_Finished;
-               rotationAnimator.Finished += rotationAnimator_Finished;
-               rotationAnimator.Finished += blinkAnimator_Finished;
-
           }
 
-          private void blinkAnimator_Finished(object sender, EventArgs e)
+          private void lostLife_Finished(object sender, EventArgs e)
           {
-               Position = StartingPosition;
+               SpriteAnimator animator = sender as SpriteAnimator;
+               animator.Pause();
           }
 
-          private void rotationAnimator_Finished(object sender, EventArgs e)
+          
+          private void dead_Finished(object sender, EventArgs e)
           {
-               this.Enabled = false;
+               CompositeAnimator animator = sender as CompositeAnimator;
+               animator.Pause();
                this.Visible = false;
-               this.Animations.UnableAllAnimation();
-               this.Lives--;
-          }
-
-          private void animations_Finished(object sender, EventArgs e)
-          {
                this.Enabled = false;
-               this.Visible = false;
           }
 
-          public Keys MoveLeftKey { get; set; } = Keys.H;
-
-          public Keys MoveRightKey { get; set; } = Keys.K;
-
-          public Keys ShootKey { get; set; } = Keys.U;
-
-          public eInputButtons MouseShootButton { get; set; } = eInputButtons.Left;
-
-          public bool IsMouseControllable { get; set; }
-
-          public override void Update(GameTime i_GameTime)
-          {
-               if (IsAlive)
-               {
-                    if (r_InputManager.KeyboardState.IsKeyDown(MoveLeftKey))
-                    {
-                         Velocity = r_Velocity * Sprite.Left;
-                    }
-                    else if (r_InputManager.KeyboardState.IsKeyDown(MoveRightKey))
-                    {
-                         Velocity = r_Velocity * Sprite.Right;
-                    }
-                    else
-                    {
-                         Velocity = Vector2.Zero;
-                    }
-
-                    if (r_InputManager.KeyPressed(ShootKey) ||
-                         (IsMouseControllable && r_InputManager.ButtonPressed(MouseShootButton)))
-                    {
-                         r_Gun.Shoot();
-                    }
-
-                    if (IsMouseControllable)
-                    {
-                         Vector2 mouseDelta = r_InputManager.MousePositionDelta;
-
-                         if (mouseDelta != Vector2.Zero)
-                         {
-                              Position += mouseDelta;
-                         }
-                    }
-               }
-
-               base.Update(i_GameTime);
-          }
-
-          public override Vector2 Position 
-          {
-               get
-               {
-                    return base.Position;
-               }
-
-               set 
-               {
-                    m_Position.X = MathHelper.Clamp(value.X, 0, (float)this.GraphicsDevice.Viewport.Width - Width);
-               } 
-          }
-
-          public override void Collided(ICollidable i_Collidable)
-          {
-               if (i_Collidable != null)
-               {
-                    if (i_Collidable is BaseBullet)
-                    {
-                         onCollidedWithBullet();
-                    }
-                    else if (i_Collidable is Enemy)
-                    {
-                         onCollidedWithEnemy();
-                    }
-               }
-          }
-
-          private void onCollidedWithBullet()
+          protected override void OnCollidedWithBullet()
           {
                if (Lives > 0)
                {
@@ -154,27 +71,44 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
                     if (Lives == 0)
                     {
-                         this.IsAlive = false;
-                         this.Animations["Rotation"].Enabled = true;
-                         this.Animations["Transparency"].Enabled = true;
+                         executeDeadAnimation();
                     }
                     else
                     {
-                         this.Animations["Blink"].Enabled = false; //Bugged
+                         executeLostLifeAnimation();
                     }
 
-                    if (Score >= k_ScoreLostOnDestroyed)
-                    {
-                         Score -= k_ScoreLostOnDestroyed;
-                    }
-                    else
-                    {
-                         Score = 0;
-                    }
+                    updateScore();
+               }
+
+               Position = StartingPosition;
+          }
+
+          private void updateScore()
+          {
+               if (Score >= k_ScoreLostOnDestroyed)
+               {
+                    Score -= k_ScoreLostOnDestroyed;
+               }
+               else
+               {
+                    Score = 0;
                }
           }
 
-          private void onCollidedWithEnemy()
+          private void executeDeadAnimation()
+          {
+               this.Animations["Blink"].Pause();
+               this.Visible = true;
+               this.Animations["Dead"].Resume();
+          }
+
+          private void executeLostLifeAnimation()
+          {
+               this.Animations["Blink"].Restart();
+          }
+
+          protected override void OnCollidedWithEnemy()
           {
                Lives = 0;
           }

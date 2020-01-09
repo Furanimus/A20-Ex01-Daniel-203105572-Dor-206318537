@@ -207,8 +207,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
                if (m_SpriteBatch == null)
                {
-                    m_SpriteBatch =
-                        Game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
+                    m_SpriteBatch = Game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
 
                     if (m_SpriteBatch == null)
                     {
@@ -247,10 +246,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                     m_SpriteBatch.Begin();
                }
 
-               m_SpriteBatch.Draw(Texture, this.PositionForDraw,
-                    this.SourceRectangle, this.TintColor,
-                   this.Rotation, this.RotationOrigin, this.Scales,
-                   SpriteEffects.None, this.LayerDepth);
+               m_SpriteBatch.Draw(Texture, this.PositionForDraw, this.SourceRectangle, this.TintColor,
+                    this.Rotation, this.RotationOrigin, this.Scales, SpriteEffects.None, this.LayerDepth);
 
                if (!m_UseSharedBatch)
                {

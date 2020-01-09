@@ -36,11 +36,5 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnima
           {
                this.BoundSprite.Scales = m_OriginalSpriteInfo.Scales;
           }
-
-          protected override void OnFinished()
-          {
-               base.OnFinished();
-               IsFinished = false;
-          }
      }
 }

@@ -7,8 +7,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
      {
           protected int m_Lives;
 
-          public event Action<Entity> Destroyed;
-
           public Entity(string i_AssetName, Game i_Game)
                : base(i_AssetName, i_Game)
           {
@@ -32,18 +30,16 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                }
                set
                {
-                    m_Lives = value;
+                    if (value >= 0)
+                    {
+                         m_Lives = value;
+                    }
 
                     if(m_Lives == 0)
                     {
                          IsAlive = false;
-
-                         if(Destroyed != null)
-                         {
-                              Destroyed.Invoke(this);
-                         }
                     }
-                    else
+                    else if(m_Lives > 0)
                     {
                          IsAlive = true;
                     }

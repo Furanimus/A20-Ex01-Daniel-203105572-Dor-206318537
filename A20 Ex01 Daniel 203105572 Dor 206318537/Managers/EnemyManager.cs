@@ -8,31 +8,34 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
      public class EnemyManager : GameComponent
      {
-          private const int k_NumOfDeadEnemiesToIncreaseVelocity = 5;
-          private const int k_MatrixRows = 5;
-          private const int k_MatrixCols = 9;
-          private const float k_PercentageToIncreaseVelocityOnRowDescend = 0.05f;
-          private const float k_PercentageToIncreaseVelocityOnNumOfDeadEnemies = 0.03f;
-          private const float k_EnemiesStartingY = 96;
-          private const float k_EnemiesStartingX = 0;
-          private const float k_SpaceBetweenEnemies = 32f * 0.6f;
-          private Enemy m_LeftMostRepresentetive;
-          private Enemy m_RightMostRepresentetive;
-          private TimeSpan m_IntervalToNextShoot;
-          private const int k_MaxMillisecondToRoll = 500;
-          private readonly List<List<Enemy>> r_EnemyMatrix;
+          private const int k_MatrixCols                                = 9;
+          private const int k_MatrixRows                                = 5;
+          private const float k_EnemiesStartingY                        = 96;
+          private const float k_EnemiesStartingX                        = 0;
+          private const int k_MaxRowForBlueEnemies                      = 3;
+          private const int k_MaxRowForPinkEnemies                      = 1;
+          private const int k_MaxMillisecondToRoll                      = 500;
+          private const float k_SpaceBetweenEnemies                     = 32f * 0.6f;
+          private const int k_NumOfDeadEnemiesToIncreaseVelocity        = 5;
+          private const float k_IncVelocityOnRowDecendPercentage        = 0.05f;
+          private const float k_IncVelocityOnNumOfDeadEnemiesPercentage = 0.03f;
           private readonly ICollisionsManager r_CollisionsManager;
           private readonly IRandomBehavior r_RandomBehavior;
+          private readonly List<List<Enemy>> r_EnemyMatrix;
           private readonly MotherShip r_MotherShip;
-          private int m_DeadEnemiesCounter = 0;
+          private Enemy m_RightMostRepresentetive;
+          private Enemy m_LeftMostRepresentetive;
+          private TimeSpan m_IntervalToNextShoot;
+          private int m_DeadEnemiesCounter;
 
           public EnemyManager(Game i_Game) : base(i_Game)
           {
-               this.Game.Components.Add(this);
-               r_EnemyMatrix = new List<List<Enemy>>(k_MatrixRows);
+               r_EnemyMatrix       = new List<List<Enemy>>(k_MatrixRows);
                r_CollisionsManager = this.Game.Services.GetService(typeof(ICollisionsManager)) as ICollisionsManager;
-               r_RandomBehavior = this.Game.Services.GetService(typeof(IRandomBehavior)) as IRandomBehavior;
-               r_MotherShip = new RedMotherShip(i_Game);
+               r_RandomBehavior    = this.Game.Services.GetService(typeof(IRandomBehavior)) as IRandomBehavior;
+               r_MotherShip        = new RedMotherShip(i_Game);
+
+               this.Game.Components.Add(this);
           }
 
           public override void Initialize()
@@ -103,8 +106,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           private void handleEnemyToShoot(GameTime i_GameTime)
           {
                m_IntervalToNextShoot -= i_GameTime.ElapsedGameTime;
+               bool isIntervalFinished = m_IntervalToNextShoot <= TimeSpan.Zero;
 
-               if(m_IntervalToNextShoot <= TimeSpan.Zero)
+               if (isIntervalFinished)
                {
                     ShooterEnemy enemy = chooseEnemyShoot();
                     bool isShoot = tryShoot(enemy);
@@ -119,9 +123,10 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           private bool tryShoot(ShooterEnemy enemy)
           {
                bool isShoot = false;
-               if (enemy.IsAlive && (enemy as ShooterEnemy).Gun.BulletShot < (enemy as ShooterEnemy).Gun.Capacity)
+
+               if (enemy.IsAlive && enemy.Gun.BulletShot < enemy.Gun.Capacity)
                {
-                    (enemy as ShooterEnemy).Shoot();
+                    enemy.Shoot();
                     isShoot = true;
                }
 
@@ -130,9 +135,10 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           private ShooterEnemy chooseEnemyShoot()
           {
-               int randomRow = r_RandomBehavior.GetRandomNumber(0, k_MatrixRows - 1);
-               int randomCol = r_RandomBehavior.GetRandomNumber(0, k_MatrixCols - 1);
+               int randomRow = r_RandomBehavior.GetRandomNumber(0, k_MatrixRows);
+               int randomCol = r_RandomBehavior.GetRandomNumber(0, k_MatrixCols);
                Enemy enemy = r_EnemyMatrix[randomRow][randomCol];
+
                return enemy as ShooterEnemy;
           }
 
@@ -170,50 +176,67 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
                for (int row = 0; row < k_MatrixRows; row++)
                {
-                    float left = 0;
+                    float left = k_EnemiesStartingX;
 
                     for (int col = 0; col < k_MatrixCols; col++)
                     {
-                         if (row < 1)
+                         Color color;
+                         int scoreWorth;
+                         Rectangle sourceRectangle;
+
+                         if (row < k_MaxRowForPinkEnemies)
                          {
-                              r_EnemyMatrix[row].Add(new AlienMatrixEnemy(new Rectangle(0, 0, 32, 32), 250, Color.Pink, this.Game));
+                              color           = Color.Pink;
+                              scoreWorth      = 250;
+                              sourceRectangle = new Rectangle(0, 0, 32, 32);
                          }
-                         else if (row < 3)
+                         else if (row < k_MaxRowForBlueEnemies)
                          {
-                              r_EnemyMatrix[row].Add(new AlienMatrixEnemy(new Rectangle(64, 0, 32, 32), 150, Color.LightBlue, this.Game));
+                              color           = Color.LightBlue;
+                              scoreWorth      = 150;
+                              sourceRectangle = new Rectangle(64, 0, 32, 32);
                          }
                          else
                          {
-                              r_EnemyMatrix[row].Add(new AlienMatrixEnemy(new Rectangle(128, 0, 32, 32), 100, Color.LightYellow, this.Game));
+                              color           = Color.LightYellow;
+                              scoreWorth      = 100;
+                              sourceRectangle = new Rectangle(128, 0, 32, 32);
                          }
 
-                         Enemy enemy = r_EnemyMatrix[row][col];
-                         enemy.StartingPosition = new Vector2(left, top);
-                         enemy.Destroyed += enemy_Destroyed;
+                         r_EnemyMatrix[row].Add(new AlienMatrixEnemy(sourceRectangle, scoreWorth, color, this.Game));
+
+                         Enemy enemy               = r_EnemyMatrix[row][col];
+                         enemy.StartingPosition    = new Vector2(left, top);
+                         enemy.VisibleChanged += Enemy_VisibleChanged;
                          enemy.GroupRepresentative = this;
-                         left += enemy.Width + k_SpaceBetweenEnemies;
+                         left                     += enemy.Width + k_SpaceBetweenEnemies;
                     }
 
                     top += r_EnemyMatrix[row][0].Height + k_SpaceBetweenEnemies;
                }
           }
 
-          private void enemy_Destroyed(Entity i_Enemy)
+          private void Enemy_VisibleChanged(object sender, EventArgs e)
           {
-               if(i_Enemy == m_LeftMostRepresentetive)
-               {
-                    setLeftRepresentetive();
-               }
-               else if(i_Enemy == m_RightMostRepresentetive)
-               {
-                    setRightRepresentetive();
-               }
+               Enemy enemy = sender as Enemy;
 
-               m_DeadEnemiesCounter++;
-
-               if (isIncreaseEnemiesSpeed())
+               if (!enemy.Visible)
                {
-                    increaseAllEnemiesVelocity();
+                    if (enemy == m_LeftMostRepresentetive)
+                    {
+                         setLeftRepresentetive();
+                    }
+                    else if (enemy == m_RightMostRepresentetive)
+                    {
+                         setRightRepresentetive();
+                    }
+
+                    m_DeadEnemiesCounter++;
+
+                    if (isIncreaseEnemiesSpeed())
+                    {
+                         increaseAllEnemiesVelocity();
+                    }
                }
           }
 
@@ -229,7 +252,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                     for (int col = 0; col < k_MatrixCols; col++)
                     {
                          Enemy enemy = r_EnemyMatrix[row][col];
-                         enemy.Velocity += enemy.Velocity * k_PercentageToIncreaseVelocityOnNumOfDeadEnemies;
+                         enemy.Velocity += enemy.Velocity * k_IncVelocityOnNumOfDeadEnemiesPercentage;
                     }
                }
           }

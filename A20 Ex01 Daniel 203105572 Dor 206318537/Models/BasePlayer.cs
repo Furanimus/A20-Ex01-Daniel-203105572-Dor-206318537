@@ -1,72 +1,105 @@
-﻿using Microsoft.Xna.Framework;
+﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Enums;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
      public abstract class BasePlayer : Entity
      {
-          public BasePlayer(string i_AssetName, Game i_Game) : base(i_AssetName, i_Game)
+          protected readonly IInputManager r_InputManager;
+          private readonly Vector2 r_Velocity;
+
+          public BasePlayer(string i_AssetName, Game i_Game) : this(i_AssetName, i_Game, int.MaxValue)
           {
+
           }
 
-          public BasePlayer(string i_AssetName, Game i_Game, int i_CallsOrder) : base(i_AssetName, i_Game, i_CallsOrder)
+          public BasePlayer(string i_AssetName, Game i_Game, int i_CallsOrder) : this(i_AssetName, i_Game, int.MaxValue, int.MaxValue)
           {
           }
 
           public BasePlayer(string i_AssetName, Game i_Game, int i_UpdateOrder, int i_DrawOrder) : base(i_AssetName, i_Game, i_UpdateOrder, i_DrawOrder)
           {
+               r_InputManager = this.Game.Services.GetService(typeof(IInputManager)) as IInputManager;
+               r_Velocity = new Vector2(145, 0);
           }
 
-          public KeyboardState CurrKBState { get; set; }
+          public bool IsMouseControllable { get; set; }
 
-          public KeyboardState PrevKBState { get; set; }
+          public Keys MoveLeftKey { get; set; } = Keys.H;
 
-          public MouseState MovingMouseState { get; set; }
+          public Keys MoveRightKey { get; set; } = Keys.K;
 
-          protected MouseState PrevMovingMouseState { get; set; }
-
-          public MouseState ShootingMouseState { get; set; }
-
-          protected MouseState PrevShootingMouseState { get; set; }
-
-          protected Vector2 GetMousePositionDelta()
+          public override Vector2 Position
           {
-               Vector2 retVal = Vector2.Zero;
-
-               if (PrevMovingMouseState != null)
+               get
                {
-                    retVal.X = MovingMouseState.X - PrevMovingMouseState.X;
+                    return base.Position;
                }
 
-               PrevMovingMouseState = MovingMouseState;
-
-               return retVal;
+               set
+               {
+                    m_Position.X = MathHelper.Clamp(value.X, 0, (float)this.GraphicsDevice.Viewport.Width - Width);
+               }
           }
 
-          protected Vector2 GetMouseLocation()
+          public override void Update(GameTime i_GameTime)
           {
-               Vector2 retVal = Vector2.Zero;
-               if (PrevMovingMouseState != MovingMouseState)
+               if (IsAlive)
                {
-                    retVal.X = MovingMouseState.X;
-                    retVal.Y = Position.Y;
+                    if (r_InputManager.KeyboardState.IsKeyDown(MoveLeftKey))
+                    {
+                         Velocity = r_Velocity * Sprite.Left;
+                    }
+                    else if (r_InputManager.KeyboardState.IsKeyDown(MoveRightKey))
+                    {
+                         Velocity = r_Velocity * Sprite.Right;
+                    }
+                    else
+                    {
+                         Velocity = Vector2.Zero;
+                    }
+
+                    if (IsMouseControllable)
+                    {
+                         Vector2 mouseDelta = r_InputManager.MousePositionDelta;
+
+                         if (mouseDelta != Vector2.Zero)
+                         {
+                              Position += mouseDelta;
+                         }
+                    }
                }
                else
                {
-                    retVal = Position;
-                    PrevMovingMouseState = MovingMouseState;
+                    Velocity = Vector2.Zero;
                }
 
-               return retVal;
+               base.Update(i_GameTime);
           }
 
-          public override void Update(GameTime gameTime)
+          public override void Collided(ICollidable i_Collidable)
           {
-               this.CurrKBState = Keyboard.GetState();
-               this.MovingMouseState = Mouse.GetState();
-               this.ShootingMouseState = Mouse.GetState();
+               if (i_Collidable != null)
+               {
+                    if (i_Collidable is BaseBullet)
+                    {
+                         OnCollidedWithBullet();
+                    }
+                    else if (i_Collidable is Enemy)
+                    {
+                         OnCollidedWithEnemy();
+                    }
+               }
+          }
 
-               base.Update(gameTime);
+          protected virtual void OnCollidedWithBullet()
+          {
+          }
+
+          protected virtual void OnCollidedWithEnemy()
+          {
           }
      }
 }

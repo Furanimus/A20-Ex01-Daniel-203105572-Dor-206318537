@@ -13,7 +13,13 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           {
                this.LeftWindowBounds += onLeftBounds;
           }
-          
+
+          public override void Initialize()
+          {
+               base.Initialize();
+               this.Position = new Vector2(-Width, -Height);
+          }
+
           public object GroupRepresentative { get; set; }
 
           protected virtual void onLeftBounds(object i_Sender, EventArgs i_Args)
@@ -27,9 +33,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                if (LeftWindowBounds != null)
                {
                     if (this.Position.Y > this.Game.GraphicsDevice.Viewport.Height ||
-                    this.Position.Y < 0 ||
-                    this.Position.X > this.Game.GraphicsDevice.Viewport.Width ||
-                    this.Position.X < 0)
+                         this.Position.Y < 0 ||
+                         this.Position.X > this.Game.GraphicsDevice.Viewport.Width ||
+                         this.Position.X < 0)
                     {
                          LeftWindowBounds.Invoke(this, null);
                     }
@@ -38,11 +44,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           public override void Collided(ICollidable i_Collidable)
           {
-               if(i_Collidable != null)
-               {
-                    this.Enabled = false;
-                    this.Visible = false;
-               }
+               this.Enabled = false;
+               this.Visible = false;
           }
      }
 }

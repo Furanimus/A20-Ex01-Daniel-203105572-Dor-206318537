@@ -16,8 +16,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
           private Player m_Player1;
           private Player m_Player2;
           private EnemyManager m_EnemyManager;
-          private BarrierManager m_BarrierManager;
+          private ObsticleManager m_BarrierManager;
           private SpriteBatch m_SpriteBatch;
+          private LivesManager m_LivesManager;
 
           public SpaceInvadersGame()
           {
@@ -28,17 +29,20 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                r_Graphics.PreferredBackBufferHeight = (int)r_Background.Height;
                r_Graphics.ApplyChanges();
 
-               IInputManager inputManager = new InputManager(this);
+               IInputManager inputManager           = new InputManager(this);
                ICollisionsManager collisionsManager = new CollisionsManager(this);
-               IRandomBehavior randomBehavior = new RandomBehavior(this);
+               IRandomBehavior randomBehavior       = new RandomBehavior(this);
           }
 
           protected override void Initialize()
           {
-               m_SpriteBatch                 = new SpriteBatch(GraphicsDevice);
-               m_EnemyManager                = new EnemyManager(this);
-               m_BarrierManager              = new BarrierManager(this);
-               
+               m_SpriteBatch = new SpriteBatch(GraphicsDevice);
+               this.Services.AddService(typeof(SpriteBatch), m_SpriteBatch);
+
+               m_EnemyManager = new EnemyManager(this);
+               m_BarrierManager              = new ObsticleManager(this);
+               m_LivesManager                = new LivesManager(this);
+
                m_Player1                     = new Player(@"Sprites\Ship01_32x32", this);
                m_Player1.StartingPosition    = new Vector2(GraphicsDevice.Viewport.Width - (m_Player1.Width * 2), GraphicsDevice.Viewport.Height - (m_Player1.Height * 2));
                m_Player1.IsMouseControllable = true;
@@ -50,22 +54,17 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                m_Player2.ShootKey            = Keys.W;
                m_Player2.GroupRepresentative = m_Player1;
 
+               m_LivesManager.AddPlayer(m_Player1);
+               m_LivesManager.AddPlayer(m_Player2);
+
                base.Initialize();
           }
 
           protected override void LoadContent()
           {
-               foreach (GameComponent component in this.Components)
-               {
-                    if (component is Sprite)
-                    {
-                         (component as Sprite).SpriteBatch = m_SpriteBatch;
-                    }
-               }
 
                base.LoadContent();
           }
-
 
           protected override void Update(GameTime i_GameTime)
           {

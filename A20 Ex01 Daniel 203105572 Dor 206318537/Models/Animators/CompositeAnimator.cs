@@ -18,11 +18,7 @@ namespace Models.Animators
                this.Enabled = false;
           }
         
-          public CompositeAnimator(
-          string i_Name,
-          TimeSpan i_AnimationLength,
-          Sprite i_BoundSprite,
-          params SpriteAnimator[] i_Animations)
+          public CompositeAnimator(string i_Name, TimeSpan i_AnimationLength, Sprite i_BoundSprite, params SpriteAnimator[] i_Animations)
                : base (i_Name, i_AnimationLength)
           {
                this.BoundSprite = i_BoundSprite;
@@ -41,19 +37,6 @@ namespace Models.Animators
                i_Animation.Enabled = true;
                m_AnimationsDictionary.Add(i_Animation.Name, i_Animation);
                m_AnimationsList.Add(i_Animation);
-               i_Animation.Finished += animation_Finished;
-          }
-
-          private void animation_Finished(object sender, EventArgs e)
-          {
-               m_FinishedAnimations++;
-
-               if(m_FinishedAnimations == m_AnimationsCount)
-               {
-                    IsFinished = true;
-                    IsFinished = false;
-                    m_FinishedAnimations = 0;
-               }
           }
 
           public void Remove(string i_AnimationName)
@@ -99,11 +82,23 @@ namespace Models.Animators
                }
           }
 
-          public void UnableAllAnimation()
+          public override void Pause()
           {
+               base.Pause();
+
                foreach (SpriteAnimator animation in m_AnimationsList)
                {
-                    animation.Enabled = false;
+                    animation.Pause();
+               }
+          }
+
+          public override void Resume()
+          {
+               base.Resume();
+
+               foreach (SpriteAnimator animation in m_AnimationsList)
+               {
+                    animation.Resume();
                }
           }
 

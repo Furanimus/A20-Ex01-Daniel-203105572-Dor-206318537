@@ -23,8 +23,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           public override void Update(GameTime i_GameTime)
           {
                base.Update(i_GameTime);
-
-
           }
 
           public override void Draw(GameTime i_GameTime)

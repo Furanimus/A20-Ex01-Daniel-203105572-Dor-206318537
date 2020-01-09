@@ -97,12 +97,12 @@ namespace Models.Animators
 
           protected abstract void RevertToOriginal();
 
-          public void Pause()
+          public virtual void Pause()
           {
                this.Enabled = false;
           }
 
-          public void Resume()
+          public virtual void Resume()
           {
                Enabled = true;
           }

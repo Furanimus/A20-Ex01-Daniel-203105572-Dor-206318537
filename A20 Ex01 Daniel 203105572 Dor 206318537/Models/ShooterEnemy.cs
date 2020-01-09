@@ -32,7 +32,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           public override void Collided(ICollidable i_Collidable)
           {
-               if (i_Collidable.GroupRepresentative != this.GroupRepresentative && (i_Collidable is Bullet))
+               if (this.IsAlive && i_Collidable.GroupRepresentative != this.GroupRepresentative && (i_Collidable is Bullet))
                {
                     SpriteAnimator rotationAnimator = this.Animations["Rotation"];
                     SpriteAnimator shrinkAnimator = this.Animations["Shrink"];

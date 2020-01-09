@@ -7,13 +7,13 @@ using System.Text;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
 {
-     class BarrierManager : GameComponent
+     class ObsticleManager : GameComponent
      {
           private List<Barrier> m_Barriers;
           private const int k_NumOfBarriers = 4;
           private Vector2 m_InitPositionOfBarrier;
 
-          public BarrierManager(Game i_Game)
+          public ObsticleManager(Game i_Game)
               : base(i_Game)
           {
                m_Barriers = new List<Barrier>(k_NumOfBarriers);
