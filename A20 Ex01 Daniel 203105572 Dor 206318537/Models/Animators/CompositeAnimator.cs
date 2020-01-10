@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
-using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
 using Microsoft.Xna.Framework;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
 
 namespace Models.Animators
 {
      public class CompositeAnimator : SpriteAnimator
      {
           private readonly Dictionary<string, SpriteAnimator> m_AnimationsDictionary = new Dictionary<string, SpriteAnimator>();
-          protected readonly List<SpriteAnimator> m_AnimationsList = new List<SpriteAnimator>();
+          protected readonly List<SpriteAnimator> m_AnimationsList                   = new List<SpriteAnimator>();
 
           public CompositeAnimator(Sprite i_BoundSprite)
                : this("AnimationsManager", TimeSpan.Zero, i_BoundSprite, new SpriteAnimator[]{})

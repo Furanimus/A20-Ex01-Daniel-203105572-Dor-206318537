@@ -1,5 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
+using Microsoft.Xna.Framework;
+using System;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces
 {
@@ -13,5 +14,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces
           bool CheckCollision(ICollidable i_Source);
           void Collided(ICollidable i_Collidable);
           object GroupRepresentative { get; set; }
+          Texture2DPixels TexturePixels { get; }
      }
 }

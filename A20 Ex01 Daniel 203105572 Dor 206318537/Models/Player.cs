@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using A20_Ex01_Daniel_203105572_Dor_206318537.Enums;
-using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
-using A20_Ex01_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnimator;
-using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Models.Animators;
 using Models.Animators.ConcreteAnimators;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnimator;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Models.BaseModels;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
@@ -48,22 +44,22 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                this.Animations.Enabled = true;
           }
 
-          private void lostLife_Finished(object sender, EventArgs e)
+          private void lostLife_Finished(object i_Sender, EventArgs i_Args)
           {
-               SpriteAnimator animator = sender as SpriteAnimator;
+               SpriteAnimator animator = i_Sender as SpriteAnimator;
                animator.Pause();
           }
 
           
-          private void dead_Finished(object sender, EventArgs e)
+          private void dead_Finished(object i_Sender, EventArgs i_Args)
           {
-               CompositeAnimator animator = sender as CompositeAnimator;
+               CompositeAnimator animator = i_Sender as CompositeAnimator;
                animator.Pause();
                this.Visible = false;
                this.Enabled = false;
           }
 
-          protected override void OnCollidedWithBullet()
+          protected override void OnCollidedWithBullet(BaseBullet i_Bullet)
           {
                if (Lives > 0)
                {
@@ -108,7 +104,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                this.Animations["Blink"].Restart();
           }
 
-          protected override void OnCollidedWithEnemy()
+          protected override void OnCollidedWithEnemy(Enemy i_Enemy)
           {
                Lives = 0;
           }

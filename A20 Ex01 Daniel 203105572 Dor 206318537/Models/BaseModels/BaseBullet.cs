@@ -12,7 +12,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.BaseModels
           protected BaseBullet(string i_GraphicPath, Game i_Game) 
                : base(i_GraphicPath, i_Game)
           {
-               this.LeftWindowBounds += onLeftBounds;
+               this.LeftWindowBounds += OnLeftBounds;
           }
 
           public override void Initialize()
@@ -23,7 +23,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.BaseModels
 
           public object GroupRepresentative { get; set; }
 
-          protected virtual void onLeftBounds(object i_Sender, EventArgs i_Args)
+          protected virtual void OnLeftBounds(object i_Sender, EventArgs i_Args)
           {
           }
 

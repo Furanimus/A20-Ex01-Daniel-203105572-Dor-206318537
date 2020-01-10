@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
-using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
 using Microsoft.Xna.Framework;
 using Models.Animators.ConcreteAnimators;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
      public class EnemyManager : GameComponent
      {
+          public event Action MatrixReachedBottomWindow;
+
           private const int k_MatrixCols                                = 9;
           private const int k_MatrixRows                                = 5;
           private const float k_EnemiesStartingY                        = 96;
@@ -20,11 +21,11 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           private const int k_NumOfDeadEnemiesToIncreaseVelocity        = 5;
           private const float k_IncVelocityOnRowDecendPercentage        = 0.05f;
           private const float k_IncVelocityOnNumOfDeadEnemiesPercentage = 0.03f;
-          private readonly ICollisionsManager r_CollisionsManager;
           private readonly IRandomBehavior r_RandomBehavior;
           private readonly List<List<Enemy>> r_EnemyMatrix;
           private readonly MotherShip r_MotherShip;
           private Enemy m_RightMostRepresentetive;
+          private Enemy m_DownMostRepresentetive;
           private Enemy m_LeftMostRepresentetive;
           private TimeSpan m_IntervalToNextShoot;
           private int m_DeadEnemiesCounter;
@@ -32,7 +33,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           public EnemyManager(Game i_Game) : base(i_Game)
           {
                r_EnemyMatrix       = new List<List<Enemy>>(k_MatrixRows);
-               r_CollisionsManager = this.Game.Services.GetService(typeof(ICollisionsManager)) as ICollisionsManager;
                r_RandomBehavior    = this.Game.Services.GetService(typeof(IRandomBehavior)) as IRandomBehavior;
                r_MotherShip        = new RedMotherShip(i_Game);
 
@@ -52,6 +52,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           {
                setLeftRepresentetive();
                setRightRepresentetive();
+               setDownRepresentetive();
           }
 
           private void setLeftRepresentetive()
@@ -66,6 +67,23 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                          {
                               isFound = true;
                               m_LeftMostRepresentetive = r_EnemyMatrix[row][col];
+                         }
+                    }
+               }
+          }
+
+          private void setDownRepresentetive()
+          {
+               bool isFound = false;
+
+               for (int row = k_MatrixRows - 1; row >= 0 && !isFound; row--)
+               {
+                    for (int col = 0; col < k_MatrixCols && !isFound; col++)
+                    {
+                         if (r_EnemyMatrix[row][col].IsAlive)
+                         {
+                              isFound = true;
+                              m_DownMostRepresentetive = r_EnemyMatrix[row][col];
                          }
                     }
                }
@@ -120,13 +138,13 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                }
           }
 
-          private bool tryShoot(ShooterEnemy enemy)
+          private bool tryShoot(ShooterEnemy i_Enemy)
           {
                bool isShoot = false;
 
-               if (enemy.IsAlive && enemy.Gun.BulletShot < enemy.Gun.Capacity)
+               if (i_Enemy.IsAlive && i_Enemy.Gun.BulletShot < i_Enemy.Gun.Capacity)
                {
-                    enemy.Shoot();
+                    i_Enemy.Shoot();
                     isShoot = true;
                }
 
@@ -146,6 +164,18 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           {
                Vector2 rightMostRepNextPosition = m_RightMostRepresentetive.Position + (m_RightMostRepresentetive.Velocity * m_RightMostRepresentetive.MoveDirection) / 2;
                Vector2 leftMostRepNextPosition = m_LeftMostRepresentetive.Position + (m_LeftMostRepresentetive.Velocity * m_LeftMostRepresentetive.MoveDirection) / 2;
+               
+               Vector2 downMostHeight = new Vector2(0, m_DownMostRepresentetive.Height);
+               Vector2 downMostJumpDistance = new Vector2(0, m_DownMostRepresentetive.Height / 2);
+               Vector2 downMostRepBottomNextPosition = m_DownMostRepresentetive.Position + downMostHeight + downMostJumpDistance;
+
+               if(downMostRepBottomNextPosition.Y >= this.Game.GraphicsDevice.Viewport.Height)
+               {
+                    if(MatrixReachedBottomWindow != null)
+                    {
+                         MatrixReachedBottomWindow.Invoke();
+                    }
+               }
 
                if (rightMostRepNextPosition.X >= this.Game.GraphicsDevice.Viewport.Width - m_RightMostRepresentetive.Width)
                {
@@ -225,7 +255,11 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
                if (!enemy.Visible)
                {
-                    if (enemy == m_LeftMostRepresentetive)
+                    if(enemy == m_DownMostRepresentetive)
+                    {
+                         setDownRepresentetive();
+                    }
+                    else if (enemy == m_LeftMostRepresentetive)
                     {
                          setLeftRepresentetive();
                     }

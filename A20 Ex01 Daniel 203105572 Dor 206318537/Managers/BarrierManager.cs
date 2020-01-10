@@ -1,22 +1,19 @@
-﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
-using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
 {
-     class BarrierManager : GameComponent
+     public class BarrierManager : GameComponent
      {
-          private List<Barrier> m_Barriers;
-          private readonly ICollisionsManager r_CollisionsManager;
           private const float k_BarrierWidth = 44;
           private const float k_BarrierHeight = 32;
-          private const int k_NumOfBarriers = 4;
+          private const int k_NumOfBarriers = 1;
+          private readonly ICollisionsManager r_CollisionsManager;
           private readonly float r_PlayerStartingY;
           private readonly float r_PlayerHeight;
+          private List<Barrier> m_Barriers;
           private List<Color[]> m_Pixles;
 
           public BarrierManager(Game i_Game, float i_PlayerStartingY, float i_PlayerHeight)
@@ -46,7 +43,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
           }
 
 
-          internal void initPixelData()
+          private void initPixelData()
           {
                for (int i = 0; i < k_NumOfBarriers; i++)
                {
@@ -90,8 +87,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                }
 
                base.Update(gameTime);
-
-
           }
      }
 }

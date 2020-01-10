@@ -1,6 +1,6 @@
-﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
+﻿using System;
 using Microsoft.Xna.Framework;
-using System;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Components;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Utils
 {
@@ -10,9 +10,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Utils
           private readonly int r_RandomFactor = 10;
           private readonly int r_RandomMin = 0;
           private readonly int r_RandomMax = 5000;
+          private readonly Game r_Game;
           private double m_Delay;
           private double m_Timer;
-          private readonly Game r_Game;
 
           public RandomBehavior(Game i_Game)
                : base(i_Game)

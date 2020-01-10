@@ -1,7 +1,7 @@
-﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Enums;
-using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Managers;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.BaseModels
 {
@@ -45,6 +45,41 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.BaseModels
                }
           }
 
+          public override void Initialize()
+          {
+               IScoreManager scoreManager = this.Game.Services.GetService(typeof(IScoreManager)) as IScoreManager;
+               ILivesManager livesManager = this.Game.Services.GetService(typeof(ILivesManager)) as ILivesManager;
+
+               if(scoreManager == null)
+               {
+                    scoreManager = new ScoreManager(this.Game);
+                    scoreManager.AddPlayer(this, Color.White);
+               }
+               else
+               {
+                    if (!scoreManager.IsPlayerAlreadyAdded(this))
+                    {
+                         scoreManager.AddPlayer(this, Color.White);
+                    }
+               }
+
+               if (livesManager == null)
+               {
+                    livesManager = new LivesManager(this.Game);
+                    livesManager.AddPlayer(this);
+               }
+               else
+               {
+                    if (!livesManager.IsPlayerAlreadyAdded(this))
+                    {
+                         livesManager.AddPlayer(this);
+
+                    }
+               }
+
+               base.Initialize();
+          }
+
           public override void Update(GameTime i_GameTime)
           {
                if (IsAlive)
@@ -82,27 +117,24 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.BaseModels
 
           public override void Collided(ICollidable i_Collidable)
           {
-               if (i_Collidable != null)
-               {
-                    BaseBullet bullet  = i_Collidable as BaseBullet;
-                    Enemy enemy = i_Collidable as Enemy;
+               BaseBullet bullet  = i_Collidable as BaseBullet;
+               Enemy enemy = i_Collidable as Enemy;
 
-                    if (bullet != null && bullet.Visible)
-                    {
-                         OnCollidedWithBullet();
-                    }
-                    else if (enemy != null && enemy.Visible)
-                    {
-                         OnCollidedWithEnemy();
-                    }
+               if (bullet != null)
+               {
+                    OnCollidedWithBullet(bullet);
+               }
+               else if (enemy != null)
+               {
+                    OnCollidedWithEnemy(enemy);
                }
           }
 
-          protected virtual void OnCollidedWithBullet()
+          protected virtual void OnCollidedWithBullet(BaseBullet i_Bullet)
           {
           }
 
-          protected virtual void OnCollidedWithEnemy()
+          protected virtual void OnCollidedWithEnemy(Enemy i_Enemy)
           {
           }
      }

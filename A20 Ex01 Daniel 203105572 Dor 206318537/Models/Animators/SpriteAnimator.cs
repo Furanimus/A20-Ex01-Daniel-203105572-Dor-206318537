@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
 using Microsoft.Xna.Framework;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
 
 namespace Models.Animators
 {

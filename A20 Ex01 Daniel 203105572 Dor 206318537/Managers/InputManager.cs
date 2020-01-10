@@ -1,69 +1,41 @@
-﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Enums;
-using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
-using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
-using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
+﻿using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Components;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Enums;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
 {
      public class InputManager : GameService, IInputManager
      {
-          private KeyboardState m_PrevKeyboardState;
-          public KeyboardState PrevKeyboardState
-          {
-               get { return m_PrevKeyboardState; }
-          }
+          public KeyboardState PrevKeyboardState { get; private set; }
 
-          private KeyboardState m_KeyboardState;
-          public KeyboardState KeyboardState
-          {
-               get { return m_KeyboardState; }
-          }
+          public KeyboardState KeyboardState { get; private set; }
 
-          private MouseState m_PrevMouseState;
-          public MouseState PrevMouseState
-          {
-               get { return m_PrevMouseState; }
-          }
+          public MouseState PrevMouseState { get; private set; }
 
-          private MouseState m_MouseState;
-          public MouseState MouseState
-          {
-               get { return m_MouseState; }
-          }
+          public MouseState MouseState { get; private set; }
 
-          private GamePadState m_PrevGamePadState;
-          public GamePadState PrevGamePadState
-          {
-               get { return m_PrevGamePadState; }
-          }
+          public GamePadState PrevGamePadState { get; private set; }
 
-          private GamePadState m_GamePadState;
-          public GamePadState GamePadState
-          {
-               get { return m_GamePadState; }
-          }
+          public GamePadState GamePadState { get; private set; }
 
           public InputManager(Game i_Game)
               : base(i_Game, int.MinValue)
-          { }
+          { 
+          }
 
           public override void Initialize()
           {
-               m_PrevKeyboardState = Keyboard.GetState();
-               m_KeyboardState = m_PrevKeyboardState;
+               PrevKeyboardState = Keyboard.GetState();
+               KeyboardState = PrevKeyboardState;
 
-               m_PrevMouseState = Mouse.GetState();
-               m_MouseState = m_PrevMouseState;
+               PrevMouseState = Mouse.GetState();
+               MouseState = PrevMouseState;
 
-               m_PrevGamePadState = GamePad.GetState(PlayerIndex.One);
-               m_GamePadState = m_PrevGamePadState;
+               PrevGamePadState = GamePad.GetState(PlayerIndex.One);
+               GamePadState = PrevGamePadState;
           }
 
           protected override void RegisterAsService()
@@ -73,32 +45,29 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
 
           public override void Update(GameTime gameTime)
           {
-               m_PrevKeyboardState = m_KeyboardState;
-               m_KeyboardState = Keyboard.GetState();
+               PrevKeyboardState = KeyboardState;
+               KeyboardState = Keyboard.GetState();
 
-               m_PrevMouseState = m_MouseState;
-               m_MouseState = Mouse.GetState();
+               PrevMouseState = MouseState;
+               MouseState = Mouse.GetState();
 
-               m_PrevGamePadState = m_GamePadState;
-               m_GamePadState = GamePad.GetState(PlayerIndex.One);
+               PrevGamePadState = GamePadState;
+               GamePadState = GamePad.GetState(PlayerIndex.One);
           }
 
           public bool KeyHeld(Keys i_Key)
           {
-               return (m_KeyboardState.IsKeyDown(i_Key) && m_PrevKeyboardState.IsKeyDown(i_Key));
+               return (KeyboardState.IsKeyDown(i_Key) && PrevKeyboardState.IsKeyDown(i_Key));
           }
 
           public bool KeyReleased(Keys i_Key)
           {
-               return (
-                   m_PrevKeyboardState.IsKeyDown(i_Key)
-                   &&
-                   m_KeyboardState.IsKeyUp(i_Key));
+               return (PrevKeyboardState.IsKeyDown(i_Key) && KeyboardState.IsKeyUp(i_Key));
           }
 
           public bool KeyPressed(Keys i_Key)
           {
-               return (m_PrevKeyboardState.IsKeyUp(i_Key) && m_KeyboardState.IsKeyDown(i_Key));
+               return (PrevKeyboardState.IsKeyUp(i_Key) && KeyboardState.IsKeyDown(i_Key));
           }
 
           public bool ButtonPressed(eInputButtons i_Buttons)
@@ -166,8 +135,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                if ((i_Buttons & eInputButtons.A) != 0)
                {
                     currCheck =
-                        checkRelease == m_GamePadState.IsButtonUp(Buttons.A)
-                        && (!i_CheckChanged || checkRelease != m_PrevGamePadState.IsButtonUp(Buttons.A));
+                        checkRelease == GamePadState.IsButtonUp(Buttons.A)
+                        && (!i_CheckChanged || checkRelease != PrevGamePadState.IsButtonUp(Buttons.A));
 
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
@@ -175,8 +144,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                if ((i_Buttons & eInputButtons.B) != 0)
                {
                     currCheck =
-                        checkRelease == m_GamePadState.IsButtonUp(Buttons.B)
-                        && (!i_CheckChanged || checkRelease != m_PrevGamePadState.IsButtonUp(Buttons.B));
+                        checkRelease == GamePadState.IsButtonUp(Buttons.B)
+                        && (!i_CheckChanged || checkRelease != PrevGamePadState.IsButtonUp(Buttons.B));
 
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
@@ -184,8 +153,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                if ((i_Buttons & eInputButtons.X) != 0)
                {
                     currCheck =
-                        checkRelease == m_GamePadState.IsButtonUp(Buttons.X)
-                        && (!i_CheckChanged || checkRelease != m_PrevGamePadState.IsButtonUp(Buttons.X));
+                        checkRelease == GamePadState.IsButtonUp(Buttons.X)
+                        && (!i_CheckChanged || checkRelease != PrevGamePadState.IsButtonUp(Buttons.X));
 
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
@@ -193,8 +162,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                if ((i_Buttons & eInputButtons.Y) != 0)
                {
                     currCheck =
-                        checkRelease == m_GamePadState.IsButtonUp(Buttons.Y)
-                        && (!i_CheckChanged || checkRelease != m_PrevGamePadState.IsButtonUp(Buttons.Y));
+                        checkRelease == GamePadState.IsButtonUp(Buttons.Y)
+                        && (!i_CheckChanged || checkRelease != PrevGamePadState.IsButtonUp(Buttons.Y));
 
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
@@ -202,8 +171,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                if ((i_Buttons & eInputButtons.DPadDown) != 0)
                {
                     currCheck =
-                        checkRelease == m_GamePadState.IsButtonUp(Buttons.DPadDown)
-                        && (!i_CheckChanged || checkRelease != m_PrevGamePadState.IsButtonUp(Buttons.DPadDown));
+                        checkRelease == GamePadState.IsButtonUp(Buttons.DPadDown)
+                        && (!i_CheckChanged || checkRelease != PrevGamePadState.IsButtonUp(Buttons.DPadDown));
 
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
@@ -211,8 +180,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                if ((i_Buttons & eInputButtons.DPadUp) != 0)
                {
                     currCheck =
-                        checkRelease == m_GamePadState.IsButtonUp(Buttons.DPadUp)
-                        && (!i_CheckChanged || checkRelease != m_PrevGamePadState.IsButtonUp(Buttons.DPadUp));
+                        checkRelease == GamePadState.IsButtonUp(Buttons.DPadUp)
+                        && (!i_CheckChanged || checkRelease != PrevGamePadState.IsButtonUp(Buttons.DPadUp));
 
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
@@ -220,8 +189,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                if ((i_Buttons & eInputButtons.DPadLeft) != 0)
                {
                     currCheck =
-                        checkRelease == m_GamePadState.IsButtonUp(Buttons.DPadLeft)
-                        && (!i_CheckChanged || checkRelease != m_PrevGamePadState.IsButtonUp(Buttons.DPadLeft));
+                        checkRelease == GamePadState.IsButtonUp(Buttons.DPadLeft)
+                        && (!i_CheckChanged || checkRelease != PrevGamePadState.IsButtonUp(Buttons.DPadLeft));
 
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
@@ -229,8 +198,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                if ((i_Buttons & eInputButtons.DPadRight) != 0)
                {
                     currCheck =
-                        checkRelease == m_GamePadState.IsButtonUp(Buttons.DPadRight)
-                        && (!i_CheckChanged || checkRelease != m_PrevGamePadState.IsButtonUp(Buttons.DPadRight));
+                        checkRelease == GamePadState.IsButtonUp(Buttons.DPadRight)
+                        && (!i_CheckChanged || checkRelease != PrevGamePadState.IsButtonUp(Buttons.DPadRight));
 
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
@@ -238,8 +207,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                if ((i_Buttons & eInputButtons.Back) != 0)
                {
                     currCheck =
-                        checkRelease == m_GamePadState.IsButtonUp(Buttons.Back)
-                        && (!i_CheckChanged || checkRelease != m_PrevGamePadState.IsButtonUp(Buttons.Back));
+                        checkRelease == GamePadState.IsButtonUp(Buttons.Back)
+                        && (!i_CheckChanged || checkRelease != PrevGamePadState.IsButtonUp(Buttons.Back));
 
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
@@ -247,8 +216,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                if ((i_Buttons & eInputButtons.Start) != 0)
                {
                     currCheck =
-                        checkRelease == m_GamePadState.IsButtonUp(Buttons.Start)
-                        && (!i_CheckChanged || checkRelease != m_PrevGamePadState.IsButtonUp(Buttons.Start));
+                        checkRelease == GamePadState.IsButtonUp(Buttons.Start)
+                        && (!i_CheckChanged || checkRelease != PrevGamePadState.IsButtonUp(Buttons.Start));
 
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
@@ -256,8 +225,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                if ((i_Buttons & eInputButtons.LeftShoulder) != 0)
                {
                     currCheck =
-                        checkRelease == m_GamePadState.IsButtonUp(Buttons.LeftShoulder)
-                        && (!i_CheckChanged || checkRelease != m_PrevGamePadState.IsButtonUp(Buttons.LeftShoulder));
+                        checkRelease == GamePadState.IsButtonUp(Buttons.LeftShoulder)
+                        && (!i_CheckChanged || checkRelease != PrevGamePadState.IsButtonUp(Buttons.LeftShoulder));
 
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
@@ -265,8 +234,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                if ((i_Buttons & eInputButtons.RightShoulder) != 0)
                {
                     currCheck =
-                        checkRelease == m_GamePadState.IsButtonUp(Buttons.RightShoulder)
-                        && (!i_CheckChanged || checkRelease != m_PrevGamePadState.IsButtonUp(Buttons.RightShoulder));
+                        checkRelease == GamePadState.IsButtonUp(Buttons.RightShoulder)
+                        && (!i_CheckChanged || checkRelease != PrevGamePadState.IsButtonUp(Buttons.RightShoulder));
 
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
@@ -274,8 +243,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                if ((i_Buttons & eInputButtons.LeftStick) != 0)
                {
                     currCheck =
-                        checkRelease == m_GamePadState.IsButtonUp(Buttons.LeftStick)
-                        && (!i_CheckChanged || checkRelease != m_PrevGamePadState.IsButtonUp(Buttons.LeftStick));
+                        checkRelease == GamePadState.IsButtonUp(Buttons.LeftStick)
+                        && (!i_CheckChanged || checkRelease != PrevGamePadState.IsButtonUp(Buttons.LeftStick));
 
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
@@ -283,8 +252,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                if ((i_Buttons & eInputButtons.RightStick) != 0)
                {
                     currCheck =
-                        checkRelease == m_GamePadState.IsButtonUp(Buttons.RightStick)
-                        && (!i_CheckChanged || checkRelease != m_PrevGamePadState.IsButtonUp(Buttons.RightStick));
+                        checkRelease == GamePadState.IsButtonUp(Buttons.RightStick)
+                        && (!i_CheckChanged || checkRelease != PrevGamePadState.IsButtonUp(Buttons.RightStick));
 
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
@@ -292,8 +261,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                if ((i_Buttons & eInputButtons.LeftThumbstickDown) != 0)
                {
                     currCheck =
-                        checkRelease == m_GamePadState.IsButtonUp(Buttons.LeftThumbstickDown)
-                        && (!i_CheckChanged || checkRelease != m_PrevGamePadState.IsButtonUp(Buttons.LeftThumbstickDown));
+                        checkRelease == GamePadState.IsButtonUp(Buttons.LeftThumbstickDown)
+                        && (!i_CheckChanged || checkRelease != PrevGamePadState.IsButtonUp(Buttons.LeftThumbstickDown));
 
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
@@ -301,8 +270,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                if ((i_Buttons & eInputButtons.LeftThumbstickUp) != 0)
                {
                     currCheck =
-                        checkRelease == m_GamePadState.IsButtonUp(Buttons.LeftThumbstickUp)
-                        && (!i_CheckChanged || checkRelease != m_PrevGamePadState.IsButtonUp(Buttons.LeftThumbstickUp));
+                        checkRelease == GamePadState.IsButtonUp(Buttons.LeftThumbstickUp)
+                        && (!i_CheckChanged || checkRelease != PrevGamePadState.IsButtonUp(Buttons.LeftThumbstickUp));
 
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
@@ -310,16 +279,16 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                if ((i_Buttons & eInputButtons.LeftThumbstickLeft) != 0)
                {
                     currCheck =
-                        checkRelease == m_GamePadState.IsButtonUp(Buttons.LeftThumbstickLeft)
-                        && (!i_CheckChanged || checkRelease != m_PrevGamePadState.IsButtonUp(Buttons.LeftThumbstickLeft));
+                        checkRelease == GamePadState.IsButtonUp(Buttons.LeftThumbstickLeft)
+                        && (!i_CheckChanged || checkRelease != PrevGamePadState.IsButtonUp(Buttons.LeftThumbstickLeft));
 
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
                }
                if ((i_Buttons & eInputButtons.LeftThumbstickRight) != 0)
                {
-                    currCheck = checkRelease == m_GamePadState.IsButtonUp(Buttons.LeftThumbstickRight)
-                        && (!i_CheckChanged || checkRelease != m_PrevGamePadState.IsButtonUp(Buttons.LeftThumbstickRight));
+                    currCheck = checkRelease == GamePadState.IsButtonUp(Buttons.LeftThumbstickRight)
+                        && (!i_CheckChanged || checkRelease != PrevGamePadState.IsButtonUp(Buttons.LeftThumbstickRight));
 
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
@@ -327,8 +296,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                if ((i_Buttons & eInputButtons.RightThumbstickDown) != 0)
                {
                     currCheck =
-                        checkRelease == m_GamePadState.IsButtonUp(Buttons.RightThumbstickDown)
-                        && (!i_CheckChanged || checkRelease != m_PrevGamePadState.IsButtonUp(Buttons.RightThumbstickDown));
+                        checkRelease == GamePadState.IsButtonUp(Buttons.RightThumbstickDown)
+                        && (!i_CheckChanged || checkRelease != PrevGamePadState.IsButtonUp(Buttons.RightThumbstickDown));
 
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
@@ -336,8 +305,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                if ((i_Buttons & eInputButtons.RightThumbstickUp) != 0)
                {
                     currCheck =
-                        checkRelease == m_GamePadState.IsButtonUp(Buttons.RightThumbstickUp)
-                        && (!i_CheckChanged || checkRelease != m_PrevGamePadState.IsButtonUp(Buttons.RightThumbstickUp));
+                        checkRelease == GamePadState.IsButtonUp(Buttons.RightThumbstickUp)
+                        && (!i_CheckChanged || checkRelease != PrevGamePadState.IsButtonUp(Buttons.RightThumbstickUp));
 
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
@@ -345,8 +314,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                if ((i_Buttons & eInputButtons.RightThumbstickLeft) != 0)
                {
                     currCheck =
-                        checkRelease == m_GamePadState.IsButtonUp(Buttons.RightThumbstickLeft)
-                        && (!i_CheckChanged || checkRelease != m_PrevGamePadState.IsButtonUp(Buttons.RightThumbstickLeft));
+                        checkRelease == GamePadState.IsButtonUp(Buttons.RightThumbstickLeft)
+                        && (!i_CheckChanged || checkRelease != PrevGamePadState.IsButtonUp(Buttons.RightThumbstickLeft));
 
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
@@ -354,8 +323,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                if ((i_Buttons & eInputButtons.RightThumbstickRight) != 0)
                {
                     currCheck =
-                        checkRelease == m_GamePadState.IsButtonUp(Buttons.RightThumbstickRight)
-                        && (!i_CheckChanged || checkRelease != m_PrevGamePadState.IsButtonUp(Buttons.RightThumbstickRight));
+                        checkRelease == GamePadState.IsButtonUp(Buttons.RightThumbstickRight)
+                        && (!i_CheckChanged || checkRelease != PrevGamePadState.IsButtonUp(Buttons.RightThumbstickRight));
 
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
@@ -363,8 +332,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                if ((i_Buttons & eInputButtons.LeftTrigger) != 0)
                {
                     currCheck =
-                        checkRelease == m_GamePadState.IsButtonUp(Buttons.LeftTrigger)
-                        && (!i_CheckChanged || checkRelease != m_PrevGamePadState.IsButtonUp(Buttons.LeftTrigger));
+                        checkRelease == GamePadState.IsButtonUp(Buttons.LeftTrigger)
+                        && (!i_CheckChanged || checkRelease != PrevGamePadState.IsButtonUp(Buttons.LeftTrigger));
 
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
@@ -372,8 +341,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                if ((i_Buttons & eInputButtons.RightTrigger) != 0)
                {
                     currCheck =
-                         checkRelease == m_GamePadState.IsButtonUp(Buttons.RightTrigger)
-                        && (!i_CheckChanged || checkRelease != m_PrevGamePadState.IsButtonUp(Buttons.RightTrigger));
+                         checkRelease == GamePadState.IsButtonUp(Buttons.RightTrigger)
+                        && (!i_CheckChanged || checkRelease != PrevGamePadState.IsButtonUp(Buttons.RightTrigger));
 
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
@@ -384,8 +353,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                if ((i_Buttons & eInputButtons.Left) != 0)
                {
                     currCheck =
-                        m_MouseState.LeftButton == currState
-                        && ((m_PrevMouseState.LeftButton == prevState) || !i_CheckChanged);
+                        MouseState.LeftButton == currState
+                        && ((PrevMouseState.LeftButton == prevState) || !i_CheckChanged);
 
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
@@ -393,8 +362,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                else if ((i_Buttons & eInputButtons.Middle) != 0)
                {
                     currCheck =
-                        m_MouseState.MiddleButton == currState
-                        && ((m_PrevMouseState.MiddleButton == prevState) || !i_CheckChanged);
+                        MouseState.MiddleButton == currState
+                        && ((PrevMouseState.MiddleButton == prevState) || !i_CheckChanged);
 
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
@@ -402,8 +371,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                else if ((i_Buttons & eInputButtons.Right) != 0)
                {
                     currCheck =
-                        m_MouseState.RightButton == currState
-                        && ((m_PrevMouseState.RightButton == prevState) || !i_CheckChanged);
+                        MouseState.RightButton == currState
+                        && ((PrevMouseState.RightButton == prevState) || !i_CheckChanged);
 
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
@@ -411,8 +380,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                else if ((i_Buttons & eInputButtons.XButton1) != 0)
                {
                     currCheck =
-                        m_MouseState.XButton1 == currState
-                        && ((m_PrevMouseState.XButton1 == prevState) || !i_CheckChanged);
+                        MouseState.XButton1 == currState
+                        && ((PrevMouseState.XButton1 == prevState) || !i_CheckChanged);
 
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
@@ -420,8 +389,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                else if ((i_Buttons & eInputButtons.XButton2) != 0)
                {
                     currCheck =
-                        m_MouseState.XButton2 == currState
-                        && ((m_PrevMouseState.XButton2 == prevState) || !i_CheckChanged);
+                        MouseState.XButton2 == currState
+                        && ((PrevMouseState.XButton2 == prevState) || !i_CheckChanged);
 
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
@@ -461,14 +430,14 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                get
                {
                     return new Vector2(
-                        (float)(m_MouseState.X - m_PrevMouseState.X),
-                        (float)(m_MouseState.Y - m_PrevMouseState.Y));
+                        (float)(MouseState.X - PrevMouseState.X),
+                        (float)(MouseState.Y - PrevMouseState.Y));
                }
           }
 
           public int ScrollWheelDelta
           {
-               get { return m_MouseState.ScrollWheelValue - m_PrevMouseState.ScrollWheelValue; }
+               get { return MouseState.ScrollWheelValue - PrevMouseState.ScrollWheelValue; }
           }
 
           public Vector2 LeftThumbDelta
@@ -476,8 +445,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                get
                {
                     return new Vector2(
-                        m_GamePadState.ThumbSticks.Left.X - m_PrevGamePadState.ThumbSticks.Left.X,
-                        m_GamePadState.ThumbSticks.Left.Y - m_PrevGamePadState.ThumbSticks.Left.Y);
+                        GamePadState.ThumbSticks.Left.X - PrevGamePadState.ThumbSticks.Left.X,
+                        GamePadState.ThumbSticks.Left.Y - PrevGamePadState.ThumbSticks.Left.Y);
                }
           }
 
@@ -486,26 +455,26 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                get
                {
                     return new Vector2(
-                        m_GamePadState.ThumbSticks.Right.X - m_PrevGamePadState.ThumbSticks.Right.X,
-                        m_GamePadState.ThumbSticks.Right.Y - m_PrevGamePadState.ThumbSticks.Right.Y);
+                        GamePadState.ThumbSticks.Right.X - PrevGamePadState.ThumbSticks.Right.X,
+                        GamePadState.ThumbSticks.Right.Y - PrevGamePadState.ThumbSticks.Right.Y);
                }
           }
 
           public float LeftTrigerDelta
           {
-               get { return m_GamePadState.Triggers.Left - m_PrevGamePadState.Triggers.Left; }
+               get { return GamePadState.Triggers.Left - PrevGamePadState.Triggers.Left; }
           }
 
           public float RightTrigerDelta
           {
-               get { return m_GamePadState.Triggers.Right - m_PrevGamePadState.Triggers.Right; }
+               get { return GamePadState.Triggers.Right - PrevGamePadState.Triggers.Right; }
           }
 
           public string PressedKeys
           {
                get
                {
-                    Keys[] pressedKeys = m_KeyboardState.GetPressedKeys();
+                    Keys[] pressedKeys = KeyboardState.GetPressedKeys();
                     string keys = string.Empty;
 
                     if (pressedKeys.Length > 0)
@@ -554,24 +523,24 @@ Mouse.XButton2:     {15}
 ScrollWheelValue:   {16}
 ScrollWheelDelta:   {17}
 ",
-    m_GamePadState.IsConnected,
-    m_GamePadState.ThumbSticks.Left,
-    m_GamePadState.ThumbSticks.Right,
-    m_GamePadState.Triggers.Left,
-    m_GamePadState.Triggers.Right,
-    m_GamePadState.DPad,
-    m_GamePadState.Buttons,
-    m_GamePadState.PacketNumber,
+    GamePadState.IsConnected,
+    GamePadState.ThumbSticks.Left,
+    GamePadState.ThumbSticks.Right,
+    GamePadState.Triggers.Left,
+    GamePadState.Triggers.Right,
+    GamePadState.DPad,
+    GamePadState.Buttons,
+    GamePadState.PacketNumber,
 
-    m_MouseState.X,
-    m_MouseState.Y,
+    MouseState.X,
+    MouseState.Y,
     MousePositionDelta,
-    m_MouseState.LeftButton,
-    m_MouseState.MiddleButton,
-    m_MouseState.RightButton,
-    m_MouseState.XButton1,
-    m_MouseState.XButton2,
-    m_MouseState.ScrollWheelValue,
+    MouseState.LeftButton,
+    MouseState.MiddleButton,
+    MouseState.RightButton,
+    MouseState.XButton1,
+    MouseState.XButton2,
+    MouseState.ScrollWheelValue,
     ScrollWheelDelta,
     PressedKeys
     );

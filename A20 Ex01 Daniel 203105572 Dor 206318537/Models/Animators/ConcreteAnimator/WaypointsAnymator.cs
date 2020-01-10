@@ -5,21 +5,22 @@ namespace Models.Animators.ConcreteAnimator
 {
      public class WaypointsAnymator : SpriteAnimator
      {
-          private float m_VelocityPerSecond;
-          private Vector2[] m_Waypoints;
+          private readonly float r_VelocityPerSecond;
+          private readonly Vector2[] r_Waypoints;
+          private readonly bool r_Loop = false;
           private int m_CurrentWaypointIdx = 0;
-          private bool m_Loop = false;
         
           public WaypointsAnymator(float i_VelocityPerSecond, TimeSpan i_AnimationLength, bool i_Loop, params Vector2[] i_Waypoints)
                : this("Waypoints", i_VelocityPerSecond, i_AnimationLength, i_Loop, i_Waypoints)
-          {}
+          {
+          }
 
           public WaypointsAnymator(string i_Name, float i_VelocityPerSecond, TimeSpan i_AnimationLength, bool i_Loop, params Vector2[] i_Waypoints)
                : base(i_Name, i_AnimationLength)
           {
-               this.m_VelocityPerSecond = i_VelocityPerSecond;
-               this.m_Waypoints = i_Waypoints;
-               m_Loop = i_Loop;
+               r_VelocityPerSecond = i_VelocityPerSecond;
+               r_Waypoints = i_Waypoints;
+               r_Loop = i_Loop;
                m_ResetAfterFinish = false;
           }
 
@@ -30,8 +31,8 @@ namespace Models.Animators.ConcreteAnimator
 
           protected override void DoFrame(GameTime i_GameTime)
           {
-               float maxDistance = (float)i_GameTime.ElapsedGameTime.TotalSeconds * m_VelocityPerSecond;
-               Vector2 remainingVector = m_Waypoints[m_CurrentWaypointIdx] - this.BoundSprite.Position;
+               float maxDistance = (float)i_GameTime.ElapsedGameTime.TotalSeconds * r_VelocityPerSecond;
+               Vector2 remainingVector = r_Waypoints[m_CurrentWaypointIdx] - this.BoundSprite.Position;
 
                if (remainingVector.Length() > maxDistance)
                {
@@ -49,25 +50,25 @@ namespace Models.Animators.ConcreteAnimator
 
           private void lookAtNextWayPoint()
           {
-               if (reachedLastWaypoint() && !m_Loop)
+               if (reachedLastWaypoint() && !r_Loop)
                {
                     base.IsFinished = true;
                }
                else
                {
                     m_CurrentWaypointIdx++;
-                    m_CurrentWaypointIdx %= m_Waypoints.Length;
+                    m_CurrentWaypointIdx %= r_Waypoints.Length;
                }
           }
 
           private bool reachedLastWaypoint()
           {
-               return (m_CurrentWaypointIdx == m_Waypoints.Length - 1);
+               return (m_CurrentWaypointIdx == r_Waypoints.Length - 1);
           }
 
           private bool reachedCurrentWaypoint()
           {
-               return (this.BoundSprite.Position == m_Waypoints[m_CurrentWaypointIdx]);
+               return (this.BoundSprite.Position == r_Waypoints[m_CurrentWaypointIdx]);
           }
      }
 }

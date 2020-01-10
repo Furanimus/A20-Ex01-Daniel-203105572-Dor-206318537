@@ -1,6 +1,6 @@
-﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
+﻿using Microsoft.Xna.Framework;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
-using Microsoft.Xna.Framework;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
@@ -13,9 +13,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                : base(i_AssetName, i_Game)
           {
                r_RandomBehavior = this.Game.Services.GetService(typeof(IRandomBehavior)) as IRandomBehavior;
-               MoveDirection = Sprite.Right;
-               Visible = false;
                r_MaxLives = Lives;
+               this.MoveDirection = Sprite.Right;
+               this.Visible = false;
           }
 
           protected bool IsDuringAnimation { get; set; } = false;

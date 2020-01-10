@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
 using Microsoft.Xna.Framework;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.BaseModels
 {
@@ -73,7 +73,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.BaseModels
                     {
                          bullet.GroupRepresentative = shooter.GroupRepresentative;
                          bullet.LeftWindowBounds += onLeftWindowBounds;
-                         bullet.VisibleChanged += Bullet_VisibleChanged;
+                         bullet.VisibleChanged += bullet_VisibleChanged;
                     }
                }
 
@@ -105,9 +105,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.BaseModels
                i_Bullet.Enabled = false;
           }
 
-          private void Bullet_VisibleChanged(object sender, EventArgs e)
+          private void bullet_VisibleChanged(object i_Sender, EventArgs i_Args)
           {
-               BaseBullet bullet = sender as BaseBullet;
+               BaseBullet bullet = i_Sender as BaseBullet;
 
                if (!bullet.Visible)
                {

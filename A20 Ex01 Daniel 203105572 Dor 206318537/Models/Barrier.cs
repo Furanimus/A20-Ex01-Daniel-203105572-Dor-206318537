@@ -1,14 +1,9 @@
-﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
-using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Xna.Framework;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
-     public class Barrier : Sprite, ICollidable
+     public class Barrier : Sprite, ICollidable2D
      {
           private const string k_AssetName = @"Sprites\Barrier_44x32";
           private const int k_DefaultWidth = 44;
@@ -21,7 +16,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           {
                this.Width = k_DefaultWidth;
                this.Height = k_DefaultHeight;
-               this.Velocity = new Vector2(45, 0);
+               this.Velocity = new Vector2(0, 0);
           }
 
           public override void Update(GameTime i_GameTime)
@@ -32,7 +27,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           public override void Collided(ICollidable i_Collidable)
           {
-               base.Collided(i_Collidable);
           }
      }
 }

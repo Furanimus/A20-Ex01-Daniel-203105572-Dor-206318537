@@ -1,8 +1,9 @@
-﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Models.Animators;
-using System;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Components;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
@@ -11,6 +12,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           protected Color m_TintColor = Color.White;
           protected Vector2 m_Position = Vector2.Zero;
           protected Vector2 m_Scales = Vector2.One;
+          protected SpriteBatch m_SpriteBatch;
+          protected Texture2DPixels m_TexturePixels;
 
           public Sprite(string i_AssetName, Game i_Game, int i_UpdateOrder, int i_DrawOrder) 
                : base(i_AssetName, i_Game, i_UpdateOrder, i_DrawOrder)
@@ -25,6 +28,19 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           public Sprite(string i_AssetName, Game i_Game)
               : base(i_AssetName, i_Game, int.MaxValue)
           {
+          }
+
+          public Texture2DPixels TexturePixels
+          {
+               get
+               {
+                    if(m_TexturePixels == null)
+                    {
+                         m_TexturePixels = Texture.GetPixels(SourceRectangle);
+                    }
+
+                    return m_TexturePixels;
+               }
           }
 
           public static Vector2 Right { get; } = new Vector2(1, 0);
@@ -126,6 +142,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                     return new Vector2((float)(SourceRectangle.Width / 2), (float)(SourceRectangle.Height / 2));
                }
           }
+
           public float Rotation { get; set; } = 0;
 
           public Vector2 Scales
@@ -136,7 +153,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                     if (m_Scales != value)
                     {
                          m_Scales = value;
-                         // Notify the Collision Detection mechanism:
                          OnPositionChanged();
                     }
                }
@@ -184,7 +200,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           private bool m_UseSharedBatch = true;
 
-          protected SpriteBatch m_SpriteBatch;
           public SpriteBatch SpriteBatch
           {
                set
@@ -286,10 +301,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           public Sprite ShallowClone()
           {
                return this.MemberwiseClone() as Sprite;
-          }
-
-          protected override void DrawBoundingBox()
-          {
           }
      }
 }

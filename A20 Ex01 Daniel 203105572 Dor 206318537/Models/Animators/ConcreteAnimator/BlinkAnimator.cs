@@ -20,6 +20,7 @@ namespace Models.Animators.ConcreteAnimators
                this.BlinkLength = i_BlinkLength;
                this.m_TimeLeftForNextBlink = i_BlinkLength;
           }
+
           public TimeSpan BlinkLength { get; set; }
 
           protected override void DoFrame(GameTime i_GameTime)

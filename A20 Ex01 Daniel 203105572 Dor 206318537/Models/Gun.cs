@@ -1,10 +1,8 @@
-﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
-using A20_Ex01_Daniel_203105572_Dor_206318537.Models.BaseModels;
-using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
-using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Reflection;
+using Microsoft.Xna.Framework;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Models.BaseModels;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
@@ -12,8 +10,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
      {
           public Gun(int i_Capacity, Sprite i_Shooter, Action<ICollidable> i_ExecuteOnBulletCollided = null) : base(i_Shooter, i_ExecuteOnBulletCollided)
           {
-               Capacity = i_Capacity;
-               BulletType = typeof(Bullet);
+               this.Capacity = i_Capacity;
+               this.BulletType = typeof(Bullet);
           }
 
           protected override void InitializeBullets()

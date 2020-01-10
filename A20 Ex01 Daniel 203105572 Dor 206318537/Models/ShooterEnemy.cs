@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
-using A20_Ex01_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnimator;
-using A20_Ex01_Daniel_203105572_Dor_206318537.Models.BaseModels;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Models.Animators;
-using Models.Animators.ConcreteAnimators;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Models.BaseModels;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
@@ -26,14 +22,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                Gun.Shoot();
           }
 
-          public override void Initialize()
-          {
-               base.Initialize();
-          }               
-
           public override void Collided(ICollidable i_Collidable)
           {
-               if (this.IsAlive && i_Collidable.GroupRepresentative != this.GroupRepresentative && (i_Collidable is Bullet))
+               if (this.IsAlive && i_Collidable.GroupRepresentative != this.GroupRepresentative && i_Collidable is Bullet)
                {
                     SpriteAnimator rotationAnimator = this.Animations["Rotation"];
                     SpriteAnimator shrinkAnimator = this.Animations["Shrink"];
@@ -42,6 +33,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                     {
                          rotationAnimator.Enabled = true;
                     }
+
                     if (shrinkAnimator != null)
                     {
                          shrinkAnimator.Enabled = true;

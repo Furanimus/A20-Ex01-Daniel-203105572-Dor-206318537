@@ -1,19 +1,14 @@
-﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
-using A20_Ex01_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnimator;
+﻿using System;
 using Microsoft.Xna.Framework;
-using Models.Animators;
 using Models.Animators.ConcreteAnimators;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnimator;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
      public class AlienMatrixEnemy : ShooterEnemy
      {
-          private const int k_MaxShotInMidAir = 1;
+          private const int k_MaxShotInMidAir = 0;
           private const int k_DefaultWidth = 32;
           private const int k_DefaultHeight = 32;
           private const int k_DefaultScoreWorth = 0;
@@ -54,12 +49,12 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
                CellAnimation.Resume();
                jump.Resume();
-               rotation.Finished += RotationAnimator_Finished;
+               rotation.Finished += rotationAnimator_Finished;
 
                this.Animations.Enabled = true;
           }
 
-          private void RotationAnimator_Finished(object sender, EventArgs e)
+          private void rotationAnimator_Finished(object i_Sender, EventArgs i_Args)
           {
                this.Enabled = false;
                this.Visible = false;

@@ -1,24 +1,27 @@
-﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Enums;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Enums;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Models.BaseModels;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
      public abstract class ShooterPlayer : BasePlayer
      {
-          private const int k_MaxShotInMidAir = 20;
+          private const int k_MaxShotInMidAir = 2;
 
-          public ShooterPlayer(string i_AssetName, Game i_Game) : this(i_AssetName, i_Game, int.MaxValue)
+          public ShooterPlayer(string i_AssetName, Game i_Game) 
+               : this(i_AssetName, i_Game, int.MaxValue)
           {
           }
 
-          public ShooterPlayer(string i_AssetName, Game i_Game, int i_CallsOrder) : this(i_AssetName, i_Game, int.MaxValue, int.MaxValue)
+          public ShooterPlayer(string i_AssetName, Game i_Game, int i_CallsOrder) 
+               : this(i_AssetName, i_Game, int.MaxValue, int.MaxValue)
           {
           }
 
-          public ShooterPlayer(string i_AssetName, Game i_Game, int i_UpdateOrder, int i_DrawOrder) : base(i_AssetName, i_Game, i_UpdateOrder, i_DrawOrder)
+          public ShooterPlayer(string i_AssetName, Game i_Game, int i_UpdateOrder, int i_DrawOrder) 
+               : base(i_AssetName, i_Game, i_UpdateOrder, i_DrawOrder)
           {
                this.Gun = new Gun(k_MaxShotInMidAir, this, Bullet_Collided);
           }

@@ -1,9 +1,8 @@
-﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
-using A20_Ex01_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnimator;
+﻿using System;
 using Microsoft.Xna.Framework;
 using Models.Animators;
 using Models.Animators.ConcreteAnimators;
-using System;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnimator;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
@@ -35,9 +34,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                this.Animations.Enabled = true;
           }
 
-          private void animators_Finished(object sender, EventArgs e)
+          private void animators_Finished(object i_Sender, EventArgs i_Args)
           {
-               CompositeAnimator spriteAnimator = sender as CompositeAnimator;
+               CompositeAnimator spriteAnimator = i_Sender as CompositeAnimator;
                spriteAnimator.Pause();
                this.Visible = false;
                this.IsDuringAnimation = false;

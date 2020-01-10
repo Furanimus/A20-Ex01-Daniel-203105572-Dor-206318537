@@ -5,20 +5,20 @@ namespace Models.Animators.ConcreteAnimators
 {
      public class CellAnimator : SpriteAnimator
      {
+          private readonly bool r_Loop;
+          private readonly int r_NumOfCells;
+          private readonly bool r_IsStartFromEnd;
+          private int m_CurrCellIdx;
           private TimeSpan m_CellTime;
           private TimeSpan m_TimeLeftForCell;
-          private bool m_Loop = true;
-          private int m_CurrCellIdx = 0;
-          private readonly int r_NumOfCells = 1;
-          private readonly bool r_IsStartFromEnd;
 
           public CellAnimator(bool i_IsStartFromEnd, TimeSpan i_CellTime, int i_NumOfCells, TimeSpan i_AnimationLength)
                : base("Cell", i_AnimationLength)
           {
-               this.m_CellTime = i_CellTime;
-               this.m_TimeLeftForCell = i_CellTime;
-               this.r_NumOfCells = i_NumOfCells;
-
+               m_CellTime = i_CellTime;
+               m_TimeLeftForCell = i_CellTime;
+               r_NumOfCells = i_NumOfCells;
+               r_Loop = i_AnimationLength == TimeSpan.Zero;
                r_IsStartFromEnd = i_IsStartFromEnd;
 
                if(r_IsStartFromEnd)
@@ -26,7 +26,6 @@ namespace Models.Animators.ConcreteAnimators
                     m_CurrCellIdx = i_NumOfCells - 1;
                }
 
-               m_Loop = i_AnimationLength == TimeSpan.Zero;
           }
 
           private void goToNextFrameFromStart()
@@ -35,7 +34,7 @@ namespace Models.Animators.ConcreteAnimators
 
                if (m_CurrCellIdx >= r_NumOfCells)
                {
-                    if (m_Loop)
+                    if (r_Loop)
                     {
                          m_CurrCellIdx = 0;
                     }
@@ -53,7 +52,7 @@ namespace Models.Animators.ConcreteAnimators
 
                if (m_CurrCellIdx < 0)
                {
-                    if (m_Loop)
+                    if (r_Loop)
                     {
                          m_CurrCellIdx = r_NumOfCells - 1;
                     }

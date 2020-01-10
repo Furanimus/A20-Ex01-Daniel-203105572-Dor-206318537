@@ -1,59 +1,54 @@
-﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Models.BaseModels;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Components;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Models.BaseModels;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
 {
-     public class LivesManager : LoadableDrawableComponent
+     public class LivesManager : LoadableDrawableComponent, ILivesManager
      {
           public event Action AllPlayersDied;
 
-          private readonly LinkedList<BasePlayer> r_Players = new LinkedList<BasePlayer>();
+          private readonly LinkedList<BasePlayer> r_Players                  = new LinkedList<BasePlayer>();
+          private readonly HashSet<BasePlayer> r_PlayersSetForCheckExistance = new HashSet<BasePlayer>();
+
           private readonly Vector2 r_LivesScale = new Vector2(0.5f, 0.5f);
-          private readonly Color r_Color = new Color(Color.White, k_LivesAlpha);
+          private readonly Color r_Color        = new Color(Color.White, k_LivesAlpha);
           private const int k_SpaceBetweenLives = 10;
-          private const int k_LivesStartingY = 10;
-          private const float k_LivesAlpha = 0.5f;
-          private bool m_IsAllPlayerAlive;
-
-          public LivesManager(string i_AssetName, Game i_Game, int i_UpdateOrder, int i_DrawOrder) 
-               : base(i_AssetName, i_Game, i_UpdateOrder, i_DrawOrder)
-          {
-          }
-
-          public LivesManager(string i_AssetName, Game i_Game, int i_CallsOrder) 
-               : base(i_AssetName, i_Game, i_CallsOrder)
-          {
-          }
-
-          public LivesManager(Game i_Game, int i_CallsOrder)
-               :base("", i_Game, i_CallsOrder)
-          {
-          }
+          private const int k_LivesStartingY    = 10;
+          private const float k_LivesAlpha      = 0.5f;
+          private bool m_IsAllPlayerAlive       = false;
 
           public LivesManager(Game i_Game)
                : base("", i_Game, int.MaxValue)
           {
+               this.Game.Services.AddService(typeof(ILivesManager), this);
           }
 
           public void AddPlayer(BasePlayer i_Player)
           {
-               r_Players.AddLast(i_Player);
+               if(!IsPlayerAlreadyAdded(i_Player))
+               {
+                    r_Players.AddLast(i_Player);
+                    r_PlayersSetForCheckExistance.Add(i_Player);
+               }
           }
 
           public void RemovePlayer(BasePlayer i_Player)
           {
-               r_Players.Remove(i_Player);
+               if (IsPlayerAlreadyAdded(i_Player))
+               {
+                    r_Players.Remove(i_Player);
+               }
           }
 
-          public SpriteBatch SpriteBatch { get; private set; }
-
-          public bool UseSharedSpriteBatch { get; private set; } = true;
+          public bool IsPlayerAlreadyAdded(BasePlayer i_Player)
+          {
+               return r_PlayersSetForCheckExistance.Contains(i_Player);
+          }
 
           protected override void LoadContent()
           {
@@ -129,8 +124,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
           {
           }
 
-          protected override void DrawBoundingBox()
-          {
-          }
+          public SpriteBatch SpriteBatch { get; private set; }
+
+          public bool UseSharedSpriteBatch { get; private set; } = true;
      }
 }

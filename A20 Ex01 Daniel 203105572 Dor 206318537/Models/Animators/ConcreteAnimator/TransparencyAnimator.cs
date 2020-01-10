@@ -1,18 +1,14 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Models.Animators;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnimator
 {
      public class TransparencyAnimator : SpriteAnimator
      {
-          private float m_Alpha;
-          private readonly Color r_TintColor;
           private const float k_AlphaMaxValue = 255;
+          private readonly Color r_TintColor;
+          private float m_Alpha;
 
           public TransparencyAnimator(Color i_BoundSpriteTintColor, TimeSpan i_AnimationLength) 
                : this("Transparency", i_BoundSpriteTintColor, i_AnimationLength)

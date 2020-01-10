@@ -1,9 +1,5 @@
 ﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces
 {
@@ -15,5 +11,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces
           bool IsCollideWithWindowTopEdge(Sprite i_Sprite);
           bool IsCollideWithWindowRightEdge(Sprite i_Sprite);
           bool IsCollideWithWindowLeftEdge(Sprite i_Sprite);
+          Rectangle getIntersectedRect(Sprite i_Target, Sprite i_Source);
      }
 }
