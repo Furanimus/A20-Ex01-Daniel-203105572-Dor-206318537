@@ -25,16 +25,20 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           public override void Initialize()
           {
                base.Initialize();
-
-               this.Animations.Add(new BlinkAnimator(TimeSpan.FromSeconds(0.1), TimeSpan.FromSeconds(2.2)));
-               this.Animations.Add(new ShrinkAnimator(TimeSpan.FromSeconds(2.2)));
-               this.Animations.Add(new TransparencyAnimator(this.TintColor, TimeSpan.FromSeconds(2.2)));
+               CompositeAnimator deadAnimator = new CompositeAnimator(
+                    "Dead",
+                    TimeSpan.FromSeconds(2.2),
+                    this,
+                    new BlinkAnimator(TimeSpan.FromSeconds(0.1), TimeSpan.FromSeconds(2.2)),
+                    new ShrinkAnimator(TimeSpan.FromSeconds(2.2)),
+                    new TransparencyAnimator(this.TintColor, TimeSpan.FromSeconds(2.2)));
+               deadAnimator.Finished += deadAnimator_Finished;
+               this.Animations.Add(deadAnimator);
                this.Animations.Pause();
-               this.Animations.Finished += animators_Finished;
                this.Animations.Enabled = true;
           }
 
-          private void animators_Finished(object i_Sender, EventArgs i_Args)
+          private void deadAnimator_Finished(object i_Sender, EventArgs i_Args)
           {
                CompositeAnimator spriteAnimator = i_Sender as CompositeAnimator;
                spriteAnimator.Pause();

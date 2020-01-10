@@ -44,7 +44,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           private void trySpawn()
           {
-               if (r_RandomBehavior.Roll(1, 0, 200))
+               if (r_RandomBehavior.Roll(1, 0, 500))
                {
                     m_Position.X = -Width;
                     Visible = true;
