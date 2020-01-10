@@ -8,7 +8,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
      public abstract class ShooterPlayer : BasePlayer
      {
-          private const int k_MaxShotInMidAir = 2;
+          private const int k_MaxShotInMidAir = 20;
 
           public ShooterPlayer(string i_AssetName, Game i_Game) 
                : this(i_AssetName, i_Game, int.MaxValue)

@@ -9,14 +9,16 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
      public class EnemyManager : GameComponent
      {
           public event Action MatrixReachedBottomWindow;
+          public event Action AllEnemiesDied;
 
           private const int k_MatrixCols                                = 9;
           private const int k_MatrixRows                                = 5;
+          private const int k_NumOfEnemiesAtStart                       = k_MatrixCols * k_MatrixRows;
           private const float k_EnemiesStartingY                        = 96;
           private const float k_EnemiesStartingX                        = 0;
           private const int k_MaxRowForBlueEnemies                      = 3;
           private const int k_MaxRowForPinkEnemies                      = 1;
-          private const int k_MaxMillisecondToRoll                      = 1000;
+          private const int k_MaxMillisecondToRoll                      = 500;
           private const float k_SpaceBetweenEnemies                     = 32f * 0.6f;
           private const int k_NumOfDeadEnemiesToIncreaseVelocity        = 5;
           private const float k_IncVelocityOnRowDecendPercentage        = 0.05f;
@@ -29,6 +31,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           private Enemy m_LeftMostRepresentetive;
           private TimeSpan m_IntervalToNextShoot;
           private int m_DeadEnemiesCounter;
+
+          public int DeatEnemiesCount { get; }
 
           public EnemyManager(Game i_Game) : base(i_Game)
           {
@@ -269,6 +273,11 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                     }
 
                     m_DeadEnemiesCounter++;
+
+                    if(AllEnemiesDied != null && m_DeadEnemiesCounter == k_NumOfEnemiesAtStart)
+                    {
+                         AllEnemiesDied.Invoke();
+                    }
 
                     if (isIncreaseEnemiesSpeed())
                     {

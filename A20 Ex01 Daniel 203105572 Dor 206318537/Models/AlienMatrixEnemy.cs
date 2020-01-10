@@ -8,7 +8,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
      public class AlienMatrixEnemy : ShooterEnemy
      {
-          private const int k_MaxShotInMidAir = 0;
+          private const int k_MaxShotInMidAir = 1;
           private const int k_DefaultWidth = 32;
           private const int k_DefaultHeight = 32;
           private const int k_DefaultScoreWorth = 0;

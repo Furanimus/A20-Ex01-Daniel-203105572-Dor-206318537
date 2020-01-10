@@ -43,8 +43,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                BarrierManager barrierManager   = new BarrierManager(this, m_Player1.StartingPosition.Y, m_Player1.Height);
 
                enemyManager.MatrixReachedBottomWindow += () => this.Exit();
+               enemyManager.AllEnemiesDied += OnGameOver;
 
-               this.LivesManager.AllPlayersDied += livesManager_AllPlayersDied;
+               this.LivesManager.AllPlayersDied += OnGameOver;
                this.LivesManager.AddPlayer(m_Player1);
                this.LivesManager.AddPlayer(m_Player2);
                this.ScoreManager.AddPlayer(m_Player1, Color.Blue);
@@ -53,7 +54,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                base.Initialize();
           }
 
-          private void livesManager_AllPlayersDied()
+          private void OnGameOver()
           {
                string title = "Game Over";
                string winMsg = getWinnerMsg();
