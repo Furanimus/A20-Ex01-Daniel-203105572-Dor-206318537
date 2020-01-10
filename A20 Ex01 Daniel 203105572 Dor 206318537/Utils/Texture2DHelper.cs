@@ -40,5 +40,15 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Utils
 
                return new Texture2DPixels(pixels, i_SourceRectangle.Height, i_SourceRectangle.Width, i_SourceRectangle);
           }
+
+          public static Texture2D Clone(this Texture2D i_Texture, GraphicsDevice i_GraphicsDevice)
+          {
+               Texture2D texture = new Texture2D(i_GraphicsDevice, i_Texture.Width, i_Texture.Height);
+               Color[] pixels = new Color[(int)(i_Texture.Width * i_Texture.Height)];
+               i_Texture.GetData(pixels);
+               texture.SetData(pixels);
+
+               return texture;
+          }
      }
 }

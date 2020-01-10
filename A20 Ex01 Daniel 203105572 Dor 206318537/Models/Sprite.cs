@@ -14,6 +14,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           protected Vector2 m_Scales = Vector2.One;
           protected SpriteBatch m_SpriteBatch;
           protected Texture2DPixels m_TexturePixels;
+          private bool m_UseSharedBatch = true;
 
           public Sprite(string i_AssetName, Game i_Game, int i_UpdateOrder, int i_DrawOrder) 
                : base(i_AssetName, i_Game, i_UpdateOrder, i_DrawOrder)
@@ -198,14 +199,13 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                SourceRectangle = new Rectangle(0, 0, (int)WidthBeforeScale, (int)HeightBeforeScale);
           }
 
-          private bool m_UseSharedBatch = true;
 
           public SpriteBatch SpriteBatch
           {
                set
                {
                     m_SpriteBatch = value;
-                    m_UseSharedBatch = true;
+                    m_UseSharedBatch = false;
                }
           }
 
@@ -218,7 +218,10 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           protected override void LoadContent()
           {
-               Texture = Game.Content.Load<Texture2D>(m_AssetName);
+               if(Texture == null)
+               {
+                    Texture = Game.Content.Load<Texture2D>(m_AssetName);
+               }
 
                if (m_SpriteBatch == null)
                {
@@ -226,7 +229,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
                     if (m_SpriteBatch == null)
                     {
-                         m_SpriteBatch = new SpriteBatch(Game.GraphicsDevice);
+                         SpriteBatch = new SpriteBatch(Game.GraphicsDevice);
                          m_UseSharedBatch = false;
                     }
                }
@@ -271,6 +274,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
                base.Draw(i_GameTime);
           }
+
 
           public virtual bool CheckCollision(ICollidable i_Source)
           {

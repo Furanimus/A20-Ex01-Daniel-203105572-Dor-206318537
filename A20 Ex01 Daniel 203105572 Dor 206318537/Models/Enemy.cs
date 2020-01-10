@@ -5,8 +5,10 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
      public abstract class Enemy : Entity, ICollidable2D
      {
+          private const int k_CallOrder = 5;
+
           public Enemy(string i_AssetName, Game i_Game) 
-               : base(i_AssetName, i_Game)
+               : base(i_AssetName, i_Game, k_CallOrder)
           {
                this.Velocity = new Vector2(32, 0);
                this.Lives = 1;

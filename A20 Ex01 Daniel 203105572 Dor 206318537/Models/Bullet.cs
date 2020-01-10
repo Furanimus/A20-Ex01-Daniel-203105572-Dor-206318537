@@ -61,11 +61,10 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
                int yDirection = (int)this.MoveDirection.Y;
                int ysToDestroy = (int)(0.7f * this.Height);
-               bool isBulletOutOfBarrierBounds = false;
 
-               for(int y = 0; y < ysToDestroy && !isBulletOutOfBarrierBounds; y++)
+               for(int y = 0; y < ysToDestroy; y++)
                {
-                    for(int x = 0; x < this.Width && !isBulletOutOfBarrierBounds; x++)
+                    for (int x = 0; x < this.Width; x++)
                     {
                          int currY = intersectedRect.Y + (y * yDirection);
                          int currX = intersectedRect.X + x;
@@ -74,10 +73,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                               currX >= 0 && currX < barrierPixels.Cols)
                          {
                               barrierPixels[currY, currX] = new Color(barrierPixels[currY, currX], 0);
-                         }
-                         else
-                         {
-                              isBulletOutOfBarrierBounds = true;
                          }
                     }
                }

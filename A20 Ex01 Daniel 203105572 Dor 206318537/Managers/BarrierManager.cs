@@ -2,28 +2,33 @@
 using Microsoft.Xna.Framework;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
+using Microsoft.Xna.Framework.Graphics;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
 {
-     public class BarrierManager : GameComponent
+     public class BarrierManager : DrawableGameComponent
      {
           private const float k_BarrierWidth = 44;
           private const float k_BarrierHeight = 32;
-          private const int k_NumOfBarriers = 1;
+          private const int k_NumOfBarriers = 4;
+          private const string k_BarrierAsset = @"Sprites\Barrier_44x32";
           private readonly ICollisionsManager r_CollisionsManager;
           private readonly float r_PlayerStartingY;
           private readonly float r_PlayerHeight;
-          private List<Barrier> m_Barriers;
-          private List<Color[]> m_Pixles;
+          private readonly List<Barrier> r_Barriers;
+          private const int k_CallOrder = 5;
 
           public BarrierManager(Game i_Game, float i_PlayerStartingY, float i_PlayerHeight)
                         : base(i_Game)
           {
-               m_Barriers = new List<Barrier>(k_NumOfBarriers);
+               r_Barriers = new List<Barrier>(k_NumOfBarriers);
                r_CollisionsManager = this.Game.Services.GetService(typeof(ICollisionsManager)) as ICollisionsManager;
                r_PlayerStartingY = i_PlayerStartingY;
                r_PlayerHeight = i_PlayerHeight;
                this.Game.Components.Add(this);
+               this.DrawOrder = k_CallOrder;
+               this.UpdateOrder = k_CallOrder;
           }
 
           public override void Initialize()
@@ -35,22 +40,23 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                     Barrier barrier = new Barrier(this.Game);
 
                     setBarrierProperties(barrier, startingObstaclesPoint);
-                    m_Barriers.Add(barrier);
+                    r_Barriers.Add(barrier);
                     startingObstaclesPoint.X += barrier.Width * 2;
                }
 
                base.Initialize();
           }
 
-
-          private void initPixelData()
+          protected override void LoadContent()
           {
-               for (int i = 0; i < k_NumOfBarriers; i++)
+               BarrierTexture = this.Game.Content.Load<Texture2D>(k_BarrierAsset);
+
+               foreach(Barrier barrier in r_Barriers)
                {
-                    Barrier barrier = m_Barriers[i];
-                    uint totalPixels = (uint)barrier.Width * (uint)barrier.Height;
-                    barrier.Texture.GetData<Color>(m_Pixles[i]);
+                    barrier.Texture = BarrierTexture.Clone(this.GraphicsDevice);
                }
+
+               base.LoadContent();
           }
 
           private Vector2 getStartingPosition()
@@ -70,6 +76,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                return res;
           }
 
+          public Texture2D BarrierTexture { get; private set; }
+
           private void setBarrierProperties(Barrier i_Barrier, Vector2 i_Pos)
           {
                i_Barrier.GroupRepresentative = this;
@@ -78,9 +86,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
 
           public override void Update(GameTime gameTime)
           {
-               if (r_CollisionsManager.IsCollideWithWindowEdge(m_Barriers[k_NumOfBarriers - 1]))
+               if (r_CollisionsManager.IsCollideWithWindowEdge(r_Barriers[k_NumOfBarriers - 1]))
                {
-                    foreach (Barrier barrier in m_Barriers)
+                    foreach (Barrier barrier in r_Barriers)
                     {
                          barrier.Velocity *= -1;
                     }

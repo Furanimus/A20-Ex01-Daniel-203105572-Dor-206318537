@@ -2,17 +2,20 @@
 using Models.Animators;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Models.BaseModels;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
      public abstract class ShooterEnemy : Enemy
      {
           private readonly Rectangle r_SourceRectangle;
+          private readonly ICollisionsManager r_CollisionsManager;
 
           protected ShooterEnemy(string i_AssetName, Rectangle i_SourceRectangle, Game i_Game) 
                : base(i_AssetName, i_Game)
           {
                r_SourceRectangle = i_SourceRectangle;
+               r_CollisionsManager = this.Game.Services.GetService(typeof(ICollisionsManager)) as ICollisionsManager;
           }
 
           public BaseGun Gun { get; set; }
@@ -44,6 +47,29 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                else if(i_Collidable is Player)
                {
                     this.Game.Exit();
+               }
+               else if(i_Collidable is Barrier)
+               {
+                    Barrier barrier = i_Collidable as Barrier;
+                    Texture2DPixels barrierPixels = barrier.TexturePixels;
+                    Rectangle intersectedRect = r_CollisionsManager.getIntersectedRect(barrier, this);
+
+                    for (int y = 0; y < intersectedRect.Height; y++)
+                    {
+                         for (int x = 0; x < intersectedRect.Width; x++)
+                         {
+                              int currY = intersectedRect.Y + y;
+                              int currX = intersectedRect.X + x;
+
+                              if (currY >= 0 && currY < barrierPixels.Rows &&
+                                   currX >= 0 && currX < barrierPixels.Cols)
+                              {
+                                   barrierPixels[currY, currX] = new Color(barrierPixels[currY, currX], 0);
+                              }
+                         }
+                    }
+
+                    barrier.Texture.SetData(barrierPixels.Pixels);
                }
           }
 
