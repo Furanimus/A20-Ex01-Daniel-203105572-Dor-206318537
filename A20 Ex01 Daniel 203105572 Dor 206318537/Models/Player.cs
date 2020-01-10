@@ -104,12 +104,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                this.Animations["Blink"].Restart();
           }
 
-          protected override void OnCollidedWithEnemy(Enemy i_Enemy)
-          {
-               Lives = 0;
-          }
-
-
           public object GroupRepresentative { get; set; }
      }
 }

@@ -45,10 +45,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                {
                     this.Game.Exit();
                }
-               else if(i_Collidable is Barrier)
-               {
-                    //TODO
-               }
           }
 
           protected override void InitSourceRectangle()
