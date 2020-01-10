@@ -69,6 +69,7 @@
     <Compile Include="Managers\LivesManager.cs" />
     <Compile Include="Components\LoadableDrawableComponent.cs" />
     <Compile Include="Components\RegisteredComponent.cs" />
+    <Compile Include="Models\readonlt.cs" />
     <Compile Include="Models\ShooterPlayer.cs" />
     <Compile Include="Models\Enemy.cs" />
     <Compile Include="Managers\EnemyManager.cs" />
