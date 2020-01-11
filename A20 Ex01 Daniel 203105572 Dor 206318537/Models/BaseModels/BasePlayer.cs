@@ -13,15 +13,18 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.BaseModels
 
           public event Action CollidedWithEnemy;
 
-          public BasePlayer(string i_AssetName, Game i_Game) : this(i_AssetName, i_Game, int.MaxValue)
+          public BasePlayer(string i_AssetName, Game i_Game) 
+               : this(i_AssetName, i_Game, int.MaxValue)
           {
           }
 
-          public BasePlayer(string i_AssetName, Game i_Game, int i_CallsOrder) : this(i_AssetName, i_Game, int.MaxValue, int.MaxValue)
+          public BasePlayer(string i_AssetName, Game i_Game, int i_CallsOrder) 
+               : this(i_AssetName, i_Game, int.MaxValue, int.MaxValue)
           {
           }
 
-          public BasePlayer(string i_AssetName, Game i_Game, int i_UpdateOrder, int i_DrawOrder) : base(i_AssetName, i_Game, i_UpdateOrder, i_DrawOrder)
+          public BasePlayer(string i_AssetName, Game i_Game, int i_UpdateOrder, int i_DrawOrder) 
+               : base(i_AssetName, i_Game, i_UpdateOrder, i_DrawOrder)
           {
                r_InputManager = this.Game.Services.GetService(typeof(IInputManager)) as IInputManager;
                r_Velocity = new Vector2(145, 0);
@@ -44,7 +47,11 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.BaseModels
 
                set
                {
-                    m_Position.X = MathHelper.Clamp(value.X, 0, (float)this.GraphicsDevice.Viewport.Width - Width);
+                    if (m_Position != value)
+                    {
+                         m_Position.X = MathHelper.Clamp(value.X, 0, (float)this.GraphicsDevice.Viewport.Width - Width);
+                         OnPositionChanged();
+                    }
                }
           }
 

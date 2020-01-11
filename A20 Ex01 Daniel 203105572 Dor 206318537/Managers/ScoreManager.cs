@@ -9,15 +9,15 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
 {
      public class ScoreManager : LoadableDrawableComponent, IScoreManager
      {
-          private const int k_SpaceFactor         = 12;
-          private const int k_SpaceBetweenScores  = 10;
-          private const int k_LivesStartingY      = 10;
-          private const int k_StartingXForDraw    = 10;
-
+          private const int k_SpaceFactor                                        = 12;
+          private const int k_SpaceBetweenScores                                 = 10;
+          private const int k_LivesStartingY                                     = 10;
+          private const int k_StartingXForDraw                                   = 10;
+          private const string k_FontAssetName                                   = @"Fonts\ComicSansMsFont";
           private readonly LinkedList<KeyValuePair<BasePlayer, Color>> r_Players = new LinkedList<KeyValuePair<BasePlayer, Color>>();
           private readonly HashSet<BasePlayer> r_PlayersSetForCheckExistance     = new HashSet<BasePlayer>();
-
           private SpriteFont m_ComicSansMsFont;
+          private const string k_ScoreString = "P{0} Score: {1}";
 
           public ScoreManager(Game i_Game)
                : base(string.Empty, i_Game, int.MaxValue)
@@ -52,7 +52,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                     }
                }
 
-               m_ComicSansMsFont = this.Game.Content.Load<SpriteFont>(@"Fonts\ComicSansMsFont");
+               m_ComicSansMsFont = this.Game.Content.Load<SpriteFont>(k_FontAssetName);
 
                base.LoadContent();
           }
@@ -70,7 +70,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                foreach (KeyValuePair<BasePlayer, Color> pair in r_Players)
                {
                     Vector2 positionForDraw = new Vector2(k_StartingXForDraw, yPos);
-                    string scoreString = string.Format("P{0} Score: {1}", playerCounter.ToString(), pair.Key.Score.ToString());
+                    string scoreString = string.Format(k_ScoreString, playerCounter.ToString(), pair.Key.Score.ToString());
 
                     SpriteBatch.DrawString(m_ComicSansMsFont, scoreString, positionForDraw, pair.Value);
 

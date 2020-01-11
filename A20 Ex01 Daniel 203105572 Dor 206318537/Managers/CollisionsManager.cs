@@ -11,8 +11,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
      {
           protected readonly List<ICollidable> r_Collidables = new List<ICollidable>();
 
-          public CollisionsManager(Game i_Game) :
-              base(i_Game, int.MaxValue)
+          public CollisionsManager(Game i_Game)
+               : base(i_Game, int.MaxValue)
           { 
           }
 
@@ -33,9 +33,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                }
           }
 
-          private void collidable_Disposed(object sender, EventArgs e)
+          private void collidable_Disposed(object i_Sender, EventArgs i_Args)
           {
-               ICollidable collidable = sender as ICollidable;
+               ICollidable collidable = i_Sender as ICollidable;
 
                if (collidable != null
                    &&
@@ -50,17 +50,17 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                }
           }
 
-          private void collidable_Changed(object sender, EventArgs e)
+          private void collidable_Changed(object i_Sender, EventArgs i_Args)
           {
-               if (sender is ICollidable)
+               if (i_Sender is ICollidable)
                {
-                    Entity entity = sender as Entity;
+                    Entity entity = i_Sender as Entity;
                     bool isEntity = entity != null;
                     bool isEntityAlive = isEntity && entity.IsAlive;
 
                     if (!isEntity || isEntityAlive)
                     {
-                         checkCollision(sender as ICollidable);
+                         checkCollision(i_Sender as ICollidable);
                     }
                }
           }
@@ -108,8 +108,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                {
                     Rectangle targetIntersectedRect; 
                     Rectangle sourceIntersectedRect; 
-                    getIntersectedRect(target, source, out targetIntersectedRect);
-                    getIntersectedRect(source, target, out sourceIntersectedRect);
+                    GetIntersectedRect(target, source, out targetIntersectedRect);
+                    GetIntersectedRect(source, target, out sourceIntersectedRect);
 
                     int height = MathHelper.Min(targetIntersectedRect.Height, sourceIntersectedRect.Height);
                     int width = MathHelper.Min(targetIntersectedRect.Width, sourceIntersectedRect.Width);
@@ -146,7 +146,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                return pixelCollided;
           }
 
-          public void getIntersectedRect(Sprite i_First, Sprite i_Second, out Rectangle o_IntersectedRect)
+          public void GetIntersectedRect(Sprite i_First, Sprite i_Second, out Rectangle o_IntersectedRect)
           {
                o_IntersectedRect = new Rectangle();
                Rectangle first = new Rectangle((int)i_First.Position.X, (int)i_First.Position.Y, i_First.SourceRectangle.Width, i_First.SourceRectangle.Height);

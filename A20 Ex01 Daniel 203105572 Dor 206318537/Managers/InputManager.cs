@@ -74,40 +74,40 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
           {
                const bool v_OneIsEnough = true;
 
-               return ButtonStateChanged(i_Buttons, ButtonState.Pressed, v_OneIsEnough);
+               return buttonStateChanged(i_Buttons, ButtonState.Pressed, v_OneIsEnough);
           }
 
           public bool ButtonReleased(eInputButtons i_Buttons)
           {
                const bool v_OneIsEnough = true;
 
-               return ButtonStateChanged(i_Buttons, ButtonState.Released, v_OneIsEnough);
+               return buttonStateChanged(i_Buttons, ButtonState.Released, v_OneIsEnough);
           }
 
           public bool ButtonsPressed(eInputButtons i_Buttons)
           {
                const bool v_OneIsEnough = true;
 
-               return ButtonStateChanged(i_Buttons, ButtonState.Pressed, !v_OneIsEnough);
+               return buttonStateChanged(i_Buttons, ButtonState.Pressed, !v_OneIsEnough);
           }
 
           public bool ButtonsReleased(eInputButtons i_Buttons)
           {
                const bool v_OneIsEnough = true;
 
-               return ButtonStateChanged(i_Buttons, ButtonState.Released, !v_OneIsEnough);
+               return buttonStateChanged(i_Buttons, ButtonState.Released, !v_OneIsEnough);
           }
 
           public bool ButtonStateChanged(eInputButtons i_Buttons)
           {
                const bool v_OneIsEnough = true;
 
-               return ButtonStateChanged(i_Buttons, ButtonState.Released, v_OneIsEnough)
+               return buttonStateChanged(i_Buttons, ButtonState.Released, v_OneIsEnough)
                    ||
-                   ButtonStateChanged(i_Buttons, ButtonState.Pressed, v_OneIsEnough);
+                   buttonStateChanged(i_Buttons, ButtonState.Pressed, v_OneIsEnough);
           }
 
-          private bool ButtonStateChanged(eInputButtons i_Buttons, ButtonState i_ButtonState, bool i_IsOneEnough)
+          private bool buttonStateChanged(eInputButtons i_Buttons, ButtonState i_ButtonState, bool i_IsOneEnough)
           {
                const bool v_CheckChanged = true;
 

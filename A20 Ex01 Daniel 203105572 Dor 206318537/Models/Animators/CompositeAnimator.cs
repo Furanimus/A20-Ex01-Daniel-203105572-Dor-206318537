@@ -7,11 +7,12 @@ namespace Models.Animators
 {
      public class CompositeAnimator : SpriteAnimator
      {
+          private const string k_Name = "AnimationsManager";
           private readonly Dictionary<string, SpriteAnimator> m_AnimationsDictionary = new Dictionary<string, SpriteAnimator>();
           protected readonly List<SpriteAnimator> m_AnimationsList                   = new List<SpriteAnimator>();
 
           public CompositeAnimator(Sprite i_BoundSprite)
-               : this("AnimationsManager", TimeSpan.Zero, i_BoundSprite, new SpriteAnimator[] { })
+               : this(k_Name, TimeSpan.Zero, i_BoundSprite, new SpriteAnimator[] { })
           {
                this.Enabled = false;
           }

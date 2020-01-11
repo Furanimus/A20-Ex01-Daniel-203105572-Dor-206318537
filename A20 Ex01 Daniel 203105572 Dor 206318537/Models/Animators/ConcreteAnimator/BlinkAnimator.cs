@@ -1,12 +1,14 @@
 using System;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Models.BaseModels;
 using Microsoft.Xna.Framework;
 
 namespace Models.Animators.ConcreteAnimators
 {
      public class BlinkAnimator : SpriteAnimator
      {
+          private const string k_Name = "Blink";
           private TimeSpan m_TimeLeftForNextBlink;
-
+          
           public BlinkAnimator(string i_Name, TimeSpan i_BlinkLength, TimeSpan i_AnimationLength)
                : base(i_Name, i_AnimationLength)
           {
@@ -15,7 +17,7 @@ namespace Models.Animators.ConcreteAnimators
           }
 
           public BlinkAnimator(TimeSpan i_BlinkLength, TimeSpan i_AnimationLength)
-               : this("Blink", i_BlinkLength, i_AnimationLength)
+               : this(k_Name, i_BlinkLength, i_AnimationLength)
           {
                this.BlinkLength = i_BlinkLength;
                this.m_TimeLeftForNextBlink = i_BlinkLength;
@@ -36,7 +38,16 @@ namespace Models.Animators.ConcreteAnimators
 
           protected override void RevertToOriginal()
           {
-               this.BoundSprite.Visible = m_OriginalSpriteInfo.Visible;
+               BasePlayer player = this.BoundSprite as BasePlayer;
+
+               if(player != null && !player.IsAlive)
+               {
+                    player.Visible = false;
+               }
+               else
+               {
+                    this.BoundSprite.Visible = m_OriginalSpriteInfo.Visible;
+               }
           }
      }
 }

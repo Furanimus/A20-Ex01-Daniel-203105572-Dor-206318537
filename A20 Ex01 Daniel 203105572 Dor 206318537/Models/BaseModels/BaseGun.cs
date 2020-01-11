@@ -12,7 +12,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.BaseModels
           private readonly Action<ICollidable> r_ExecuteOnBulletCollided;
           private int m_BulletsAdded;
 
-          protected BaseGun(Sprite i_Shooter, Action<ICollidable> i_ExecuteOnBulletCollided) : base(i_Shooter.Game)
+          protected BaseGun(Sprite i_Shooter, Action<ICollidable> i_ExecuteOnBulletCollided) 
+               : base(i_Shooter.Game)
           {
                r_Shooter = i_Shooter;
                r_Bullets = new LinkedList<BaseBullet>();
@@ -80,7 +81,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.BaseModels
                base.Initialize();
           }
 
-          public override void Update(GameTime gameTime)
+          public override void Update(GameTime i_GameTime)
           {
                this.GunDirection = r_Shooter.ViewDirection;
 
@@ -90,7 +91,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.BaseModels
                     bullet.Position = getShootOrigin(bullet);
                }
 
-               base.Update(gameTime);
+               base.Update(i_GameTime);
           }
 
           private void onLeftWindowBounds(object i_Sender, EventArgs i_Args)

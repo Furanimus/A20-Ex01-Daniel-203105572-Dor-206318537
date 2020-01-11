@@ -6,10 +6,11 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnima
 {
      public class RotationAnimator : SpriteAnimator
      {
+          private const string k_Name = "Rotation";
           private readonly int r_CircledPerSecond;
 
           public RotationAnimator(int i_CircledPerSecond, TimeSpan i_AnimationLength) 
-               : this("Rotation", i_CircledPerSecond, i_AnimationLength)
+               : this(k_Name, i_CircledPerSecond, i_AnimationLength)
           {
           }
 

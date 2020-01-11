@@ -1,6 +1,5 @@
 ﻿using System;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
-using Microsoft.Xna.Framework;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces
 {

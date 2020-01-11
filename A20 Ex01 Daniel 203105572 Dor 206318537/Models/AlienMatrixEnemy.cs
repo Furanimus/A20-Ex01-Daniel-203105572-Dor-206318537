@@ -8,17 +8,23 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
      public class AlienMatrixEnemy : ShooterEnemy
      {
-          private const int k_MaxShotInMidAir = 5;
+          private const int k_MaxShotInMidAir = 1;
           private const int k_DefaultWidth = 32;
           private const int k_DefaultHeight = 32;
           private const int k_DefaultScoreWorth = 0;
+          private const int k_NumOfCells = 2;
+          private const int k_NumOfCirclesInOneSecond = 6;
+          private const float k_CellAnimationTimePerCell = 0.5f;
+          private const float k_RotationAnimationLength = 1.2f;
+          private const float k_ShrinkAnimationLength = 1.2f;
+          private const float k_JumpAnimationIntervals = 0.5f;
           private const string k_AssetName = @"Sprites\EnemySpriteSheet_192x32";
           private const bool k_IsStartCellAnimationFromEnd = false;
 
           public AlienMatrixEnemy(Rectangle i_SourceRectangle, Game i_Game)
                : this(i_SourceRectangle, k_DefaultScoreWorth, Color.White, i_Game)
           {
-               CellAnimation = new CellAnimator(k_IsStartCellAnimationFromEnd, TimeSpan.FromSeconds(0.5), 2, TimeSpan.Zero);
+               CellAnimation = new CellAnimator(k_IsStartCellAnimationFromEnd, TimeSpan.FromSeconds(k_CellAnimationTimePerCell), k_NumOfCells, TimeSpan.Zero);
           }
 
           public CellAnimator CellAnimation { get; set; }
@@ -38,9 +44,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           {
                base.Initialize();
 
-               RotationAnimator rotation = new RotationAnimator(6, TimeSpan.FromSeconds(1.2));
-               ShrinkAnimator shrink = new ShrinkAnimator(TimeSpan.FromSeconds(1.2));
-               JumpMovementAnimator jump = new JumpMovementAnimator(TimeSpan.FromSeconds(0.5), TimeSpan.Zero);
+               RotationAnimator rotation = new RotationAnimator(k_NumOfCirclesInOneSecond, TimeSpan.FromSeconds(k_RotationAnimationLength));
+               ShrinkAnimator shrink = new ShrinkAnimator(TimeSpan.FromSeconds(k_ShrinkAnimationLength));
+               JumpMovementAnimator jump = new JumpMovementAnimator(TimeSpan.FromSeconds(k_JumpAnimationIntervals), TimeSpan.Zero);
                this.Animations.Add(CellAnimation);
                this.Animations.Add(rotation);
                this.Animations.Add(shrink);

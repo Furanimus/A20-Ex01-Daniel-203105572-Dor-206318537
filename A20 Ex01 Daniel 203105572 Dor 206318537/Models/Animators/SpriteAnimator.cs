@@ -8,7 +8,6 @@ namespace Models.Animators
      {
           public event EventHandler Finished;
 
-          private TimeSpan m_AnimationLength;
           private TimeSpan m_TimeLeft;
           private bool m_IsFinished = false;
           private bool m_Initialized = false;
@@ -18,7 +17,7 @@ namespace Models.Animators
           protected SpriteAnimator(string i_Name, TimeSpan i_AnimationLength)
           {
                Name = i_Name;
-               m_AnimationLength = i_AnimationLength;
+               AnimationLength = i_AnimationLength;
           }
 
           protected virtual void OnFinished()
@@ -43,7 +42,7 @@ namespace Models.Animators
 
           public bool IsFinite
           {
-               get { return this.m_AnimationLength != TimeSpan.Zero; }
+               get { return this.AnimationLength != TimeSpan.Zero; }
           }
 
           public bool ResetAfterFinish
@@ -74,7 +73,7 @@ namespace Models.Animators
 
           public void Reset()
           {
-               Reset(m_AnimationLength);
+               Reset(AnimationLength);
           }
 
           public void Reset(TimeSpan i_AnimationLength)
@@ -85,8 +84,8 @@ namespace Models.Animators
                }
                else
                {
-                    m_AnimationLength = i_AnimationLength;
-                    m_TimeLeft = m_AnimationLength;
+                    AnimationLength = i_AnimationLength;
+                    m_TimeLeft = AnimationLength;
                     this.IsFinished = false;
                }
 
@@ -107,7 +106,7 @@ namespace Models.Animators
 
           public virtual void Restart()
           {
-               Restart(m_AnimationLength);
+               Restart(AnimationLength);
           }
 
           public virtual void Restart(TimeSpan i_AnimationLength)
@@ -116,11 +115,8 @@ namespace Models.Animators
                Resume();
           }
 
-          protected TimeSpan AnimationLength
-          {
-               get { return m_AnimationLength; }
-          }
-
+          protected TimeSpan AnimationLength { get; private set; }
+      
           public bool IsFinished
           {
                get { return this.m_IsFinished; }

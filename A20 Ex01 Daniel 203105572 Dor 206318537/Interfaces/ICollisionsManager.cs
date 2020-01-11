@@ -1,5 +1,5 @@
-﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces
 {
@@ -17,6 +17,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces
 
           bool IsCollideWithWindowLeftEdge(Sprite i_Sprite);
 
-          void getIntersectedRect(Sprite i_First, Sprite i_Second, out Rectangle o_IntersectedRect);
+          void GetIntersectedRect(Sprite i_First, Sprite i_Second, out Rectangle o_IntersectedRect);
      }
 }

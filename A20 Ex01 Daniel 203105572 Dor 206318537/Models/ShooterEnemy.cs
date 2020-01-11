@@ -27,48 +27,60 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           public override void Collided(ICollidable i_Collidable)
           {
-               if (this.IsAlive && i_Collidable.GroupRepresentative != this.GroupRepresentative && i_Collidable is Bullet)
+               bool amIAliveAndCollidedWithBullet = this.IsAlive && i_Collidable.GroupRepresentative != this.GroupRepresentative && i_Collidable is Bullet;
+
+               if (amIAliveAndCollidedWithBullet)
                {
-                    SpriteAnimator rotationAnimator = this.Animations["Rotation"];
-                    SpriteAnimator shrinkAnimator = this.Animations["Shrink"];
-
-                    if (rotationAnimator != null)
-                    {
-                         rotationAnimator.Enabled = true;
-                    }
-
-                    if (shrinkAnimator != null)
-                    {
-                         shrinkAnimator.Enabled = true;
-                    }
-
-                    Lives--;
+                    onCollidedWithBullet(i_Collidable);
                }
-               else if(i_Collidable is Barrier)
+               else if (i_Collidable is Barrier)
                {
-                    Barrier barrier = i_Collidable as Barrier;
-                    Texture2DPixels barrierPixels = barrier.TexturePixels;
-                    Rectangle intersectedRect;
+                    onCollidedWithBarrier(i_Collidable);
+               }
+          }
 
-                    r_CollisionsManager.getIntersectedRect(barrier, this, out intersectedRect);
+          private void onCollidedWithBullet(ICollidable I_Collidable)
+          {
+               SpriteAnimator rotationAnimator = this.Animations["Rotation"];
+               SpriteAnimator shrinkAnimator = this.Animations["Shrink"];
 
-                    for (int y = 0; y < intersectedRect.Height; y++)
+               if (rotationAnimator != null)
+               {
+                    rotationAnimator.Enabled = true;
+               }
+
+               if (shrinkAnimator != null)
+               {
+                    shrinkAnimator.Enabled = true;
+               }
+
+               Lives--;
+          }
+
+          private void onCollidedWithBarrier(ICollidable i_Collidable)
+          {
+               Barrier barrier = i_Collidable as Barrier;
+               Texture2DPixels barrierPixels = barrier.TexturePixels;
+               Rectangle intersectedRect;
+
+               r_CollisionsManager.GetIntersectedRect(barrier, this, out intersectedRect);
+
+               for (int y = 0; y < intersectedRect.Height; y++)
+               {
+                    for (int x = 0; x < intersectedRect.Width; x++)
                     {
-                         for (int x = 0; x < intersectedRect.Width; x++)
-                         {
-                              int currY = intersectedRect.Y + y;
-                              int currX = intersectedRect.X + x;
+                         int currY = intersectedRect.Y + y;
+                         int currX = intersectedRect.X + x;
 
-                              if (currY >= 0 && currY < barrierPixels.Rows &&
-                                   currX >= 0 && currX < barrierPixels.Cols)
-                              {
-                                   barrierPixels[currY, currX] = new Color(barrierPixels[currY, currX], 0);
-                              }
+                         if (currY >= 0 && currY < barrierPixels.Rows &&
+                              currX >= 0 && currX < barrierPixels.Cols)
+                         {
+                              barrierPixels[currY, currX] = new Color(barrierPixels[currY, currX], 0);
                          }
                     }
-
-                    barrier.Texture.SetData(barrierPixels.Pixels);
                }
+
+               barrier.Texture.SetData(barrierPixels.Pixels);
           }
 
           protected override void InitSourceRectangle()

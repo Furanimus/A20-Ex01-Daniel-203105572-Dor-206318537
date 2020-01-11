@@ -12,16 +12,27 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           public event Action AllEnemiesDied;
 
+          private const int k_EnemyWidth                                = 32;
+          private const int k_EnemyHeight                               = 32;  
+          private const int k_PinkEnemyTextureX                         = 0;  
+          private const int k_LightBlueTextureX                         = 64;  
+          private const int k_LightYellowTextureX                       = 128;  
+          private const int k_EnemyTextureY                             = 0;  
           private const int k_MatrixCols                                = 9;
           private const int k_MatrixRows                                = 5;
           private const int k_NumOfEnemiesAtStart                       = k_MatrixCols * k_MatrixRows;
-          private const float k_EnemiesStartingY                        = 96;
-          private const float k_EnemiesStartingX                        = 0;
           private const int k_MaxRowForBlueEnemies                      = 3;
           private const int k_MaxRowForPinkEnemies                      = 1;
-          private const int k_MaxMillisecondToRoll                      = 500;
-          private const float k_SpaceBetweenEnemies                     = 32f * 0.6f;
+          private const int k_MaxMillisecondToRoll                      = 300;
           private const int k_NumOfDeadEnemiesToIncreaseVelocity        = 5;
+          private const int k_PinkEnemyScore                            = 250;
+          private const int k_LightBlueEnemyScore                       = 150;
+          private const int k_LightYellowEnemyScore                     = 100;
+          private const int k_NumOfAnimationCells                       = 2;
+          private const float k_CellTime                                = 0.5f;
+          private const float k_EnemiesStartingY                        = 96;
+          private const float k_EnemiesStartingX                        = 0;
+          private const float k_SpaceBetweenEnemies                     = 32f * 0.6f;
           private const float k_IncVelocityOnRowDecendPercentage        = 0.05f;
           private const float k_IncVelocityOnNumOfDeadEnemiesPercentage = 0.03f;
           private readonly IRandomBehavior r_RandomBehavior;
@@ -35,9 +46,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           public EnemyManager(Game i_Game) : base(i_Game)
           {
-               r_EnemyMatrix       = new List<List<Enemy>>(k_MatrixRows);
-               r_RandomBehavior    = this.Game.Services.GetService(typeof(IRandomBehavior)) as IRandomBehavior;
-               r_MotherShip        = new RedMotherShip(i_Game);
+               r_EnemyMatrix    = new List<List<Enemy>>(k_MatrixRows);
+               r_RandomBehavior = this.Game.Services.GetService(typeof(IRandomBehavior)) as IRandomBehavior;
+               r_MotherShip     = new RedMotherShip(i_Game);
 
                this.Game.Components.Add(this);
           }
@@ -211,7 +222,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
                for (int row = 0; row < k_MatrixRows; row++)
                {
-                    float left          = k_EnemiesStartingX;
+                    float left = k_EnemiesStartingX;
                     bool isStartAnimationFromSecondCell = row % 2 == 0;
                     Color color;
                     int scoreWorth;
@@ -220,28 +231,28 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                     if (row < k_MaxRowForPinkEnemies)
                     {
                          color = Color.Pink;
-                         scoreWorth = 250;
-                         sourceRectangle = new Rectangle(0, 0, 32, 32);
+                         scoreWorth = k_PinkEnemyScore;
+                         sourceRectangle = new Rectangle(k_PinkEnemyTextureX, k_EnemyTextureY, k_EnemyWidth, k_EnemyHeight);
                     }
                     else if (row < k_MaxRowForBlueEnemies)
                     {
                          color = Color.LightBlue;
-                         scoreWorth = 150;
-                         sourceRectangle = new Rectangle(64, 0, 32, 32);
+                         scoreWorth = k_LightBlueEnemyScore;
+                         sourceRectangle = new Rectangle(k_LightBlueTextureX, k_EnemyTextureY, k_EnemyWidth, k_EnemyHeight);
                     }
                     else
                     {
                          color = Color.LightYellow;
-                         scoreWorth = 100;
-                         sourceRectangle = new Rectangle(128, 0, 32, 32);
+                         scoreWorth = k_LightYellowEnemyScore;
+                         sourceRectangle = new Rectangle(k_LightYellowTextureX, k_EnemyTextureY, k_EnemyWidth, k_EnemyHeight);
                     }
-
+                    
                     for (int col = 0; col < k_MatrixCols; col++)
                     {
                          r_EnemyMatrix[row].Add(new AlienMatrixEnemy(sourceRectangle, scoreWorth, color, this.Game));
 
                          AlienMatrixEnemy enemy      = r_EnemyMatrix[row][col] as AlienMatrixEnemy;
-                         enemy.CellAnimation         = new CellAnimator(isStartAnimationFromSecondCell, TimeSpan.FromSeconds(0.5), 2, TimeSpan.Zero);
+                         enemy.CellAnimation         = new CellAnimator(isStartAnimationFromSecondCell, TimeSpan.FromSeconds(k_CellTime), k_NumOfAnimationCells, TimeSpan.Zero);
                          enemy.StartingPosition      = new Vector2(left, top);
                          enemy.VisibleChanged       += enemy_VisibleChanged;
                          enemy.GroupRepresentative   = this;
@@ -252,9 +263,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                }
           }
 
-          private void enemy_VisibleChanged(object sender, EventArgs e)
+          private void enemy_VisibleChanged(object i_Sender, EventArgs i_Args)
           {
-               Enemy enemy = sender as Enemy;
+               Enemy enemy = i_Sender as Enemy;
 
                if (!enemy.Visible)
                {

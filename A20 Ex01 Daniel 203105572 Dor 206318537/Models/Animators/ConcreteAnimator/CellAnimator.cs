@@ -5,6 +5,7 @@ namespace Models.Animators.ConcreteAnimators
 {
      public class CellAnimator : SpriteAnimator
      {
+          private const string k_Name = "Cell";
           private readonly bool r_Loop;
           private readonly int r_NumOfCells;
           private readonly bool r_IsStartFromEnd;
@@ -13,7 +14,7 @@ namespace Models.Animators.ConcreteAnimators
           private TimeSpan m_TimeLeftForCell;
 
           public CellAnimator(bool i_IsStartFromEnd, TimeSpan i_CellTime, int i_NumOfCells, TimeSpan i_AnimationLength)
-               : base("Cell", i_AnimationLength)
+               : base(k_Name, i_AnimationLength)
           {
                m_CellTime = i_CellTime;
                m_TimeLeftForCell = i_CellTime;

@@ -2,7 +2,6 @@
 using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Models.BaseModels;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
-using System;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
@@ -15,18 +14,18 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           private const float k_DestroyBarrierPercentage = 0.7f;
           private const float k_YVelocity = 160;
           private const float k_XVelocity = 0;
-
-          private readonly ICollisionsManager r_CollisionsManager;
-
           private readonly IRandomBehavior r_RandomBehavior;
-          public Bullet(Game i_Game) : this(Color.Red, i_Game)
+
+          public Bullet(Game i_Game) 
+               : this(Color.Red, i_Game)
           {
-               r_RandomBehavior = this.Game.Services.GetService(typeof(IRandomBehavior)) as IRandomBehavior;
-               r_CollisionsManager = this.Game.Services.GetService(typeof(ICollisionsManager)) as ICollisionsManager;
           }
 
-          public Bullet(Color i_TintColor, Game i_Game) : base(k_GraphicPath, i_Game)
+          public Bullet(Color i_TintColor, Game i_Game) 
+               : base(k_GraphicPath, i_Game)
           {
+               r_RandomBehavior = this.Game.Services.GetService(typeof(IRandomBehavior)) as IRandomBehavior;
+
                this.Width = 6;
                this.Height = 16;
                this.Enabled = false;
@@ -84,7 +83,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                          {
                               barrierY = barrierY + (int)this.Height - 1;
                          }
-
 
                          barrierY = (int)MathHelper.Clamp(barrierY, 0, i_Barrier.Height - 1);
                          barrierX = (int)MathHelper.Clamp(barrierX, 0, i_Barrier.Width - 1);

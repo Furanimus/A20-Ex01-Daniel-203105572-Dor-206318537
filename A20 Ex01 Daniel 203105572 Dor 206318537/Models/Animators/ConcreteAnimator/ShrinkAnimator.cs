@@ -6,10 +6,11 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnima
 {
      public class ShrinkAnimator : SpriteAnimator
      {
+          private const string k_Name = "Shrink";
           private const int k_InitialScale = 1;
 
           public ShrinkAnimator(TimeSpan i_AnimationLength)
-               : this("Shrink", i_AnimationLength)
+               : this(k_Name, i_AnimationLength)
           {
           }
 

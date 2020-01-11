@@ -6,12 +6,13 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnima
 {
      public class TransparencyAnimator : SpriteAnimator
      {
+          private const string k_Name = "Transparency";
           private const float k_AlphaMaxValue = 255;
           private readonly Color r_TintColor;
           private float m_Alpha;
 
           public TransparencyAnimator(Color i_BoundSpriteTintColor, TimeSpan i_AnimationLength) 
-               : this("Transparency", i_BoundSpriteTintColor, i_AnimationLength)
+               : this(k_Name, i_BoundSpriteTintColor, i_AnimationLength)
           {
           }
 
