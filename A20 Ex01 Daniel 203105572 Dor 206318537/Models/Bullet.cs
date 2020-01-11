@@ -61,41 +61,42 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                this.Enabled = false;
 
                Texture2DPixels barrierPixels = i_Barrier.TexturePixels;
-               Rectangle intersectedRect;
-               r_CollisionsManager.getIntersectedRect(i_Barrier, this, out intersectedRect);
+               int maxYPixelsToDestroy       = (int)(this.Height * k_DestroyBarrierPercentage);
+               int yDirection                = this.MoveDirection == Sprite.Down ? (int)Sprite.Down.Y : (int)Sprite.Up.Y;
+               int bulletStartPixelY         = this.MoveDirection == Sprite.Down ? (int)this.Position.Y - 2 : (int)this.Position.Y + 2;
+               int bulletStartPixelX         = (int)this.Position.X;
+               int barrierStartPixelY        = (int)i_Barrier.Position.Y;
+               int barrierStartPixelX        = (int)i_Barrier.Position.X;
+               int maxXPixelsToDestory       = bulletStartPixelX + (int)this.Width;
+               int pixelsToDestroyIfUp       = bulletStartPixelY - maxYPixelsToDestroy;
+               int pixelsToDestroyIfDown     = bulletStartPixelY + maxYPixelsToDestroy;
 
-               int yDirection  = (int)this.MoveDirection.Y;
-               int ysToDestroy = (int)(k_DestroyBarrierPercentage * this.Height);
-
-               for(int y = 0; y <= ysToDestroy; y++)
+               for (int currY = bulletStartPixelY; currY < pixelsToDestroyIfDown && currY >= pixelsToDestroyIfUp; currY += yDirection)
                {
-                    for (int x = 0; x < this.Width; x++)
+                    for(int currX = bulletStartPixelX; currX < maxXPixelsToDestory; currX++)
                     {
-                         int currY;
-                         int currX = intersectedRect.X + x;
-                         bool isFixPosition = this.Position.Y + this.Height - this.Height / 2 > i_Barrier.Position.Y;
+                         int barrierY = currY - barrierStartPixelY;
+                         int barrierX = currX - barrierStartPixelX;
+                         
+                         barrierX = barrierX < 0 ? barrierX + (int)this.Width - 1 : barrierX;
 
-                         if (isFixPosition && this.MoveDirection == Sprite.Down)
+                         if(this.MoveDirection == Sprite.Down)
                          {
-                              float partOfTheBulletAboveTheBarrier = i_Barrier.Position.Y - this.Position.Y;
-                              int subToFixPosition                 = (int)MathHelper.Clamp(partOfTheBulletAboveTheBarrier, 0, this.Height) + 4;
-                              currY                                = intersectedRect.Y + (int)this.Height - subToFixPosition + (y * yDirection);
-                         }
-                         else
-                         {
-                              int addIfUpShoot = this.MoveDirection == Sprite.Up ? 2 : 0;
-                              currY            = (int)MathHelper.Clamp(intersectedRect.Y + addIfUpShoot + (y * yDirection), 0, i_Barrier.Height - 1);
+                              barrierY = barrierY + (int)this.Height - 1;
                          }
 
-                         if(currY >= 0 && currY < barrierPixels.Rows && currX >= 0 && currX < barrierPixels.Cols)
+
+                         barrierY = (int)MathHelper.Clamp(barrierY, 0, i_Barrier.Height - 1);
+                         barrierX = (int)MathHelper.Clamp(barrierX, 0, i_Barrier.Width - 1);
+
+                         if (barrierPixels[barrierY, barrierX].A != 0)
                          {
-                              barrierPixels[currY, currX] = new Color(barrierPixels[currY, currX], 0);
+                              barrierPixels[barrierY, barrierX] = new Color(barrierPixels[barrierY, barrierX], 0);
                          }
                     }
                }
 
-               i_Barrier.Texture.SetData(barrierPixels.Pixels);
-
+               i_Barrier.Texture.SetData(i_Barrier.TexturePixels.Pixels);
                this.Visible = false;
           }
      }

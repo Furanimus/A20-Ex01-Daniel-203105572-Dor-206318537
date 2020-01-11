@@ -114,9 +114,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                     int height = MathHelper.Min(targetIntersectedRect.Height, sourceIntersectedRect.Height);
                     int width = MathHelper.Min(targetIntersectedRect.Width, sourceIntersectedRect.Width);
 
-                    for (int row = 0; row < height; row++)
+                    for (int row = 0; row < height && !pixelCollided; row++)
                     {
-                         for (int col = 0; col < width; col++)
+                         for (int col = 0; col < width && !pixelCollided; col++)
                          {
                               int targetRow = targetIntersectedRect.Y + row;
                               int targetCol = targetIntersectedRect.X + col;
