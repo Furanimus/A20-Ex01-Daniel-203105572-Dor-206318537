@@ -33,7 +33,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                m_Player1.IsMouseControllable   = true;
                                                
                m_Player2                       = new Player(@"Sprites\Ship02_32x32", this);
-               m_Player2.StartingPosition      = m_Player1.StartingPosition - new Vector2(m_Player2.Width * 2, 0);
+               m_Player2.StartingPosition      = m_Player1.StartingPosition - new Vector2(m_Player2.Width, 0);
                m_Player2.MoveLeftKey           = Microsoft.Xna.Framework.Input.Keys.A;
                m_Player2.MoveRightKey          = Microsoft.Xna.Framework.Input.Keys.D;
                m_Player2.ShootKey              = Microsoft.Xna.Framework.Input.Keys.W;
@@ -43,9 +43,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                BarrierManager barrierManager   = new BarrierManager(this, m_Player1.StartingPosition.Y, m_Player1.Height);
 
                enemyManager.MatrixReachedBottomWindow += () => this.Exit();
-               enemyManager.AllEnemiesDied += OnGameOver;
 
-               this.LivesManager.AllPlayersDied += OnGameOver;
+               this.LivesManager.AllPlayersDied += livesManager_AllPlayersDied;
                this.LivesManager.AddPlayer(m_Player1);
                this.LivesManager.AddPlayer(m_Player2);
                this.ScoreManager.AddPlayer(m_Player1, Color.Blue);
@@ -54,7 +53,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                base.Initialize();
           }
 
-          private void OnGameOver()
+          private void livesManager_AllPlayersDied()
           {
                string title = "Game Over";
                string winMsg = getWinnerMsg();

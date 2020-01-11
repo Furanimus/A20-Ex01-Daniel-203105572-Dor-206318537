@@ -32,8 +32,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           private TimeSpan m_IntervalToNextShoot;
           private int m_DeadEnemiesCounter;
 
-          public int DeatEnemiesCount { get; }
-
           public EnemyManager(Game i_Game) : base(i_Game)
           {
                r_EnemyMatrix       = new List<List<Enemy>>(k_MatrixRows);
@@ -59,22 +57,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                setDownRepresentetive();
           }
 
-          private void setLeftRepresentetive()
-          {
-               bool isFound = false;
-
-               for (int col = 0; col < k_MatrixCols && !isFound; col++)
-               {
-                    for (int row = 0; row < k_MatrixRows && !isFound; row++)
-                    {
-                         if (r_EnemyMatrix[row][col].IsAlive)
-                         {
-                              isFound = true;
-                              m_LeftMostRepresentetive = r_EnemyMatrix[row][col];
-                         }
-                    }
-               }
-          }
 
           private void setDownRepresentetive()
           {
@@ -88,6 +70,23 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                          {
                               isFound = true;
                               m_DownMostRepresentetive = r_EnemyMatrix[row][col];
+                         }
+                    }
+               }
+          }
+
+          private void setLeftRepresentetive()
+          {
+               bool isFound = false;
+
+               for (int col = 0; col < k_MatrixCols && !isFound; col++)
+               {
+                    for (int row = 0; row < k_MatrixRows && !isFound; row++)
+                    {
+                         if (r_EnemyMatrix[row][col].IsAlive)
+                         {
+                              isFound = true;
+                              m_LeftMostRepresentetive = r_EnemyMatrix[row][col];
                          }
                     }
                }
@@ -263,11 +262,13 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                     {
                          setDownRepresentetive();
                     }
-                    else if (enemy == m_LeftMostRepresentetive)
+
+                    if (enemy == m_LeftMostRepresentetive)
                     {
                          setLeftRepresentetive();
                     }
-                    else if (enemy == m_RightMostRepresentetive)
+
+                    if (enemy == m_RightMostRepresentetive)
                     {
                          setRightRepresentetive();
                     }
