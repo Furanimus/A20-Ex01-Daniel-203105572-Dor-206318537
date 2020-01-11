@@ -106,20 +106,34 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
 
                if(target != null && source != null)
                {
-                    Rectangle targetIntersectedRect = getIntersectedRect(target, source);
-                    Rectangle sourceIntersectedRect = getIntersectedRect(source, target);
+                    Rectangle targetIntersectedRect; 
+                    Rectangle sourceIntersectedRect; 
+                    getIntersectedRect(target, source, out targetIntersectedRect);
+                    getIntersectedRect(source, target, out sourceIntersectedRect);
 
-                    for (int row = 0; row < targetIntersectedRect.Height; row++)
+                    int height = MathHelper.Min(targetIntersectedRect.Height, sourceIntersectedRect.Height);
+                    int width = MathHelper.Min(targetIntersectedRect.Width, sourceIntersectedRect.Width);
+
+                    for (int row = 0; row < height; row++)
                     {
-                         for (int col = 0; col < targetIntersectedRect.Width; col++)
+                         for (int col = 0; col < width; col++)
                          {
                               int targetRow = targetIntersectedRect.Y + row;
                               int targetCol = targetIntersectedRect.X + col;
                               int sourceRow = sourceIntersectedRect.Y + row;
                               int sourceCol = sourceIntersectedRect.X + col;
+                              Color targetColor = Color.White;
+                              Color sourceColor = Color.White;
 
-                              Color targetColor = target.TexturePixels[targetRow, targetCol];
-                              Color sourceColor = source.TexturePixels[sourceRow, sourceCol];
+                              if (targetRow < target.TexturePixels.Rows && targetCol < target.TexturePixels.Cols)
+                              {
+                                   targetColor = target.TexturePixels[targetRow, targetCol];
+                              }
+
+                              if(sourceRow < source.TexturePixels.Rows && sourceCol < source.TexturePixels.Cols)
+                              {
+                                    sourceColor = source.TexturePixels[sourceRow, sourceCol];
+                              }
 
                               if (targetColor.A != 0 && sourceColor.A != 0)
                               {
@@ -132,20 +146,15 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                return pixelCollided;
           }
 
-          public Rectangle getIntersectedRect(Sprite i_Target, Sprite i_Source)
+          public void getIntersectedRect(Sprite i_First, Sprite i_Second, out Rectangle o_IntersectedRect)
           {
-               int x1 = MathHelper.Max((int)i_Target.Position.X, (int)i_Source.Position.X);
-               int y1 = MathHelper.Max((int)i_Target.Position.Y, (int)i_Source.Position.Y);
-               int x2 = MathHelper.Min((int)(i_Target.Position.X + i_Target.Width), (int)(i_Source.Position.X + i_Source.Width));
-               int y2 = MathHelper.Min((int)(i_Target.Position.Y + i_Target.Height), (int)(i_Source.Position.Y + i_Source.Height));
+               o_IntersectedRect = new Rectangle();
+               Rectangle first = new Rectangle((int)i_First.Position.X, (int)i_First.Position.Y, i_First.SourceRectangle.Width, i_First.SourceRectangle.Height);
+               Rectangle second = new Rectangle((int)i_Second.Position.X, (int)i_Second.Position.Y, i_Second.SourceRectangle.Width, i_Second.SourceRectangle.Height);
 
-               int xOrigin = MathHelper.Clamp((int)(x1 - i_Target.Position.X), 0, (int)i_Target.Width);
-               int yOrigin = MathHelper.Clamp((int)(y1 - i_Target.Position.Y), 0, (int)i_Target.Height);
-
-               int intersectedWidth = x2 - x1;
-               int intersectedHeight = y2 - y1;
-
-               return new Rectangle(xOrigin, yOrigin, intersectedWidth, intersectedHeight);
+               Rectangle.Intersect(ref first, ref second, out o_IntersectedRect);
+               o_IntersectedRect.X -= first.X;
+               o_IntersectedRect.Y -= first.Y;
           }
 
           public bool IsCollideWithWindowEdge(Sprite i_Sprite)

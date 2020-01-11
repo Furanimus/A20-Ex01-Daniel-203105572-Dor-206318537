@@ -52,7 +52,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                {
                     Barrier barrier = i_Collidable as Barrier;
                     Texture2DPixels barrierPixels = barrier.TexturePixels;
-                    Rectangle intersectedRect = r_CollisionsManager.getIntersectedRect(barrier, this);
+                    Rectangle intersectedRect;
+
+                    r_CollisionsManager.getIntersectedRect(barrier, this, out intersectedRect);
 
                     for (int y = 0; y < intersectedRect.Height; y++)
                     {

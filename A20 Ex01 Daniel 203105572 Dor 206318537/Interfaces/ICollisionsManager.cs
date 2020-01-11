@@ -11,6 +11,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces
           bool IsCollideWithWindowTopEdge(Sprite i_Sprite);
           bool IsCollideWithWindowRightEdge(Sprite i_Sprite);
           bool IsCollideWithWindowLeftEdge(Sprite i_Sprite);
-          Rectangle getIntersectedRect(Sprite i_Target, Sprite i_Source);
+          void getIntersectedRect(Sprite i_First, Sprite i_Second, out Rectangle o_IntersectedRect);
      }
 }

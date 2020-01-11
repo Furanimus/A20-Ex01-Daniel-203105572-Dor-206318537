@@ -12,6 +12,10 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           private const int k_RandomFactor = 1;
           private const int k_MaxRandom = 5;
           private const int k_MinRandom = 0;
+          private const float k_DestroyBarrierPercentage = 0.7f;
+          private const float k_YVelocity = 160;
+          private const float k_XVelocity = 0;
+
           private readonly ICollisionsManager r_CollisionsManager;
 
           private readonly IRandomBehavior r_RandomBehavior;
@@ -28,7 +32,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                this.Enabled = false;
                this.Visible = false;
                this.TintColor = i_TintColor;
-               this.Velocity = new Vector2(0, 160);
+               this.Velocity = new Vector2(k_XVelocity, k_YVelocity);
           }
 
           public override void Collided(ICollidable i_Collidable)
@@ -57,20 +61,33 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                this.Enabled = false;
 
                Texture2DPixels barrierPixels = i_Barrier.TexturePixels;
-               Rectangle intersectedRect = r_CollisionsManager.getIntersectedRect(i_Barrier, this);
+               Rectangle intersectedRect;
+               r_CollisionsManager.getIntersectedRect(i_Barrier, this, out intersectedRect);
 
-               int yDirection = (int)this.MoveDirection.Y;
-               int ysToDestroy = (int)(0.7f * this.Height);
+               int yDirection  = (int)this.MoveDirection.Y;
+               int ysToDestroy = (int)(k_DestroyBarrierPercentage * this.Height);
 
-               for(int y = 0; y < ysToDestroy; y++)
+               for(int y = 0; y <= ysToDestroy; y++)
                {
                     for (int x = 0; x < this.Width; x++)
                     {
-                         int currY = intersectedRect.Y + (y * yDirection);
+                         int currY;
                          int currX = intersectedRect.X + x;
+                         bool isFixPosition = this.Position.Y + this.Height - this.Height / 2 > i_Barrier.Position.Y;
 
-                         if(currY >= 0 && currY < barrierPixels.Rows &&
-                              currX >= 0 && currX < barrierPixels.Cols)
+                         if (isFixPosition && this.MoveDirection == Sprite.Down)
+                         {
+                              float partOfTheBulletAboveTheBarrier = i_Barrier.Position.Y - this.Position.Y;
+                              int subToFixPosition                 = (int)MathHelper.Clamp(partOfTheBulletAboveTheBarrier, 0, this.Height) + 4;
+                              currY                                = intersectedRect.Y + (int)this.Height - subToFixPosition + (y * yDirection);
+                         }
+                         else
+                         {
+                              int addIfUpShoot = this.MoveDirection == Sprite.Up ? 2 : 0;
+                              currY            = (int)MathHelper.Clamp(intersectedRect.Y + addIfUpShoot + (y * yDirection), 0, i_Barrier.Height - 1);
+                         }
+
+                         if(currY >= 0 && currY < barrierPixels.Rows && currX >= 0 && currX < barrierPixels.Cols)
                          {
                               barrierPixels[currY, currX] = new Color(barrierPixels[currY, currX], 0);
                          }
