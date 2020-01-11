@@ -42,9 +42,12 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                EnemyManager enemyManager = new EnemyManager(this);
                BarrierManager barrierManager   = new BarrierManager(this, m_Player1.StartingPosition.Y, m_Player1.Height);
 
-               enemyManager.MatrixReachedBottomWindow += () => this.Exit();
+               enemyManager.MatrixReachedBottomWindow += OnGameOver;
+               enemyManager.AllEnemiesDied += OnGameOver;
+               this.LivesManager.AllPlayersDied += OnGameOver;
+               this.m_Player1.CollidedWithEnemy += OnGameOver;
+               this.m_Player2.CollidedWithEnemy += OnGameOver;
 
-               this.LivesManager.AllPlayersDied += livesManager_AllPlayersDied;
                this.LivesManager.AddPlayer(m_Player1);
                this.LivesManager.AddPlayer(m_Player2);
                this.ScoreManager.AddPlayer(m_Player1, Color.Blue);
@@ -53,7 +56,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
                base.Initialize();
           }
 
-          private void livesManager_AllPlayersDied()
+          private void OnGameOver()
           {
                string title = "Game Over";
                string winMsg = getWinnerMsg();
@@ -61,7 +64,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537
 @"Player 1 Score is: {0}.
 Player 2 Score is: {1}.
 {2}", 
-m_Player1.Score, m_Player2.Score, winMsg);
+m_Player1.Score,
+m_Player2.Score, 
+winMsg);
                System.Windows.Forms.MessageBox.Show(message, title, MessageBoxButtons.OK);
                Exit();
           }
@@ -110,6 +115,5 @@ m_Player1.Score, m_Player2.Score, winMsg);
                base.Draw(gameTime);
                this.SpriteBatch.End();
           }
-
      }
 }

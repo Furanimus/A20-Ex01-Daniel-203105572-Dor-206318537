@@ -10,7 +10,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           private const int k_DefaultWidth = 44;
           private const int k_DefaultHeight = 32;
           private const int k_CallOrder = 6;
-          private const float k_XVelocity = 0;
+          private const float k_XVelocity = 45;
           private const float k_YVelocity = 0;
 
           public object GroupRepresentative { get; set; }

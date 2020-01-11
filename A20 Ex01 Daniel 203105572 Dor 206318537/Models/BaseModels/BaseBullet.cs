@@ -7,6 +7,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.BaseModels
      public abstract class BaseBullet : Sprite, ICollidable2D
      {
           public event EventHandler LeftWindowBounds;
+
           public event Action<ICollidable> CollidedWithSprite;
 
           protected BaseBullet(string i_GraphicPath, Game i_Game) 

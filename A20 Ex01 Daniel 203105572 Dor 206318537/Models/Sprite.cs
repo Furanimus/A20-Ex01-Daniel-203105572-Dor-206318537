@@ -31,6 +31,14 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           {
           }
 
+          public static Vector2 Right { get; } = new Vector2(1, 0);
+
+          public static Vector2 Left { get; } = new Vector2(-1, 0);
+
+          public static Vector2 Up { get; } = new Vector2(0, -1);
+
+          public static Vector2 Down { get; } = new Vector2(0, 1);
+
           public Texture2DPixels TexturePixels
           {
                get
@@ -43,14 +51,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                     return m_TexturePixels;
                }
           }
-
-          public static Vector2 Right { get; } = new Vector2(1, 0);
-
-          public static Vector2 Left { get; } = new Vector2(-1, 0);
-
-          public static Vector2 Up { get; } = new Vector2(0, -1);
-
-          public static Vector2 Down { get; } = new Vector2(0, 1);
 
           public CompositeAnimator Animations { get; set; }
 
@@ -199,7 +199,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                SourceRectangle = new Rectangle(0, 0, (int)WidthBeforeScale, (int)HeightBeforeScale);
           }
 
-
           public SpriteBatch SpriteBatch
           {
                set
@@ -264,8 +263,16 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                     m_SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
                }
 
-               m_SpriteBatch.Draw(Texture, this.PositionForDraw, this.SourceRectangle, this.TintColor,
-                    this.Rotation, this.RotationOrigin, this.Scales, SpriteEffects.None, this.LayerDepth);
+               m_SpriteBatch.Draw(
+                    Texture, 
+                    this.PositionForDraw,
+                    this.SourceRectangle, 
+                    this.TintColor,
+                    this.Rotation, 
+                    this.RotationOrigin, 
+                    this.Scales, 
+                    SpriteEffects.None, 
+                    this.LayerDepth);
 
                if (!m_UseSharedBatch)
                {
@@ -274,7 +281,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
                base.Draw(i_GameTime);
           }
-
 
           public virtual bool CheckCollision(ICollidable i_Source)
           {

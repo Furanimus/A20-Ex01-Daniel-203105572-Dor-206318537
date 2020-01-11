@@ -11,13 +11,13 @@ namespace Models.Animators
           protected readonly List<SpriteAnimator> m_AnimationsList                   = new List<SpriteAnimator>();
 
           public CompositeAnimator(Sprite i_BoundSprite)
-               : this("AnimationsManager", TimeSpan.Zero, i_BoundSprite, new SpriteAnimator[]{})
+               : this("AnimationsManager", TimeSpan.Zero, i_BoundSprite, new SpriteAnimator[] { })
           {
                this.Enabled = false;
           }
         
           public CompositeAnimator(string i_Name, TimeSpan i_AnimationLength, Sprite i_BoundSprite, params SpriteAnimator[] i_Animations)
-               : base (i_Name, i_AnimationLength)
+               : base(i_Name, i_AnimationLength)
           {
                this.BoundSprite = i_BoundSprite;
 

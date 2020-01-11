@@ -44,10 +44,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
                     Lives--;
                }
-               else if(i_Collidable is Player)
-               {
-                    this.Game.Exit();
-               }
                else if(i_Collidable is Barrier)
                {
                     Barrier barrier = i_Collidable as Barrier;

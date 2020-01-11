@@ -8,8 +8,11 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Components
      public abstract class LoadableDrawableComponent : DrawableGameComponent
      {
           public event EventHandler<EventArgs> SizeChanged;
+
           public event EventHandler<EventArgs> PositionChanged;
+
           public event EventHandler<EventArgs> Disposed;
+
           protected string m_AssetName;
 
           public LoadableDrawableComponent(string i_AssetName, Game i_Game, int i_UpdateOrder, int i_DrawOrder)

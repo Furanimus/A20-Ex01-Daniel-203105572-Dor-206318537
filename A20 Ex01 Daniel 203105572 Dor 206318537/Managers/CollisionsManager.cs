@@ -77,7 +77,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                          bool isEntity = entity != null;
                          bool isEntityAlive = isEntity && entity.IsAlive;
 
-                         if (i_Source != target && (!isEntity && target.Visible || isEntityAlive))
+                         if ((i_Source != target && !isEntity && target.Visible) || isEntityAlive)
                          {
                               if (target.CheckCollision(i_Source))
                               {

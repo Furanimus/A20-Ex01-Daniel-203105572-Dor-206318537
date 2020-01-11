@@ -16,7 +16,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           private const bool k_IsStartCellAnimationFromEnd = false;
 
           public AlienMatrixEnemy(Rectangle i_SourceRectangle, Game i_Game)
-               :this(i_SourceRectangle, k_DefaultScoreWorth, Color.White, i_Game)
+               : this(i_SourceRectangle, k_DefaultScoreWorth, Color.White, i_Game)
           {
                CellAnimation = new CellAnimator(k_IsStartCellAnimationFromEnd, TimeSpan.FromSeconds(0.5), 2, TimeSpan.Zero);
           }
@@ -24,7 +24,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           public CellAnimator CellAnimation { get; set; }
 
           public AlienMatrixEnemy(Rectangle i_SourceRectangle, int i_ScoreWorth, Color i_TintColor, Game i_Game)
-               :base(k_AssetName, i_SourceRectangle, i_Game)
+               : base(k_AssetName, i_SourceRectangle, i_Game)
           {
                this.Gun = new Gun(k_MaxShotInMidAir, this);
                this.Score = i_ScoreWorth;

@@ -1,10 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Utils
 {
@@ -34,7 +29,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Utils
                {
                     for(int x = 0; x < i_SourceRectangle.Width; x++)
                     {
-                         pixels[x + y * i_SourceRectangle.Width] = colorData[x + i_SourceRectangle.X + (y + i_SourceRectangle.Y) * textureWidth];
+                         pixels[x + (y * i_SourceRectangle.Width)] = colorData[x + i_SourceRectangle.X + ((y + i_SourceRectangle.Y) * textureWidth)];
                     }
                }
 

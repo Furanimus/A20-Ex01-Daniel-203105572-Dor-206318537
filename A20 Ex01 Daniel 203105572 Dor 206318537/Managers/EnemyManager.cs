@@ -9,6 +9,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
      public class EnemyManager : GameComponent
      {
           public event Action MatrixReachedBottomWindow;
+
           public event Action AllEnemiesDied;
 
           private const int k_MatrixCols                                = 9;
@@ -56,7 +57,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                setRightRepresentetive();
                setDownRepresentetive();
           }
-
 
           private void setDownRepresentetive()
           {
@@ -165,8 +165,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
           private void checkWindowCollision()
           {
-               Vector2 rightMostRepNextPosition = m_RightMostRepresentetive.Position + (m_RightMostRepresentetive.Velocity * m_RightMostRepresentetive.MoveDirection) / 2;
-               Vector2 leftMostRepNextPosition = m_LeftMostRepresentetive.Position + (m_LeftMostRepresentetive.Velocity * m_LeftMostRepresentetive.MoveDirection) / 2;
+               Vector2 rightMostRepNextPosition = m_RightMostRepresentetive.Position + ((m_RightMostRepresentetive.Velocity * m_RightMostRepresentetive.MoveDirection) / 2);
+               Vector2 leftMostRepNextPosition = m_LeftMostRepresentetive.Position + ((m_LeftMostRepresentetive.Velocity * m_LeftMostRepresentetive.MoveDirection) / 2);
                
                Vector2 downMostHeight = new Vector2(0, m_DownMostRepresentetive.Height);
                Vector2 downMostJumpDistance = new Vector2(0, m_DownMostRepresentetive.Height / 2);

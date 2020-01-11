@@ -57,17 +57,17 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
 
           public bool KeyHeld(Keys i_Key)
           {
-               return (KeyboardState.IsKeyDown(i_Key) && PrevKeyboardState.IsKeyDown(i_Key));
+               return KeyboardState.IsKeyDown(i_Key) && PrevKeyboardState.IsKeyDown(i_Key);
           }
 
           public bool KeyReleased(Keys i_Key)
           {
-               return (PrevKeyboardState.IsKeyDown(i_Key) && KeyboardState.IsKeyUp(i_Key));
+               return PrevKeyboardState.IsKeyDown(i_Key) && KeyboardState.IsKeyUp(i_Key);
           }
 
           public bool KeyPressed(Keys i_Key)
           {
-               return (PrevKeyboardState.IsKeyUp(i_Key) && KeyboardState.IsKeyDown(i_Key));
+               return PrevKeyboardState.IsKeyUp(i_Key) && KeyboardState.IsKeyDown(i_Key);
           }
 
           public bool ButtonPressed(eInputButtons i_Buttons)
@@ -131,7 +131,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                ButtonState currState = i_ButtonState;
                ButtonState prevState = checkRelease ? ButtonState.Pressed : ButtonState.Released;
 
-               #region GamePad Controls
                if ((i_Buttons & eInputButtons.A) != 0)
                {
                     currCheck =
@@ -141,6 +140,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
                }
+
                if ((i_Buttons & eInputButtons.B) != 0)
                {
                     currCheck =
@@ -150,6 +150,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
                }
+
                if ((i_Buttons & eInputButtons.X) != 0)
                {
                     currCheck =
@@ -159,6 +160,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
                }
+
                if ((i_Buttons & eInputButtons.Y) != 0)
                {
                     currCheck =
@@ -168,6 +170,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
                }
+
                if ((i_Buttons & eInputButtons.DPadDown) != 0)
                {
                     currCheck =
@@ -177,6 +180,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
                }
+
                if ((i_Buttons & eInputButtons.DPadUp) != 0)
                {
                     currCheck =
@@ -186,6 +190,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
                }
+
                if ((i_Buttons & eInputButtons.DPadLeft) != 0)
                {
                     currCheck =
@@ -195,6 +200,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
                }
+
                if ((i_Buttons & eInputButtons.DPadRight) != 0)
                {
                     currCheck =
@@ -204,6 +210,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
                }
+
                if ((i_Buttons & eInputButtons.Back) != 0)
                {
                     currCheck =
@@ -213,6 +220,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
                }
+
                if ((i_Buttons & eInputButtons.Start) != 0)
                {
                     currCheck =
@@ -222,6 +230,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
                }
+
                if ((i_Buttons & eInputButtons.LeftShoulder) != 0)
                {
                     currCheck =
@@ -231,6 +240,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
                }
+
                if ((i_Buttons & eInputButtons.RightShoulder) != 0)
                {
                     currCheck =
@@ -240,6 +250,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
                }
+
                if ((i_Buttons & eInputButtons.LeftStick) != 0)
                {
                     currCheck =
@@ -249,6 +260,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
                }
+
                if ((i_Buttons & eInputButtons.RightStick) != 0)
                {
                     currCheck =
@@ -258,6 +270,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
                }
+
                if ((i_Buttons & eInputButtons.LeftThumbstickDown) != 0)
                {
                     currCheck =
@@ -267,6 +280,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
                }
+
                if ((i_Buttons & eInputButtons.LeftThumbstickUp) != 0)
                {
                     currCheck =
@@ -276,6 +290,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
                }
+
                if ((i_Buttons & eInputButtons.LeftThumbstickLeft) != 0)
                {
                     currCheck =
@@ -285,6 +300,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
                }
+
                if ((i_Buttons & eInputButtons.LeftThumbstickRight) != 0)
                {
                     currCheck = checkRelease == GamePadState.IsButtonUp(Buttons.LeftThumbstickRight)
@@ -293,6 +309,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
                }
+
                if ((i_Buttons & eInputButtons.RightThumbstickDown) != 0)
                {
                     currCheck =
@@ -302,6 +319,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
                }
+
                if ((i_Buttons & eInputButtons.RightThumbstickUp) != 0)
                {
                     currCheck =
@@ -311,6 +329,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
                }
+
                if ((i_Buttons & eInputButtons.RightThumbstickLeft) != 0)
                {
                     currCheck =
@@ -320,6 +339,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
                }
+
                if ((i_Buttons & eInputButtons.RightThumbstickRight) != 0)
                {
                     currCheck =
@@ -329,6 +349,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
                }
+
                if ((i_Buttons & eInputButtons.LeftTrigger) != 0)
                {
                     currCheck =
@@ -338,6 +359,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
                }
+
                if ((i_Buttons & eInputButtons.RightTrigger) != 0)
                {
                     currCheck =
@@ -347,9 +369,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
                }
-               #endregion GamePad Controls
 
-               #region Mouse Buttons
                if ((i_Buttons & eInputButtons.Left) != 0)
                {
                     currCheck =
@@ -395,10 +415,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                     atLeastOneIsTrue |= currCheck;
                     allTrue &= currCheck;
                }
-               #endregion Mouse Buttons
 
                return i_IsOneEnough ? atLeastOneIsTrue : allTrue;
-
           }
 
           public bool ButtonIsDown(eInputButtons i_MouseButtons)
@@ -500,7 +518,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
 
           public override string ToString()
           {
-               string status = string.Format(@"
+               string status = string.Format(
+@"
 Keyboard.PressedKeys:       {18}
 
 GamePad.IsConnected:        {0}
@@ -531,7 +550,6 @@ ScrollWheelDelta:   {17}
     GamePadState.DPad,
     GamePadState.Buttons,
     GamePadState.PacketNumber,
-
     MouseState.X,
     MouseState.Y,
     MousePositionDelta,
@@ -542,8 +560,7 @@ ScrollWheelDelta:   {17}
     MouseState.XButton2,
     MouseState.ScrollWheelValue,
     ScrollWheelDelta,
-    PressedKeys
-    );
+    PressedKeys);
                return status;
           }
      }

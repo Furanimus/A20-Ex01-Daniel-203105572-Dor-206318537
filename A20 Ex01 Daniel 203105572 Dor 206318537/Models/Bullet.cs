@@ -2,7 +2,6 @@
 using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Models.BaseModels;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Utils;
-using System;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
@@ -19,7 +18,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           private readonly ICollisionsManager r_CollisionsManager;
 
           private readonly IRandomBehavior r_RandomBehavior;
-          public Bullet(Game i_Game) : this(Color.Red, i_Game)
+
+          public Bullet(Game i_Game) 
+               : this(Color.Red, i_Game)
           {
                r_RandomBehavior = this.Game.Services.GetService(typeof(IRandomBehavior)) as IRandomBehavior;
                r_CollisionsManager = this.Game.Services.GetService(typeof(ICollisionsManager)) as ICollisionsManager;
@@ -73,7 +74,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                     {
                          int currY;
                          int currX = intersectedRect.X + x;
-                         bool isFixPosition = this.Position.Y + this.Height - this.Height / 2 > i_Barrier.Position.Y;
+                         bool isFixPosition = this.Position.Y + this.Height - (this.Height / 2) > i_Barrier.Position.Y;
 
                          if (isFixPosition && this.MoveDirection == Sprite.Down)
                          {

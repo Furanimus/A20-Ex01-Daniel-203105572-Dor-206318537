@@ -25,7 +25,6 @@ namespace Models.Animators.ConcreteAnimators
                {
                     m_CurrCellIdx = i_NumOfCells - 1;
                }
-
           }
 
           private void goToNextFrameFromStart()

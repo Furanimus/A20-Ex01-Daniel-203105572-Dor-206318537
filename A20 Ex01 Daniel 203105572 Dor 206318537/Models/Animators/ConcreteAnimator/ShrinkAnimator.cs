@@ -4,12 +4,12 @@ using Models.Animators;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnimator
 {
-     class ShrinkAnimator : SpriteAnimator
+     public class ShrinkAnimator : SpriteAnimator
      {
           private const int k_InitialScale = 1;
 
           public ShrinkAnimator(TimeSpan i_AnimationLength)
-               : this("Shrink" , i_AnimationLength)
+               : this("Shrink", i_AnimationLength)
           {
           }
 
