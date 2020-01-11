@@ -12,12 +12,13 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
           private const float k_BarrierWidth = 44;
           private const float k_BarrierHeight = 32;
           private const int k_NumOfBarriers = 4;
+          private const int k_CallOrder = 5;
           private const string k_BarrierAsset = @"Sprites\Barrier_44x32";
           private readonly ICollisionsManager r_CollisionsManager;
           private readonly float r_PlayerStartingY;
           private readonly float r_PlayerHeight;
           private readonly List<Barrier> r_Barriers;
-          private const int k_CallOrder = 5;
+          private readonly float r_OffsetToChangeDirection;
 
           public BarrierManager(Game i_Game, float i_PlayerStartingY, float i_PlayerHeight)
                         : base(i_Game)
@@ -29,6 +30,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                this.Game.Components.Add(this);
                this.DrawOrder = k_CallOrder;
                this.UpdateOrder = k_CallOrder;
+               r_OffsetToChangeDirection = k_BarrierWidth / 2;
           }
 
           public override void Initialize()
@@ -72,7 +74,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
           private float getObstaclesLength()
           {
                float res;
-               res = k_NumOfBarriers * k_BarrierWidth + (k_NumOfBarriers - 1) * k_BarrierWidth;
+               res = (k_NumOfBarriers * k_BarrierWidth) + ((k_NumOfBarriers - 1) * k_BarrierWidth);
                return res;
           }
 
@@ -86,7 +88,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
 
           public override void Update(GameTime gameTime)
           {
-               if (r_CollisionsManager.IsCollideWithWindowEdge(r_Barriers[k_NumOfBarriers - 1]))
+               if (isBarriersChangeDirection())
                {
                     foreach (Barrier barrier in r_Barriers)
                     {
@@ -95,6 +97,21 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                }
 
                base.Update(gameTime);
+          }
+
+          private bool isBarriersChangeDirection()
+          {
+               bool res = false;
+               Barrier representetive = r_Barriers[0];
+               Vector2 BarriersRepresentetiveCurrPosition = representetive.Position;
+
+               if(BarriersRepresentetiveCurrPosition.X >= representetive.StartingPosition.X + r_OffsetToChangeDirection
+                    || BarriersRepresentetiveCurrPosition.X <= representetive.StartingPosition.X - r_OffsetToChangeDirection)
+               {
+                    res = true;
+               }
+
+               return res;
           }
      }
 }

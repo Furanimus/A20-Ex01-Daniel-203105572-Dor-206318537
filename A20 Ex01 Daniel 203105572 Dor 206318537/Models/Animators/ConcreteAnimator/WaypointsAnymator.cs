@@ -52,7 +52,7 @@ namespace Models.Animators.ConcreteAnimator
           {
                if (reachedLastWaypoint() && !r_Loop)
                {
-                    base.IsFinished = true;
+                    IsFinished = true;
                }
                else
                {
@@ -63,12 +63,12 @@ namespace Models.Animators.ConcreteAnimator
 
           private bool reachedLastWaypoint()
           {
-               return (m_CurrentWaypointIdx == r_Waypoints.Length - 1);
+               return m_CurrentWaypointIdx == r_Waypoints.Length - 1;
           }
 
           private bool reachedCurrentWaypoint()
           {
-               return (this.BoundSprite.Position == r_Waypoints[m_CurrentWaypointIdx]);
+               return this.BoundSprite.Position == r_Waypoints[m_CurrentWaypointIdx];
           }
      }
 }

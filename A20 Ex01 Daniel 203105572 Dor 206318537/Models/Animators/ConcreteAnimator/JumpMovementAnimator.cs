@@ -4,7 +4,7 @@ using Models.Animators;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnimator
 {
-     class JumpMovementAnimator : SpriteAnimator
+     public class JumpMovementAnimator : SpriteAnimator
      {
           private TimeSpan m_JumpIntervals;
           private TimeSpan m_TimeUntilNextJump;

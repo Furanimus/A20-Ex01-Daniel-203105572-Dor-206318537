@@ -27,7 +27,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           {
                base.Initialize();
 
-               BlinkAnimator lostLife = new BlinkAnimator(TimeSpan.FromSeconds(1/6), TimeSpan.FromSeconds(2.5));
+               BlinkAnimator lostLife = new BlinkAnimator(TimeSpan.FromSeconds(1 / 6), TimeSpan.FromSeconds(2.5));
                CompositeAnimator dead = new CompositeAnimator(
                     "Dead",
                     TimeSpan.FromSeconds(2.5),
@@ -50,7 +50,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                animator.Pause();
           }
 
-          
           private void dead_Finished(object i_Sender, EventArgs i_Args)
           {
                CompositeAnimator animator = i_Sender as CompositeAnimator;
@@ -76,7 +75,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 
                     updateScore();
                }
-
           }
 
           private void updateScore()

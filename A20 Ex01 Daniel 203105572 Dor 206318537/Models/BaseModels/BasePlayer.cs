@@ -1,8 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Managers;
-using System;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.BaseModels
 {
@@ -10,6 +10,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.BaseModels
      {
           protected readonly IInputManager r_InputManager;
           private readonly Vector2 r_Velocity;
+
           public event Action CollidedWithEnemy;
 
           public BasePlayer(string i_AssetName, Game i_Game) : this(i_AssetName, i_Game, int.MaxValue)
@@ -75,7 +76,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.BaseModels
                     if (!livesManager.IsPlayerAlreadyAdded(this))
                     {
                          livesManager.AddPlayer(this);
-
                     }
                }
 

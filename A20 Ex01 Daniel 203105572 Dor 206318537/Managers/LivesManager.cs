@@ -12,18 +12,18 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
      {
           public event Action AllPlayersDied;
 
+          private const int k_SpaceBetweenLives = 10;
+          private const int k_LivesStartingY    = 10;
+          private const float k_LivesAlpha      = 0.5f;
           private readonly LinkedList<BasePlayer> r_Players                  = new LinkedList<BasePlayer>();
           private readonly HashSet<BasePlayer> r_PlayersSetForCheckExistance = new HashSet<BasePlayer>();
 
           private readonly Vector2 r_LivesScale = new Vector2(0.5f, 0.5f);
           private readonly Color r_Color        = new Color(Color.White, k_LivesAlpha);
-          private const int k_SpaceBetweenLives = 10;
-          private const int k_LivesStartingY    = 10;
-          private const float k_LivesAlpha      = 0.5f;
           private bool m_IsAllPlayerAlive       = false;
 
           public LivesManager(Game i_Game)
-               : base("", i_Game, int.MaxValue)
+               : base(string.Empty, i_Game, int.MaxValue)
           {
                this.Game.Services.AddService(typeof(ILivesManager), this);
           }
@@ -103,9 +103,16 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                          float xPos = this.Game.GraphicsDevice.Viewport.Width - (life * player.Width);
                          Vector2 positionForDraw = new Vector2(xPos, yPos);
 
-                         SpriteBatch.Draw(player.Texture, positionForDraw, player.SourceRectangle, r_Color,
-                              0, Vector2.Zero, r_LivesScale, SpriteEffects.None, player.LayerDepth);
-
+                         SpriteBatch.Draw(
+                              player.Texture, 
+                              positionForDraw, 
+                              player.SourceRectangle, 
+                              r_Color,
+                              0, 
+                              Vector2.Zero, 
+                              r_LivesScale, 
+                              SpriteEffects.None, 
+                              player.LayerDepth);
                     }
 
                     float nextLivesPos = (player.Height * r_LivesScale.Y) + k_SpaceBetweenLives;
