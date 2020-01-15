@@ -86,7 +86,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                i_Barrier.StartingPosition = i_Pos;
           }
 
-          public override void Update(GameTime gameTime)
+          public override void Update(GameTime i_GameTime)
           {
                if (isBarriersChangeDirection())
                {
@@ -96,7 +96,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                     }
                }
 
-               base.Update(gameTime);
+               base.Update(i_GameTime);
           }
 
           private bool isBarriersChangeDirection()

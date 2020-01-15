@@ -3,21 +3,21 @@ using Microsoft.Xna.Framework;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Components
 {
-     /// <summary>
-     /// A comparer designed to assist with sorting IDrawable interfaces.
-     /// </summary>
      public sealed class DrawableComparer<TDrawble> : IComparer<TDrawble>
          where TDrawble : class, IDrawable
      {
-          /// <summary>
-          /// A static copy of the comparer to avoid the GC.
-          /// </summary>
           public static readonly DrawableComparer<TDrawble> Default;
 
-          static DrawableComparer() { Default = new DrawableComparer<TDrawble>(); }
-          private DrawableComparer() { }
+          static DrawableComparer() 
+          { 
+               Default = new DrawableComparer<TDrawble>(); 
+          }
 
-          public int Compare(TDrawble x, TDrawble y)
+          private DrawableComparer() 
+          { 
+          }
+
+          public int Compare(TDrawble i_X, TDrawble i_Y)
           {
                const int k_XBigger = 1;
                const int k_Equal = 0;
@@ -25,21 +25,21 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Components
 
                int retCompareResult = k_YBigger;
 
-               if (x == null && y == null)
+               if (i_X == null && i_Y == null)
                {
                     retCompareResult = k_Equal;
                }
-               else if (x != null)
+               else if (i_X != null)
                {
-                    if (y == null)
+                    if (i_Y == null)
                     {
                          retCompareResult = k_XBigger;
                     }
-                    else if (x.Equals(y))
+                    else if (i_X.Equals(i_Y))
                     {
                          return k_Equal;
                     }
-                    else if (x.DrawOrder > y.DrawOrder)
+                    else if (i_X.DrawOrder > i_Y.DrawOrder)
                     {
                          return k_XBigger;
                     }

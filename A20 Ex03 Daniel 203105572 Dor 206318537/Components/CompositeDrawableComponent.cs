@@ -6,7 +6,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Models;
-using A20_Ex01_Daniel_203105572_Dor_206318537.Screens;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Components
 {
@@ -14,32 +13,33 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Components
      DrawableGameComponent, ICollection<ComponentType>
      where ComponentType : IGameComponent
      {
-          // the entire collection, for general collection methods (count, foreach, etc.):
-          Collection<ComponentType> m_Components = new Collection<ComponentType>();
+          public event EventHandler<GameComponentEventArgs<ComponentType>> ComponentAdded;
 
-          // selective holders for specific operations each frame:
+          public event EventHandler<GameComponentEventArgs<ComponentType>> ComponentRemoved;
+          
+          private Collection<ComponentType> m_Components = new Collection<ComponentType>();
           private List<ComponentType> m_UninitializedComponents = new List<ComponentType>();
           protected List<IUpdateable> m_UpdateableComponents = new List<IUpdateable>();
           protected List<IDrawable> m_DrawableComponents = new List<IDrawable>();
           protected List<Sprite> m_Sprites = new List<Sprite>();
+          private bool m_IsInitialized;
 
-          public event EventHandler<GameComponentEventArgs<ComponentType>> ComponentAdded;
-          public event EventHandler<GameComponentEventArgs<ComponentType>> ComponentRemoved;
+          public CompositeDrawableComponent(Game i_Game)
+              : base(i_Game)
+          {
+          }
 
           protected virtual void OnComponentAdded(GameComponentEventArgs<ComponentType> e)
           {
                if (m_IsInitialized)
                {
-                    InitializeComponent(e.GameComponent);
+                    initializeComponent(e.GameComponent);
                }
                else
                {
                     m_UninitializedComponents.Add(e.GameComponent);
                }
 
-               // If the new component implements IUpdateable:
-               // 1. find a spot for it on the updateable list 
-               // 2. hook it's UpdateOrderChanged event
                IUpdateable updatable = e.GameComponent as IUpdateable;
 
                if (updatable != null)
@@ -48,9 +48,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Components
                     updatable.UpdateOrderChanged += new EventHandler<EventArgs>(childUpdateOrderChanged);
                }
 
-               // If the new component implements IDrawable:
-               // 1. find a spot for it on the drawable lists (IDrawble/Sprite) 
-               // 2. hook it's DrawOrderChanged event
                IDrawable drawable = e.GameComponent as IDrawable;
 
                if (drawable != null)
@@ -59,7 +56,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Components
                     drawable.DrawOrderChanged += new EventHandler<EventArgs>(childDrawOrderChanged);
                }
 
-               // raise the Added event:
                if (ComponentAdded != null)
                {
                     ComponentAdded(this, e);
@@ -74,6 +70,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Components
                }
 
                IUpdateable updatable = e.GameComponent as IUpdateable;
+
                if (updatable != null)
                {
                     m_UpdateableComponents.Remove(updatable);
@@ -81,6 +78,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Components
                }
 
                Sprite sprite = e.GameComponent as Sprite;
+
                if (sprite != null)
                {
                     m_Sprites.Remove(sprite);
@@ -97,34 +95,25 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Components
                     }
                }
 
-               // raise the Removed event:
                if (ComponentRemoved != null)
                {
                     ComponentRemoved(this, e);
                }
           }
 
-          /// <summary>
-          /// When the update order of a component in this manager changes, will need to find a new place for it
-          /// on the list of updateable components.
-          /// </summary>
-          private void childUpdateOrderChanged(object sender, EventArgs e)
+          private void childUpdateOrderChanged(object i_Sender, EventArgs i_Args)
           {
-               IUpdateable updatable = sender as IUpdateable;
+               IUpdateable updatable = i_Sender as IUpdateable;
                m_UpdateableComponents.Remove(updatable);
 
                insertSorted(updatable);
           }
 
-          /// <summary>
-          /// When the draw order of a component in this manager changes, will need to find a new place for it
-          /// on the list of drawable components.
-          /// </summary>
-          private void childDrawOrderChanged(object sender, EventArgs e)
+          private void childDrawOrderChanged(object i_Sender, EventArgs i_Args)
           {
-               IDrawable drawable = sender as IDrawable;
+               IDrawable drawable = i_Sender as IDrawable;
 
-               Sprite sprite = sender as Sprite;
+               Sprite sprite = i_Sender as Sprite;
                if (sprite != null)
                {
                     m_Sprites.Remove(sprite);
@@ -136,10 +125,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Components
 
                insertSorted(drawable);
           }
-
-          public CompositeDrawableComponent(Game i_Game)
-              : base(i_Game)
-          { }
 
           private void insertSorted(IUpdateable i_Updatable)
           {
@@ -175,12 +160,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Components
                }
           }
 
-          private bool m_IsInitialized;
-
-          /// <summary>
-          /// initialize any component that haven't been initialized yet
-          /// and remove it from the list of uninitialized components
-          /// </summary>
           public override void Initialize()
           {
                if (!m_IsInitialized)
@@ -188,7 +167,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Components
                     // Initialize any un-initialized game components
                     while (m_UninitializedComponents.Count > 0)
                     {
-                         InitializeComponent(m_UninitializedComponents[0]);
+                         initializeComponent(m_UninitializedComponents[0]);
                     }
 
                     base.Initialize();
@@ -197,11 +176,11 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Components
                }
           }
 
-          private void InitializeComponent(ComponentType i_Component)
+          private void initializeComponent(ComponentType i_Component)
           {
                if (i_Component is Sprite)
                {
-                    (i_Component as Sprite).SpriteBatch = m_SpriteBatch;
+                    (i_Component as Sprite).SpriteBatch = SpriteBatch;
                }
 
                i_Component.Initialize();
@@ -212,15 +191,15 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Components
           {
                base.LoadContent();
 
-               m_SpriteBatch = new SpriteBatch(this.GraphicsDevice);
+               SpriteBatch = new SpriteBatch(this.GraphicsDevice);
 
                foreach (Sprite sprite in m_Sprites)
                {
-                    sprite.SpriteBatch = m_SpriteBatch;
+                    sprite.SpriteBatch = SpriteBatch;
                }
           }
 
-          public override void Update(GameTime gameTime)
+          public override void Update(GameTime i_GameTime)
           {
                for (int i = 0; i < m_UpdateableComponents.Count; i++)
                {
@@ -228,14 +207,14 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Components
 
                     if (updatable.Enabled)
                     {
-                         updatable.Update(gameTime);
+                         updatable.Update(i_GameTime);
                     }
                }
           }
 
-          public override void Draw(GameTime gameTime)
+          public override void Draw(GameTime i_GameTime)
           {
-               m_SpriteBatch.Begin(
+               SpriteBatch.Begin(
                    this.SpritesSortMode, this.BlendState, this.SamplerState,
                    this.DepthStencilState, this.RasterizerState, this.Shader, this.TransformMatrix);
 
@@ -243,25 +222,25 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Components
                {
                     if (sprite.Visible)
                     {
-                         sprite.Draw(gameTime);
+                         sprite.Draw(i_GameTime);
                     }
                }
 
-               m_SpriteBatch.End();
+               SpriteBatch.End();
 
                foreach (IDrawable drawable in m_DrawableComponents)
                {
                     if (drawable.Visible)
                     {
-                         drawable.Draw(gameTime);
+                         drawable.Draw(i_GameTime);
                     }
                }
 
           }
 
-          protected override void Dispose(bool disposing)
+          protected override void Dispose(bool i_IsDisposing)
           {
-               if (disposing)
+               if (i_IsDisposing)
                {
                     // Dispose of components in this manager
                     for (int i = 0; i < Count; i++)
@@ -274,7 +253,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Components
                     }
                }
 
-               base.Dispose(disposing);
+               base.Dispose(i_IsDisposing);
           }
 
           public virtual void Add(ComponentType i_Component)
@@ -348,63 +327,22 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Components
           {
                return ((IEnumerable)m_Components).GetEnumerator();
           }
+          
+          public SpriteBatch SpriteBatch { get; set; }
 
+          public BlendState BlendState { get; set; } = BlendState.AlphaBlend;
 
-          protected SpriteBatch m_SpriteBatch;
-          public SpriteBatch SpriteBatch
-          {
-               get { return m_SpriteBatch; }
-               set { m_SpriteBatch = value; }
-          }
+          public SpriteSortMode SpritesSortMode { get; set; } = SpriteSortMode.Deferred;
 
-          protected BlendState m_BlendState = BlendState.AlphaBlend;
-          public BlendState BlendState
-          {
-               get { return m_BlendState; }
-               set { m_BlendState = value; }
-          }
+          public SamplerState SamplerState { get; set; }
 
-          protected SpriteSortMode m_SpritesSortMode = SpriteSortMode.Deferred;
-          public SpriteSortMode SpritesSortMode
-          {
-               get { return m_SpritesSortMode; }
-               set { m_SpritesSortMode = value; }
-          }
+          public DepthStencilState DepthStencilState { get; set; }
 
-          protected SamplerState m_SamplerState = null;
-          public SamplerState SamplerState
-          {
-               get { return m_SamplerState; }
-               set { m_SamplerState = value; }
-          }
+          public RasterizerState RasterizerState { get; set; }
 
-          protected DepthStencilState m_DepthStencilState = null;
-          public DepthStencilState DepthStencilState
-          {
-               get { return m_DepthStencilState; }
-               set { m_DepthStencilState = value; }
-          }
+          public Effect Shader { get; set; }
 
-          protected RasterizerState m_RasterizerState = null;
-          public RasterizerState RasterizerState
-          {
-               get { return m_RasterizerState; }
-               set { m_RasterizerState = value; }
-          }
-
-          protected Effect m_Shader = null;
-          public Effect Shader
-          {
-               get { return m_Shader; }
-               set { m_Shader = value; }
-          }
-
-          protected Matrix m_TransformMatrix = Matrix.Identity;
-          public Matrix TransformMatrix
-          {
-               get { return m_TransformMatrix; }
-               set { m_TransformMatrix = value; }
-          }
+          public Matrix TransformMatrix { get; set; } = Matrix.Identity;
 
           protected Vector2 CenterOfViewPort
           {

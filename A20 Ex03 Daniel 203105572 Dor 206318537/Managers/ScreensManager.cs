@@ -18,7 +18,10 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
 
           public GameScreen ActiveScreen
           {
-               get { return m_ScreensStack.Count > 0 ? m_ScreensStack.Peek() : null; }
+               get 
+               { 
+                    return m_ScreensStack.Count > 0 ? m_ScreensStack.Peek() : null; 
+               }
           }
 
           public void SetCurrentScreen(GameScreen i_GameScreen)
@@ -38,7 +41,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                     this.Add(i_GameScreen);
 
                     // let me know when you are closed, so i can pop you from the stack:
-                    i_GameScreen.Closed += Screen_Closed;
+                    i_GameScreen.Closed += screen_Closed;
                }
 
                if (ActiveScreen != i_GameScreen)
@@ -57,10 +60,10 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                i_GameScreen.DrawOrder = m_ScreensStack.Count;
           }
 
-          private void Screen_Closed(object sender, EventArgs e)
+          private void screen_Closed(object i_Sender, EventArgs i_Args)
           {
-               Pop(sender as GameScreen);
-               Remove(sender as GameScreen);
+               Pop(i_Sender as GameScreen);
+               Remove(i_Sender as GameScreen);
           }
 
           private void Pop(GameScreen i_GameScreen)
@@ -84,11 +87,11 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                base.Add(i_Component);
           }
 
-          protected override void OnComponentRemoved(GameComponentEventArgs<GameScreen> e)
+          protected override void OnComponentRemoved(GameComponentEventArgs<GameScreen> i_Args)
           {
-               base.OnComponentRemoved(e);
+               base.OnComponentRemoved(i_Args);
 
-               e.GameComponent.Closed -= Screen_Closed;
+               i_Args.GameComponent.Closed -= screen_Closed;
 
                if (m_ScreensStack.Count == 0)
                {

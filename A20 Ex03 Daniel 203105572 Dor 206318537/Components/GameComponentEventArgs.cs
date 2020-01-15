@@ -3,23 +3,15 @@ using Microsoft.Xna.Framework;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Components
 {
-     /// <summary>
-     /// Arguments used with events from the GameComponentCollection.
-     /// </summary>
-     /// <typeparam name="ComponentType"></typeparam>
      public class GameComponentEventArgs<ComponentType> : EventArgs
          where ComponentType : IGameComponent
      {
-          private ComponentType m_Component;
 
-          public GameComponentEventArgs(ComponentType gameComponent)
+          public GameComponentEventArgs(ComponentType i_GameComponent)
           {
-               m_Component = gameComponent;
+               GameComponent = i_GameComponent;
           }
 
-          public ComponentType GameComponent
-          {
-               get { return m_Component; }
-          }
+          public ComponentType GameComponent { get; private set; }
      }
 }
