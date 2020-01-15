@@ -10,6 +10,13 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
 {
      public abstract class GameScreen : CompositeDrawableComponent<IGameComponent>
      {
+          public event EventHandler Closed;
+
+          private IInputManager m_InputManager;
+          private IInputManager m_DummyInputManager = new DummyInputManager();
+          private Texture2D m_BlankTexture;
+          private Texture2D m_GradientTexture;
+
           public GameScreen(Game i_Game)
               : base(i_Game)
           {
@@ -17,36 +24,14 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                this.Visible = false;
           }
 
-          protected bool m_IsModal = true;
-          public bool IsModal // background screen should not be updated
-          {
-               get { return m_IsModal; }
-               set { m_IsModal = value; }
-          }
+          public bool IsModal { get; set; } = true;
 
-          protected bool m_IsOverlayed;
-          public bool IsOverlayed // background screen should be drawn
-          {
-               get { return m_IsOverlayed; }
-               set { m_IsOverlayed = value; }
-          }
+          public bool IsOverlayed { get; set; }
 
-          protected GameScreen m_PreviousScreen;
-          public GameScreen PreviousScreen // the screen behind me
-          {
-               get { return m_PreviousScreen; }
-               set { m_PreviousScreen = value; }
-          }
+          public GameScreen PreviousScreen { get; set; }
 
-          protected bool m_HasFocus;
-          public bool HasFocus // i should handle the input
-          {
-               get { return m_HasFocus; }
-               set { m_HasFocus = value; }
-          }
+          public bool HasFocus { get; set; }
 
-          private IInputManager m_InputManager;
-          private IInputManager m_DummyInputManager = new DummyInputManager();
           public IInputManager InputManager
           {
                get { return this.HasFocus ? m_InputManager : m_DummyInputManager; }
@@ -90,7 +75,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                OnClosed();
           }
 
-          public event EventHandler Closed;
           protected virtual void OnClosed()
           {
                if (Closed != null)
@@ -121,22 +105,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                base.Draw(gameTime);
           }
 
-          protected IScreensMananger m_ScreensManager;
-          public IScreensMananger ScreensManager
-          {
-               get { return m_ScreensManager; }
-               set { m_ScreensManager = value; }
-          }
+          public IScreensMananger ScreensManager { get; set; }
 
-          Texture2D m_GradientTexture;
-          Texture2D m_BlankTexture;
-
-          protected float m_BlackTintAlpha = 0;
-          public float BlackTintAlpha
-          {
-               get { return m_BlackTintAlpha; }
-               set { m_BlackTintAlpha = value; }
-          }
+          public float BlackTintAlpha { get; set; }
 
           protected override void LoadContent()
           {
@@ -145,12 +116,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
                //m_BlankTexture = this.ContentManager.Load<Texture2D>(@"Screens\blank");
           }
 
-          protected bool m_UseGradientBackground = false;
-          public bool UseGradientBackground
-          {
-               get { return m_UseGradientBackground; }
-               set { m_UseGradientBackground = value; }
-          }
+          public bool UseGradientBackground { get; set; }
 
           public void drawFadedDarkCover(byte i_Alpha)
           {
@@ -167,7 +133,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models
           {
                if (BlackTintAlpha > 0 || UseGradientBackground)
                {
-                    drawFadedDarkCover((byte)(m_BlackTintAlpha * byte.MaxValue));
+                    drawFadedDarkCover((byte)(BlackTintAlpha * byte.MaxValue));
                }
           }
      }
