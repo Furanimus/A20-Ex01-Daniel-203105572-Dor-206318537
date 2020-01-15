@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Components;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Models.BaseModels;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Models;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 {
-     public class ScoreManager : LoadableDrawableComponent, IScoreManager
+     public class ScoreManager : DrawableGameComponent, IScoreManager
      {
           private const int k_SpaceFactor                                        = 12;
           private const int k_SpaceBetweenScores                                 = 10;
@@ -18,11 +19,15 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           private readonly HashSet<BasePlayer> r_PlayersSetForCheckExistance     = new HashSet<BasePlayer>();
           private SpriteFont m_ComicSansMsFont;
           private const string k_ScoreString = "P{0} Score: {1}";
+          private readonly GameScreen r_GameScreen;
 
-          public ScoreManager(Game i_Game)
-               : base(string.Empty, i_Game, int.MaxValue)
+          public ScoreManager(GameScreen i_GameScreen)
+               : base(i_GameScreen.Game)
           {
                this.Game.Services.AddService(typeof(IScoreManager), this);
+               r_GameScreen = i_GameScreen;
+               r_GameScreen.Add(this);
+               this.DrawOrder = this.UpdateOrder = int.MaxValue;
           }
 
           public void AddPlayer(BasePlayer i_Player, Color i_ScoreColor)
@@ -41,58 +46,33 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 
           protected override void LoadContent()
           {
-               if (SpriteBatch == null)
-               {
-                    SpriteBatch = Game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
-
-                    if (SpriteBatch == null)
-                    {
-                         SpriteBatch = new SpriteBatch(Game.GraphicsDevice);
-                         UseSharedSpriteBatch = false;
-                    }
-               }
+               base.LoadContent();
 
                m_ComicSansMsFont = this.Game.Content.Load<SpriteFont>(k_FontAssetName);
-
-               base.LoadContent();
           }
 
           public override void Draw(GameTime i_GameTime)
           {
-               if (!UseSharedSpriteBatch)
-               {
-                    SpriteBatch.Begin();
-               }
-
                float yPos = k_LivesStartingY;
                int playerCounter = 1;
+
+               r_GameScreen.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
 
                foreach (KeyValuePair<BasePlayer, Color> pair in r_Players)
                {
                     Vector2 positionForDraw = new Vector2(k_StartingXForDraw, yPos);
                     string scoreString = string.Format(k_ScoreString, playerCounter.ToString(), pair.Key.Score.ToString());
 
-                    SpriteBatch.DrawString(m_ComicSansMsFont, scoreString, positionForDraw, pair.Value);
+                    r_GameScreen.SpriteBatch.DrawString(m_ComicSansMsFont, scoreString, positionForDraw, pair.Value);
 
                     float nextScorePos = k_SpaceFactor + k_SpaceBetweenScores;
                     yPos += nextScorePos;
                     playerCounter++;
                }
 
-               if (!UseSharedSpriteBatch)
-               {
-                    SpriteBatch.End();
-               }
+               r_GameScreen.SpriteBatch.End();
 
                base.Draw(i_GameTime);
           }
-
-          protected override void InitBounds()
-          {
-          }
-
-          public SpriteBatch SpriteBatch { get; private set; }
-
-          public bool UseSharedSpriteBatch { get; private set; } = true;
      }
 }

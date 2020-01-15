@@ -5,10 +5,12 @@ using Microsoft.Xna.Framework.Graphics;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Components;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Models.BaseModels;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Models;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 {
-     public class LivesManager : LoadableDrawableComponent, ILivesManager
+     public class LivesManager : DrawableGameComponent, ILivesManager
      {
           public event Action AllPlayersDied;
 
@@ -20,11 +22,15 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           private readonly Vector2 r_LivesScale                              = new Vector2(0.5f, 0.5f);
           private readonly Color r_Color                                     = new Color(Color.White, k_LivesAlpha);
           private bool m_IsAllPlayerAlive                                    = false;
+          private readonly GameScreen r_GameScreen;
 
-          public LivesManager(Game i_Game)
-               : base(string.Empty, i_Game, int.MaxValue)
+          public LivesManager(GameScreen i_GameScreen)
+               : base(i_GameScreen.Game)
           {
                this.Game.Services.AddService(typeof(ILivesManager), this);
+               r_GameScreen = i_GameScreen;
+               i_GameScreen.Add(this);
+               this.DrawOrder = this.UpdateOrder = int.MaxValue;
           }
 
           public void AddPlayer(BasePlayer i_Player)
@@ -47,22 +53,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           public bool IsPlayerAlreadyAdded(BasePlayer i_Player)
           {
                return r_PlayersSetForCheckExistance.Contains(i_Player);
-          }
-
-          protected override void LoadContent()
-          {
-               if (SpriteBatch == null)
-               {
-                    SpriteBatch = Game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
-
-                    if (SpriteBatch == null)
-                    {
-                         SpriteBatch = new SpriteBatch(Game.GraphicsDevice);
-                         UseSharedSpriteBatch = false;
-                    }
-               }
-           
-               base.LoadContent();
           }
 
           public override void Update(GameTime i_GameTime)
@@ -88,29 +78,26 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 
           public override void Draw(GameTime i_GameTime)
           {
-               if (!UseSharedSpriteBatch)
-               {
-                    SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
-               }
-
                float yPos = k_LivesStartingY;
+
+               r_GameScreen.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
 
                foreach (BasePlayer player in r_Players)
                {
-                    for(int life = 1; life <= player.Lives; life++)
+                    for (int life = 1; life <= player.Lives; life++)
                     {
                          float xPos = this.Game.GraphicsDevice.Viewport.Width - (life * player.Width);
                          Vector2 positionForDraw = new Vector2(xPos, yPos);
 
-                         SpriteBatch.Draw(
-                              player.Texture, 
-                              positionForDraw, 
-                              player.SourceRectangle, 
+                         r_GameScreen.SpriteBatch.Draw(
+                              player.Texture,
+                              positionForDraw,
+                              player.SourceRectangle,
                               r_Color,
-                              0, 
-                              Vector2.Zero, 
-                              r_LivesScale, 
-                              SpriteEffects.None, 
+                              0,
+                              Vector2.Zero,
+                              r_LivesScale,
+                              SpriteEffects.None,
                               player.LayerDepth);
                     }
 
@@ -118,20 +105,9 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                     yPos += nextLivesPos;
                }
 
-               if (!UseSharedSpriteBatch)
-               {
-                    SpriteBatch.End();
-               }
+               r_GameScreen.SpriteBatch.End();
 
                base.Draw(i_GameTime);
           }
-
-          protected override void InitBounds()
-          {
-          }
-
-          public SpriteBatch SpriteBatch { get; private set; }
-
-          public bool UseSharedSpriteBatch { get; private set; } = true;
      }
 }

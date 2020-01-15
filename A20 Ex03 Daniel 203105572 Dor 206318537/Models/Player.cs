@@ -5,6 +5,7 @@ using Models.Animators.ConcreteAnimators;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnimator;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Models.BaseModels;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
 {
@@ -18,8 +19,8 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
           private const float k_DeadAnimationLength = 2.5f;
           private const string k_DeadAnimatorName = "Dead";
 
-          public Player(string i_AssetName, Game i_Game) 
-               : base(i_AssetName, i_Game) 
+          public Player(string i_AssetName, GameScreen i_GameScreen) 
+               : base(i_AssetName, i_GameScreen) 
           {
                this.Lives               = 3;
                this.Score               = 0;
@@ -28,6 +29,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                this.ViewDirection       = Sprite.Up;
                this.GroupRepresentative = this;
                this.RotationOrigin      = new Vector2(this.Width / 2, this.Height / 2);
+               this.GameScreen.Add(this);
           }
 
           public override void Initialize()

@@ -3,6 +3,7 @@ using Models.Animators;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Models.BaseModels;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Utils;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
 {
@@ -11,8 +12,8 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
           private readonly Rectangle r_SourceRectangle;
           private readonly ICollisionsManager r_CollisionsManager;
 
-          protected ShooterEnemy(string i_AssetName, Rectangle i_SourceRectangle, Game i_Game) 
-               : base(i_AssetName, i_Game)
+          protected ShooterEnemy(string i_AssetName, Rectangle i_SourceRectangle, GameScreen i_GameScreen) 
+               : base(i_AssetName, i_GameScreen)
           {
                r_SourceRectangle = i_SourceRectangle;
                r_CollisionsManager = this.Game.Services.GetService(typeof(ICollisionsManager)) as ICollisionsManager;

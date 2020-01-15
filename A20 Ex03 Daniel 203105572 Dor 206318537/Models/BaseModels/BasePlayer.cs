@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.BaseModels
 {
@@ -13,18 +14,18 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.BaseModels
 
           public event Action CollidedWithEnemy;
 
-          public BasePlayer(string i_AssetName, Game i_Game) 
-               : this(i_AssetName, i_Game, int.MaxValue)
+          public BasePlayer(string i_AssetName, GameScreen i_GameScreen) 
+               : this(i_AssetName, i_GameScreen, int.MaxValue)
           {
           }
 
-          public BasePlayer(string i_AssetName, Game i_Game, int i_CallsOrder) 
-               : this(i_AssetName, i_Game, int.MaxValue, int.MaxValue)
+          public BasePlayer(string i_AssetName, GameScreen i_GameScreen, int i_CallsOrder) 
+               : this(i_AssetName, i_GameScreen, int.MaxValue, int.MaxValue)
           {
           }
 
-          public BasePlayer(string i_AssetName, Game i_Game, int i_UpdateOrder, int i_DrawOrder) 
-               : base(i_AssetName, i_Game, i_UpdateOrder, i_DrawOrder)
+          public BasePlayer(string i_AssetName, GameScreen i_GameScreen, int i_UpdateOrder, int i_DrawOrder) 
+               : base(i_AssetName, i_GameScreen, i_UpdateOrder, i_DrawOrder)
           {
                r_InputManager = this.Game.Services.GetService(typeof(IInputManager)) as IInputManager;
                r_Velocity = new Vector2(145, 0);
@@ -62,7 +63,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.BaseModels
 
                if(scoreManager == null)
                {
-                    scoreManager = new ScoreManager(this.Game);
+                    scoreManager = new ScoreManager(this.GameScreen);
                     scoreManager.AddPlayer(this, Color.White);
                }
                else
@@ -75,7 +76,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.BaseModels
 
                if (livesManager == null)
                {
-                    livesManager = new LivesManager(this.Game);
+                    livesManager = new LivesManager(this.GameScreen);
                     livesManager.AddPlayer(this);
                }
                else

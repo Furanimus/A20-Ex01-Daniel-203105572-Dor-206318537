@@ -8,8 +8,8 @@ namespace Models.Animators
      public class CompositeAnimator : SpriteAnimator
      {
           private const string k_Name = "AnimationsManager";
-          private readonly Dictionary<string, SpriteAnimator> m_AnimationsDictionary = new Dictionary<string, SpriteAnimator>();
-          protected readonly List<SpriteAnimator> m_AnimationsList                   = new List<SpriteAnimator>();
+          private readonly Dictionary<string, SpriteAnimator> AnimationsDictionary = new Dictionary<string, SpriteAnimator>();
+          protected readonly List<SpriteAnimator> AnimationsList                   = new List<SpriteAnimator>();
 
           public CompositeAnimator(Sprite i_BoundSprite)
                : this(k_Name, TimeSpan.Zero, i_BoundSprite, new SpriteAnimator[] { })
@@ -32,19 +32,19 @@ namespace Models.Animators
           {
                i_Animation.BoundSprite = this.BoundSprite;
                i_Animation.Enabled = true;
-               m_AnimationsDictionary.Add(i_Animation.Name, i_Animation);
-               m_AnimationsList.Add(i_Animation);
+               AnimationsDictionary.Add(i_Animation.Name, i_Animation);
+               AnimationsList.Add(i_Animation);
           }
 
           public void Remove(string i_AnimationName)
           {
                SpriteAnimator animationToRemove;
-               m_AnimationsDictionary.TryGetValue(i_AnimationName, out animationToRemove);
+               AnimationsDictionary.TryGetValue(i_AnimationName, out animationToRemove);
 
                if (animationToRemove != null)
                {
-                    m_AnimationsDictionary.Remove(i_AnimationName);
-                    m_AnimationsList.Remove(animationToRemove);
+                    AnimationsDictionary.Remove(i_AnimationName);
+                    AnimationsList.Remove(animationToRemove);
                }
           }
 
@@ -53,7 +53,7 @@ namespace Models.Animators
                get
                {
                     SpriteAnimator retVal = null;
-                    m_AnimationsDictionary.TryGetValue(i_Name, out retVal);
+                    AnimationsDictionary.TryGetValue(i_Name, out retVal);
                     return retVal;
                }            
           }
@@ -62,7 +62,7 @@ namespace Models.Animators
           {
                base.Restart();
 
-               foreach (SpriteAnimator animation in m_AnimationsList)
+               foreach (SpriteAnimator animation in AnimationsList)
                {
                     animation.Restart();
                }
@@ -72,7 +72,7 @@ namespace Models.Animators
           {
                base.Restart(i_AnimationLength);
 
-               foreach (SpriteAnimator animation in m_AnimationsList)
+               foreach (SpriteAnimator animation in AnimationsList)
                {
                     animation.Restart();
                }
@@ -82,7 +82,7 @@ namespace Models.Animators
           {
                base.Pause();
 
-               foreach (SpriteAnimator animation in m_AnimationsList)
+               foreach (SpriteAnimator animation in AnimationsList)
                {
                     animation.Pause();
                }
@@ -92,7 +92,7 @@ namespace Models.Animators
           {
                base.Resume();
 
-               foreach (SpriteAnimator animation in m_AnimationsList)
+               foreach (SpriteAnimator animation in AnimationsList)
                {
                     animation.Resume();
                }
@@ -100,7 +100,7 @@ namespace Models.Animators
 
           protected override void RevertToOriginal()
           {
-               foreach (SpriteAnimator animation in m_AnimationsList)
+               foreach (SpriteAnimator animation in AnimationsList)
                {
                     animation.Reset();
                }
@@ -110,7 +110,7 @@ namespace Models.Animators
           {
                base.CloneSpriteInfo();
 
-               foreach (SpriteAnimator animation in m_AnimationsList)
+               foreach (SpriteAnimator animation in AnimationsList)
                {
                     animation.m_OriginalSpriteInfo = m_OriginalSpriteInfo;
                }
@@ -118,7 +118,7 @@ namespace Models.Animators
 
           protected override void DoFrame(GameTime i_GameTime)
           {
-               foreach (SpriteAnimator animation in m_AnimationsList)
+               foreach (SpriteAnimator animation in AnimationsList)
                {
                     animation.Update(i_GameTime);
                }

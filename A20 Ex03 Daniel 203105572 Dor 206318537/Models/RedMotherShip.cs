@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Models.Animators;
 using Models.Animators.ConcreteAnimators;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnimator;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
 {
@@ -14,8 +15,8 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
           private const float k_BlinkLength = 1 / k_BlinksPerSecond;
           private const float k_DeadAnimationLength = 2.2f;
 
-          public RedMotherShip(Game i_Game) 
-               : base(k_AssetName, i_Game)
+          public RedMotherShip(GameScreen i_GameScreen) 
+               : base(k_AssetName, i_GameScreen)
           {
                this.TintColor                    = Color.Red;
                this.Score                        = 800;

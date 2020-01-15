@@ -21,7 +21,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Components
                this.AssetName = i_AssetName;
                this.UpdateOrder = i_UpdateOrder;
                this.DrawOrder = i_DrawOrder;
-               this.Game.Components.Add(this);
           }
 
           public LoadableDrawableComponent(string i_AssetName, Game i_Game, int i_CallsOrder)

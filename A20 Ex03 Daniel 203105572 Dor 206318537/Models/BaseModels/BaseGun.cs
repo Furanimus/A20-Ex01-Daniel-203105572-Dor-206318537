@@ -1,44 +1,58 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Components;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.BaseModels
 {
-     public abstract class BaseGun : GameComponent
+     public abstract class BaseGun : CompositeDrawableComponent<BaseBullet>
      {
           protected readonly Sprite r_Shooter;
           private readonly LinkedList<BaseBullet> r_Bullets;
-          private readonly Action<ICollidable> r_ExecuteOnBulletCollided;
+          private readonly Action<ICollidable> r_ExecuteWhenBulletCollided;
           private int m_BulletsAdded;
 
-          protected BaseGun(Sprite i_Shooter, Action<ICollidable> i_ExecuteOnBulletCollided) 
+          protected BaseGun(Sprite i_Shooter, Action<ICollidable> i_ExecuteWhenBulletCollided) 
                : base(i_Shooter.Game)
           {
                r_Shooter = i_Shooter;
                r_Bullets = new LinkedList<BaseBullet>();
-               r_ExecuteOnBulletCollided = i_ExecuteOnBulletCollided;
-               this.Game.Components.Add(this);
+               r_ExecuteWhenBulletCollided = i_ExecuteWhenBulletCollided;
+               i_Shooter.GameScreen.Add(this);
+               this.BlendState = BlendState.NonPremultiplied;
           }
 
           protected void AddBullet(BaseBullet i_Bullet)
           {
                if (m_BulletsAdded < Capacity)
                {
-                    i_Bullet.CollidedWithSprite += r_ExecuteOnBulletCollided;
+                    i_Bullet.CollidedWithSprite += r_ExecuteWhenBulletCollided;
                     m_BulletsAdded++;
                     r_Bullets.AddLast(i_Bullet);
+                    this.Add(i_Bullet);
                }
           }
 
           protected void RemoveBullet()
           {
-               r_Bullets.RemoveFirst();
+               if(r_Bullets.Count > 0)
+               {
+                    r_Bullets.RemoveFirst();
+               }
           }
 
           protected BaseBullet GetFirstBullet()
           {
-               return r_Bullets.First.Value;
+               BaseBullet first = null;
+
+               if(r_Bullets.Count > 0)
+               {
+                    first = r_Bullets.First.Value;
+               }
+
+               return first;
           }
 
           protected virtual void ReloadBullet()
@@ -55,10 +69,14 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.BaseModels
                {
                     BulletShot++;
                     BaseBullet bullet = this.GetFirstBullet();
-                    this.RemoveBullet();
 
-                    bullet.Enabled = true;
-                    bullet.Visible = true;
+                    if (bullet != null)
+                    {
+                         this.RemoveBullet();
+
+                         bullet.Enabled = true;
+                         bullet.Visible = true;
+                    }
                }
           }
 

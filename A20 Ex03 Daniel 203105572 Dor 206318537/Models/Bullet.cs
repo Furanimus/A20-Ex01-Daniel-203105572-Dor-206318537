@@ -2,6 +2,7 @@
 using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Models.BaseModels;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Utils;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
 {
@@ -16,13 +17,13 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
           private const float k_XVelocity = 0;
           private readonly IRandomBehavior r_RandomBehavior;
 
-          public Bullet(Game i_Game) 
-               : this(Color.Red, i_Game)
+          public Bullet(GameScreen i_GameScreen) 
+               : this(Color.Red, i_GameScreen)
           {
           }
 
-          public Bullet(Color i_TintColor, Game i_Game) 
-               : base(k_GraphicPath, i_Game)
+          public Bullet(Color i_TintColor, GameScreen i_GameScreen) 
+               : base(k_GraphicPath, i_GameScreen)
           {
                r_RandomBehavior = this.Game.Services.GetService(typeof(IRandomBehavior)) as IRandomBehavior;
 

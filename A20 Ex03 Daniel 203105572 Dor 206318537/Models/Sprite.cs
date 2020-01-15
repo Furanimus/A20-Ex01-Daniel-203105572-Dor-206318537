@@ -4,51 +4,127 @@ using Models.Animators;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Components;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Utils;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
 {
-     public class Sprite : LoadableDrawableComponent
+     public partial class Sprite : LoadableDrawableComponent
      {
-          protected Color m_TintColor = Color.White;
           protected Vector2 m_Position = Vector2.Zero;
           protected Vector2 m_Scales = Vector2.One;
-          protected SpriteBatch m_SpriteBatch;
-          protected Texture2DPixels m_TexturePixels;
-          private bool m_UseSharedBatch = true;
+          private bool m_UseSharedBatch = false;
+          private SpriteBatch m_SpriteBatch;
+          private Texture2DPixels m_TexturePixels;
+          private readonly DeviceStates r_SavedDeviceStates;
+          protected readonly GameScreen r_GameScreen;
 
-          public Sprite(string i_AssetName, Game i_Game, int i_UpdateOrder, int i_DrawOrder) 
-               : base(i_AssetName, i_Game, i_UpdateOrder, i_DrawOrder)
+          public Sprite(string i_AssetName, GameScreen i_GameScreen, int i_UpdateOrder, int i_DrawOrder)
+              : base(i_AssetName, i_GameScreen.Game, i_UpdateOrder, i_DrawOrder)
+          {
+               r_SavedDeviceStates = new DeviceStates();
+               r_GameScreen = i_GameScreen;
+          }
+
+          public Sprite(string i_AssetName, GameScreen i_GameScreen, int i_CallsOrder)
+              : this(i_AssetName, i_GameScreen, i_CallsOrder, i_CallsOrder)
           {
           }
 
-          public Sprite(string i_AssetName, Game i_Game, int i_CallsOrder)
-              : base(i_AssetName, i_Game, i_CallsOrder)
+          public Sprite(string i_AssetName, GameScreen i_GameScreen)
+              : this(i_AssetName, i_GameScreen, int.MaxValue)
           {
           }
 
-          public Sprite(string i_AssetName, Game i_Game)
-              : base(i_AssetName, i_Game, int.MaxValue)
+          public override void Initialize()
           {
+               base.Initialize();
+
+               Animations = new CompositeAnimator(this);
           }
 
-          public static Vector2 Right { get; } = new Vector2(1, 0);
+          protected override void LoadContent()
+          {
+               if (Texture == null && m_AssetName != null && m_AssetName != string.Empty)
+               {
+                    Texture = Game.Content.Load<Texture2D>(m_AssetName);
+               }
 
-          public static Vector2 Left { get; } = new Vector2(-1, 0);
+               if (m_SpriteBatch == null)
+               {
+                    m_SpriteBatch = Game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
 
-          public static Vector2 Up { get; } = new Vector2(0, -1);
+                    if (m_SpriteBatch == null)
+                    {
+                         m_SpriteBatch = new SpriteBatch(this.Game.GraphicsDevice);
+                         m_UseSharedBatch = false;
+                    }
+               }
 
-          public static Vector2 Down { get; } = new Vector2(0, 1);
+               base.LoadContent();
+          }
 
-          public Texture2DPixels TexturePixels
+          public override void Update(GameTime i_GameTime)
+          {
+               float totalSeconds = (float)i_GameTime.ElapsedGameTime.TotalSeconds;
+
+               OnUpdate(totalSeconds);
+
+               if (this.Animations != null)
+               {
+                    this.Animations.Update(i_GameTime);
+               }
+
+               base.Update(i_GameTime);
+          }
+
+          protected virtual void OnUpdate(float i_TotalSeconds)
+          {
+               this.Position += this.MoveDirection * this.Velocity * i_TotalSeconds;
+               this.Rotation += this.AngularVelocity * i_TotalSeconds;
+          }
+
+          public override void Draw(GameTime i_GameTime)
+          {
+               if (!m_UseSharedBatch)
+               {
+                    if (SaveAndRestoreDeviceState)
+                    {
+                         saveDeviceStates();
+                    }
+
+                    m_SpriteBatch.Begin(
+                        SortMode, BlendState, SamplerState,
+                        DepthStencilState, RasterizerState, Shader, TransformMatrix);
+               }
+
+               OnDraw();
+
+               if (!m_UseSharedBatch)
+               {
+                    m_SpriteBatch.End();
+
+                    if (SaveAndRestoreDeviceState)
+                    {
+                         restoreDeviceStates();
+                    }
+               }
+
+               base.Draw(i_GameTime);
+          }
+
+          protected virtual void OnDraw()
+          {
+               m_SpriteBatch.Draw(Texture, this.PositionForDraw,
+                    this.SourceRectangle, this.TintColor,
+                   this.Rotation, this.RotationOrigin, this.Scales,
+                   SpriteEffects.None, this.LayerDepth);
+          }
+
+          public GameScreen GameScreen
           {
                get
                {
-                    if(m_TexturePixels == null)
-                    {
-                         m_TexturePixels = Texture.GetPixels(SourceRectangle);
-                    }
-
-                    return m_TexturePixels;
+                    return r_GameScreen;
                }
           }
 
@@ -68,8 +144,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                set { HeightBeforeScale = value / m_Scales.Y; }
           }
 
-          public Vector2 StartingPosition { get; set; } = Vector2.Zero;
-
           public float WidthBeforeScale { get; set; }
 
           public float HeightBeforeScale { get; set; }
@@ -87,9 +161,9 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                }
           }
 
-          public Vector2 PositionOrigin { get; set; } = Vector2.Zero;
-
-          public Vector2 RotationOrigin { get; set; } = Vector2.Zero;
+          public Vector2 PositionOrigin { get; set; }
+          
+          public Vector2 RotationOrigin { get; set; }
 
           private Vector2 PositionForDraw
           {
@@ -138,14 +212,11 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
 
           public Vector2 SourceRectangleCenter
           {
-               get
-               {
-                    return new Vector2((float)(SourceRectangle.Width / 2), (float)(SourceRectangle.Height / 2));
-               }
+               get { return new Vector2((float)(SourceRectangle.Width / 2), (float)(SourceRectangle.Height / 2)); }
           }
 
-          public float Rotation { get; set; } = 0;
-
+          public float Rotation { get; set; }
+          
           public Vector2 Scales
           {
                get { return m_Scales; }
@@ -159,30 +230,36 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                }
           }
 
-          public Vector2 ViewDirection { get; set; } = Sprite.Down;
-
-          public Vector2 MoveDirection { get; set; } = Sprite.Right;
-
-          public Color TintColor
-          {
-               get { return m_TintColor; }
-               set { m_TintColor = value; }
-          }
+          public Color TintColor { get; set; } = Color.White;
 
           public float Opacity
           {
-               get { return (float)m_TintColor.A / (float)byte.MaxValue; }
-               set { m_TintColor.A = (byte)(value * (float)byte.MaxValue); }
+               get { return (float)TintColor.A / (float)byte.MaxValue; }
+               set { TintColor = new Color(TintColor, (byte)(value * (float)byte.MaxValue)); }
           }
 
           public float LayerDepth { get; set; }
 
           public SpriteEffects SpriteEffects { get; set; } = SpriteEffects.None;
+          
+          public SpriteSortMode SortMode { get; set; } = SpriteSortMode.Deferred;
+
+          public BlendState BlendState { get; set; } = BlendState.AlphaBlend;
+          
+          public SamplerState SamplerState { get; set; }
+          
+          public DepthStencilState DepthStencilState { get; set; }
+          
+          public RasterizerState RasterizerState { get; set; }
+
+          public Effect Shader { get; set; }
+          
+          public Matrix TransformMatrix { get; set; } = Matrix.Identity;
 
           public Vector2 Velocity { get; set; }
-
+          
           public float AngularVelocity { get; set; }
-
+          
           protected override void InitBounds()
           {
                InitSourceRectangle();
@@ -201,103 +278,46 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
 
           public SpriteBatch SpriteBatch
           {
+               protected get
+               {
+                    return m_SpriteBatch;
+               }
+               
                set
                {
                     m_SpriteBatch = value;
-                    m_UseSharedBatch = false;
+                    m_UseSharedBatch = true;
                }
           }
-
-          public override void Initialize()
+          
+          protected void saveDeviceStates()
           {
-               base.Initialize();
-
-               Animations = new CompositeAnimator(this);
+               r_SavedDeviceStates.BlendState = GraphicsDevice.BlendState;
+               r_SavedDeviceStates.SamplerState = GraphicsDevice.SamplerStates[0];
+               r_SavedDeviceStates.DepthStencilState = GraphicsDevice.DepthStencilState;
+               r_SavedDeviceStates.RasterizerState = GraphicsDevice.RasterizerState;
           }
 
-          protected override void LoadContent()
+          private void restoreDeviceStates()
           {
-               if(Texture == null)
-               {
-                    Texture = Game.Content.Load<Texture2D>(m_AssetName);
-               }
-
-               if (m_SpriteBatch == null)
-               {
-                    m_SpriteBatch = Game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
-
-                    if (m_SpriteBatch == null)
-                    {
-                         SpriteBatch = new SpriteBatch(Game.GraphicsDevice);
-                         m_UseSharedBatch = false;
-                    }
-               }
-
-               base.LoadContent();
+               GraphicsDevice.BlendState = r_SavedDeviceStates.BlendState;
+               GraphicsDevice.SamplerStates[0] = r_SavedDeviceStates.SamplerState;
+               GraphicsDevice.DepthStencilState = r_SavedDeviceStates.DepthStencilState;
+               GraphicsDevice.RasterizerState = r_SavedDeviceStates.RasterizerState;
           }
 
-          public override void Update(GameTime i_GameTime)
-          {
-               float totalSeconds = (float)i_GameTime.ElapsedGameTime.TotalSeconds;
-
-               OnUpdate(totalSeconds);
-
-               if (this.Animations != null)
-               {
-                    this.Animations.Update(i_GameTime);
-               }
-
-               base.Update(i_GameTime);
-          }
-
-          protected virtual void OnUpdate(float i_TotalSeconds)
-          {
-               this.Position += this.MoveDirection * this.Velocity * i_TotalSeconds;
-               this.Rotation += this.AngularVelocity * i_TotalSeconds;
-          }
-
-          public override void Draw(GameTime i_GameTime)
-          {
-               if (!m_UseSharedBatch)
-               {
-                    m_SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
-               }
-
-               m_SpriteBatch.Draw(
-                    Texture, 
-                    this.PositionForDraw,
-                    this.SourceRectangle, 
-                    this.TintColor,
-                    this.Rotation, 
-                    this.RotationOrigin, 
-                    this.Scales, 
-                    SpriteEffects.None, 
-                    this.LayerDepth);
-
-               if (!m_UseSharedBatch)
-               {
-                    m_SpriteBatch.End();
-               }
-
-               base.Draw(i_GameTime);
-          }
+          
+          public bool SaveAndRestoreDeviceState { get; set; }
 
           public virtual bool CheckCollision(ICollidable i_Source)
           {
                bool collided = false;
+               ICollidable2D target = this as ICollidable2D;
                ICollidable2D source = i_Source as ICollidable2D;
 
-               if (source != null)
+               if (source != null && target.GroupRepresentative != i_Source.GroupRepresentative)
                {
-                    ICollidable2D thisSprite = this as ICollidable2D;
-
-                    if(thisSprite != null)
-                    {
-                         if (source.GroupRepresentative != thisSprite.GroupRepresentative)
-                         {
-                              collided = source.Bounds.Intersects(this.Bounds);
-                         }
-                    }
+                    collided = source.Bounds.Intersects(this.Bounds);
                }
 
                return collided;
@@ -312,5 +332,32 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
           {
                return this.MemberwiseClone() as Sprite;
           }
+
+          public Texture2DPixels TexturePixels
+          {
+               get
+               {
+                    if (m_TexturePixels == null)
+                    {
+                         m_TexturePixels = Texture.GetPixels(SourceRectangle);
+                    }
+
+                    return m_TexturePixels;
+               }
+          }
+
+          public Vector2 StartingPosition { get; set; } = Vector2.Zero;
+
+          public Vector2 ViewDirection { get; set; } = Sprite.Down;
+
+          public Vector2 MoveDirection { get; set; } = Sprite.Right;
+
+          public static Vector2 Right { get; } = new Vector2(1, 0);
+
+          public static Vector2 Left { get; } = new Vector2(-1, 0);
+
+          public static Vector2 Up { get; } = new Vector2(0, -1);
+
+          public static Vector2 Down { get; } = new Vector2(0, 1);
      }
 }

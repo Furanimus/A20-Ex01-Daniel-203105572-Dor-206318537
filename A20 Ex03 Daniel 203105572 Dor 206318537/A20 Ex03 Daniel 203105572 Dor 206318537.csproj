@@ -42,13 +42,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="BaseGame.cs" />
+    <Compile Include="Components\CompositeDrawableComponent.cs" />
+    <Compile Include="Components\DrawableComparer.cs" />
+    <Compile Include="Components\GameComponentEventArgs.cs" />
+    <Compile Include="Components\ILivesManager.cs" />
+    <Compile Include="Components\IScoreManager.cs" />
+    <Compile Include="Components\UpdateableComparer.cs" />
     <Compile Include="Enums\eInputButtons.cs" />
-    <Compile Include="Interfaces\ILivesManager.cs" />
-    <Compile Include="Interfaces\IScoreManager.cs" />
     <Compile Include="Managers\BarrierManager.cs" />
     <Compile Include="Managers\CollisionsManager.cs" />
+    <Compile Include="Managers\DummyInputManager.cs" />
     <Compile Include="Managers\InputManager.cs" />
     <Compile Include="Managers\ScoreManager.cs" />
+    <Compile Include="Managers\ScreensManager.cs" />
     <Compile Include="Models\AlienMatrixEnemy.cs" />
     <Compile Include="Models\Animators\CompositeAnimator.cs" />
     <Compile Include="Models\Animators\ConcreteAnimator\BlinkAnimator.cs" />
@@ -67,6 +73,7 @@
     <Compile Include="Managers\LivesManager.cs" />
     <Compile Include="Components\LoadableDrawableComponent.cs" />
     <Compile Include="Components\RegisteredComponent.cs" />
+    <Compile Include="Models\DeviceStates.cs" />
     <Compile Include="Models\ShooterPlayer.cs" />
     <Compile Include="Models\Enemy.cs" />
     <Compile Include="Managers\EnemyManager.cs" />
@@ -79,6 +86,10 @@
     <Compile Include="Interfaces\IInputManager.cs" />
     <Compile Include="Models\Barrier.cs" />
     <Compile Include="Interfaces\IRandomBehavior.cs" />
+    <Compile Include="Models\GameScreen.cs" />
+    <Compile Include="Interfaces\IScreensMananger.cs" />
+    <Compile Include="Screens\GameOverScreen.cs" />
+    <Compile Include="Screens\PlayScreen.cs" />
     <Compile Include="Utils\RandomBehavior.cs" />
     <Compile Include="Models\RedMotherShip.cs" />
     <Compile Include="Models\ShooterEnemy.cs" />
@@ -107,6 +118,7 @@
     <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="app.manifest" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -20,21 +20,18 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537
                base.Update(i_GameTime);
           }
 
-          protected override void Initialize()
-          {
-               this.SpriteBatch = new SpriteBatch(this.GraphicsDevice);
-               this.Services.AddService(typeof(SpriteBatch), this.SpriteBatch);
-
-               base.Initialize();
-          }
-
           protected virtual void InitServices()
           {
                InputManager = new InputManager(this);
                CollisionsManager = new CollisionsManager(this);
                RandomBehavior = new RandomBehavior(this);
-               LivesManager = new LivesManager(this);
-               ScoreManager = new ScoreManager(this);
+          }
+
+          protected override void Initialize()
+          {
+               //this.Services.AddService(typeof(SpriteBatch), new SpriteBatch(this.GraphicsDevice));
+
+               base.Initialize();
           }
 
           public GameTime GameTime { get; set; }
@@ -44,11 +41,5 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537
           protected ICollisionsManager CollisionsManager { get; set; }
 
           protected IRandomBehavior RandomBehavior { get; set; }
-
-          protected ILivesManager LivesManager { get; set; }
-
-          protected IScoreManager ScoreManager { get; set; }
-
-          protected SpriteBatch SpriteBatch { get; set; }
      }
 }

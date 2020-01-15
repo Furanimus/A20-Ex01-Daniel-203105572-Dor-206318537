@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.BaseModels
 {
@@ -10,8 +11,8 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.BaseModels
 
           public event Action<ICollidable> CollidedWithSprite;
 
-          protected BaseBullet(string i_GraphicPath, Game i_Game) 
-               : base(i_GraphicPath, i_Game)
+          protected BaseBullet(string i_GraphicPath, GameScreen i_GameScreen) 
+               : base(i_GraphicPath, i_GameScreen)
           {
                this.LeftWindowBounds += OnLeftBounds;
           }

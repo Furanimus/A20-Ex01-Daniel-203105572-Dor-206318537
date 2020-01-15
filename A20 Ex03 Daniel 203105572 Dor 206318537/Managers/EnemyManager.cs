@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Models.Animators.ConcreteAnimators;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Utils;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Components;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
 {
-     public class EnemyManager : GameComponent
+     public class EnemyManager : CompositeDrawableComponent<Enemy>
      {
           public event Action MatrixReachedBottomWindow;
 
@@ -37,20 +39,20 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
           private const float k_IncVelocityOnNumOfDeadEnemiesPercentage = 0.03f;
           private readonly IRandomBehavior r_RandomBehavior;
           private readonly List<List<Enemy>> r_EnemyMatrix;
-          private readonly MotherShip r_MotherShip;
           private Enemy m_RightMostRepresentetive;
           private Enemy m_DownMostRepresentetive;
           private Enemy m_LeftMostRepresentetive;
           private TimeSpan m_IntervalToNextShoot;
           private int m_DeadEnemiesCounter;
+          private readonly GameScreen r_GameScreen;
 
-          public EnemyManager(Game i_Game) : base(i_Game)
+          public EnemyManager(GameScreen i_GameScreen) : base(i_GameScreen.Game)
           {
+               r_GameScreen = i_GameScreen;
                r_EnemyMatrix    = new List<List<Enemy>>(k_MatrixRows);
                r_RandomBehavior = this.Game.Services.GetService(typeof(IRandomBehavior)) as IRandomBehavior;
-               r_MotherShip     = new RedMotherShip(i_Game);
-
-               this.Game.Components.Add(this);
+               r_GameScreen.Add(this);
+               this.DrawOrder = this.UpdateOrder = 5;
           }
 
           public override void Initialize()
@@ -58,6 +60,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                initMatrix();
                populateMatrix();
                setRepresentetives();
+               this.Add(new RedMotherShip(r_GameScreen));
 
                base.Initialize();
           }
@@ -132,6 +135,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
           {
                checkWindowCollision();
                handleEnemyToShoot(i_GameTime);
+
                base.Update(i_GameTime);
           }
 
@@ -249,7 +253,9 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                     
                     for (int col = 0; col < k_MatrixCols; col++)
                     {
-                         r_EnemyMatrix[row].Add(new AlienMatrixEnemy(sourceRectangle, scoreWorth, color, this.Game));
+                         AlienMatrixEnemy alienMatrixEnemy = new AlienMatrixEnemy(sourceRectangle, scoreWorth, color, r_GameScreen);
+                         r_EnemyMatrix[row].Add(alienMatrixEnemy);
+                         this.Add(alienMatrixEnemy);
 
                          AlienMatrixEnemy enemy      = r_EnemyMatrix[row][col] as AlienMatrixEnemy;
                          enemy.CellAnimation         = new CellAnimator(isStartAnimationFromSecondCell, TimeSpan.FromSeconds(k_CellTime), k_NumOfAnimationCells, TimeSpan.Zero);

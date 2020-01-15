@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Models.Animators.ConcreteAnimators;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnimator;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
 {
@@ -21,17 +22,16 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
           private const string k_AssetName = @"Sprites\EnemySpriteSheet_192x32";
           private const bool k_IsStartCellAnimationFromEnd = false;
 
-          public AlienMatrixEnemy(Rectangle i_SourceRectangle, Game i_Game)
-               : this(i_SourceRectangle, k_DefaultScoreWorth, Color.White, i_Game)
+          public AlienMatrixEnemy(Rectangle i_SourceRectangle, GameScreen i_GameScreen)
+               : this(i_SourceRectangle, k_DefaultScoreWorth, Color.White, i_GameScreen)
           {
-               CellAnimation = new CellAnimator(k_IsStartCellAnimationFromEnd, TimeSpan.FromSeconds(k_CellAnimationTimePerCell), k_NumOfCells, TimeSpan.Zero);
           }
 
-          public CellAnimator CellAnimation { get; set; }
-
-          public AlienMatrixEnemy(Rectangle i_SourceRectangle, int i_ScoreWorth, Color i_TintColor, Game i_Game)
-               : base(k_AssetName, i_SourceRectangle, i_Game)
+          public AlienMatrixEnemy(Rectangle i_SourceRectangle, int i_ScoreWorth, Color i_TintColor, GameScreen i_GameScreen)
+               : base(k_AssetName, i_SourceRectangle, i_GameScreen)
           {
+               CellAnimation = new CellAnimator(k_IsStartCellAnimationFromEnd, TimeSpan.FromSeconds(k_CellAnimationTimePerCell), k_NumOfCells, TimeSpan.Zero);
+
                this.Gun = new Gun(k_MaxShotInMidAir, this);
                this.Score = i_ScoreWorth;
                this.TintColor = i_TintColor;
@@ -39,6 +39,8 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                this.Height = k_DefaultHeight;
                this.RotationOrigin = new Vector2(Width / 2, Height / 2);
           }
+
+          public CellAnimator CellAnimation { get; set; }
 
           public override void Initialize()
           {

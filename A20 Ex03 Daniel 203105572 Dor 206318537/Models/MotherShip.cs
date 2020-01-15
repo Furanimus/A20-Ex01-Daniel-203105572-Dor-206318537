@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Utils;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
 {
@@ -9,8 +10,8 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
           private readonly IRandomBehavior r_RandomBehavior;
           private readonly int r_MaxLives;
 
-          public MotherShip(string i_AssetName, Game i_Game) 
-               : base(i_AssetName, i_Game)
+          public MotherShip(string i_AssetName, GameScreen i_GameScreen) 
+               : base(i_AssetName, i_GameScreen)
           {
                r_RandomBehavior = this.Game.Services.GetService(typeof(IRandomBehavior)) as IRandomBehavior;
                r_MaxLives = Lives;

@@ -21,7 +21,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
 
                for (int i = 0; i < Capacity; i++)
                {
-                    BaseBullet bullet = constructors[0].Invoke(new object[] { r_Shooter.Game }) as BaseBullet;
+                    BaseBullet bullet = constructors[0].Invoke(new object[] { r_Shooter.GameScreen }) as BaseBullet;
                     this.AddBullet(bullet);
 
                     if (r_Shooter is Player)
