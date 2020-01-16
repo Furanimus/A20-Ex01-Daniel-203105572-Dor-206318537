@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Screens;
 
-namespace A20_Ex01_Daniel_203105572_Dor_206318537.Components
+namespace A20_Ex03_Daniel_203105572_Dor_206318537.Components
 {
      public abstract class CompositeDrawableComponent<ComponentType> :
      DrawableGameComponent, ICollection<ComponentType>
@@ -203,11 +203,11 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Components
           {
                for (int i = 0; i < m_UpdateableComponents.Count; i++)
                {
-                    IUpdateable updatable = m_UpdateableComponents[i];
+                    IUpdateable updateable = m_UpdateableComponents[i];
 
-                    if (updatable.Enabled)
+                    if (updateable.Enabled)
                     {
-                         updatable.Update(i_GameTime);
+                         updateable.Update(i_GameTime);
                     }
                }
           }

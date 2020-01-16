@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Models.Animators.ConcreteAnimators;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Screens.Animators.ConcreteAnimator;
-using A20_Ex01_Daniel_203105572_Dor_206318537.Screens;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Screens;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens
 {

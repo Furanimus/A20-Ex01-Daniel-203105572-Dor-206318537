@@ -1,12 +1,12 @@
-﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Screens;
+﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Screens;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Windows.Forms;
 
-namespace A20_Ex01_Daniel_203105572_Dor_206318537.Screens
+namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens
 {
      public class PlayScreen : GameScreen
      {
@@ -28,6 +28,7 @@ Player 2 Score is: {1}.
           private readonly GraphicsDeviceManager r_Graphics;
           private EnemyManager m_EnemyManager;
           private BarrierManager m_BarrierManager;
+          private IGameSettings r_GameSettings;
 
           public PlayScreen(Game i_Game) 
                : base(i_Game)
@@ -37,6 +38,7 @@ Player 2 Score is: {1}.
                r_Graphics.PreferredBackBufferWidth = (int)r_Background.Width;
                r_Graphics.PreferredBackBufferHeight = (int)r_Background.Height;
                r_Graphics.ApplyChanges();
+               r_GameSettings = this.Game.Services.GetService(typeof(IGameSettings)) as IGameSettings;
                this.BlendState = BlendState.NonPremultiplied;
           }
 
@@ -64,6 +66,10 @@ Player 2 Score is: {1}.
                m_Player1 = new Player(k_Player1AssetName, this);
                m_Player1.StartingPosition = new Vector2(GraphicsDevice.Viewport.Width - (m_Player1.Width * 2), GraphicsDevice.Viewport.Height - (m_Player1.Height * 2));
                m_Player1.IsMouseControllable = true;
+               m_LivesManager.AddPlayer(m_Player1);
+               m_ScoreManager.AddPlayer(m_Player1, Color.Blue);
+               this.Add(m_Player1);
+               this.m_Player1.CollidedWithEnemy += OnGameOver;
 
                m_Player2 = new Player(k_Player2AssetName, this);
                m_Player2.StartingPosition = m_Player1.StartingPosition - new Vector2(m_Player2.Width, 0);
@@ -71,14 +77,7 @@ Player 2 Score is: {1}.
                m_Player2.MoveRightKey = Microsoft.Xna.Framework.Input.Keys.D;
                m_Player2.ShootKey = Microsoft.Xna.Framework.Input.Keys.W;
                m_Player2.GroupRepresentative = m_Player1;
-
-               this.m_Player1.CollidedWithEnemy += OnGameOver;
-               this.m_Player2.CollidedWithEnemy += OnGameOver;
-
-               m_LivesManager.AddPlayer(m_Player1);
-               m_LivesManager.AddPlayer(m_Player2);
-               m_ScoreManager.AddPlayer(m_Player1, Color.Blue);
-               m_ScoreManager.AddPlayer(m_Player2, Color.Green);
+               m_Player2.Visible = false;
           }
 
           private void initServices()
@@ -116,12 +115,44 @@ Player 2 Score is: {1}.
                return winner;
           }
 
+          private void checkIfAddPlayer2()
+          {
+               if (r_GameSettings.PlayersCount == 2 && !m_Player2.Visible)
+               {
+                    addPlayer2();
+               }
+               else if(r_GameSettings.PlayersCount == 1 && m_Player2.Visible)
+               {
+                    removePlayer2();
+               }
+          }
+
+          private void addPlayer2()
+          {
+               m_Player2.Visible = true;
+               m_Player2.CollidedWithEnemy += OnGameOver;
+               m_LivesManager.AddPlayer(m_Player2);
+               m_ScoreManager.AddPlayer(m_Player2, Color.Green);
+               this.Add(m_Player2);
+          }
+
+          private void removePlayer2()
+          {
+               m_Player2.Visible = false;
+               m_Player2.CollidedWithEnemy -= OnGameOver;
+               m_LivesManager.RemovePlayer(m_Player2);
+               m_ScoreManager.RemovePlayer(m_Player2);
+               this.Remove(m_Player2);
+          }
+
           public override void Update(GameTime i_GameTime)
           {
                if (m_InputManager.KeyPressed(Microsoft.Xna.Framework.Input.Keys.Escape))
                {
                     this.Game.Exit();
                }
+
+               checkIfAddPlayer2();
 
                this.Game.Window.Title = k_GameTitle;
                base.Update(i_GameTime);

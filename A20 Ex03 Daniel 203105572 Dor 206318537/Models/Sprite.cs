@@ -4,7 +4,7 @@ using Models.Animators;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Components;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Utils;
-using A20_Ex01_Daniel_203105572_Dor_206318537.Screens;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Screens;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens
 {
@@ -114,10 +114,13 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens
 
           protected virtual void OnDraw()
           {
-               m_SpriteBatch.Draw(Texture, this.PositionForDraw,
-                    this.SourceRectangle, this.TintColor,
-                   this.Rotation, this.RotationOrigin, this.Scales,
-                   SpriteEffects.None, this.LayerDepth);
+               if (Texture != null)
+               {
+                    m_SpriteBatch.Draw(Texture, this.PositionForDraw,
+                         this.SourceRectangle, this.TintColor,
+                        this.Rotation, this.RotationOrigin, this.Scales,
+                        SpriteEffects.None, this.LayerDepth);
+               }
           }
 
           public GameScreen GameScreen
@@ -165,7 +168,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens
           
           public Vector2 RotationOrigin { get; set; }
 
-          private Vector2 PositionForDraw
+          protected Vector2 PositionForDraw
           {
                get { return this.Position - this.PositionOrigin + this.RotationOrigin; }
           }
@@ -232,7 +235,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens
 
           public Color TintColor { get; set; } = Color.White;
 
-          public float Opacity
+          public virtual float Opacity
           {
                get { return (float)TintColor.A / (float)byte.MaxValue; }
                set { TintColor = new Color(TintColor, (byte)(value * (float)byte.MaxValue)); }
@@ -262,18 +265,21 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens
           
           protected override void InitBounds()
           {
-               if(this.Width == 0)
+               if (Texture != null)
                {
-                    this.Width = this.Texture.Width;
-               }
+                    if (this.Width == 0)
+                    {
+                         this.Width = this.Texture.Width;
+                    }
 
-               if(this.Height == 0)
-               {
-                    this.Height = this.Texture.Height;
-               }
+                    if (this.Height == 0)
+                    {
+                         this.Height = this.Texture.Height;
+                    }
 
-               InitSourceRectangle();
-               InitOrigins();
+                    InitSourceRectangle();
+                    InitOrigins();
+               }
           }
 
           protected virtual void InitOrigins()

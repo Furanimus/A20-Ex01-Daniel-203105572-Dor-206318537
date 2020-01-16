@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using A20_Ex03_Daniel_203105572_Dor_206318537.Utils;
+using Microsoft.Xna.Framework;
 using Models.Animators;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace A20_Ex01_Daniel_203105572_Dor_206318537.Screens.Animators.ConcreteAnimator
+namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.Animators.ConcreteAnimator
 {
      public class PulseAnimator : SpriteAnimator
      {
@@ -19,8 +20,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Screens.Animators.ConcreteAnim
           public PulseAnimator(TimeSpan i_AnimationLength, float i_TargetScale, float i_PulsePerSecond)
              : this(k_Name, i_AnimationLength, i_TargetScale, i_PulsePerSecond)
           {
-               Scale = i_TargetScale;
-               PulsePerSecond = i_PulsePerSecond;
           }
 
           public PulseAnimator(string i_Name, TimeSpan i_AnimationLength, float i_TargetScale, float i_PulsePerSecond)

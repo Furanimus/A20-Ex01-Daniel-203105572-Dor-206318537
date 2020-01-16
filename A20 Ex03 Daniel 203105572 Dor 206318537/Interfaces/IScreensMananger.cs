@@ -1,6 +1,6 @@
-﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Screens;
+﻿using A20_Ex03_Daniel_203105572_Dor_206318537.Screens;
 
-namespace A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces
+namespace A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces
 {
      public interface IScreensMananger
      {
@@ -11,5 +11,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces
           bool Remove(GameScreen i_Screen);
 
           void Add(GameScreen i_Screen);
+
+          void Push(GameScreen i_GameScreen);
      }
 }

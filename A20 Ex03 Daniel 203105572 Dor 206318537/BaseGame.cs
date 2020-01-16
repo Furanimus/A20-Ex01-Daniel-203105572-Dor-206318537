@@ -2,7 +2,8 @@
 using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Utils;
-using Microsoft.Xna.Framework.Graphics;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537
 {
@@ -22,16 +23,10 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537
 
           protected virtual void InitServices()
           {
+               GameSettings = new GameSettings(this);
                InputManager = new InputManager(this);
                CollisionsManager = new CollisionsManager(this);
                RandomBehavior = new RandomBehavior(this);
-          }
-
-          protected override void Initialize()
-          {
-               //this.Services.AddService(typeof(SpriteBatch), new SpriteBatch(this.GraphicsDevice));
-
-               base.Initialize();
           }
 
           public GameTime GameTime { get; set; }
@@ -41,5 +36,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537
           protected ICollisionsManager CollisionsManager { get; set; }
 
           protected IRandomBehavior RandomBehavior { get; set; }
+
+          protected IGameSettings GameSettings { get; set; }
      }
 }

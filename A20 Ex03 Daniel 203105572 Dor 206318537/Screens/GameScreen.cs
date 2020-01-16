@@ -1,13 +1,12 @@
 ﻿using System;
-using A20_Ex01_Daniel_203105572_Dor_206318537.Components;
-using A20_Ex01_Daniel_203105572_Dor_206318537.Enums;
-using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
-using A20_Ex01_Daniel_203105572_Dor_206318537.Managers;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Components;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Enums;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace A20_Ex01_Daniel_203105572_Dor_206318537.Screens
+namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens
 {
 
      public abstract class GameScreen : CompositeDrawableComponent<IGameComponent>
@@ -170,9 +169,10 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Screens
                }
           }
 
-          protected void ExitScreen()
+          public void ExitScreen()
           {
                this.State = eScreenState.Closing;
+
                if (DeactivationLength == TimeSpan.Zero)
                {
                     this.State = eScreenState.Closed;
@@ -248,6 +248,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Screens
           public override void Update(GameTime i_GameTime)
           {
                bool doUpdate = true;
+
                switch (this.State)
                {
                     case eScreenState.Activating:
