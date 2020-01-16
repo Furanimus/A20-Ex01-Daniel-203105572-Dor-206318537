@@ -4,9 +4,9 @@ using Models.Animators;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Components;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Utils;
-using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Screens;
 
-namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
+namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens
 {
      public partial class Sprite : LoadableDrawableComponent
      {
@@ -262,6 +262,16 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
           
           protected override void InitBounds()
           {
+               if(this.Width == 0)
+               {
+                    this.Width = this.Texture.Width;
+               }
+
+               if(this.Height == 0)
+               {
+                    this.Height = this.Texture.Height;
+               }
+
                InitSourceRectangle();
                InitOrigins();
           }

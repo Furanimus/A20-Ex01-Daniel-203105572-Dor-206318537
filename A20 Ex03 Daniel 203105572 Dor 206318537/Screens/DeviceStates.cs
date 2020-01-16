@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 
-namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
+namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens
 {
      public class DeviceStates
      {

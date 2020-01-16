@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Models.Animators.ConcreteAnimators;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Utils;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Components;
-using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Screens;
 
-namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
+namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens
 {
      public class EnemyManager : CompositeDrawableComponent<Enemy>
      {
@@ -53,6 +54,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                r_RandomBehavior = this.Game.Services.GetService(typeof(IRandomBehavior)) as IRandomBehavior;
                r_GameScreen.Add(this);
                this.DrawOrder = this.UpdateOrder = 5;
+               this.BlendState = BlendState.NonPremultiplied;
           }
 
           public override void Initialize()

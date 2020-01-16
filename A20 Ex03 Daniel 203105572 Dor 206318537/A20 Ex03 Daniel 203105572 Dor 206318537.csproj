@@ -60,6 +60,7 @@
     <Compile Include="Models\Animators\ConcreteAnimator\BlinkAnimator.cs" />
     <Compile Include="Models\Animators\ConcreteAnimator\CellAnimator.cs" />
     <Compile Include="Models\Animators\ConcreteAnimator\JumpMovementAnimator.cs" />
+    <Compile Include="Models\Animators\ConcreteAnimator\PulseAnimator.cs" />
     <Compile Include="Models\Animators\ConcreteAnimator\RotationAnimator.cs" />
     <Compile Include="Models\Animators\ConcreteAnimator\ShrinkAnimator.cs" />
     <Compile Include="Models\Animators\ConcreteAnimator\TransparencyAnimator.cs" />
@@ -73,7 +74,8 @@
     <Compile Include="Managers\LivesManager.cs" />
     <Compile Include="Components\LoadableDrawableComponent.cs" />
     <Compile Include="Components\RegisteredComponent.cs" />
-    <Compile Include="Models\DeviceStates.cs" />
+    <Compile Include="Screens\DeviceStates.cs" />
+    <Compile Include="Enums\eScreenState.cs" />
     <Compile Include="Models\ShooterPlayer.cs" />
     <Compile Include="Models\Enemy.cs" />
     <Compile Include="Managers\EnemyManager.cs" />
@@ -86,10 +88,14 @@
     <Compile Include="Interfaces\IInputManager.cs" />
     <Compile Include="Models\Barrier.cs" />
     <Compile Include="Interfaces\IRandomBehavior.cs" />
-    <Compile Include="Models\GameScreen.cs" />
+    <Compile Include="Screens\GameScreen.cs" />
     <Compile Include="Interfaces\IScreensMananger.cs" />
-    <Compile Include="Screens\GameOverScreen.cs" />
-    <Compile Include="Screens\PlayScreen.cs" />
+    <Compile Include="Screens\StateChangedEventArgs.cs" />
+    <Compile Include="Screens\ConcreteScreens\GameOverScreen.cs" />
+    <Compile Include="Screens\ConcreteScreens\LevelTransitionScreen.cs" />
+    <Compile Include="Screens\ConcreteScreens\PauseScreen.cs" />
+    <Compile Include="Screens\ConcreteScreens\PlayScreen.cs" />
+    <Compile Include="Screens\ConcreteScreens\WelcomeScreen.cs" />
     <Compile Include="Utils\RandomBehavior.cs" />
     <Compile Include="Models\RedMotherShip.cs" />
     <Compile Include="Models\ShooterEnemy.cs" />

@@ -1,27 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Components;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Enums;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
-using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Screens;
 using Microsoft.Xna.Framework;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
 {
      public class ScreensMananger : CompositeDrawableComponent<GameScreen>, IScreensMananger
      {
-          public ScreensMananger(Game i_Game) : base(i_Game)
+          public event EventHandler<StateChangedEventArgs> ScreenStateChanged;
+          private Stack<GameScreen> m_ScreensStack = new Stack<GameScreen>();
+
+          public ScreensMananger(Game i_Game)
+              : base(i_Game)
           {
                i_Game.Components.Add(this);
           }
 
-          private Stack<GameScreen> m_ScreensStack = new Stack<GameScreen>();
-
           public GameScreen ActiveScreen
           {
-               get 
-               { 
-                    return m_ScreensStack.Count > 0 ? m_ScreensStack.Peek() : null; 
-               }
+               get { return m_ScreensStack.Count > 0 ? m_ScreensStack.Peek() : null; }
           }
 
           public void SetCurrentScreen(GameScreen i_GameScreen)
@@ -41,7 +41,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                     this.Add(i_GameScreen);
 
                     // let me know when you are closed, so i can pop you from the stack:
-                    i_GameScreen.Closed += screen_Closed;
+                    i_GameScreen.StateChanged += screen_StateChanged;
                }
 
                if (ActiveScreen != i_GameScreen)
@@ -53,17 +53,39 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
 
                          ActiveScreen.Deactivate();
                     }
+               }
 
+               if (ActiveScreen != i_GameScreen)
+               {
                     m_ScreensStack.Push(i_GameScreen);
                }
 
                i_GameScreen.DrawOrder = m_ScreensStack.Count;
           }
 
-          private void screen_Closed(object i_Sender, EventArgs i_Args)
+          private void screen_StateChanged(object sender, StateChangedEventArgs e)
           {
-               Pop(i_Sender as GameScreen);
-               Remove(i_Sender as GameScreen);
+               switch (e.CurrentState)
+               {
+                    case eScreenState.Activating:
+                         break;
+                    case eScreenState.Active:
+                         break;
+                    case eScreenState.Deactivating:
+                         break;
+                    case eScreenState.Closing:
+                         Pop(sender as GameScreen);
+                         break;
+                    case eScreenState.Inactive:
+                         break;
+                    case eScreenState.Closed:
+                         Remove(sender as GameScreen);
+                         break;
+                    default:
+                         break;
+               }
+
+               OnScreenStateChanged(sender, e);
           }
 
           private void Pop(GameScreen i_GameScreen)
@@ -87,11 +109,19 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                base.Add(i_Component);
           }
 
+          protected virtual void OnScreenStateChanged(object i_Sender, StateChangedEventArgs i_Args)
+          {
+               if (ScreenStateChanged != null)
+               {
+                    ScreenStateChanged(i_Sender, i_Args);
+               }
+          }
+
           protected override void OnComponentRemoved(GameComponentEventArgs<GameScreen> i_Args)
           {
                base.OnComponentRemoved(i_Args);
 
-               i_Args.GameComponent.Closed -= screen_Closed;
+               i_Args.GameComponent.StateChanged -= screen_StateChanged;
 
                if (m_ScreensStack.Count == 0)
                {
@@ -106,5 +136,4 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Managers
                base.Initialize();
           }
      }
-
 }

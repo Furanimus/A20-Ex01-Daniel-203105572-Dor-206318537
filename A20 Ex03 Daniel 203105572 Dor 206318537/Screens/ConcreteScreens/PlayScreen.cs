@@ -1,7 +1,7 @@
-﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
+﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Screens;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Models;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Screens;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Windows.Forms;
@@ -10,13 +10,15 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Screens
 {
      public class PlayScreen : GameScreen
      {
+          private const string k_GameOverMsg = @"Player 1 Score is: {0}.
+Player 2 Score is: {1}.
+{2}";
           private const string k_GameTitle = "Space Invaders";
           private const string k_GameOverTitle = "Game Over";
           private const string k_WinnerMsg = "The winner is Player {0}!";
           private const string k_TieMsg = "It's a tie!";
-          private const string k_GameOverMsg = @"Player 1 Score is: {0}.
-Player 2 Score is: {1}.
-{2}";
+          private const string k_Player1AssetName = @"Sprites\Ship01_32x32";
+          private const string k_Player2AssetName = @"Sprites\Ship02_32x32";
           private LivesManager m_LivesManager;
           private ScoreManager m_ScoreManager;
           private InputManager m_InputManager;
@@ -59,11 +61,11 @@ Player 2 Score is: {1}.
 
           private void initPlayers()
           {
-               m_Player1 = new Player(@"Sprites\Ship01_32x32", this);
+               m_Player1 = new Player(k_Player1AssetName, this);
                m_Player1.StartingPosition = new Vector2(GraphicsDevice.Viewport.Width - (m_Player1.Width * 2), GraphicsDevice.Viewport.Height - (m_Player1.Height * 2));
                m_Player1.IsMouseControllable = true;
 
-               m_Player2 = new Player(@"Sprites\Ship02_32x32", this);
+               m_Player2 = new Player(k_Player2AssetName, this);
                m_Player2.StartingPosition = m_Player1.StartingPosition - new Vector2(m_Player2.Width, 0);
                m_Player2.MoveLeftKey = Microsoft.Xna.Framework.Input.Keys.A;
                m_Player2.MoveRightKey = Microsoft.Xna.Framework.Input.Keys.D;

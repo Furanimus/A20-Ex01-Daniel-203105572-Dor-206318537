@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
 using Microsoft.Xna.Framework.Graphics;
-using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Screens;
 
-namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
+namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens
 {
      public class Barrier : Sprite, ICollidable2D
      {

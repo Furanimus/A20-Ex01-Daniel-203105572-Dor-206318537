@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Models;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Screens;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces
 {

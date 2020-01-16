@@ -10,7 +10,8 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537
           {
                Content.RootDirectory = "Content";
                ScreensMananger screensMananger = new ScreensMananger(this);
-               screensMananger.SetCurrentScreen(new PlayScreen(this));
+               screensMananger.Push(new PlayScreen(this));
+               screensMananger.SetCurrentScreen(new WelcomeScreen(this));
           }
      }
 }
