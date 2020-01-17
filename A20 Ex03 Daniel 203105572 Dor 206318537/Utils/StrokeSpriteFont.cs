@@ -1,4 +1,5 @@
-﻿using A20_Ex03_Daniel_203105572_Dor_206318537.Screens;
+﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnimator;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Screens;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Screens.Animators.ConcreteAnimator;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -61,12 +62,19 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Utils
                }
           }
 
+          public bool IsInitialized { get; private set; }
+
           public override void Initialize()
           {
-               base.Initialize();
+               if (!IsInitialized)
+               {
+                    base.Initialize();
 
-               this.Animations.Add(new PulseAnimator(TimeSpan.Zero, k_TargetScale, k_PulsePerSec));
-               this.Animations.Enabled = false;
+                    IsInitialized = true;
+                    this.Animations.Add(new PulseAnimator(TimeSpan.Zero, k_TargetScale, k_PulsePerSec));
+                    this.Animations.Add(new WaypointsAnimator(100, TimeSpan.FromSeconds(0.2f), false, this.Position + new Vector2(-10, 0)));
+                    this.Animations.Enabled = false;
+               }
           }
 
           protected override void OnDraw()

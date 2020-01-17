@@ -11,11 +11,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.Menus
 {
      public class MenuItem : Sprite
      {
-
           private readonly Action<MenuItem, Keys> r_ExecuteOnClick;
           private StrokeSpriteFont m_StrokeSpriteFont;
-          private bool m_IsInitialized;
-          private bool m_IsInFocus;
 
           public MenuItem(StrokeSpriteFont i_StrokeSpriteFont, Action<MenuItem, Keys> i_ExecuteOnClick, GameScreen i_GameScreen, Menu i_LinkedMenu = null) 
                : base("", i_GameScreen)
@@ -38,6 +35,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.Menus
                m_StrokeSpriteFont.Visible = this.Visible;
                this.Enabled = this.Visible;
           }
+
+          public bool IsInitialized { get; private set; }
 
           public Menu LinkedMenu { get; set; }
 
@@ -67,7 +66,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.Menus
                     if (m_StrokeSpriteFont == null || m_StrokeSpriteFont != null && value.Text != string.Empty)
                     {
                          m_StrokeSpriteFont = value;
-                         m_StrokeSpriteFont.Position = this.StartingPosition;
+                         m_StrokeSpriteFont.Position = this.Position;
                          this.GameScreen.Add(m_StrokeSpriteFont);
                     }
                }
@@ -83,19 +82,26 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.Menus
                set
                {
                     m_Position = value;
-                    StrokeSpriteFont.Position = value;
+
+                    if(StrokeSpriteFont.Position == Vector2.Zero)
+                    {
+                         StrokeSpriteFont.Position = value;
+                    }
                }
           }
 
           public override void Initialize()
           {
-               base.Initialize();
-
-               m_IsInitialized = true;
-
-               if (m_IsInFocus)
+               if (!IsInitialized)
                {
-                    Focus();
+                    base.Initialize();
+
+                    IsInitialized = true;
+
+                    if (!StrokeSpriteFont.IsInitialized)
+                    {
+                         StrokeSpriteFont.Initialize();
+                    }
                }
           }
 
@@ -114,9 +120,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.Menus
 
           public void Focus()
           {
-               m_IsInFocus = true;
-
-               if (m_IsInitialized)
+               if (IsInitialized)
                {
                     this.StrokeSpriteFont.TintColor = Color.DeepSkyBlue;
                     this.StrokeSpriteFont.Animations.Restart();
@@ -125,9 +129,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.Menus
 
           public void UnFocus()
           {
-               m_IsInFocus = false;
-
-               if (m_IsInitialized)
+               if (IsInitialized)
                {
                     this.StrokeSpriteFont.TintColor = Color.White;
                     this.StrokeSpriteFont.Animations.Restart();

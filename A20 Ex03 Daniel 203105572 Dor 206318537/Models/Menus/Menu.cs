@@ -13,9 +13,8 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Menus
 {
      public abstract class Menu : Sprite
      {
-          private const int k_NextPosX = 50;
-          private const string k_FontAssetName = @"Fonts\InstructionFont";
           private const int k_Spacing = 40;
+          private const string k_FontAssetName = @"Fonts\InstructionFont";
           private readonly List<MenuItem> r_Options;
           protected readonly IInputManager r_InputManager;
           protected Menu m_PrevMenu;
@@ -30,11 +29,9 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Menus
                this.VisibleChanged += menu_VisibleChanged;
                this.BlendState = BlendState.NonPremultiplied;
                this.GameSettings = this.Game.Services.GetService(typeof(IGameSettings)) as IGameSettings;
-               this.NextPosition = new Vector2(k_NextPosX, this.Game.GraphicsDevice.Viewport.Height / 2);
 
                i_GameScreen.Add(this);
 
-               AddItems();
           }
 
           protected Vector2 NextPosition { get; set; }
@@ -134,9 +131,24 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Menus
                r_Options.Add(i_Item);
                this.GameScreen.Add(i_Item);
 
+               setPosition(i_Item);
+
+               if (!i_Item.IsInitialized)
+               {
+                    i_Item.Initialize();
+               }
+
                if (CurrentOptionIndex == -1)
                {
                     CurrentOptionIndex = 0;
+               }
+          }
+
+          private void setPosition(MenuItem i_Item)
+          {
+               if (NextPosition == Vector2.Zero)
+               {
+                    NextPosition = this.Position;
                }
 
                i_Item.Position = NextPosition;
@@ -203,6 +215,13 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Menus
 
           protected virtual void AddItems()
           {
+          }
+
+          public override void Initialize()
+          {
+               AddItems();
+               
+               base.Initialize();
           }
 
           public override void Update(GameTime i_GameTime)

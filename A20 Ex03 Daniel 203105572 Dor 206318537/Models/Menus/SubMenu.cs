@@ -15,7 +15,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.Menus
                : base(i_GameScreen)
           {
                r_PrevMenu = i_PrevMenu;
-               this.StartingPosition = i_PrevMenu.StartingPosition;
+               this.Position = i_PrevMenu.Position;
           }
 
           private void done_Clicked(MenuItem i_MenuItem, Keys i_ClickedKey)

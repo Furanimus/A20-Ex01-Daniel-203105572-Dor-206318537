@@ -34,14 +34,11 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 
           public void Push(GameScreen i_GameScreen)
           {
-               // hello new screen, I am your manager, nice to meet you:
                i_GameScreen.ScreensManager = this;
 
                if (!this.Contains(i_GameScreen))
                {
                     this.Add(i_GameScreen);
-
-                    // let me know when you are closed, so i can pop you from the stack:
                     i_GameScreen.StateChanged += screen_StateChanged;
                }
 
@@ -49,9 +46,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                {
                     if (ActiveScreen != null)
                     {
-                         // connect each new screen to the previous one:
                          i_GameScreen.PreviousScreen = ActiveScreen;
-
                          ActiveScreen.Deactivate();
                     }
                }
@@ -64,9 +59,9 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                i_GameScreen.DrawOrder = m_ScreensStack.Count;
           }
 
-          private void screen_StateChanged(object sender, StateChangedEventArgs e)
+          private void screen_StateChanged(object i_Sender, StateChangedEventArgs i_Args)
           {
-               switch (e.CurrentState)
+               switch (i_Args.CurrentState)
                {
                     case eScreenState.Activating:
                          break;
@@ -75,27 +70,26 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                     case eScreenState.Deactivating:
                          break;
                     case eScreenState.Closing:
-                         Pop(sender as GameScreen);
+                         pop(i_Sender as GameScreen);
                          break;
                     case eScreenState.Inactive:
                          break;
                     case eScreenState.Closed:
-                         Remove(sender as GameScreen);
+                         Remove(i_Sender as GameScreen);
                          break;
                     default:
                          break;
                }
 
-               OnScreenStateChanged(sender, e);
+               OnScreenStateChanged(i_Sender, i_Args);
           }
 
-          private void Pop(GameScreen i_GameScreen)
+          private void pop(GameScreen i_GameScreen)
           {
                m_ScreensStack.Pop();
 
                if (m_ScreensStack.Count > 0)
                {
-                    // when one is popped, the previous becomes the active one
                     ActiveScreen.Activate();
                }
           }

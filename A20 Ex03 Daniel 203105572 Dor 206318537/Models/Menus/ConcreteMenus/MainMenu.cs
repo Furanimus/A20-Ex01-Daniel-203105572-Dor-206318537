@@ -11,6 +11,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus
 {
      public class MainMenu : Menu
      {
+          private const int k_NextPosX = 50;
           private const string k_OnePlayerPlayText = "Players: One";
           private const string k_TwoPlayerPlayText = "Players: Two";
           private const string k_PlayText = "Play";
@@ -18,6 +19,13 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus
           public MainMenu(GameScreen i_GameScreen) 
                : base(i_GameScreen)
           {
+          }
+
+          public override void Initialize()
+          {
+               this.Position = new Vector2(k_NextPosX, this.Game.GraphicsDevice.Viewport.Height / 2);
+
+               base.Initialize();
           }
 
           protected override void AddItems()
