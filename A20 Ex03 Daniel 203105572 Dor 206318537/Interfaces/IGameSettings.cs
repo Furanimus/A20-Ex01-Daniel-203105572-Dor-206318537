@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces
 {
      public interface IGameSettings
      {
+          GraphicsDeviceManager GraphicsDeviceManager { get; }
+
           int PlayersCount { get; set; }
 
           bool IsFullScreen { get; set; }

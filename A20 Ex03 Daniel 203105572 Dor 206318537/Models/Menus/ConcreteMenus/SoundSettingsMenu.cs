@@ -20,9 +20,12 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus
 
           protected override void AddItems()
           {
-               MenuItem backgroundVolumeMeniItem = new MenuItem(string.Format(k_BackgroundMusicVolumeText, GameSettings.BackgroundMusicVolume), this.GameScreen);
-               MenuItem soundEffectVolumeMenuItem = new MenuItem(string.Format(k_SoundEffectVolumeText, GameSettings.SoundEffectsVolume), this.GameScreen);
-               MenuItem toggleSoundMenuItem = new MenuItem(string.Format(k_ToggleSoundText, GameSettings.IsSound ? "On" : "Off"), this.GameScreen);
+               MenuItem backgroundVolumeMeniItem 
+                    = new MenuItem(string.Format(k_BackgroundMusicVolumeText, GameSettings.BackgroundMusicVolume), this.GameScreen);
+               MenuItem soundEffectVolumeMenuItem 
+                    = new MenuItem(string.Format(k_SoundEffectVolumeText, GameSettings.SoundEffectsVolume), this.GameScreen);
+               MenuItem toggleSoundMenuItem 
+                    = new MenuItem(string.Format(k_ToggleSoundText, GameSettings.IsSound ? "On" : "Off"), this.GameScreen);
 
                backgroundVolumeMeniItem.BindActionToKeys(backgroundMusicVolume_Clicked, Keys.PageDown, Keys.PageUp);
                backgroundVolumeMeniItem.BindActionToMouseWheel(backgroundMusicVolume_Clicked);

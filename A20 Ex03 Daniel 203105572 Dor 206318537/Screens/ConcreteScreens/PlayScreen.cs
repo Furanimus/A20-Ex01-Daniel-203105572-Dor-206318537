@@ -25,7 +25,6 @@ Player 2 Score is: {1}.
           private Player m_Player1;
           private Player m_Player2;
           private readonly Background r_Background;
-          private readonly GraphicsDeviceManager r_Graphics;
           private EnemyManager m_EnemyManager;
           private BarrierManager m_BarrierManager;
           private IGameSettings r_GameSettings;
@@ -33,12 +32,11 @@ Player 2 Score is: {1}.
           public PlayScreen(Game i_Game) 
                : base(i_Game)
           {
-               r_Graphics = new GraphicsDeviceManager(this.Game);
-               r_Background = new Background(this);
-               r_Graphics.PreferredBackBufferWidth = (int)r_Background.Width;
-               r_Graphics.PreferredBackBufferHeight = (int)r_Background.Height;
-               r_Graphics.ApplyChanges();
                r_GameSettings = this.Game.Services.GetService(typeof(IGameSettings)) as IGameSettings;
+               r_Background = new Background(this);
+               r_GameSettings.GraphicsDeviceManager.PreferredBackBufferWidth = (int)r_Background.Width;
+               r_GameSettings.GraphicsDeviceManager.PreferredBackBufferHeight = (int)r_Background.Height;
+               r_GameSettings.GraphicsDeviceManager.ApplyChanges();
                this.BlendState = BlendState.NonPremultiplied;
           }
 

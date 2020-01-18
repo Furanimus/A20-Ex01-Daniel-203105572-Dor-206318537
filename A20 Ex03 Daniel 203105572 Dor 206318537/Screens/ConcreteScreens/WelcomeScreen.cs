@@ -28,7 +28,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                m_WelcomeMessage = new Sprite(k_WelcomeAssetName, this);
                m_Instructions = new Sprite(k_InstructionsAssetName, this);
                m_Background = new Background(this);
-               m_Background.Opacity = 1;
 
                this.UseFadeTransition = true;
                this.ActivationLength = TimeSpan.FromSeconds(0.5f);
@@ -38,7 +37,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                this.Add(m_Instructions);
 
                this.BlendState = BlendState.NonPremultiplied;
-
           }
 
           public override void Initialize()
@@ -94,9 +92,9 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                }
           }
 
-          private void mainMenu_StateChanged(object sender, StateChangedEventArgs e)
+          private void mainMenu_StateChanged(object sender, StateChangedEventArgs i_Args)
           {
-               if (e.CurrentState == eScreenState.Closed)
+               if (i_Args.CurrentState == eScreenState.Closed)
                {
                     isDeactivated = false;
                     this.ScreensManager.SetCurrentScreen(this);

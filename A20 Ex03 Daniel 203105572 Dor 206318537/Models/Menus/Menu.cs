@@ -31,7 +31,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Menus
                this.GameSettings = this.Game.Services.GetService(typeof(IGameSettings)) as IGameSettings;
 
                i_GameScreen.Add(this);
-
           }
 
           protected Vector2 NextPosition { get; set; }
@@ -129,15 +128,15 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Menus
                }
           }
 
-          public void AddMenuItem(string i_Text, Action<MenuItem> i_CheckMosueOrKBState = null, Menu i_LinkedMenu = null)
+          public void AddMenuItem(string i_Text, Action<MenuItem> i_CheckMouseOrKBState = null, Menu i_LinkedMenu = null)
           {
-               MenuItem actionItem = new MenuItem(i_Text, this.GameScreen, i_LinkedMenu, i_CheckMosueOrKBState);
+               MenuItem actionItem = new MenuItem(i_Text, this.GameScreen, i_LinkedMenu, i_CheckMouseOrKBState);
                AddMenuItem(actionItem);
           }
 
-          public void AddMenuItem(StrokeSpriteFont i_Text, Action<MenuItem> i_CheckMosueOrKBState = null, Menu i_LinkedMenu = null)
+          public void AddMenuItem(StrokeSpriteFont i_Text, Action<MenuItem> i_CheckMouseOrKBState = null, Menu i_LinkedMenu = null)
           {
-               MenuItem actionItem = new MenuItem(i_Text, this.GameScreen, i_LinkedMenu, i_CheckMosueOrKBState);
+               MenuItem actionItem = new MenuItem(i_Text, this.GameScreen, i_LinkedMenu, i_CheckMouseOrKBState);
                AddMenuItem(actionItem);
           }
 

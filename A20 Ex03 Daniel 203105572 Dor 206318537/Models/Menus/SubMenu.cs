@@ -18,7 +18,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.Menus
                this.Position = i_PrevMenu.Position;
           }
 
-          private void done_CheckMosueOrKBState(MenuItem i_MenuItem)
+          private void done_CheckMouseOrKBState(MenuItem i_MenuItem)
           {
                if(r_InputManager.KeyPressed(Keys.Enter) 
                     || r_InputManager.ButtonPressed(eInputButtons.Left))
@@ -30,7 +30,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.Menus
 
           protected override void AddItems()
           {
-               this.AddMenuItem("Done", done_CheckMosueOrKBState);
+               this.AddMenuItem("Done", done_CheckMouseOrKBState);
                this.Visible = false;
           }
      }

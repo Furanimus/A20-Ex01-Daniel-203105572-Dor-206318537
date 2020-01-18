@@ -14,7 +14,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers.ConcreteScreens
                : base(i_Game)
           {
                m_MainMenu = new MainMenu(this);
-
                this.IsOverlayed = true;
                this.UseGradientBackground = true;
                this.BlackTintAlpha = 0.65f;

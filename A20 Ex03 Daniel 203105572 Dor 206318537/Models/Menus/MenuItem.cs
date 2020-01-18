@@ -80,7 +80,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.Menus
 
           public bool IsInitialized { get; private set; }
 
-          public Menu LinkedMenu { get; set; }
+          public Menu LinkedMenu { get; private set; }
 
           public bool IsFocused { get; set; }
 
@@ -107,7 +107,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.Menus
 
                set
                {
-                    if (m_StrokeSpriteFont == null || m_StrokeSpriteFont != null && value.Text != string.Empty)
+                    if (m_StrokeSpriteFont == null || (m_StrokeSpriteFont != null && value.Text != string.Empty))
                     {
                          m_StrokeSpriteFont = value;
                          m_StrokeSpriteFont.Position = this.Position;
@@ -127,7 +127,7 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.Menus
                {
                     m_Position = value;
 
-                    if(StrokeSpriteFont.Position == Vector2.Zero)
+                    if (StrokeSpriteFont != null && StrokeSpriteFont.Position == Vector2.Zero)
                     {
                          StrokeSpriteFont.Position = value;
                     }
@@ -146,14 +146,6 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.Menus
                     {
                          StrokeSpriteFont.Initialize();
                     }
-               }
-          }
-
-          private void checkMosueOrKBStateCheckClick()
-          {
-               if (r_CheckMouseOrKBState != null && IsFocused)
-               {
-                    r_CheckMouseOrKBState.Invoke(this);
                }
           }
 
@@ -180,11 +172,19 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.Menus
                }
           }
 
+          private void checkMouseOrKBStateCheckClick()
+          {
+               if (r_CheckMouseOrKBState != null && IsFocused)
+               {
+                    r_CheckMouseOrKBState.Invoke(this);
+               }
+          }
+
           public override void Update(GameTime i_GameTime)
           {
                if(IsFocused)
                {
-                    checkMosueOrKBStateCheckClick();
+                    checkMouseOrKBStateCheckClick();
 
                     foreach(KeyValuePair<Keys, Action<MenuItem>> bind in r_KeysToActions)
                     {
@@ -209,18 +209,22 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.Menus
                               m_WheelAction.Invoke(this);
                          }
                     }
-                    else if(m_WheelUpAction != null)
+                    else
                     {
-                         if (r_InputManager.ScrollWheelDelta > 0)
+                         if (m_WheelUpAction != null)
                          {
-                              m_WheelUpAction.Invoke(this);
+                              if (r_InputManager.ScrollWheelDelta > 0)
+                              {
+                                   m_WheelUpAction.Invoke(this);
+                              }
                          }
-                    }
-                    else if(m_WheelDownAction != null)
-                    {
-                         if (r_InputManager.ScrollWheelDelta < 0)
+
+                         if (m_WheelDownAction != null)
                          {
-                              m_WheelDownAction.Invoke(this);
+                              if (r_InputManager.ScrollWheelDelta < 0)
+                              {
+                                   m_WheelDownAction.Invoke(this);
+                              }
                          }
                     }
                }

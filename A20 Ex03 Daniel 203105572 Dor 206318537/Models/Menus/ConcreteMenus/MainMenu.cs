@@ -1,5 +1,4 @@
-﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
-using A20_Ex01_Daniel_203105572_Dor_206318537.Models.Menus;
+﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Models.Menus;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Menus;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
@@ -31,37 +30,42 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus
           protected override void AddItems()
           {
                SubMenu soundSettingsMenu = new SoundSettingsMenu(this, this.GameScreen);
+               SubMenu screenSettings = new ScreenSettings(this, this.GameScreen);
 
                MenuItem playersCountMenuItem = new MenuItem(k_OnePlayerPlayText, this.GameScreen);
                playersCountMenuItem.BindActionToKeys(playersCount_Clicked, Keys.PageDown, Keys.PageUp);
                playersCountMenuItem.BindActionToMouseWheel(playersCount_Clicked);
 
                MenuItem soundSettingsMenuItem = new MenuItem("Sound Settings", this.GameScreen, soundSettingsMenu);
-               soundSettingsMenuItem.BindActionToKeys(soundSettings_Clicked, Keys.Enter);
-               soundSettingsMenuItem.BindActionToMouseButtons(soundSettings_Clicked, eInputButtons.Left);
+               soundSettingsMenuItem.BindActionToKeys(subMenu_Clicked, Keys.Enter);
+               soundSettingsMenuItem.BindActionToMouseButtons(subMenu_Clicked, eInputButtons.Left);
+
+               MenuItem screenSettingsMenuItem = new MenuItem("Screen Settings", this.GameScreen, screenSettings);
+               screenSettingsMenuItem.BindActionToKeys(subMenu_Clicked, Keys.Enter);
+               screenSettingsMenuItem.BindActionToMouseButtons(subMenu_Clicked, eInputButtons.Left);
 
                MenuItem playMenuItem = new MenuItem(k_PlayText, this.GameScreen);
                playMenuItem.BindActionToKeys(play_Clicked, Keys.Enter);
                playMenuItem.BindActionToMouseButtons(play_Clicked, eInputButtons.Left);
 
                this.AddMenuItem(playersCountMenuItem);
+               this.AddMenuItem(screenSettingsMenuItem);
                this.AddMenuItem(soundSettingsMenuItem);
                this.AddMenuItem(playMenuItem);
           }
 
-          private void soundSettings_Clicked(MenuItem i_MenuItem)
+          private void subMenu_Clicked(MenuItem i_MenuItem)
           {
-               this.Visible = false;
-
-               if(i_MenuItem.LinkedMenu != null)
+               if (i_MenuItem.LinkedMenu != null)
                {
+                    this.Visible = false;
                     i_MenuItem.LinkedMenu.Visible = true;
                }
           }
 
           private void playersCount_Clicked(MenuItem i_MenuItem)
           {
-               if(i_MenuItem.StrokeSpriteFont.Text == k_OnePlayerPlayText)
+               if (i_MenuItem.StrokeSpriteFont.Text == k_OnePlayerPlayText)
                {
                     i_MenuItem.StrokeSpriteFont.Text = k_TwoPlayerPlayText;
                     GameSettings.PlayersCount = 2;
@@ -75,11 +79,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus
 
           private void play_Clicked(MenuItem i_MenuItem)
           {
-               if(r_InputManager.KeyPressed(Keys.Enter) 
-                    || r_InputManager.ButtonPressed(eInputButtons.Left))
-               {
-                    this.GameScreen.ExitScreen();
-               }
+               this.GameScreen.ExitScreen();
           }
      }
 }

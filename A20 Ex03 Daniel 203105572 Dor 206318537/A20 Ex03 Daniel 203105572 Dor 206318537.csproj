@@ -78,6 +78,7 @@
     <Compile Include="Components\RegisteredComponent.cs" />
     <Compile Include="Models\GameSettings.cs" />
     <Compile Include="Models\Menus\ConcreteMenus\MainMenu.cs" />
+    <Compile Include="Models\Menus\ConcreteMenus\ScreenSettings.cs" />
     <Compile Include="Models\Menus\ConcreteMenus\SoundSettingsMenu.cs" />
     <Compile Include="Models\Menus\Menu.cs" />
     <Compile Include="Models\Menus\MenuItem.cs" />
