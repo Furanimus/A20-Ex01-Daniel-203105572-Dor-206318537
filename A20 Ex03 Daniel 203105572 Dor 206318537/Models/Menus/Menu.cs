@@ -93,7 +93,16 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Menus
                set
                {
                     unFocusCurrentOption();
-                    m_CurrentOptionIndex = value;
+
+                    if(value < 0)
+                    {
+                         m_CurrentOptionIndex = r_Options.Count - 1;
+                    }
+                    else
+                    {
+                         m_CurrentOptionIndex = value % r_Options.Count;
+                    }
+
                     focusCurrentOption();
                }
           }
@@ -102,7 +111,10 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Menus
           {
                if (m_CurrentOptionIndex >= 0 && m_CurrentOptionIndex < r_Options.Count)
                {
-                    CurrentOption.Focus();
+                    if (!CurrentOption.IsFocused)
+                    {
+                         CurrentOption.Focus();
+                    }
                }
           }
 
@@ -110,23 +122,26 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Menus
           {
                if (m_CurrentOptionIndex >= 0 && m_CurrentOptionIndex < r_Options.Count)
                {
-                    CurrentOption.UnFocus();
+                    if (CurrentOption.IsFocused)
+                    {
+                         CurrentOption.UnFocus();
+                    }
                }
           }
 
-          public void AddMenuItem(string i_Text, Action<MenuItem> i_ExecuteOnClick, Menu i_LinkedMenu = null)
+          public void AddMenuItem(string i_Text, Action<MenuItem> i_CheckMosueOrKBState = null, Menu i_LinkedMenu = null)
           {
-               MenuItem actionItem = new MenuItem(i_Text, i_ExecuteOnClick, this.GameScreen, i_LinkedMenu);
+               MenuItem actionItem = new MenuItem(i_Text, this.GameScreen, i_LinkedMenu, i_CheckMosueOrKBState);
                AddMenuItem(actionItem);
           }
 
-          public void AddMenuItem(StrokeSpriteFont i_Text, Action<MenuItem> i_ExecuteOnClick, Menu i_LinkedMenu = null)
+          public void AddMenuItem(StrokeSpriteFont i_Text, Action<MenuItem> i_CheckMosueOrKBState = null, Menu i_LinkedMenu = null)
           {
-               MenuItem actionItem = new MenuItem(i_Text, i_ExecuteOnClick, this.GameScreen, i_LinkedMenu);
+               MenuItem actionItem = new MenuItem(i_Text, this.GameScreen, i_LinkedMenu, i_CheckMosueOrKBState);
                AddMenuItem(actionItem);
           }
 
-          private void AddMenuItem(MenuItem i_Item)
+          public void AddMenuItem(MenuItem i_Item)
           {
                r_Options.Add(i_Item);
                this.GameScreen.Add(i_Item);
@@ -172,18 +187,12 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Menus
 
           public void Next()
           {
-               if(CurrentOptionIndex >= 0 && CurrentOptionIndex < r_Options.Count - 1)
-               {
-                    CurrentOptionIndex++;
-               }
+               CurrentOptionIndex++;
           }
 
           public void Back()
           {
-               if (CurrentOptionIndex > 0 && CurrentOptionIndex <= r_Options.Count - 1)
-               {
-                    CurrentOptionIndex--;
-               }
+               CurrentOptionIndex--;
           }
 
           protected void HideItems()
@@ -215,16 +224,41 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Menus
 
           public override void Update(GameTime i_GameTime)
           {
-               if(r_InputManager.KeyPressed(Keys.Down))
+               checkKeyboardHover();
+               checkMouseHover();
+
+               base.Update(i_GameTime);
+          }
+
+          private void checkKeyboardHover()
+          {
+               if (r_InputManager.KeyPressed(Keys.Down))
                {
                     Next();
                }
-               else if(r_InputManager.KeyPressed(Keys.Up))
+               else if (r_InputManager.KeyPressed(Keys.Up))
                {
                     Back();
                }
+          }
 
-               base.Update(i_GameTime);
+          private void checkMouseHover()
+          {
+               Point mousePosition = r_InputManager.MouseState.Position;
+
+               if (r_InputManager.MousePositionDelta != Vector2.Zero)
+               {
+                    for (int option = 0; option < r_Options.Count; option++)
+                    {
+                         if (r_Options[option].StrokeSpriteFont.Bounds.Contains(mousePosition))
+                         {
+                              if (!r_Options[option].IsFocused)
+                              {
+                                   CurrentOptionIndex = option;
+                              }
+                         }
+                    }
+               }
           }
      }
 }

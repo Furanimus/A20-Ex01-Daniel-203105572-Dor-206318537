@@ -11,6 +11,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537
                ScreensMananger screensManager = new ScreensMananger(this);
                screensManager.Push(new PlayScreen(this));
                screensManager.SetCurrentScreen(new WelcomeScreen(this));
+               this.IsMouseVisible = true;
           }
      }
 }

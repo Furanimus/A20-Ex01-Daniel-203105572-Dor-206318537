@@ -32,44 +32,51 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus
           {
                SubMenu soundSettingsMenu = new SoundSettingsMenu(this, this.GameScreen);
 
-               this.AddMenuItem(k_OnePlayerPlayText, playersCount_Clicked);
-               this.AddMenuItem("Sound Settings", soundSettings_Clicked, soundSettingsMenu);
-               this.AddMenuItem(k_PlayText, play_Clicked);
+               MenuItem playersCountMenuItem = new MenuItem(k_OnePlayerPlayText, this.GameScreen);
+               playersCountMenuItem.BindActionToKeys(playersCount_Clicked, Keys.PageDown, Keys.PageUp);
+               playersCountMenuItem.BindActionToMouseWheel(playersCount_Clicked);
+
+               MenuItem soundSettingsMenuItem = new MenuItem("Sound Settings", this.GameScreen, soundSettingsMenu);
+               soundSettingsMenuItem.BindActionToKeys(soundSettings_Clicked, Keys.Enter);
+               soundSettingsMenuItem.BindActionToMouseButtons(soundSettings_Clicked, eInputButtons.Left);
+
+               MenuItem playMenuItem = new MenuItem(k_PlayText, this.GameScreen);
+               playMenuItem.BindActionToKeys(play_Clicked, Keys.Enter);
+               playMenuItem.BindActionToMouseButtons(play_Clicked, eInputButtons.Left);
+
+               this.AddMenuItem(playersCountMenuItem);
+               this.AddMenuItem(soundSettingsMenuItem);
+               this.AddMenuItem(playMenuItem);
           }
 
           private void soundSettings_Clicked(MenuItem i_MenuItem)
           {
-               if (r_InputManager.KeyPressed(Keys.Enter))
-               {
-                    this.Visible = false;
+               this.Visible = false;
 
-                    if(i_MenuItem.LinkedMenu != null)
-                    {
-                         i_MenuItem.LinkedMenu.Visible = true;
-                    }
+               if(i_MenuItem.LinkedMenu != null)
+               {
+                    i_MenuItem.LinkedMenu.Visible = true;
                }
           }
 
           private void playersCount_Clicked(MenuItem i_MenuItem)
           {
-               if(r_InputManager.KeyPressed(Keys.PageDown) || r_InputManager.KeyPressed(Keys.PageUp))
+               if(i_MenuItem.StrokeSpriteFont.Text == k_OnePlayerPlayText)
                {
-                    if(i_MenuItem.StrokeSpriteFont.Text == k_OnePlayerPlayText)
-                    {
-                         i_MenuItem.StrokeSpriteFont.Text = k_TwoPlayerPlayText;
-                         GameSettings.PlayersCount = 2;
-                    }
-                    else
-                    {
-                         i_MenuItem.StrokeSpriteFont.Text = k_OnePlayerPlayText;
-                         GameSettings.PlayersCount = 1;
-                    }
+                    i_MenuItem.StrokeSpriteFont.Text = k_TwoPlayerPlayText;
+                    GameSettings.PlayersCount = 2;
+               }
+               else
+               {
+                    i_MenuItem.StrokeSpriteFont.Text = k_OnePlayerPlayText;
+                    GameSettings.PlayersCount = 1;
                }
           }
 
           private void play_Clicked(MenuItem i_MenuItem)
           {
-               if(r_InputManager.KeyPressed(Keys.Enter))
+               if(r_InputManager.KeyPressed(Keys.Enter) 
+                    || r_InputManager.ButtonPressed(eInputButtons.Left))
                {
                     this.GameScreen.ExitScreen();
                }

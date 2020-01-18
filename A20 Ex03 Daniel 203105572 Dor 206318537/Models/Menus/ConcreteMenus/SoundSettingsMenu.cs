@@ -20,16 +20,29 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus
 
           protected override void AddItems()
           {
-               this.AddMenuItem(string.Format(k_BackgroundMusicVolumeText, GameSettings.BackgroundMusicVolume), backgroundMusicVolume_Clicked);
-               this.AddMenuItem(string.Format(k_SoundEffectVolumeText, GameSettings.SoundEffectsVolume), soundEffectVolume_Clicked);
-               this.AddMenuItem(string.Format(k_ToggleSoundText, GameSettings.IsSound ? "On" : "Off"), toggleSound_Clicked);
+               MenuItem backgroundVolumeMeniItem = new MenuItem(string.Format(k_BackgroundMusicVolumeText, GameSettings.BackgroundMusicVolume), this.GameScreen);
+               MenuItem soundEffectVolumeMenuItem = new MenuItem(string.Format(k_SoundEffectVolumeText, GameSettings.SoundEffectsVolume), this.GameScreen);
+               MenuItem toggleSoundMenuItem = new MenuItem(string.Format(k_ToggleSoundText, GameSettings.IsSound ? "On" : "Off"), this.GameScreen);
+
+               backgroundVolumeMeniItem.BindActionToKeys(backgroundMusicVolume_Clicked, Keys.PageDown, Keys.PageUp);
+               backgroundVolumeMeniItem.BindActionToMouseWheel(backgroundMusicVolume_Clicked);
+
+               soundEffectVolumeMenuItem.BindActionToKeys(soundEffectVolume_Clicked, Keys.PageDown, Keys.PageUp);
+               soundEffectVolumeMenuItem.BindActionToMouseWheel(soundEffectVolume_Clicked);
+
+               toggleSoundMenuItem.BindActionToKeys(toggleSound_Clicked, Keys.PageDown, Keys.PageUp);
+               toggleSoundMenuItem.BindActionToMouseWheel(toggleSound_Clicked);
+
+               this.AddMenuItem(backgroundVolumeMeniItem);
+               this.AddMenuItem(soundEffectVolumeMenuItem);
+               this.AddMenuItem(toggleSoundMenuItem);
 
                base.AddItems();
           }
 
           private void toggleSound_Clicked(MenuItem i_ActionItem)
           {
-               updateToggleSoundInSettings();
+               GameSettings.IsSound = !GameSettings.IsSound;
                i_ActionItem.StrokeSpriteFont.Text = string.Format(k_ToggleSoundText, GameSettings.IsSound ? "On" : "Off");
           }
 
@@ -45,24 +58,18 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus
                i_ActionItem.StrokeSpriteFont.Text = string.Format(k_BackgroundMusicVolumeText, GameSettings.BackgroundMusicVolume);
           }
 
-          private void updateToggleSoundInSettings()
-          {
-               if (r_InputManager.KeyPressed(Keys.PageDown) || r_InputManager.KeyPressed(Keys.PageUp))
-               {
-                    GameSettings.IsSound = !GameSettings.IsSound;
-               }
-          }
-
           private void updateSoundEffectVolumeInSettings()
           {
-               if (r_InputManager.KeyPressed(Keys.PageDown))
+               if (r_InputManager.KeyPressed(Keys.PageDown) 
+                    || r_InputManager.ScrollWheelDelta < 0)
                {
                     if (GameSettings.SoundEffectsVolume >= k_ChangeVolumeBy)
                     {
                          GameSettings.SoundEffectsVolume -= k_ChangeVolumeBy;
                     }
                }
-               else if (r_InputManager.KeyPressed(Keys.PageUp))
+               else if (r_InputManager.KeyPressed(Keys.PageUp) 
+                    || r_InputManager.ScrollWheelDelta > 0)
                {
                     if (GameSettings.SoundEffectsVolume <= k_MaxVolume - k_ChangeVolumeBy)
                     {
@@ -73,14 +80,16 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus
 
           private void updateBackgroundMusicVolumeInSettings()
           {
-               if (r_InputManager.KeyPressed(Keys.PageDown))
+               if (r_InputManager.KeyPressed(Keys.PageDown)
+                    || r_InputManager.ScrollWheelDelta < 0)
                {
                     if (GameSettings.BackgroundMusicVolume >= k_ChangeVolumeBy)
                     {
                          GameSettings.BackgroundMusicVolume -= k_ChangeVolumeBy;
                     }
                }
-               else if (r_InputManager.KeyPressed(Keys.PageUp))
+               else if (r_InputManager.KeyPressed(Keys.PageUp)
+                    || r_InputManager.ScrollWheelDelta > 0)
                {
                     if (GameSettings.BackgroundMusicVolume <= k_MaxVolume - k_ChangeVolumeBy)
                     {

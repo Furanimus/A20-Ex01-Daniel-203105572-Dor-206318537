@@ -5,29 +5,70 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework.Input;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.Menus
 {
      public class MenuItem : Sprite
      {
-          private readonly Action<MenuItem> r_ExecuteOnClick;
-          private StrokeSpriteFont m_StrokeSpriteFont;
+          private readonly List<KeyValuePair<eInputButtons, Action<MenuItem>>> r_ButtonsToActions;
+          private readonly List<KeyValuePair<Keys, Action<MenuItem>>> r_KeysToActions;
+          private readonly Action<MenuItem> r_CheckMouseOrKBState;
           protected readonly IInputManager r_InputManager;
+          private StrokeSpriteFont m_StrokeSpriteFont;
+          private Action<MenuItem> m_WheelUpAction;
+          private Action<MenuItem> m_WheelDownAction;
+          private Action<MenuItem> m_WheelAction;
 
-          public MenuItem(StrokeSpriteFont i_StrokeSpriteFont, Action<MenuItem> i_ExecuteOnClick, GameScreen i_GameScreen, Menu i_LinkedMenu = null) 
+          public MenuItem(StrokeSpriteFont i_StrokeSpriteFont, GameScreen i_GameScreen, Menu i_LinkedMenu = null, Action<MenuItem> i_CheckMosueOrKBState = null) 
                : base("", i_GameScreen)
           {
-               r_ExecuteOnClick = i_ExecuteOnClick;
+               r_CheckMouseOrKBState = i_CheckMosueOrKBState;
                r_InputManager = this.Game.Services.GetService(typeof(IInputManager)) as IInputManager;
+               r_KeysToActions = new List<KeyValuePair<Keys, Action<MenuItem>>>();
+               r_ButtonsToActions = new List<KeyValuePair<eInputButtons, Action<MenuItem>>>();
+
                this.StrokeSpriteFont = i_StrokeSpriteFont;
                this.VisibleChanged += menuItem_VisibleChanged;
                this.LinkedMenu = i_LinkedMenu;
                this.BlendState = BlendState.NonPremultiplied;
           }
 
-          public MenuItem(string i_Text, Action<MenuItem> i_ExecuteOnClick, GameScreen i_GameScreen, Menu i_LinkedMenu = null)
-               : this(new StrokeSpriteFont(i_Text, i_GameScreen), i_ExecuteOnClick, i_GameScreen, i_LinkedMenu)
+          public MenuItem(string i_Text, GameScreen i_GameScreen, Menu i_LinkedMenu = null, Action<MenuItem> i_CheckMosueOrKBState = null)
+               : this(new StrokeSpriteFont(i_Text, i_GameScreen), i_GameScreen, i_LinkedMenu, i_CheckMosueOrKBState)
           {
+          }
+
+          public void BindActionToKeys(Action<MenuItem> i_Action, params Keys[] i_Keys)
+          {
+               foreach(Keys key in i_Keys)
+               {
+                    r_KeysToActions.Add(new KeyValuePair<Keys, Action<MenuItem>>(key, i_Action));
+               }
+          }
+
+          public void BindActionToMouseButtons(Action<MenuItem> i_Action, params eInputButtons[] i_Buttons)
+          {
+               foreach (eInputButtons button in i_Buttons)
+               {
+                    r_ButtonsToActions.Add(new KeyValuePair<eInputButtons, Action<MenuItem>>(button, i_Action));
+               }
+          }
+
+          public void BindActionToMouseWheelUp(Action<MenuItem> i_Action)
+          {
+               m_WheelUpAction = i_Action;
+          }
+
+          public void BindActionToMouseWheelDown(Action<MenuItem> i_Action)
+          {
+               m_WheelDownAction = i_Action;
+          }
+
+          public void BindActionToMouseWheel(Action<MenuItem> i_Action)
+          {
+               m_WheelAction = i_Action;
           }
 
           private void menuItem_VisibleChanged(object i_Sender, EventArgs i_Args)
@@ -108,11 +149,11 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.Menus
                }
           }
 
-          public void CheckClick()
+          private void checkMosueOrKBStateCheckClick()
           {
-               if (r_ExecuteOnClick != null)
+               if (r_CheckMouseOrKBState != null && IsFocused)
                {
-                    r_ExecuteOnClick.Invoke(this);
+                    r_CheckMouseOrKBState.Invoke(this);
                }
           }
 
@@ -143,7 +184,45 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.Menus
           {
                if(IsFocused)
                {
-                    CheckClick();
+                    checkMosueOrKBStateCheckClick();
+
+                    foreach(KeyValuePair<Keys, Action<MenuItem>> bind in r_KeysToActions)
+                    {
+                         if(r_InputManager.KeyPressed(bind.Key))
+                         {
+                              bind.Value.Invoke(this);
+                         }
+                    }
+
+                    foreach (KeyValuePair<eInputButtons, Action<MenuItem>> bind in r_ButtonsToActions)
+                    {
+                         if (r_InputManager.ButtonPressed(bind.Key))
+                         {
+                              bind.Value.Invoke(this);
+                         }
+                    }
+
+                    if(m_WheelAction != null)
+                    {
+                         if (r_InputManager.ScrollWheelDelta != 0)
+                         {
+                              m_WheelAction.Invoke(this);
+                         }
+                    }
+                    else if(m_WheelUpAction != null)
+                    {
+                         if (r_InputManager.ScrollWheelDelta > 0)
+                         {
+                              m_WheelUpAction.Invoke(this);
+                         }
+                    }
+                    else if(m_WheelDownAction != null)
+                    {
+                         if (r_InputManager.ScrollWheelDelta < 0)
+                         {
+                              m_WheelDownAction.Invoke(this);
+                         }
+                    }
                }
 
                base.Update(i_GameTime);
