@@ -1,13 +1,12 @@
-﻿using A20_Ex03_Daniel_203105572_Dor_206318537.Screens.Animators.ConcreteAnimator;
+﻿using A20_Ex03_Daniel_203105572_Dor_206318537.Managers.Animators.ConcreteAnimator;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
 using Microsoft.Xna.Framework.Graphics;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Utils;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Enums;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Managers.ConcreteScreens;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Screens;
 
-namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens
+namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 {
      public class WelcomeScreen : GameScreen
      {

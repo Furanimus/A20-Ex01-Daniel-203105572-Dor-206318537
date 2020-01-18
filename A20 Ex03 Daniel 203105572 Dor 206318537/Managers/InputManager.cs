@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Components;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Enums;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers

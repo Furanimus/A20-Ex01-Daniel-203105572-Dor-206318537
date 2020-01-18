@@ -48,7 +48,7 @@
     <Compile Include="Components\ILivesManager.cs" />
     <Compile Include="Components\IScoreManager.cs" />
     <Compile Include="Components\UpdateableComparer.cs" />
-    <Compile Include="Enums\eInputButtons.cs" />
+    <Compile Include="Managers\eInputButtons.cs" />
     <Compile Include="Interfaces\IGameSettings.cs" />
     <Compile Include="Managers\BarrierManager.cs" />
     <Compile Include="Managers\CollisionsManager.cs" />
@@ -85,7 +85,7 @@
     <Compile Include="Utils\StrokeSpriteFont.cs" />
     <Compile Include="Screens\ConcreteScreens\MainMenuScreen.cs" />
     <Compile Include="Screens\DeviceStates.cs" />
-    <Compile Include="Enums\eScreenState.cs" />
+    <Compile Include="Screens\eScreenState.cs" />
     <Compile Include="Models\ShooterPlayer.cs" />
     <Compile Include="Models\Enemy.cs" />
     <Compile Include="Managers\EnemyManager.cs" />

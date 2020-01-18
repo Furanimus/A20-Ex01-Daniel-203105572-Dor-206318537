@@ -2,7 +2,7 @@
 using A20_Ex01_Daniel_203105572_Dor_206318537.Models.Menus;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Menus;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Screens;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -37,17 +37,22 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus
                this.AddMenuItem(k_PlayText, play_Clicked);
           }
 
-          private void soundSettings_Clicked(MenuItem i_MenuItem, Keys i_ClickedKey)
+          private void soundSettings_Clicked(MenuItem i_MenuItem)
           {
-               if (i_ClickedKey == Keys.Enter)
+               if (r_InputManager.KeyPressed(Keys.Enter))
                {
                     this.Visible = false;
+
+                    if(i_MenuItem.LinkedMenu != null)
+                    {
+                         i_MenuItem.LinkedMenu.Visible = true;
+                    }
                }
           }
 
-          private void playersCount_Clicked(MenuItem i_MenuItem, Keys i_ClickedKey)
+          private void playersCount_Clicked(MenuItem i_MenuItem)
           {
-               if(i_ClickedKey == Keys.PageDown || i_ClickedKey == Keys.PageUp)
+               if(r_InputManager.KeyPressed(Keys.PageDown) || r_InputManager.KeyPressed(Keys.PageUp))
                {
                     if(i_MenuItem.StrokeSpriteFont.Text == k_OnePlayerPlayText)
                     {
@@ -62,9 +67,9 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus
                }
           }
 
-          private void play_Clicked(MenuItem i_MenuItem, Keys i_ClickedKey)
+          private void play_Clicked(MenuItem i_MenuItem)
           {
-               if(i_ClickedKey == Keys.Enter)
+               if(r_InputManager.KeyPressed(Keys.Enter))
                {
                     this.GameScreen.ExitScreen();
                }

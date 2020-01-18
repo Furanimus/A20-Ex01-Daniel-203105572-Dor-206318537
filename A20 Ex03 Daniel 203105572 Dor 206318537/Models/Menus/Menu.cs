@@ -1,5 +1,5 @@
 ﻿using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Screens;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Utils;
 using Microsoft.Xna.Framework;
 using System;
@@ -114,13 +114,13 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Menus
                }
           }
 
-          public void AddMenuItem(string i_Text, Action<MenuItem, Keys> i_ExecuteOnClick, Menu i_LinkedMenu = null)
+          public void AddMenuItem(string i_Text, Action<MenuItem> i_ExecuteOnClick, Menu i_LinkedMenu = null)
           {
                MenuItem actionItem = new MenuItem(i_Text, i_ExecuteOnClick, this.GameScreen, i_LinkedMenu);
                AddMenuItem(actionItem);
           }
 
-          public void AddMenuItem(StrokeSpriteFont i_Text, Action<MenuItem, Keys> i_ExecuteOnClick, Menu i_LinkedMenu = null)
+          public void AddMenuItem(StrokeSpriteFont i_Text, Action<MenuItem> i_ExecuteOnClick, Menu i_LinkedMenu = null)
           {
                MenuItem actionItem = new MenuItem(i_Text, i_ExecuteOnClick, this.GameScreen, i_LinkedMenu);
                AddMenuItem(actionItem);
@@ -186,17 +186,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Menus
                }
           }
 
-          public void ChooseCurrentOption(Keys i_ClickedKey)
-          {
-               if(CurrentOption != null)
-               {
-                    if (CurrentOption.Visible)
-                    {
-                         CurrentOption.Click(i_ClickedKey);
-                    }
-               }
-          }
-
           protected void HideItems()
           {
                foreach(MenuItem menuItem in r_Options)
@@ -233,18 +222,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Menus
                else if(r_InputManager.KeyPressed(Keys.Up))
                {
                     Back();
-               }
-               else if(r_InputManager.KeyPressed(Keys.Enter))
-               {
-                    ChooseCurrentOption(Keys.Enter);
-               }
-               else if(r_InputManager.KeyPressed(Keys.PageUp))
-               {
-                    ChooseCurrentOption(Keys.PageUp);
-               }
-               else if (r_InputManager.KeyPressed(Keys.PageDown))
-               {
-                    ChooseCurrentOption(Keys.PageDown);
                }
 
                base.Update(i_GameTime);

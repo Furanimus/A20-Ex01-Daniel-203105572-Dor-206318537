@@ -1,5 +1,5 @@
 ﻿using A20_Ex03_Daniel_203105572_Dor_206318537.Menus;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Screens;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
 using Microsoft.Xna.Framework.Input;
 using System;
 
@@ -27,42 +27,42 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus
                base.AddItems();
           }
 
-          private void toggleSound_Clicked(MenuItem i_ActionItem, Keys i_ClickedKey)
+          private void toggleSound_Clicked(MenuItem i_ActionItem)
           {
-               updateToggleSoundInSettings(i_ClickedKey);
+               updateToggleSoundInSettings();
                i_ActionItem.StrokeSpriteFont.Text = string.Format(k_ToggleSoundText, GameSettings.IsSound ? "On" : "Off");
           }
 
-          private void soundEffectVolume_Clicked(MenuItem i_ActionItem, Keys i_ClickedKey)
+          private void soundEffectVolume_Clicked(MenuItem i_ActionItem)
           {
-               updateSoundEffectVolumeInSettings(i_ClickedKey);
+               updateSoundEffectVolumeInSettings();
                i_ActionItem.StrokeSpriteFont.Text = string.Format(k_SoundEffectVolumeText, GameSettings.SoundEffectsVolume);
           }
 
-          private void backgroundMusicVolume_Clicked(MenuItem i_ActionItem, Keys i_ClickedKey)
+          private void backgroundMusicVolume_Clicked(MenuItem i_ActionItem)
           {
-               updateBackgroundMusicVolumeInSettings(i_ClickedKey);
+               updateBackgroundMusicVolumeInSettings();
                i_ActionItem.StrokeSpriteFont.Text = string.Format(k_BackgroundMusicVolumeText, GameSettings.BackgroundMusicVolume);
           }
 
-          private void updateToggleSoundInSettings(Keys i_ClickedKey)
+          private void updateToggleSoundInSettings()
           {
-               if (i_ClickedKey == Keys.PageDown || i_ClickedKey == Keys.PageUp)
+               if (r_InputManager.KeyPressed(Keys.PageDown) || r_InputManager.KeyPressed(Keys.PageUp))
                {
                     GameSettings.IsSound = !GameSettings.IsSound;
                }
           }
 
-          private void updateSoundEffectVolumeInSettings(Keys i_ClickedKey)
+          private void updateSoundEffectVolumeInSettings()
           {
-               if (i_ClickedKey == Keys.PageDown)
+               if (r_InputManager.KeyPressed(Keys.PageDown))
                {
                     if (GameSettings.SoundEffectsVolume >= k_ChangeVolumeBy)
                     {
                          GameSettings.SoundEffectsVolume -= k_ChangeVolumeBy;
                     }
                }
-               else if (i_ClickedKey == Keys.PageUp)
+               else if (r_InputManager.KeyPressed(Keys.PageUp))
                {
                     if (GameSettings.SoundEffectsVolume <= k_MaxVolume - k_ChangeVolumeBy)
                     {
@@ -71,16 +71,16 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus
                }
           }
 
-          private void updateBackgroundMusicVolumeInSettings(Keys i_ClickedKey)
+          private void updateBackgroundMusicVolumeInSettings()
           {
-               if (i_ClickedKey == Keys.PageDown)
+               if (r_InputManager.KeyPressed(Keys.PageDown))
                {
                     if (GameSettings.BackgroundMusicVolume >= k_ChangeVolumeBy)
                     {
                          GameSettings.BackgroundMusicVolume -= k_ChangeVolumeBy;
                     }
                }
-               else if (i_ClickedKey == Keys.PageUp)
+               else if (r_InputManager.KeyPressed(Keys.PageUp))
                {
                     if (GameSettings.BackgroundMusicVolume <= k_MaxVolume - k_ChangeVolumeBy)
                     {

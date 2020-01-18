@@ -1,30 +1,31 @@
 ﻿using A20_Ex03_Daniel_203105572_Dor_206318537.Menus;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Screens;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Utils;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Screens.Animators.ConcreteAnimator;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
 
 namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.Menus
 {
      public class MenuItem : Sprite
      {
-          private readonly Action<MenuItem, Keys> r_ExecuteOnClick;
+          private readonly Action<MenuItem> r_ExecuteOnClick;
           private StrokeSpriteFont m_StrokeSpriteFont;
+          protected readonly IInputManager r_InputManager;
 
-          public MenuItem(StrokeSpriteFont i_StrokeSpriteFont, Action<MenuItem, Keys> i_ExecuteOnClick, GameScreen i_GameScreen, Menu i_LinkedMenu = null) 
+          public MenuItem(StrokeSpriteFont i_StrokeSpriteFont, Action<MenuItem> i_ExecuteOnClick, GameScreen i_GameScreen, Menu i_LinkedMenu = null) 
                : base("", i_GameScreen)
           {
                r_ExecuteOnClick = i_ExecuteOnClick;
+               r_InputManager = this.Game.Services.GetService(typeof(IInputManager)) as IInputManager;
                this.StrokeSpriteFont = i_StrokeSpriteFont;
                this.VisibleChanged += menuItem_VisibleChanged;
                this.LinkedMenu = i_LinkedMenu;
                this.BlendState = BlendState.NonPremultiplied;
           }
 
-          public MenuItem(string i_Text, Action<MenuItem, Keys> i_ExecuteOnClick, GameScreen i_GameScreen, Menu i_LinkedMenu = null)
+          public MenuItem(string i_Text, Action<MenuItem> i_ExecuteOnClick, GameScreen i_GameScreen, Menu i_LinkedMenu = null)
                : this(new StrokeSpriteFont(i_Text, i_GameScreen), i_ExecuteOnClick, i_GameScreen, i_LinkedMenu)
           {
           }
@@ -39,6 +40,8 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.Menus
           public bool IsInitialized { get; private set; }
 
           public Menu LinkedMenu { get; set; }
+
+          public bool IsFocused { get; set; }
 
           public override float Opacity
           {
@@ -105,21 +108,18 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.Menus
                }
           }
 
-          public void Click(Keys i_ClickedKey)
+          public void CheckClick()
           {
                if (r_ExecuteOnClick != null)
                {
-                    r_ExecuteOnClick.Invoke(this, i_ClickedKey);
-               }
-
-               if(LinkedMenu != null)
-               {
-                    LinkedMenu.Visible = true;
+                    r_ExecuteOnClick.Invoke(this);
                }
           }
 
           public void Focus()
           {
+               IsFocused = true;
+
                if (IsInitialized)
                {
                     this.StrokeSpriteFont.TintColor = Color.DeepSkyBlue;
@@ -129,12 +129,24 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.Menus
 
           public void UnFocus()
           {
+               IsFocused = false;
+
                if (IsInitialized)
                {
                     this.StrokeSpriteFont.TintColor = Color.White;
                     this.StrokeSpriteFont.Animations.Restart();
                     this.StrokeSpriteFont.Animations.Pause();
                }
+          }
+
+          public override void Update(GameTime i_GameTime)
+          {
+               if(IsFocused)
+               {
+                    CheckClick();
+               }
+
+               base.Update(i_GameTime);
           }
      }
 }

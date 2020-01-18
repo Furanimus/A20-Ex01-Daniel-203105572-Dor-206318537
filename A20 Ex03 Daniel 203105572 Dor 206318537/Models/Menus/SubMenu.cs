@@ -1,5 +1,5 @@
 ﻿using A20_Ex03_Daniel_203105572_Dor_206318537.Menus;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Screens;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -18,9 +18,9 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.Menus
                this.Position = i_PrevMenu.Position;
           }
 
-          private void done_Clicked(MenuItem i_MenuItem, Keys i_ClickedKey)
+          private void done_Clicked(MenuItem i_MenuItem)
           {
-               if(i_ClickedKey == Keys.Enter)
+               if(r_InputManager.KeyPressed(Keys.Enter))
                {
                     r_PrevMenu.Visible = true;
                     this.Visible = false;
