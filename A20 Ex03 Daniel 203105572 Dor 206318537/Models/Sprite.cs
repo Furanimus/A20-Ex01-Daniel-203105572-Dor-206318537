@@ -4,6 +4,7 @@ using Models.Animators;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Components;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Utils;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 {
@@ -52,7 +53,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                {
                     m_SpriteBatch = Game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
 
-                    if (m_SpriteBatch == null || this.BlendState == BlendState.NonPremultiplied)
+                    if (m_SpriteBatch == null)
                     {
                          m_SpriteBatch = new SpriteBatch(this.Game.GraphicsDevice);
                          m_UseSharedBatch = false;

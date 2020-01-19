@@ -30,6 +30,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                this.UpdateOrder = k_CallOrder;
                r_GameScreen = i_GameScreen;
                r_GameScreen.Add(this);
+               this.BlendState = BlendState.NonPremultiplied;
           }
 
           public override void Initialize()

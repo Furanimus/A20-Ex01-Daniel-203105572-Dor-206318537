@@ -72,13 +72,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers.BaseModels
 
                     if (bullet != null)
                     {
-                         ICollidable shooter = r_Shooter as ICollidable;
-
-                         if (bullet.GroupRepresentative == null && shooter != null)
-                         {
-                              bullet.GroupRepresentative = shooter.GroupRepresentative;
-                         }
-
                          this.RemoveBullet();
 
                          bullet.Enabled = true;

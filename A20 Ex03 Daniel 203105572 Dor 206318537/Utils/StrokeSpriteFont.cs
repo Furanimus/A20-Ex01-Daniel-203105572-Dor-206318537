@@ -24,7 +24,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Utils
           public StrokeSpriteFont(string i_FontAssetName, string i_Text, GameScreen i_GameScreen) 
                : base("", i_GameScreen, int.MaxValue)
           {
-               this.BlendState = BlendState.NonPremultiplied;
                m_SpriteFont = this.Game.Content.Load<SpriteFont>(i_FontAssetName);
                m_StrokeColor = new Color(Color.Black, this.TintColor.A);
                this.Text = i_Text;

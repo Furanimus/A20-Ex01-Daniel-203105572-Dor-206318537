@@ -1,11 +1,11 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Models.Animators;
 using Models.Animators.ConcreteAnimators;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Managers.Animators.ConcreteAnimator;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Managers.BaseModels;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 {
@@ -22,7 +22,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           public Player(string i_AssetName, GameScreen i_GameScreen) 
                : base(i_AssetName, i_GameScreen) 
           {
-               this.BlendState          = BlendState.NonPremultiplied;
                this.Lives               = 3;
                this.Score               = 0;
                this.Width               = 32;
@@ -42,7 +41,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                     TimeSpan.FromSeconds(k_DeadAnimationLength),
                     this,
                     new RotationAnimator(k_RotationPerSeconed, TimeSpan.FromSeconds(k_DeadAnimationLength)),
-                    new TransparencyAnimator(TimeSpan.FromSeconds(k_DeadAnimationLength)));
+                    new TransparencyAnimator(this.TintColor, TimeSpan.FromSeconds(k_DeadAnimationLength)));
 
                dead.Finished += dead_Finished;
                lostLife.Finished += lostLife_Finished;

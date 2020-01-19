@@ -18,7 +18,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           public Barrier(GameScreen i_GameScreen)
                : base(k_AssetName, i_GameScreen)
           {
-               this.BlendState = BlendState.NonPremultiplied;
                this.Width = k_DefaultWidth;
                this.Height = k_DefaultHeight;
                this.Velocity = new Vector2(k_XVelocity, k_YVelocity);

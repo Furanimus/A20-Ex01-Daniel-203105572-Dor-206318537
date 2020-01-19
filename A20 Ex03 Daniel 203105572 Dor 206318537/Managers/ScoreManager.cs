@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Graphics;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Managers.BaseModels;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
-using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 {
@@ -14,13 +13,12 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           private const int k_SpaceBetweenScores = 10;
           private const int k_LivesStartingY = 10;
           private const int k_StartingXForDraw = 10;
-          private const string k_ScoreString = "P{0} Score: {1}";
           private const string k_FontAssetName = @"Fonts\ComicSansMsFont";
-          private readonly List<BasePlayer> r_Players = new List<BasePlayer>();
+          private readonly LinkedList<KeyValuePair<BasePlayer, Color>> r_Players = new LinkedList<KeyValuePair<BasePlayer, Color>>();
           private readonly HashSet<BasePlayer> r_PlayersSetForCheckExistance = new HashSet<BasePlayer>();
-          private readonly GameScreen r_GameScreen;
           private SpriteFont m_ComicSansMsFont;
-          private IGameSettings m_GameSettings;
+          private const string k_ScoreString = "P{0} Score: {1}";
+          private readonly GameScreen r_GameScreen;
 
           public ScoreManager(GameScreen i_GameScreen)
                : base(i_GameScreen.Game)
@@ -31,29 +29,31 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                this.DrawOrder = this.UpdateOrder = int.MaxValue;
           }
 
-          public void AddPlayer(BasePlayer i_Player)
+          public void AddPlayer(BasePlayer i_Player, Color i_ScoreColor)
           {
                if (!IsPlayerAlreadyAdded(i_Player))
                {
-                    r_Players.Add(i_Player);
+                    r_Players.AddLast(new KeyValuePair<BasePlayer, Color>(i_Player, i_ScoreColor));
                     r_PlayersSetForCheckExistance.Add(i_Player);
                }
           }
 
           public void RemovePlayer(BasePlayer i_Player)
           {
-               BasePlayer toRemove = null;
+               KeyValuePair<BasePlayer, Color> toRemove = new KeyValuePair<BasePlayer, Color>();
+               bool isFound = false;
 
-               foreach (BasePlayer player in r_Players)
+               foreach (KeyValuePair<BasePlayer, Color> player in r_Players)
                {
-                    if (player == i_Player)
+                    if (player.Key == i_Player)
                     {
                          toRemove = player;
+                         isFound = true;
                          break;
                     }
                }
 
-               if (toRemove != null)
+               if (isFound)
                { 
                     r_Players.Remove(toRemove);
                } 
@@ -71,12 +71,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                m_ComicSansMsFont = this.Game.Content.Load<SpriteFont>(k_FontAssetName);
           }
 
-          public override void Initialize()
-          {
-               m_GameSettings = this.Game.Services.GetService(typeof(IGameSettings)) as IGameSettings;
-               base.Initialize();
-          }
-
           public override void Draw(GameTime i_GameTime)
           {
                float yPos = k_LivesStartingY;
@@ -84,13 +78,12 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 
                r_GameScreen.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
 
-               for (int i = 0; i < m_GameSettings.PlayersCount; i++)
+               foreach (KeyValuePair<BasePlayer, Color> pair in r_Players)
                {
-                    BasePlayer player = r_Players[i];
                     Vector2 positionForDraw = new Vector2(k_StartingXForDraw, yPos);
-                    string scoreString = string.Format(k_ScoreString, playerCounter.ToString(), player.Score.ToString());
+                    string scoreString = string.Format(k_ScoreString, playerCounter.ToString(), pair.Key.Score.ToString());
 
-                    r_GameScreen.SpriteBatch.DrawString(m_ComicSansMsFont, scoreString, positionForDraw, player.RepresentativeColor);
+                    r_GameScreen.SpriteBatch.DrawString(m_ComicSansMsFont, scoreString, positionForDraw, pair.Value);
 
                     float nextScorePos = k_SpaceFactor + k_SpaceBetweenScores;
                     yPos += nextScorePos;
