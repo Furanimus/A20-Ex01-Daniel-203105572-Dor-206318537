@@ -29,17 +29,18 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus
 
           protected override void AddItems()
           {
-               SubMenu soundSettingsMenu = new SoundSettingsMenu(this, this.GameScreen);
-               SubMenu screenSettings = new ScreenSettings(this, this.GameScreen);
 
                MenuItem playersCountMenuItem = new MenuItem(k_OnePlayerPlayText, this.GameScreen);
                playersCountMenuItem.BindActionToKeys(playersCount_Clicked, Keys.PageDown, Keys.PageUp);
+               playersCountMenuItem.BindActionToMouseButtons(playersCount_Clicked, eInputButtons.Right);
                playersCountMenuItem.BindActionToMouseWheel(playersCount_Clicked);
 
+               SubMenu soundSettingsMenu = new SoundSettingsMenu(this, this.GameScreen);
                MenuItem soundSettingsMenuItem = new MenuItem("Sound Settings", this.GameScreen, soundSettingsMenu);
                soundSettingsMenuItem.BindActionToKeys(subMenu_Clicked, Keys.Enter);
                soundSettingsMenuItem.BindActionToMouseButtons(subMenu_Clicked, eInputButtons.Left);
 
+               SubMenu screenSettings = new ScreenSettings(this, this.GameScreen);
                MenuItem screenSettingsMenuItem = new MenuItem("Screen Settings", this.GameScreen, screenSettings);
                screenSettingsMenuItem.BindActionToKeys(subMenu_Clicked, Keys.Enter);
                screenSettingsMenuItem.BindActionToMouseButtons(subMenu_Clicked, eInputButtons.Left);

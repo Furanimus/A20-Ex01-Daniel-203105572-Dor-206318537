@@ -42,11 +42,12 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Menus
                if (this.Visible)
                {
                     this.ShowItems();
+                    unFocusCurrentOption();
+                    m_CurrentOptionIndex = -1;
                }
                else
                {
                     this.HideItems();
-                    CurrentOptionIndex = 0;
                }
                
                this.Enabled = this.Visible;
@@ -93,7 +94,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Menus
                {
                     unFocusCurrentOption();
 
-                    if(value < 0)
+                    if (value < 0)
                     {
                          m_CurrentOptionIndex = r_Options.Count - 1;
                     }
@@ -150,11 +151,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Menus
                if (!i_Item.IsInitialized)
                {
                     i_Item.Initialize();
-               }
-
-               if (CurrentOptionIndex == -1)
-               {
-                    CurrentOptionIndex = 0;
                }
           }
 
@@ -254,6 +250,14 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Menus
                               if (!r_Options[option].IsFocused)
                               {
                                    CurrentOptionIndex = option;
+                              }
+                         }
+                         else
+                         {
+                              if (r_Options[option].IsFocused)
+                              {
+                                   r_Options[option].UnFocus();
+                                   m_CurrentOptionIndex = -1;
                               }
                          }
                     }

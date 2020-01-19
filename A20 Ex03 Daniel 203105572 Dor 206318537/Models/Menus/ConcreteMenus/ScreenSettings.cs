@@ -25,16 +25,19 @@ namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus
                MenuItem fullScreenMode 
                     = new MenuItem(string.Format(k_FullScreenModeMsg, GameSettings.IsFullScreen ? "On" : "Off"), this.GameScreen);
                fullScreenMode.BindActionToKeys(fullScreenMode_Clicked, Keys.PageUp, Keys.PageDown);
+               fullScreenMode.BindActionToMouseButtons(fullScreenMode_Clicked, eInputButtons.Right);
                fullScreenMode.BindActionToMouseWheel(fullScreenMode_Clicked);
 
                MenuItem mouseVisibility 
                     = new MenuItem(string.Format(k_MouseVisibilityMsg, GameSettings.IsMouseVisible ? "Visible" : "Invisible"), this.GameScreen);
                mouseVisibility.BindActionToKeys(mouseVisability_Clicked, Keys.PageUp, Keys.PageDown);
+               mouseVisibility.BindActionToMouseButtons(mouseVisability_Clicked, eInputButtons.Right);
                mouseVisibility.BindActionToMouseWheel(mouseVisability_Clicked);
 
                MenuItem windowResizing 
                     = new MenuItem(string.Format(k_WindowResizingMsg, GameSettings.IsWindowResizeAllow ? "On" : "Off"), this.GameScreen);
                windowResizing.BindActionToKeys(windowResizing_Clicked, Keys.PageUp, Keys.PageDown);
+               windowResizing.BindActionToMouseButtons(windowResizing_Clicked, eInputButtons.Right);
                windowResizing.BindActionToMouseWheel(windowResizing_Clicked);
 
                this.AddMenuItem(fullScreenMode);
