@@ -1,13 +1,13 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
-using Models.Animators;
-using Models.Animators.ConcreteAnimators;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Managers.Animators.ConcreteAnimator;
+using Microsoft.Xna.Framework.Graphics;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Managers.BaseModels;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Screens;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Models.Animators;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnimators;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Models.BaseModels;
 
-namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
+namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
 {
      public class Player : ShooterPlayer, ICollidable2D
      {
@@ -19,16 +19,17 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           private const float k_DeadAnimationLength = 2.5f;
           private const string k_DeadAnimatorName = "Dead";
 
-          public Player(string i_AssetName, GameScreen i_GameScreen) 
-               : base(i_AssetName, i_GameScreen) 
+          public Player(string i_AssetName, GameScreen i_GameScreen)
+               : base(i_AssetName, i_GameScreen)
           {
-               this.Lives               = 3;
-               this.Score               = 0;
-               this.Width               = 32;
-               this.Height              = 32;
-               this.ViewDirection       = Sprite.Up;
+               this.BlendState = BlendState.NonPremultiplied;
+               this.Lives = 3;
+               this.Score = 0;
+               this.Width = 32;
+               this.Height = 32;
+               this.ViewDirection = Sprite.Up;
                this.GroupRepresentative = this;
-               this.RotationOrigin      = new Vector2(this.Width / 2, this.Height / 2);
+               this.RotationOrigin = new Vector2(this.Width / 2, this.Height / 2);
           }
 
           public override void Initialize()
@@ -41,11 +42,11 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                     TimeSpan.FromSeconds(k_DeadAnimationLength),
                     this,
                     new RotationAnimator(k_RotationPerSeconed, TimeSpan.FromSeconds(k_DeadAnimationLength)),
-                    new TransparencyAnimator(this.TintColor, TimeSpan.FromSeconds(k_DeadAnimationLength)));
+                    new TransparencyAnimator(TimeSpan.FromSeconds(k_DeadAnimationLength)));
 
                dead.Finished += dead_Finished;
                lostLife.Finished += lostLife_Finished;
-               
+
                this.Animations.Add(dead);
                this.Animations.Add(lostLife);
                this.Animations.Pause();

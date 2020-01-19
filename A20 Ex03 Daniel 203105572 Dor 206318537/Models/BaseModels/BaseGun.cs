@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Components;
 
-namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers.BaseModels
+namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.BaseModels
 {
      public abstract class BaseGun : CompositeDrawableComponent<BaseBullet>
      {
@@ -14,7 +14,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers.BaseModels
           private readonly Action<ICollidable> r_ExecuteWhenBulletCollided;
           private int m_BulletsAdded;
 
-          protected BaseGun(Sprite i_Shooter, Action<ICollidable> i_ExecuteWhenBulletCollided) 
+          protected BaseGun(Sprite i_Shooter, Action<ICollidable> i_ExecuteWhenBulletCollided)
                : base(i_Shooter.Game)
           {
                r_Shooter = i_Shooter;
@@ -37,7 +37,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers.BaseModels
 
           protected void RemoveBullet()
           {
-               if(r_Bullets.Count > 0)
+               if (r_Bullets.Count > 0)
                {
                     r_Bullets.RemoveFirst();
                }
@@ -47,7 +47,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers.BaseModels
           {
                BaseBullet first = null;
 
-               if(r_Bullets.Count > 0)
+               if (r_Bullets.Count > 0)
                {
                     first = r_Bullets.First.Value;
                }
@@ -72,6 +72,13 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers.BaseModels
 
                     if (bullet != null)
                     {
+                         ICollidable shooter = r_Shooter as ICollidable;
+
+                         if (bullet.GroupRepresentative == null && shooter != null)
+                         {
+                              bullet.GroupRepresentative = shooter.GroupRepresentative;
+                         }
+
                          this.RemoveBullet();
 
                          bullet.Enabled = true;
@@ -103,7 +110,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers.BaseModels
           {
                this.GunDirection = r_Shooter.ViewDirection;
 
-               foreach(BaseBullet bullet in r_Bullets)
+               foreach (BaseBullet bullet in r_Bullets)
                {
                     bullet.MoveDirection = this.GunDirection;
                     bullet.Position = getShootOrigin(bullet);

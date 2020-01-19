@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Screens;
 
-namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers.BaseModels
+namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.BaseModels
 {
      public abstract class BaseBullet : Sprite, ICollidable2D
      {

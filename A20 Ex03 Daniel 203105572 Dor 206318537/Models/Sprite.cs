@@ -1,12 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Models.Animators;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Components;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Utils;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Screens;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Models.Animators;
 
-namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
+namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
 {
      public partial class Sprite : LoadableDrawableComponent
      {
@@ -53,7 +53,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                {
                     m_SpriteBatch = Game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
 
-                    if (m_SpriteBatch == null)
+                    if (m_SpriteBatch == null || this.BlendState == BlendState.NonPremultiplied)
                     {
                          m_SpriteBatch = new SpriteBatch(this.Game.GraphicsDevice);
                          m_UseSharedBatch = false;
@@ -165,7 +165,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           }
 
           public Vector2 PositionOrigin { get; set; }
-          
+
           public Vector2 RotationOrigin { get; set; }
 
           protected Vector2 PositionForDraw
@@ -219,7 +219,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           }
 
           public float Rotation { get; set; }
-          
+
           public Vector2 Scales
           {
                get { return m_Scales; }
@@ -244,25 +244,25 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           public float LayerDepth { get; set; }
 
           public SpriteEffects SpriteEffects { get; set; } = SpriteEffects.None;
-          
+
           public SpriteSortMode SortMode { get; set; } = SpriteSortMode.Deferred;
 
           public BlendState BlendState { get; set; } = BlendState.AlphaBlend;
-          
+
           public SamplerState SamplerState { get; set; }
-          
+
           public DepthStencilState DepthStencilState { get; set; }
-          
+
           public RasterizerState RasterizerState { get; set; }
 
           public Effect Shader { get; set; }
-          
+
           public Matrix TransformMatrix { get; set; } = Matrix.Identity;
 
           public Vector2 Velocity { get; set; }
-          
+
           public float AngularVelocity { get; set; }
-          
+
           protected override void InitBounds()
           {
                if (Texture != null)
@@ -298,14 +298,14 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                {
                     return m_SpriteBatch;
                }
-               
+
                set
                {
                     m_SpriteBatch = value;
                     m_UseSharedBatch = true;
                }
           }
-          
+
           protected void saveDeviceStates()
           {
                r_SavedDeviceStates.BlendState = GraphicsDevice.BlendState;
@@ -322,7 +322,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                GraphicsDevice.RasterizerState = r_SavedDeviceStates.RasterizerState;
           }
 
-          
+
           public bool SaveAndRestoreDeviceState { get; set; }
 
           public virtual bool CheckCollision(ICollidable i_Source)

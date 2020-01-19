@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Models.Animators.ConcreteAnimators;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Utils;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Components;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Models;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Screens;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnimators;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 {
@@ -15,28 +15,28 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 
           public event Action AllEnemiesDied;
 
-          private const int k_EnemyWidth                                = 32;
-          private const int k_EnemyHeight                               = 32;  
-          private const int k_PinkEnemyTextureX                         = 0;  
-          private const int k_LightBlueTextureX                         = 64;  
-          private const int k_LightYellowTextureX                       = 128;  
-          private const int k_EnemyTextureY                             = 0;  
-          private const int k_MatrixCols                                = 9;
-          private const int k_MatrixRows                                = 5;
-          private const int k_NumOfEnemiesAtStart                       = k_MatrixCols * k_MatrixRows;
-          private const int k_MaxRowForBlueEnemies                      = 3;
-          private const int k_MaxRowForPinkEnemies                      = 1;
-          private const int k_MaxMillisecondToRoll                      = 300;
-          private const int k_NumOfDeadEnemiesToIncreaseVelocity        = 5;
-          private const int k_PinkEnemyScore                            = 250;
-          private const int k_LightBlueEnemyScore                       = 150;
-          private const int k_LightYellowEnemyScore                     = 100;
-          private const int k_NumOfAnimationCells                       = 2;
-          private const float k_CellTime                                = 0.5f;
-          private const float k_EnemiesStartingY                        = 96;
-          private const float k_EnemiesStartingX                        = 0;
-          private const float k_SpaceBetweenEnemies                     = 32f * 0.6f;
-          private const float k_IncVelocityOnRowDecendPercentage        = 0.05f;
+          private const int k_EnemyWidth = 32;
+          private const int k_EnemyHeight = 32;
+          private const int k_PinkEnemyTextureX = 0;
+          private const int k_LightBlueTextureX = 64;
+          private const int k_LightYellowTextureX = 128;
+          private const int k_EnemyTextureY = 0;
+          private const int k_MatrixCols = 9;
+          private const int k_MatrixRows = 5;
+          private const int k_NumOfEnemiesAtStart = k_MatrixCols * k_MatrixRows;
+          private const int k_MaxRowForBlueEnemies = 3;
+          private const int k_MaxRowForPinkEnemies = 1;
+          private const int k_MaxMillisecondToRoll = 300;
+          private const int k_NumOfDeadEnemiesToIncreaseVelocity = 5;
+          private const int k_PinkEnemyScore = 250;
+          private const int k_LightBlueEnemyScore = 150;
+          private const int k_LightYellowEnemyScore = 100;
+          private const int k_NumOfAnimationCells = 2;
+          private const float k_CellTime = 0.5f;
+          private const float k_EnemiesStartingY = 96;
+          private const float k_EnemiesStartingX = 0;
+          private const float k_SpaceBetweenEnemies = 32f * 0.6f;
+          private const float k_IncVelocityOnRowDecendPercentage = 0.05f;
           private const float k_IncVelocityOnNumOfDeadEnemiesPercentage = 0.03f;
           private readonly IRandomBehavior r_RandomBehavior;
           private readonly List<List<Enemy>> r_EnemyMatrix;
@@ -50,11 +50,10 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           public EnemyManager(GameScreen i_GameScreen) : base(i_GameScreen.Game)
           {
                r_GameScreen = i_GameScreen;
-               r_EnemyMatrix    = new List<List<Enemy>>(k_MatrixRows);
+               r_EnemyMatrix = new List<List<Enemy>>(k_MatrixRows);
                r_RandomBehavior = this.Game.Services.GetService(typeof(IRandomBehavior)) as IRandomBehavior;
                r_GameScreen.Add(this);
                this.DrawOrder = this.UpdateOrder = 5;
-               this.BlendState = BlendState.NonPremultiplied;
           }
 
           public override void Initialize()
@@ -151,7 +150,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                     ShooterEnemy enemy = chooseEnemyShoot();
                     bool isShoot = tryShoot(enemy);
 
-                    if(isShoot)
+                    if (isShoot)
                     {
                          m_IntervalToNextShoot = r_RandomBehavior.GetRandomIntervalMilliseconds(k_MaxMillisecondToRoll);
                     }
@@ -184,14 +183,14 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           {
                Vector2 rightMostRepNextPosition = m_RightMostRepresentetive.Position + ((m_RightMostRepresentetive.Velocity * m_RightMostRepresentetive.MoveDirection) / 2);
                Vector2 leftMostRepNextPosition = m_LeftMostRepresentetive.Position + ((m_LeftMostRepresentetive.Velocity * m_LeftMostRepresentetive.MoveDirection) / 2);
-               
+
                Vector2 downMostHeight = new Vector2(0, m_DownMostRepresentetive.Height);
                Vector2 downMostJumpDistance = new Vector2(0, m_DownMostRepresentetive.Height / 2);
                Vector2 downMostRepBottomNextPosition = m_DownMostRepresentetive.Position + downMostHeight + downMostJumpDistance;
 
-               if(downMostRepBottomNextPosition.Y >= this.Game.GraphicsDevice.Viewport.Height)
+               if (downMostRepBottomNextPosition.Y >= this.Game.GraphicsDevice.Viewport.Height)
                {
-                    if(MatrixReachedBottomWindow != null)
+                    if (MatrixReachedBottomWindow != null)
                     {
                          MatrixReachedBottomWindow.Invoke();
                     }
@@ -252,19 +251,19 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                          scoreWorth = k_LightYellowEnemyScore;
                          sourceRectangle = new Rectangle(k_LightYellowTextureX, k_EnemyTextureY, k_EnemyWidth, k_EnemyHeight);
                     }
-                    
+
                     for (int col = 0; col < k_MatrixCols; col++)
                     {
                          AlienMatrixEnemy alienMatrixEnemy = new AlienMatrixEnemy(sourceRectangle, scoreWorth, color, r_GameScreen);
                          r_EnemyMatrix[row].Add(alienMatrixEnemy);
                          this.Add(alienMatrixEnemy);
 
-                         AlienMatrixEnemy enemy      = r_EnemyMatrix[row][col] as AlienMatrixEnemy;
-                         enemy.CellAnimation         = new CellAnimator(isStartAnimationFromSecondCell, TimeSpan.FromSeconds(k_CellTime), k_NumOfAnimationCells, TimeSpan.Zero);
-                         enemy.StartingPosition      = new Vector2(left, top);
-                         enemy.VisibleChanged       += enemy_VisibleChanged;
-                         enemy.GroupRepresentative   = this;
-                         left                       += enemy.Width + k_SpaceBetweenEnemies;
+                         AlienMatrixEnemy enemy = r_EnemyMatrix[row][col] as AlienMatrixEnemy;
+                         enemy.CellAnimation = new CellAnimator(isStartAnimationFromSecondCell, TimeSpan.FromSeconds(k_CellTime), k_NumOfAnimationCells, TimeSpan.Zero);
+                         enemy.StartingPosition = new Vector2(left, top);
+                         enemy.VisibleChanged += enemy_VisibleChanged;
+                         enemy.GroupRepresentative = this;
+                         left += enemy.Width + k_SpaceBetweenEnemies;
                     }
 
                     top += r_EnemyMatrix[row][0].Height + k_SpaceBetweenEnemies;
@@ -277,7 +276,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 
                if (!enemy.Visible)
                {
-                    if(enemy == m_DownMostRepresentetive)
+                    if (enemy == m_DownMostRepresentetive)
                     {
                          setDownRepresentetive();
                     }
@@ -294,7 +293,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 
                     m_DeadEnemiesCounter++;
 
-                    if(AllEnemiesDied != null && m_DeadEnemiesCounter == k_NumOfEnemiesAtStart)
+                    if (AllEnemiesDied != null && m_DeadEnemiesCounter == k_NumOfEnemiesAtStart)
                     {
                          AllEnemiesDied.Invoke();
                     }

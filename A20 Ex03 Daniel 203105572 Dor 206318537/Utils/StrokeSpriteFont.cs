@@ -1,6 +1,6 @@
-﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnimator;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Managers.Animators.ConcreteAnimator;
+﻿using A20_Ex03_Daniel_203105572_Dor_206318537.Models;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnimators;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Screens;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -16,14 +16,15 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Utils
           private float m_Scale = -1;
           private Color m_StrokeColor;
 
-          public StrokeSpriteFont(string i_Text, GameScreen i_GameScreen) 
+          public StrokeSpriteFont(string i_Text, GameScreen i_GameScreen)
                : this(k_FontAssetName, i_Text, i_GameScreen)
           {
           }
 
-          public StrokeSpriteFont(string i_FontAssetName, string i_Text, GameScreen i_GameScreen) 
+          public StrokeSpriteFont(string i_FontAssetName, string i_Text, GameScreen i_GameScreen)
                : base("", i_GameScreen, int.MaxValue)
           {
+               this.BlendState = BlendState.NonPremultiplied;
                m_SpriteFont = this.Game.Content.Load<SpriteFont>(i_FontAssetName);
                m_StrokeColor = new Color(Color.Black, this.TintColor.A);
                this.Text = i_Text;

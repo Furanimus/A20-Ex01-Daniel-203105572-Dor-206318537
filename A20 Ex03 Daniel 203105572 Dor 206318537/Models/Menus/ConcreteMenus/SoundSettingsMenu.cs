@@ -1,9 +1,9 @@
-﻿using A20_Ex03_Daniel_203105572_Dor_206318537.Menus;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
+﻿using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
 using Microsoft.Xna.Framework.Input;
-using System;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Screens;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus;
 
-namespace A20_Ex01_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus
+namespace A20_ex03_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus
 {
      public class SoundSettingsMenu : SubMenu
      {

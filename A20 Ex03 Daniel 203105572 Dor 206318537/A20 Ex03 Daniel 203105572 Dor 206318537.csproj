@@ -9,8 +9,8 @@
     <ProjectGuid>{34373531-C0AF-4B6F-B5D8-19A86DBF00C8}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>A20_Ex01_Daniel_203105572_Dor_206318537</RootNamespace>
-    <AssemblyName>A20 Ex01 Daniel 203105572 Dor 206318537</AssemblyName>
+    <RootNamespace>A20_Ex03_Daniel_203105572_Dor_206318537</RootNamespace>
+    <AssemblyName>A20 Ex03 Daniel 203105572 Dor 206318537</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MonoGamePlatform>Windows</MonoGamePlatform>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -45,8 +45,9 @@
     <Compile Include="Components\CompositeDrawableComponent.cs" />
     <Compile Include="Components\DrawableComparer.cs" />
     <Compile Include="Components\GameComponentEventArgs.cs" />
-    <Compile Include="Components\ILivesManager.cs" />
-    <Compile Include="Components\IScoreManager.cs" />
+    <Compile Include="Interfaces\ILivesManager.cs" />
+    <Compile Include="Interfaces\IPlayersManager.cs" />
+    <Compile Include="Interfaces\IScoreManager.cs" />
     <Compile Include="Components\UpdateableComparer.cs" />
     <Compile Include="Managers\eInputButtons.cs" />
     <Compile Include="Interfaces\IGameSettings.cs" />
@@ -54,18 +55,19 @@
     <Compile Include="Managers\CollisionsManager.cs" />
     <Compile Include="Managers\DummyInputManager.cs" />
     <Compile Include="Managers\InputManager.cs" />
+    <Compile Include="Managers\PlayersManager.cs" />
     <Compile Include="Managers\ScoreManager.cs" />
     <Compile Include="Managers\ScreensManager.cs" />
     <Compile Include="Models\AlienMatrixEnemy.cs" />
     <Compile Include="Models\Animators\CompositeAnimator.cs" />
-    <Compile Include="Models\Animators\ConcreteAnimator\BlinkAnimator.cs" />
-    <Compile Include="Models\Animators\ConcreteAnimator\CellAnimator.cs" />
-    <Compile Include="Models\Animators\ConcreteAnimator\JumpMovementAnimator.cs" />
-    <Compile Include="Models\Animators\ConcreteAnimator\PulseAnimator.cs" />
-    <Compile Include="Models\Animators\ConcreteAnimator\RotationAnimator.cs" />
-    <Compile Include="Models\Animators\ConcreteAnimator\ShrinkAnimator.cs" />
-    <Compile Include="Models\Animators\ConcreteAnimator\TransparencyAnimator.cs" />
-    <Compile Include="Models\Animators\ConcreteAnimator\WaypointsAnimator.cs" />
+    <Compile Include="Models\Animators\ConcreteAnimators\BlinkAnimator.cs" />
+    <Compile Include="Models\Animators\ConcreteAnimators\CellAnimator.cs" />
+    <Compile Include="Models\Animators\ConcreteAnimators\JumpMovementAnimator.cs" />
+    <Compile Include="Models\Animators\ConcreteAnimators\PulseAnimator.cs" />
+    <Compile Include="Models\Animators\ConcreteAnimators\RotationAnimator.cs" />
+    <Compile Include="Models\Animators\ConcreteAnimators\ShrinkAnimator.cs" />
+    <Compile Include="Models\Animators\ConcreteAnimators\TransparencyAnimator.cs" />
+    <Compile Include="Models\Animators\ConcreteAnimators\WaypointsAnimator.cs" />
     <Compile Include="Models\Animators\SpriteAnimator.cs" />
     <Compile Include="Models\Background.cs" />
     <Compile Include="Models\BaseModels\BaseBullet.cs" />

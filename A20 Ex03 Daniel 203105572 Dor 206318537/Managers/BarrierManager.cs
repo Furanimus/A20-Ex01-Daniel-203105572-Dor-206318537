@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
 using Microsoft.Xna.Framework.Graphics;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Utils;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Components;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Models;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Screens;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 {
@@ -30,13 +31,12 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                this.UpdateOrder = k_CallOrder;
                r_GameScreen = i_GameScreen;
                r_GameScreen.Add(this);
-               this.BlendState = BlendState.NonPremultiplied;
           }
 
           public override void Initialize()
           {
                createBarriers();
-           
+
                base.Initialize();
           }
 

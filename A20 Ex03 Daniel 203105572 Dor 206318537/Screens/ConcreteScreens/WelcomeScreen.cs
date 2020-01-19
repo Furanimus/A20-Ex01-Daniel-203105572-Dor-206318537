@@ -1,12 +1,11 @@
-﻿using A20_Ex03_Daniel_203105572_Dor_206318537.Managers.Animators.ConcreteAnimator;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
 using Microsoft.Xna.Framework.Graphics;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Managers.ConcreteScreens;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Screens;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Models;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnimators;
 
-namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
+namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
 {
      public class WelcomeScreen : GameScreen
      {
@@ -37,6 +36,8 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                this.Add(m_Instructions);
 
                this.BlendState = BlendState.NonPremultiplied;
+               m_WelcomeMessage.BlendState = BlendState.NonPremultiplied;
+               m_Instructions.BlendState = BlendState.NonPremultiplied;
           }
 
           public override void Initialize()
@@ -62,12 +63,12 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                     ExitScreen();
                }
 
-               if(InputManager.KeyPressed(Keys.Escape))
+               if (InputManager.KeyPressed(Keys.Escape))
                {
                     this.Game.Exit();
                }
 
-               if(InputManager.KeyPressed(Keys.M) && !isDeactivated)
+               if (InputManager.KeyPressed(Keys.M) && !isDeactivated)
                {
                     openMainMenu();
                }

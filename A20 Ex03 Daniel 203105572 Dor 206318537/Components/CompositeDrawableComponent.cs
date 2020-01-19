@@ -2,10 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Models;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Components
 {
@@ -16,7 +16,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Components
           public event EventHandler<GameComponentEventArgs<ComponentType>> ComponentAdded;
 
           public event EventHandler<GameComponentEventArgs<ComponentType>> ComponentRemoved;
-          
+
           private Collection<ComponentType> m_Components = new Collection<ComponentType>();
           private List<ComponentType> m_UninitializedComponents = new List<ComponentType>();
           protected List<IUpdateable> m_UpdateableComponents = new List<IUpdateable>();
@@ -178,7 +178,9 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Components
 
           private void initializeComponent(ComponentType i_Component)
           {
-               if (i_Component is Sprite)
+               Sprite component = i_Component as Sprite;
+
+               if (component != null && component.BlendState == this.BlendState)
                {
                     (i_Component as Sprite).SpriteBatch = SpriteBatch;
                }
@@ -195,7 +197,10 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Components
 
                foreach (Sprite sprite in m_Sprites)
                {
-                    sprite.SpriteBatch = SpriteBatch;
+                    if (sprite.BlendState == this.BlendState)
+                    {
+                         sprite.SpriteBatch = SpriteBatch;
+                    }
                }
           }
 
@@ -326,7 +331,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Components
           {
                return ((IEnumerable)m_Components).GetEnumerator();
           }
-          
+
           public SpriteBatch SpriteBatch { get; set; }
 
           public BlendState BlendState { get; set; } = BlendState.AlphaBlend;
