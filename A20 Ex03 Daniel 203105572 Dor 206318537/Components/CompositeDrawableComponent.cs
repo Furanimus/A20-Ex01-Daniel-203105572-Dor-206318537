@@ -178,7 +178,9 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Components
 
           private void initializeComponent(ComponentType i_Component)
           {
-               if (i_Component is Sprite)
+               Sprite component = i_Component as Sprite;
+
+               if (component != null && component.BlendState == this.BlendState)
                {
                     (i_Component as Sprite).SpriteBatch = SpriteBatch;
                }
@@ -195,7 +197,10 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Components
 
                foreach (Sprite sprite in m_Sprites)
                {
-                    sprite.SpriteBatch = SpriteBatch;
+                    if(sprite.BlendState == this.BlendState)
+                    {
+                         sprite.SpriteBatch = SpriteBatch;
+                    }
                }
           }
 

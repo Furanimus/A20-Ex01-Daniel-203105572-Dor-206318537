@@ -4,6 +4,7 @@ using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Utils;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Managers;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537
 {
@@ -32,6 +33,8 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537
           public GameTime GameTime { get; set; }
 
           protected IInputManager InputManager { get; set; }
+
+          protected IPlayersManager PlayersManager { get; set; }
 
           protected ICollisionsManager CollisionsManager { get; set; }
 

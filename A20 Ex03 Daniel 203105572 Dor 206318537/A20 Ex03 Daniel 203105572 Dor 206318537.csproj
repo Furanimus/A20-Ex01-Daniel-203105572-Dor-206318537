@@ -54,6 +54,8 @@
     <Compile Include="Managers\CollisionsManager.cs" />
     <Compile Include="Managers\DummyInputManager.cs" />
     <Compile Include="Managers\InputManager.cs" />
+    <Compile Include="Interfaces\IPlayersManager.cs" />
+    <Compile Include="Managers\PlayersManager.cs" />
     <Compile Include="Managers\ScoreManager.cs" />
     <Compile Include="Managers\ScreensManager.cs" />
     <Compile Include="Models\AlienMatrixEnemy.cs" />

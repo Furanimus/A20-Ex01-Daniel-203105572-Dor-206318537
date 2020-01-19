@@ -1,30 +1,19 @@
-﻿using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
-using A20_Ex01_Daniel_203105572_Dor_206318537.Models;
+﻿using Microsoft.Xna.Framework;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Interfaces;
+using A20_Ex01_Daniel_203105572_Dor_206318537.Managers;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System.Windows.Forms;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Managers.BaseModels;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 {
      public class PlayScreen : GameScreen
      {
-          private const string k_GameOverMsg = @"Player 1 Score is: {0}.
-Player 2 Score is: {1}.
-{2}";
-          private const string k_GameTitle = "Space Invaders";
-          private const string k_GameOverTitle = "Game Over";
-          private const string k_WinnerMsg = "The winner is Player {0}!";
-          private const string k_TieMsg = "It's a tie!";
+          private const string k_GameTitle        = "Space Invaders";
           private const string k_Player1AssetName = @"Sprites\Ship01_32x32";
           private const string k_Player2AssetName = @"Sprites\Ship02_32x32";
-          private LivesManager m_LivesManager;
-          private ScoreManager m_ScoreManager;
-          private InputManager m_InputManager;
-          private Player m_Player1;
-          private Player m_Player2;
           private readonly Background r_Background;
+          private IPlayersManager m_PlayersManager;
+          private IInputManager m_InputManager;
           private EnemyManager m_EnemyManager;
           private BarrierManager m_BarrierManager;
           private IGameSettings r_GameSettings;
@@ -37,7 +26,6 @@ Player 2 Score is: {1}.
                r_GameSettings.GraphicsDeviceManager.PreferredBackBufferWidth = (int)r_Background.Width;
                r_GameSettings.GraphicsDeviceManager.PreferredBackBufferHeight = (int)r_Background.Height;
                r_GameSettings.GraphicsDeviceManager.ApplyChanges();
-               this.BlendState = BlendState.NonPremultiplied;
           }
 
           public override void Initialize()
@@ -52,95 +40,46 @@ Player 2 Score is: {1}.
           private void initDrawableManagers()
           {
                m_EnemyManager = new EnemyManager(this);
-               m_BarrierManager = new BarrierManager(this, m_Player1.StartingPosition.Y, m_Player1.Height);
+               m_BarrierManager = new BarrierManager(this, m_PlayersManager[0].StartingPosition.Y, m_PlayersManager[0].Height);
 
                m_EnemyManager.MatrixReachedBottomWindow += OnGameOver;
-               m_EnemyManager.AllEnemiesDied += OnGameOver;
-               m_LivesManager.AllPlayersDied += OnGameOver;
+               m_EnemyManager.AllEnemiesDied            += OnGameOver;
+               m_PlayersManager.AllPlayersDied          += OnGameOver;
           }
 
           private void initPlayers()
           {
-               m_Player1 = new Player(k_Player1AssetName, this);
-               m_Player1.StartingPosition = new Vector2(GraphicsDevice.Viewport.Width - (m_Player1.Width * 2), GraphicsDevice.Viewport.Height - (m_Player1.Height * 2));
-               m_Player1.IsMouseControllable = true;
-               m_LivesManager.AddPlayer(m_Player1);
-               m_ScoreManager.AddPlayer(m_Player1, Color.Blue);
-               this.Add(m_Player1);
-               this.m_Player1.CollidedWithEnemy += OnGameOver;
-
-               m_Player2 = new Player(k_Player2AssetName, this);
-               m_Player2.StartingPosition = m_Player1.StartingPosition - new Vector2(m_Player2.Width, 0);
-               m_Player2.MoveLeftKey = Microsoft.Xna.Framework.Input.Keys.A;
-               m_Player2.MoveRightKey = Microsoft.Xna.Framework.Input.Keys.D;
-               m_Player2.ShootKey = Microsoft.Xna.Framework.Input.Keys.W;
-               m_Player2.GroupRepresentative = m_Player1;
-               m_Player2.Visible = false;
+               m_PlayersManager.AddPlayer(k_Player1AssetName);
+               m_PlayersManager.AddPlayer(k_Player2AssetName);
+               
+               Player player2              = m_PlayersManager.GetLastAddedPlayer() as Player;
+               player2.MoveLeftKey         = Microsoft.Xna.Framework.Input.Keys.A;
+               player2.MoveRightKey        = Microsoft.Xna.Framework.Input.Keys.D;
+               player2.ShootKey            = Microsoft.Xna.Framework.Input.Keys.W;
+               player2.RepresentativeColor = Color.Green;
+               player2.GroupRepresentative = m_PlayersManager[0];
           }
 
           private void initServices()
           {
-               m_LivesManager = new LivesManager(this);
-               m_ScoreManager = new ScoreManager(this);
-               m_InputManager = this.Game.Services.GetService(typeof(IInputManager)) as InputManager;
+               m_PlayersManager = new PlayersManager(this);
+               m_PlayersManager.PlayerCollided += playersManager_PlayerCollided;
+               m_InputManager   = this.Game.Services.GetService(typeof(IInputManager)) as IInputManager;
+          }
+
+          private void playersManager_PlayerCollided(BasePlayer i_Player, ICollidable2D i_CollidedWith)
+          {
+               Enemy enemy = i_CollidedWith as Enemy;
+
+               if(enemy != null)
+               {
+                    OnGameOver();
+               }
           }
 
           private void OnGameOver()
           {
-               string winMsg = getWinnerMsg();
-               string message = string.Format(k_GameOverMsg, m_Player1.Score, m_Player2.Score, winMsg);
-               System.Windows.Forms.MessageBox.Show(message, k_GameOverTitle, MessageBoxButtons.OK);
                this.Game.Exit();
-          }
-
-          private string getWinnerMsg()
-          {
-               string winner = null;
-
-               if (m_Player1.Score > m_Player2.Score)
-               {
-                    winner = string.Format(k_WinnerMsg, 1);
-               }
-               else if (m_Player1.Score < m_Player2.Score)
-               {
-                    winner = string.Format(k_WinnerMsg, 2);
-               }
-               else
-               {
-                    winner = k_TieMsg;
-               }
-
-               return winner;
-          }
-
-          private void checkIfAddPlayer2()
-          {
-               if (r_GameSettings.PlayersCount == 2 && !m_Player2.Visible)
-               {
-                    addPlayer2();
-               }
-               else if(r_GameSettings.PlayersCount == 1 && m_Player2.Visible)
-               {
-                    removePlayer2();
-               }
-          }
-
-          private void addPlayer2()
-          {
-               m_Player2.Visible = true;
-               m_Player2.CollidedWithEnemy += OnGameOver;
-               m_LivesManager.AddPlayer(m_Player2);
-               m_ScoreManager.AddPlayer(m_Player2, Color.Green);
-               this.Add(m_Player2);
-          }
-
-          private void removePlayer2()
-          {
-               m_Player2.Visible = false;
-               m_Player2.CollidedWithEnemy -= OnGameOver;
-               m_LivesManager.RemovePlayer(m_Player2);
-               m_ScoreManager.RemovePlayer(m_Player2);
-               this.Remove(m_Player2);
           }
 
           public override void Update(GameTime i_GameTime)
@@ -150,17 +89,8 @@ Player 2 Score is: {1}.
                     this.Game.Exit();
                }
 
-               checkIfAddPlayer2();
-
                this.Game.Window.Title = k_GameTitle;
                base.Update(i_GameTime);
-          }
-
-          public override void Draw(GameTime gameTime)
-          {
-               this.GraphicsDevice.Clear(Color.White);
-
-               base.Draw(gameTime);
           }
      }
 }

@@ -7,10 +7,10 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers.BaseModels
 {
      public abstract class BasePlayer : Entity
      {
+          public event Action<BasePlayer, ICollidable2D> PlayerCollided;
+          
           protected readonly IInputManager r_InputManager;
           private readonly Vector2 r_Velocity;
-
-          public event Action CollidedWithEnemy;
 
           public BasePlayer(string i_AssetName, GameScreen i_GameScreen) 
                : this(i_AssetName, i_GameScreen, int.MaxValue)
@@ -37,6 +37,8 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers.BaseModels
 
           public Keys MoveRightKey { get; set; } = Keys.K;
 
+          public Color RepresentativeColor { get; set; } = Color.Blue;
+
           public override Vector2 Position
           {
                get
@@ -62,13 +64,13 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers.BaseModels
                if(scoreManager == null)
                {
                     scoreManager = new ScoreManager(this.GameScreen);
-                    scoreManager.AddPlayer(this, Color.White);
+                    scoreManager.AddPlayer(this);
                }
                else
                {
                     if (!scoreManager.IsPlayerAlreadyAdded(this))
                     {
-                         scoreManager.AddPlayer(this, Color.White);
+                         scoreManager.AddPlayer(this);
                     }
                }
 
@@ -140,13 +142,17 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers.BaseModels
 
           protected virtual void OnCollidedWithBullet(BaseBullet i_Bullet)
           {
+               if(PlayerCollided != null)
+               {
+                    PlayerCollided.Invoke(this, i_Bullet);
+               }
           }
 
           protected virtual void OnCollidedWithEnemy(Enemy i_Enemy)
           {
-               if (CollidedWithEnemy != null)
+               if (PlayerCollided != null)
                {
-                    CollidedWithEnemy.Invoke();
+                    PlayerCollided.Invoke(this, i_Enemy);
                }
           }
      }

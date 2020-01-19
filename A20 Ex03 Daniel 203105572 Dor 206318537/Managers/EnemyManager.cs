@@ -54,7 +54,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                r_RandomBehavior = this.Game.Services.GetService(typeof(IRandomBehavior)) as IRandomBehavior;
                r_GameScreen.Add(this);
                this.DrawOrder = this.UpdateOrder = 5;
-               this.BlendState = BlendState.NonPremultiplied;
           }
 
           public override void Initialize()

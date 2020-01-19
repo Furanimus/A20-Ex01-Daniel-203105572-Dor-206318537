@@ -6,35 +6,33 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers.Animators.ConcreteAni
 {
      public class TransparencyAnimator : SpriteAnimator
      {
+          private const int k_MaxOpacity = 1;
+          private const int k_MinOpacity = 0;
           private const string k_Name = "Transparency";
-          private const float k_AlphaMaxValue = 255;
-          private readonly Color r_TintColor;
-          private float m_Alpha;
+          private float m_TimePassed;
 
-          public TransparencyAnimator(Color i_BoundSpriteTintColor, TimeSpan i_AnimationLength) 
-               : this(k_Name, i_BoundSpriteTintColor, i_AnimationLength)
+
+          public TransparencyAnimator(TimeSpan i_AnimationLength) 
+               : this(k_Name, i_AnimationLength)
           {
           }
 
-          public TransparencyAnimator(string i_Name, Color i_BoundSpriteTintColor, TimeSpan i_AnimationLength) 
+          public TransparencyAnimator(string i_Name, TimeSpan i_AnimationLength) 
                : base(i_Name, i_AnimationLength)
           {
-               r_TintColor = i_BoundSpriteTintColor;
-               m_Alpha = (float)r_TintColor.A;
           }
 
           protected override void DoFrame(GameTime i_GameTime)
           {
-               float totalSeconds = (float)i_GameTime.ElapsedGameTime.TotalSeconds;
-               m_Alpha -= k_AlphaMaxValue * (totalSeconds / (float)AnimationLength.TotalSeconds);
-               m_Alpha = MathHelper.Clamp(m_Alpha, 0, k_AlphaMaxValue);
-               this.BoundSprite.TintColor = new Color(r_TintColor, (byte)m_Alpha);
+               m_TimePassed += (float)i_GameTime.ElapsedGameTime.TotalSeconds;
+               float opacity = MathHelper.Clamp(k_MaxOpacity - (m_TimePassed / (float)AnimationLength.TotalSeconds), k_MinOpacity, k_MaxOpacity);
+               this.BoundSprite.Opacity = opacity;
           }
 
           protected override void RevertToOriginal()
           {
+               m_TimePassed = 0;
                this.BoundSprite.TintColor = m_OriginalSpriteInfo.TintColor;
-               m_Alpha = (float)m_OriginalSpriteInfo.TintColor.A;
           }
      }
 }

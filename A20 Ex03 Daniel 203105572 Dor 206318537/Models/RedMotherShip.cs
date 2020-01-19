@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Models.Animators;
 using Models.Animators.ConcreteAnimators;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Managers.Animators.ConcreteAnimator;
@@ -18,6 +19,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           public RedMotherShip(GameScreen i_GameScreen) 
                : base(k_AssetName, i_GameScreen)
           {
+               this.BlendState                   = BlendState.NonPremultiplied;
                this.TintColor                    = Color.Red;
                this.Score                        = 800;
                this.Velocity                     = new Vector2(100, 0);
@@ -37,7 +39,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                     this,
                     new BlinkAnimator(TimeSpan.FromSeconds(k_BlinkLength), TimeSpan.FromSeconds(k_DeadAnimationLength)),
                     new ShrinkAnimator(TimeSpan.FromSeconds(k_DeadAnimationLength)),
-                    new TransparencyAnimator(this.TintColor, TimeSpan.FromSeconds(k_DeadAnimationLength)));
+                    new TransparencyAnimator(TimeSpan.FromSeconds(k_DeadAnimationLength)));
                deadAnimator.Finished += deadAnimator_Finished;
                this.Animations.Add(deadAnimator);
                this.Animations.Pause();
