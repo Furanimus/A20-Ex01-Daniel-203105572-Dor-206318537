@@ -9,8 +9,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
 {
      public class LevelTransitionScreen : GameScreen
      {
-          private const float k_PulseTargetScale   = 2f;
-          private const float k_PulsePerSec        = 0.5f;
+          private const string k_FontName          = @"Fonts/HeadlineArialFont";
           private const float k_ActivationLength   = 0.5f;
           private const float k_DeactivationLength = 0.5f;
           private const float k_BlackTintAlpha     = 0.65f;
@@ -23,7 +22,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
           private int m_ShownLevel                 = 0;
           private bool m_IsInitialized;
           private StrokeSpriteFont m_LevelText;
-          private StrokeSpriteFont m_SecondsLeft;
+          private StrokeSpriteFont m_SecondsLeftText;
 
           public LevelTransitionScreen(Game i_Game)
                : base(i_Game)
@@ -35,8 +34,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
                this.ActivationLength = TimeSpan.FromSeconds(k_ActivationLength);
                this.DeactivationLength = TimeSpan.FromSeconds(k_DeactivationLength);
                this.BlendState = BlendState.NonPremultiplied;
-
-               m_LevelText = new StrokeSpriteFont("", this);
           }
 
           public int CurrentLevel { get; set; }
@@ -47,29 +44,24 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
           {
                if (!m_IsInitialized)
                {
-                    m_IsInitialized = true;
                     base.Initialize();
 
-                    m_ShownLevel = CurrentLevel;
-                    m_LevelText = new StrokeSpriteFont(string.Format(k_Level, CurrentLevel), this);
-                    m_SecondsLeft = new StrokeSpriteFont(string.Format(k_SecondsLeft, SecondsLeft), this);
-                    m_LevelText.Initialize();
-                    m_SecondsLeft.Initialize();
-                    m_LevelText.Animations.Add(new PulseAnimator(TimeSpan.Zero, k_PulseTargetScale, k_PulsePerSec));
-                    m_SecondsLeft.Animations.Add(new PulseAnimator(TimeSpan.Zero, k_PulseTargetScale, k_PulsePerSec));
-                    m_LevelText.Animations.Enabled = true;
-                    m_SecondsLeft.Animations.Enabled = true;
-
-                    m_LevelText.PositionOrigin = m_LevelText.SourceRectangleCenter;
-                    m_LevelText.RotationOrigin = m_LevelText.SourceRectangleCenter;
-                    m_SecondsLeft.PositionOrigin = m_SecondsLeft.SourceRectangleCenter;
-                    m_SecondsLeft.RotationOrigin = m_SecondsLeft.SourceRectangleCenter;
-                    m_LevelText.Position = CenterOfViewPort;
-                    m_SecondsLeft.Position = CenterOfViewPort + new Vector2 (0, k_YOffset);
-
+                    initTexts(out m_SecondsLeftText, k_SecondsLeft, CenterOfViewPort + new Vector2(0, k_YOffset));
+                    initTexts(out m_LevelText, k_Level, CenterOfViewPort);
                     this.Add(m_LevelText);
-                    this.Add(m_SecondsLeft);
+                    this.Add(m_SecondsLeftText);
+
+                    m_IsInitialized = true;
                }
+          }
+
+          private void initTexts(out StrokeSpriteFont o_SpriteText, string i_Text, Vector2 i_Position)
+          {
+               o_SpriteText                = new StrokeSpriteFont(k_FontName, string.Format(i_Text, SecondsLeft), this);
+               o_SpriteText.Initialize();
+               o_SpriteText.PositionOrigin = o_SpriteText.SourceRectangleCenter;
+               o_SpriteText.RotationOrigin = o_SpriteText.SourceRectangleCenter;
+               o_SpriteText.Position       = i_Position;
           }
 
           public override void Update(GameTime i_GameTime)
@@ -87,18 +79,12 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
                {
                     m_OneSecondTimer = 1f;
                     SecondsLeft--;
-                    m_SecondsLeft.Text = string.Format(k_SecondsLeft, SecondsLeft);
+                    m_SecondsLeftText.Text = string.Format(k_SecondsLeft, SecondsLeft);
                }
 
                if (m_CurrentTime >= k_TimeUntilExit)
                {
-                    m_CurrentTime = 0;
-                    m_OneSecondTimer = 1f;
-                    SecondsLeft = 3;
-                    m_LevelText.Animations.Reset();
-                    m_LevelText.Scales = Vector2.One;
-                    m_SecondsLeft.Animations.Reset();
-                    m_SecondsLeft.Scales = Vector2.One;
+                    Reset();
                     ExitScreen();
                }
 
@@ -106,12 +92,19 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
                base.Update(i_GameTime);
           }
 
+          private void Reset()
+          {
+               m_CurrentTime = 0;
+               m_OneSecondTimer = 1f;
+               SecondsLeft = 3;
+          }
+
           private void doTransition()
           {
                if (this.TransitionPosition != 1 && this.TransitionPosition != 0)
                {
                     m_LevelText.Scales = new Vector2(this.TransitionPosition);
-                    m_SecondsLeft.Scales = new Vector2(this.TransitionPosition);
+                    m_SecondsLeftText.Scales = new Vector2(this.TransitionPosition);
                }
           }
      }

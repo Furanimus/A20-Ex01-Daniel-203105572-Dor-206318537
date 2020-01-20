@@ -9,9 +9,9 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
      public class GameOverScreen : GameScreen
      {
           private const string k_GameOverAssetName = @"Sprites\GameOverMessage";
-          private const float k_PulseTargetScale = 1.05f;
-          private const float k_PulsePerSec = 0.7f;
-          private const int k_ActivationLength = 1;
+          private const float k_PulseTargetScale   = 1.05f;
+          private const float k_PulsePerSec        = 0.7f;
+          private const int k_ActivationLength     = 1;
           private Sprite m_GameOverMessage;
           private Background m_Background;
 

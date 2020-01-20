@@ -10,41 +10,40 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
 {
      public class PlayScreen : GameScreen
      {
-          private const string k_GameTitle = "Space Invaders";
+          private const string k_GameTitle        = "Space Invaders";
           private const string k_Player1AssetName = @"Sprites\Ship01_32x32";
           private const string k_Player2AssetName = @"Sprites\Ship02_32x32";
-          private const int k_ScoreToUpdate = 140;
           private readonly Background r_Background;
           private readonly LevelTransitionScreen r_LevelTransition;
           private readonly PauseScreen r_PauseScreen;
-          private IPlayersManager m_PlayersManager;
-          private IInputManager m_InputManager;
           private EnemyManager m_EnemyManager;
           private BarrierManager m_BarrierManager;
+          private IPlayersManager m_PlayersManager;
+          private IInputManager m_InputManager;
           private IGameSettings r_GameSettings;
           private int m_Level = 1;
 
           public PlayScreen(Game i_Game)
                : base(i_Game)
           {
-               r_GameSettings = this.Game.Services.GetService(typeof(IGameSettings)) as IGameSettings;
-               r_Background = new Background(this);
+               r_LevelTransition = new LevelTransitionScreen(this.Game);
+               r_PauseScreen     = new PauseScreen(this.Game);
+               r_Background      = new Background(this);
+               r_GameSettings    = this.Game.Services.GetService(typeof(IGameSettings)) as IGameSettings;
                r_GameSettings.GraphicsDeviceManager.PreferredBackBufferWidth = (int)r_Background.Width;
                r_GameSettings.GraphicsDeviceManager.PreferredBackBufferHeight = (int)r_Background.Height;
                r_GameSettings.GraphicsDeviceManager.ApplyChanges();
-               r_LevelTransition = new LevelTransitionScreen(this.Game);
-               r_PauseScreen = new PauseScreen(this.Game);
           }
 
           public override void Initialize()
           {
                r_LevelTransition.StateChanged += levelTransition_StateChanged;
-               r_PauseScreen.StateChanged += pauseScreen_StateChanged;
+               r_PauseScreen.StateChanged     += pauseScreen_StateChanged;
+               this.Game.Window.Title         = k_GameTitle;
 
                initServices();
                initPlayers();
                initDrawableManagers();
-               this.Game.Window.Title = k_GameTitle;
 
                base.Initialize();
           }
@@ -59,12 +58,12 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
 
           private void initDrawableManagers()
           {
-               m_EnemyManager = new EnemyManager(this);
+               m_EnemyManager   = new EnemyManager(this);
                m_BarrierManager = new BarrierManager(this, m_PlayersManager[0].StartPosition.Y, m_PlayersManager[0].Height);
 
                m_EnemyManager.MatrixReachedBottomWindow += OnGameOver;
-               m_EnemyManager.AllEnemiesDied += enemyManager_AllEnemiesDied;
-               m_PlayersManager.AllPlayersDied += OnGameOver;
+               m_EnemyManager.AllEnemiesDied            += enemyManager_AllEnemiesDied;
+               m_PlayersManager.AllPlayersDied          += OnGameOver;
           }
 
           private void enemyManager_AllEnemiesDied()

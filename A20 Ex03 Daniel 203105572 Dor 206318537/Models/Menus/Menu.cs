@@ -13,12 +13,12 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus
 {
      public abstract class Menu : Sprite
      {
-          private const int k_Spacing = 40;
-          private const string k_FontAssetName = @"Fonts\ArialFont";
-          private const float k_TitleHeight = 100;
+          private const string k_TitleFontAssetName = @"Fonts/HeadlineArialFont";
+          private const string k_QuitMenuItemName   = "Quit";
+          private const int k_Spacing               = 40;
+          private const float k_TitleHeight         = 100;
           private readonly List<MenuItem> r_Options;
           protected readonly IInputManager r_InputManager;
-          protected Menu m_PrevMenu;
           private int m_CurrentOptionIndex = -1;
 
           protected Menu(StrokeSpriteFont i_Title, GameScreen i_GameScreen) 
@@ -32,12 +32,13 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus
                this.GameSettings = this.Game.Services.GetService(typeof(IGameSettings)) as IGameSettings;
                this.Title = i_Title;
                this.Title.Visible = false;
+
                i_GameScreen.Add(this);
                i_GameScreen.Add(Title);
           }
 
           protected Menu(string i_Title, GameScreen i_GameScreen)
-               : this(new StrokeSpriteFont(i_Title, i_GameScreen), i_GameScreen)
+               : this(new StrokeSpriteFont(k_TitleFontAssetName, i_Title, i_GameScreen), i_GameScreen)
           {
           }
 
@@ -63,8 +64,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus
                this.Enabled = this.Visible;
                this.Title.Visible = this.Visible;
           }
-
-          public string FontAssetName { get; set; } = k_FontAssetName;
 
           public int Spacing { get; set; } = k_Spacing;
 
@@ -220,7 +219,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus
 
           protected virtual void AddItems()
           {
-               this.AddMenuItem("Quit", menu_Quit);
+               this.AddMenuItem(k_QuitMenuItemName, menu_Quit);
           }
 
           private void menu_Quit(MenuItem i_MenuItem)
@@ -243,6 +242,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus
                }
 
                this.Title.PositionOrigin = this.Title.SourceRectangleCenter;
+               this.Title.RotationOrigin = this.Title.SourceRectangleCenter;
                this.Title.Position = new Vector2(this.Game.GraphicsDevice.Viewport.Width / 2, k_TitleHeight);
           }
 

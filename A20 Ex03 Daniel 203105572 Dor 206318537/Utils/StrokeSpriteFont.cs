@@ -9,22 +9,23 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Utils
 {
      public class StrokeSpriteFont : Sprite
      {
-          private const string k_FontAssetName = @"Fonts\ArialFont";
+          private const string k_DefaultFontAssetName = @"Fonts\ArialFont";
+          private string m_FontAssetName;
           private SpriteFont m_SpriteFont;
           private float m_Scale = -1;
           private Color m_StrokeColor;
 
           public StrokeSpriteFont(string i_Text, GameScreen i_GameScreen)
-               : this(k_FontAssetName, i_Text, i_GameScreen)
+               : this(k_DefaultFontAssetName, i_Text, i_GameScreen)
           {
           }
 
           public StrokeSpriteFont(string i_FontAssetName, string i_Text, GameScreen i_GameScreen)
                : base("", i_GameScreen, int.MaxValue)
           {
-               this.BlendState = BlendState.NonPremultiplied;
-               m_SpriteFont = this.Game.Content.Load<SpriteFont>(i_FontAssetName);
+               m_FontAssetName = i_FontAssetName;
                m_StrokeColor = new Color(Color.Black, this.TintColor.A);
+               this.BlendState = BlendState.NonPremultiplied;
                this.Text = i_Text;
                this.BlendState = BlendState.NonPremultiplied;
           }
@@ -65,6 +66,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Utils
           {
                if (!IsInitialized)
                {
+                    m_SpriteFont = this.Game.Content.Load<SpriteFont>(m_FontAssetName);
                     Vector2 dimension = m_SpriteFont.MeasureString(this.Text);
                     this.Width = dimension.X;
                     this.Height = dimension.Y;

@@ -8,18 +8,25 @@ namespace A20_ex03_Daniel_203105572_Dor_206318537.Models.Menus
 {
      public class SubMenu : Menu
      {
-          private readonly Menu r_PrevMenu;
+          private const string k_PrevMenuItemName = "done";
+          private Menu m_PrevMenu;
 
           public SubMenu(StrokeSpriteFont i_Title, Menu i_PrevMenu, GameScreen i_GameScreen) 
                : base(i_Title, i_GameScreen)
           {
-               r_PrevMenu = i_PrevMenu;
-               this.Position = i_PrevMenu.Position;
+               setPositionAndPrevMenu(i_PrevMenu);
           }
 
           public SubMenu(string i_Title, Menu i_PrevMenu, GameScreen i_GameScreen)
-               : this(new StrokeSpriteFont(i_Title, i_GameScreen), i_PrevMenu, i_GameScreen)
+               : base(i_Title, i_GameScreen)
           {
+               setPositionAndPrevMenu(i_PrevMenu);
+          }
+
+          private void setPositionAndPrevMenu(Menu i_PrevMenu)
+          {
+               m_PrevMenu = i_PrevMenu;
+               this.Position = i_PrevMenu.Position;
           }
 
           private void done_CheckMouseOrKBState(MenuItem i_MenuItem)
@@ -27,14 +34,14 @@ namespace A20_ex03_Daniel_203105572_Dor_206318537.Models.Menus
                if(r_InputManager.KeyPressed(Keys.Enter) 
                     || r_InputManager.ButtonPressed(eInputButtons.Left))
                {
-                    r_PrevMenu.Visible = true;
+                    m_PrevMenu.Visible = true;
                     this.Visible = false;
                }
           }
 
           protected override void AddItems()
           {
-               this.AddMenuItem("Done", done_CheckMouseOrKBState);
+               this.AddMenuItem(k_PrevMenuItemName, done_CheckMouseOrKBState);
                this.Visible = false;
           }
      }

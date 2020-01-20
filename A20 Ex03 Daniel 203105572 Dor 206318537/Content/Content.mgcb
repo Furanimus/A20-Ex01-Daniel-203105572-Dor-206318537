@@ -27,6 +27,13 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/ComicSansMsFont.spritefont
 
+#begin Fonts/HeadlineArialFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/HeadlineArialFont.spritefont
+
 #begin Screens/blank.png
 /importer:TextureImporter
 /processor:TextureProcessor

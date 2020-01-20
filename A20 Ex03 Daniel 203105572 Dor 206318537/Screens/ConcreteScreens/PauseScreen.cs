@@ -9,6 +9,10 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
 {
      public class PauseScreen : GameScreen
      {
+          private const float k_ActivationLength   = 0.5f;
+          private const float k_DeactivationLength = 0.5f;
+          private const float k_BlackTintAlpha     = 0.55f;
+          private const string k_PauseMsg          = "Press R to resume";
           private readonly IInputManager r_InputManager;
           private readonly StrokeSpriteFont r_ResumeText;
 
@@ -16,14 +20,13 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
                : base(i_Game)
           {
                r_InputManager = this.Game.Services.GetService(typeof(IInputManager)) as IInputManager;
-               r_ResumeText = new StrokeSpriteFont("Press R to resume", this);
+               r_ResumeText = new StrokeSpriteFont(k_PauseMsg, this);
                this.IsOverlayed = true;
-               this.BlackTintAlpha = 0.55f;
+               this.BlackTintAlpha = k_BlackTintAlpha;
                this.UseFadeTransition = true;
-               this.ActivationLength = TimeSpan.FromSeconds(0.5f);
-               this.DeactivationLength = TimeSpan.FromSeconds(0.5f);
+               this.ActivationLength = TimeSpan.FromSeconds(k_ActivationLength);
+               this.DeactivationLength = TimeSpan.FromSeconds(k_DeactivationLength);
                this.BlendState = BlendState.NonPremultiplied;
-
                this.Add(r_ResumeText);
           }
 

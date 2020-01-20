@@ -8,9 +8,9 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
 
      public class MainMenuScreen : GameScreen
      {
-          private const float k_ActivationLength = 0.5f;
+          private const float k_ActivationLength   = 0.5f;
           private const float k_DeactivationLength = 0.5f;
-          private const float k_BlackTintAlpha = 0.65f;
+          private const float k_BlackTintAlpha     = 0.65f;
           private MainMenu m_MainMenu;
 
           public MainMenuScreen(Game i_Game) 
@@ -18,13 +18,13 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
           {
                m_MainMenu = new MainMenu(this);
                
-               this.IsOverlayed = true;
+               this.IsOverlayed           = true;
                this.UseGradientBackground = true;
-               this.BlackTintAlpha = k_BlackTintAlpha;
-               this.UseFadeTransition = true;
-               this.ActivationLength = TimeSpan.FromSeconds(k_ActivationLength);
-               this.DeactivationLength = TimeSpan.FromSeconds(k_DeactivationLength);
-               this.BlendState = BlendState.NonPremultiplied;
+               this.BlackTintAlpha        = k_BlackTintAlpha;
+               this.UseFadeTransition     = true;
+               this.ActivationLength      = TimeSpan.FromSeconds(k_ActivationLength);
+               this.DeactivationLength    = TimeSpan.FromSeconds(k_DeactivationLength);
+               this.BlendState            = BlendState.NonPremultiplied;
           }
 
           public override void Update(GameTime i_GameTime)

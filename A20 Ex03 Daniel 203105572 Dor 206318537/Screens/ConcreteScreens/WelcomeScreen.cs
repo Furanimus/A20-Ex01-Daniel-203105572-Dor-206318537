@@ -9,11 +9,13 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
 {
      public class WelcomeScreen : GameScreen
      {
-          private const string k_WelcomeAssetName = @"Sprites\WelcomeMessage";
+          private const string k_WelcomeAssetName      = @"Sprites\WelcomeMessage";
           private const string k_InstructionsAssetName = @"Sprites\Instructions";
-          private const float k_WelcomePulsePerSec = 0.7f;
-          private const float k_WelcomeTargetScale = 1.05f;
-          private const int k_Space = 50;
+          private const float k_WelcomePulsePerSec     = 0.7f;
+          private const float k_WelcomeTargetScale     = 1.05f;
+          private const int k_Space                    = 50;
+          private const float k_ActivationLength       = 0.5f;
+          private const float k_DeactivationLength     = 0.5f;
           private Sprite m_WelcomeMessage;
           private Background m_Background;
           private Sprite m_Instructions;
@@ -29,15 +31,14 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
                m_Background = new Background(this);
 
                this.UseFadeTransition = true;
-               this.ActivationLength = TimeSpan.FromSeconds(0.5f);
-               this.DeactivationLength = TimeSpan.FromSeconds(0.5f);
-
+               this.ActivationLength = TimeSpan.FromSeconds(k_ActivationLength);
+               this.DeactivationLength = TimeSpan.FromSeconds(k_DeactivationLength);
                this.Add(m_WelcomeMessage);
                this.Add(m_Instructions);
-
                this.BlendState = BlendState.NonPremultiplied;
+
                m_WelcomeMessage.BlendState = BlendState.NonPremultiplied;
-               m_Instructions.BlendState = BlendState.NonPremultiplied;
+               m_Instructions.BlendState   = BlendState.NonPremultiplied;
           }
 
           public override void Initialize()
