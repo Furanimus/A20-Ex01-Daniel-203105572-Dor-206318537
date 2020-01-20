@@ -15,10 +15,11 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 
           public event Action AllEnemiesDied;
 
+          private const int k_MaxLevel = 5;
           private const int k_MatrixRows = 5;
-          private const int k_VisibleRows = 5;
-          private const int k_MatrixCols = 10;
-          private const int k_VisibleCols = 9;
+          private const int k_InitialVisibleRows = 5;
+          private const int k_MatrixCols = 14;
+          private const int k_InitialVisibleCols = 9;
           private const int k_AlienEnemyVelocity = 32;
           private const int k_EnemyWidth = 32;
           private const int k_EnemyHeight = 32;
@@ -30,10 +31,11 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           private const int k_MaxRowForPinkEnemies = 1;
           private const int k_MaxMillisecondToRoll = 300;
           private const int k_NumOfDeadEnemiesToIncreaseVelocity = 5;
-          private const int k_PinkEnemyScore = 250;
-          private const int k_LightBlueEnemyScore = 150;
-          private const int k_LightYellowEnemyScore = 100;
           private const int k_NumOfAnimationCells = 2;
+          private const int k_StartingPinkEnemyScore = 250;
+          private const int k_StartingLightBlueEnemyScore = 150;
+          private const int k_StartingLightYellowEnemyScore = 100;
+          private const int k_AddedScoresOnNextLevel = 140;
           private const float k_CellTime = 0.5f;
           private const float k_EnemiesStartingY = 96;
           private const float k_EnemiesStartingX = 0;
@@ -75,10 +77,34 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           }
 
           public int MaxShotsInMidAir { get; set; } = 1;
+          private int m_VisibleCols = k_InitialVisibleCols;
+          private int m_VisibleRows = k_InitialVisibleRows;
 
-          public int VisibleRows { get; set; } = k_VisibleRows;
+          public int VisibleRows
+          {
+               get
+               {
+                    return m_VisibleRows;
+               }
 
-          public int VisibleCols { get; set; } = k_VisibleCols;
+               set
+               {
+                    m_VisibleRows = k_InitialVisibleRows + (value - k_InitialVisibleRows) % k_MaxLevel;
+               }
+          }
+
+          public int VisibleCols
+          {
+               get
+               {
+                    return m_VisibleCols;
+               }
+
+               set
+               {
+                    m_VisibleCols = k_InitialVisibleCols + (value - k_InitialVisibleCols) % k_MaxLevel;
+               }
+          }
 
           private void setDownRepresentetive()
           {
@@ -95,6 +121,18 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                               isFound = true;
                               m_DownMostRepresentetive = r_EnemyMatrix[row][col];
                          }
+                    }
+               }
+          }
+
+          public void UpdateLevelDifficulty()
+          {
+               foreach (List<Enemy> row in r_EnemyMatrix)
+               {
+                    foreach (Enemy enemy in row)
+                    {
+                         enemy.Score += k_AddedScoresOnNextLevel;
+                         (enemy as ShooterEnemy).MaxShotsInMidAir++;
                     }
                }
           }
@@ -226,20 +264,21 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 
           private void populateMatrix()
           {
-               int rowsToAdd = k_MatrixRows - r_EnemyMatrix.Count;
-               updateRows(rowsToAdd);
-               updateCols(rowsToAdd);
+               updateRows();
+               updateCols();
           }
 
-          private void updateRows(int i_RowsToAdd)
+          private void updateRows()
           {
-               for (int row = 0; row < i_RowsToAdd; row++)
+               int rowsToAdd = k_MatrixRows - r_EnemyMatrix.Count;
+
+               for (int row = 0; row < rowsToAdd; row++)
                {
                     r_EnemyMatrix.Add(new List<Enemy>(k_MatrixCols));
                }
           }
 
-          private void updateCols(int i_RowsAdded)
+          private void updateCols()
           {
                Color color;
                int scoreWorth;
@@ -279,19 +318,19 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                if (i_CurrentRow < k_MaxRowForPinkEnemies)
                {
                     o_Color = Color.Pink;
-                    o_ScoreWorth = k_PinkEnemyScore;
+                    o_ScoreWorth = k_StartingPinkEnemyScore;
                     o_SourceRectangle = new Rectangle(k_PinkEnemyTextureX, k_EnemyTextureY, k_EnemyWidth, k_EnemyHeight);
                }
                else if (i_CurrentRow < k_MaxRowForBlueEnemies)
                {
                     o_Color = Color.LightBlue;
-                    o_ScoreWorth = k_LightBlueEnemyScore;
+                    o_ScoreWorth = k_StartingLightBlueEnemyScore;
                     o_SourceRectangle = new Rectangle(k_LightBlueTextureX, k_EnemyTextureY, k_EnemyWidth, k_EnemyHeight);
                }
                else
                {
                     o_Color = Color.LightYellow;
-                    o_ScoreWorth = k_LightYellowEnemyScore;
+                    o_ScoreWorth = k_StartingLightYellowEnemyScore;
                     o_SourceRectangle = new Rectangle(k_LightYellowTextureX, k_EnemyTextureY, k_EnemyWidth, k_EnemyHeight);
                }
           }
@@ -325,8 +364,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 
           public void Reset()
           {
-               updateMatrix();
-
                foreach (List<Enemy> rows in r_EnemyMatrix)
                {
                     foreach (Enemy enemy in rows)
@@ -336,7 +373,9 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                          enemy.Animations["Cell"].Resume();
                     }
                }
-               
+
+               m_DeadEnemiesCounter = 0;
+               updateMatrix();
                setRepresentetives();
           }
 
@@ -344,7 +383,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           {
                Enemy enemy = i_Sender as Enemy;
 
-               if (!enemy.Visible)
+               if (!enemy.Visible && !enemy.IsAlive)
                {
                     if (enemy == m_DownMostRepresentetive)
                     {
@@ -363,7 +402,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 
                     m_DeadEnemiesCounter++;
 
-                    if (AllEnemiesDied != null && m_DeadEnemiesCounter == k_MatrixRows * k_MatrixCols)
+                    if (AllEnemiesDied != null && m_DeadEnemiesCounter == VisibleCols * VisibleRows)
                     {
                          AllEnemiesDied.Invoke();
                     }

@@ -13,13 +13,15 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
           private const string k_GameTitle = "Space Invaders";
           private const string k_Player1AssetName = @"Sprites\Ship01_32x32";
           private const string k_Player2AssetName = @"Sprites\Ship02_32x32";
+          private const int k_ScoreToUpdate = 140;
           private readonly Background r_Background;
+          private readonly LevelTransitionScreen r_LevelTransition;
+          private readonly PauseScreen r_PauseScreen;
           private IPlayersManager m_PlayersManager;
           private IInputManager m_InputManager;
           private EnemyManager m_EnemyManager;
           private BarrierManager m_BarrierManager;
           private IGameSettings r_GameSettings;
-          private LevelTransitionScreen r_LevelTransition;
           private int m_Level = 1;
 
           public PlayScreen(Game i_Game)
@@ -31,10 +33,14 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
                r_GameSettings.GraphicsDeviceManager.PreferredBackBufferHeight = (int)r_Background.Height;
                r_GameSettings.GraphicsDeviceManager.ApplyChanges();
                r_LevelTransition = new LevelTransitionScreen(this.Game);
+               r_PauseScreen = new PauseScreen(this.Game);
           }
 
           public override void Initialize()
           {
+               r_LevelTransition.StateChanged += levelTransition_StateChanged;
+               r_PauseScreen.StateChanged += pauseScreen_StateChanged;
+
                initServices();
                initPlayers();
                initDrawableManagers();
@@ -43,19 +49,9 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
                base.Initialize();
           }
 
-          private void showLevelTransition()
+          private void pauseScreen_StateChanged(object i_Sender, StateChangedEventArgs i_Args)
           {
-               if (r_LevelTransition.CurrentLevel != m_Level)
-               {
-                    r_LevelTransition.CurrentLevel++;
-                    this.ScreensManager.SetCurrentScreen(r_LevelTransition);
-                    r_LevelTransition.StateChanged += levelTransition_StateChanged;
-               }
-          }
-
-          private void levelTransition_StateChanged(object i_Sender, StateChangedEventArgs i_Args)
-          {
-               if (i_Args.CurrentState == eScreenState.Closed)
+               if(i_Args.CurrentState == eScreenState.Closed)
                {
                     this.ScreensManager.SetCurrentScreen(this);
                }
@@ -75,9 +71,28 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
           {
                m_Level++;
                m_EnemyManager.VisibleCols++;
+               m_EnemyManager.UpdateLevelDifficulty();
                m_PlayersManager.Reset();
                m_EnemyManager.Reset();
                showLevelTransition();
+          }
+
+          private void showLevelTransition()
+          {
+               if (r_LevelTransition.CurrentLevel < m_Level)
+               {
+                    r_LevelTransition.CurrentLevel++;
+                    this.ScreensManager.SetCurrentScreen(r_LevelTransition);
+               }
+          }
+
+          private void levelTransition_StateChanged(object i_Sender, StateChangedEventArgs i_Args)
+          {
+               if (i_Args.CurrentState == eScreenState.Closed)
+               {
+                    this.ScreensManager.SetCurrentScreen(this);
+                    m_EnemyManager.Reset();
+               }
           }
 
           private void initPlayers()
@@ -120,6 +135,11 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
                if (m_InputManager.KeyPressed(Keys.Escape))
                {
                     this.Game.Exit();
+               }
+
+               if (m_InputManager.KeyPressed(Keys.P))
+               {
+                    this.ScreensManager.SetCurrentScreen(r_PauseScreen);
                }
 
                showLevelTransition();

@@ -33,6 +33,18 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                this.MoveDirection = Sprite.Right;
           }
 
+          public int MaxShotsInMidAir
+          {
+               get
+               {
+                    return this.Gun.Capacity;
+               }
+               set
+               {
+                    this.Gun.Capacity = value;
+               }
+          }
+
           public override void Collided(ICollidable i_Collidable)
           {
                bool amIAliveAndCollidedWithBullet = this.IsAlive && i_Collidable.GroupRepresentative != this.GroupRepresentative && i_Collidable is Bullet;

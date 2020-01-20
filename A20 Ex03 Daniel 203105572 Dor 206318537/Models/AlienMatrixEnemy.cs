@@ -41,19 +41,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                this.RotationOrigin = new Vector2(Width / 2, Height / 2);
           }
 
-          public int MaxShotsInMidAir
-          {
-               get
-               {
-                    return this.Gun.Capacity;
-               }
-               set
-               {
-                    this.Gun.Capacity = value;
-               }
-          }
-
-
           public CellAnimator CellAnimation { get; set; }
 
           public override void Initialize()
