@@ -5,6 +5,7 @@ using A20_Ex03_Daniel_203105572_Dor_206318537.Utils;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Components;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Models;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Screens;
+using System;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 {
@@ -14,13 +15,19 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           private const float k_BarrierHeight = 32;
           private const int k_NumOfBarriers = 4;
           private const int k_CallOrder = 5;
+          private const int k_MaxLevel = 5;
+          private const float k_StartingXVelocity = 45f;
           private const float k_OffsetToChangeDirection = k_BarrierWidth / 2;
+          private const float k_VelocityIncreaseOnLevelTransition = 0.04f;
           private const string k_BarrierAsset = @"Sprites\Barrier_44x32";
           private readonly float r_PlayerStartingY;
           private readonly float r_PlayerHeight;
           private readonly List<Barrier> r_Barriers;
           private readonly GameScreen r_GameScreen;
           private Texture2D m_BarrierTexture;
+          private Texture2DPixels m_SampleBarrierPixels;
+
+          public float BarrierXVelocity { get; set; } = k_StartingXVelocity;
 
           public BarrierManager(GameScreen i_GameScreen, float i_PlayerStartingY, float i_PlayerHeight)
                         : base(i_GameScreen.Game)
@@ -63,7 +70,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                {
                     barrier.Texture = m_BarrierTexture.Clone(this.Game.GraphicsDevice);
                }
-
           }
 
 
@@ -97,6 +103,53 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                }
 
                base.Update(i_GameTime);
+          }
+
+          public void Reset()
+          {
+               if(m_SampleBarrierPixels == null)
+               {
+                    m_SampleBarrierPixels = m_BarrierTexture.GetPixels(m_BarrierTexture.Bounds);
+               }
+
+               foreach (Barrier barrier in r_Barriers)
+               {
+                    
+                    for (int row = 0; row < barrier.TexturePixels.Rows; row++)
+                    {
+                         for(int col = 0; col < barrier.TexturePixels.Cols; col++)
+                         {
+                              barrier.TexturePixels[row, col] = m_SampleBarrierPixels[row, col];
+                         }
+                    }
+
+                    barrier.Texture.SetData(barrier.TexturePixels.Pixels);
+               }
+          }
+
+          private int m_CurrentLevel = 1;
+
+          public void UpdateLevelDifficulty()
+          {
+               if (m_CurrentLevel % k_MaxLevel == 0)
+               {
+                    BarrierXVelocity = 0;
+               }
+               else if(m_CurrentLevel % k_MaxLevel == 1)
+               {
+                    BarrierXVelocity = k_StartingXVelocity;
+               }
+               else
+               {
+                    BarrierXVelocity += BarrierXVelocity * k_VelocityIncreaseOnLevelTransition;
+               }
+
+               m_CurrentLevel++;
+
+               foreach (Barrier barrier in r_Barriers)
+               {
+                    barrier.Velocity = new Vector2 (BarrierXVelocity, 0);
+               }
           }
 
           private bool isBarriersChangeDirection()

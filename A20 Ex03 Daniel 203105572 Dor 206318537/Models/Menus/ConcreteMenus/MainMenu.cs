@@ -9,6 +9,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus
 {
      public class MainMenu : Menu
      {
+          private const string k_Title = "Main Menu";
           private const int k_NextPosX = 50;
           private const string k_OnePlayerPlayText = "Players: {0}";
           private const string k_PlayText = "Play";
@@ -18,8 +19,9 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus
           private const string k_ScreenSettingsMenuItem = "Screen Settings";
 
           public MainMenu(GameScreen i_GameScreen)
-               : base(i_GameScreen)
+               : base(k_Title, i_GameScreen)
           {
+               this.Title.Visible = true;
           }
 
           public override void Initialize()
@@ -53,6 +55,8 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus
                this.AddMenuItem(screenSettingsMenuItem);
                this.AddMenuItem(soundSettingsMenuItem);
                this.AddMenuItem(playMenuItem);
+
+               base.AddItems();
           }
 
           private void subMenu_Clicked(MenuItem i_MenuItem)

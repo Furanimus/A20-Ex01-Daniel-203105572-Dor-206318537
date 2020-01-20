@@ -130,9 +130,9 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                                    targetColor = target.TexturePixels[targetRow, targetCol];
                               }
 
-                              if(sourceRow < source.TexturePixels.Rows && sourceCol < source.TexturePixels.Cols)
+                              if (sourceRow < source.TexturePixels.Rows && sourceCol < source.TexturePixels.Cols)
                               {
-                                    sourceColor = source.TexturePixels[sourceRow, sourceCol];
+                                   sourceColor = source.TexturePixels[sourceRow, sourceCol];
                               }
 
                               if (targetColor.A != 0 && sourceColor.A != 0)

@@ -2,6 +2,7 @@
 using A20_Ex03_Daniel_203105572_Dor_206318537.Screens;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Utils;
 
 namespace A20_ex03_Daniel_203105572_Dor_206318537.Models.Menus
 {
@@ -9,11 +10,16 @@ namespace A20_ex03_Daniel_203105572_Dor_206318537.Models.Menus
      {
           private readonly Menu r_PrevMenu;
 
-          public SubMenu(Menu i_PrevMenu, GameScreen i_GameScreen) 
-               : base(i_GameScreen)
+          public SubMenu(StrokeSpriteFont i_Title, Menu i_PrevMenu, GameScreen i_GameScreen) 
+               : base(i_Title, i_GameScreen)
           {
                r_PrevMenu = i_PrevMenu;
                this.Position = i_PrevMenu.Position;
+          }
+
+          public SubMenu(string i_Title, Menu i_PrevMenu, GameScreen i_GameScreen)
+               : this(new StrokeSpriteFont(i_Title, i_GameScreen), i_PrevMenu, i_GameScreen)
+          {
           }
 
           private void done_CheckMouseOrKBState(MenuItem i_MenuItem)

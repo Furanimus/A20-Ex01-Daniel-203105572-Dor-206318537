@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using A20_ex03_Daniel_203105572_Dor_206318537.Models.Menus;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Screens;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus
 {
@@ -14,12 +15,13 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus
      {
           private const int k_Spacing = 40;
           private const string k_FontAssetName = @"Fonts\ArialFont";
+          private const float k_TitleHeight = 100;
           private readonly List<MenuItem> r_Options;
           protected readonly IInputManager r_InputManager;
           protected Menu m_PrevMenu;
           private int m_CurrentOptionIndex = -1;
 
-          protected Menu(GameScreen i_GameScreen) 
+          protected Menu(StrokeSpriteFont i_Title, GameScreen i_GameScreen) 
                : base("", i_GameScreen)
           {
                r_Options = new List<MenuItem>();
@@ -28,9 +30,18 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus
                this.VisibleChanged += menu_VisibleChanged;
                this.BlendState = BlendState.NonPremultiplied;
                this.GameSettings = this.Game.Services.GetService(typeof(IGameSettings)) as IGameSettings;
-
+               this.Title = i_Title;
+               this.Title.Visible = false;
                i_GameScreen.Add(this);
+               i_GameScreen.Add(Title);
           }
+
+          protected Menu(string i_Title, GameScreen i_GameScreen)
+               : this(new StrokeSpriteFont(i_Title, i_GameScreen), i_GameScreen)
+          {
+          }
+
+          public StrokeSpriteFont Title { get; set; }
 
           protected Vector2 NextPosition { get; set; }
 
@@ -50,6 +61,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus
                }
                
                this.Enabled = this.Visible;
+               this.Title.Visible = this.Visible;
           }
 
           public string FontAssetName { get; set; } = k_FontAssetName;
@@ -74,6 +86,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus
                set
                {
                     TintColor = new Color(TintColor, (byte)(value * (float)byte.MaxValue));
+                    this.Title.Opacity = value;
 
                     foreach(MenuItem menuItem in r_Options)
                     {
@@ -207,13 +220,30 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus
 
           protected virtual void AddItems()
           {
+               this.AddMenuItem("Quit", menu_Quit);
+          }
+
+          private void menu_Quit(MenuItem i_MenuItem)
+          {
+               if (r_InputManager.KeyPressed(Keys.Enter)
+                    || r_InputManager.ButtonPressed(eInputButtons.Left))
+               {
+                    this.Game.Exit();
+               }
           }
 
           public override void Initialize()
           {
                AddItems();
-               
                base.Initialize();
+
+               if(!this.Title.IsInitialized)
+               {
+                    this.Title.Initialize();
+               }
+
+               this.Title.PositionOrigin = this.Title.SourceRectangleCenter;
+               this.Title.Position = new Vector2(this.Game.GraphicsDevice.Viewport.Width / 2, k_TitleHeight);
           }
 
           public override void Update(GameTime i_GameTime)

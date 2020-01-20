@@ -7,6 +7,7 @@ namespace A20_ex03_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus
 {
      public class SoundSettingsMenu : SubMenu
      {
+          private const string k_TitleName = "Sound Settings";
           private const string k_BackgroundMusicVolumeText = "Background Music Volume: {0}";
           private const string k_SoundEffectVolumeText = "Sound Effect Volume: {0}";
           private const string k_ToggleSoundText = "Toggle Sound: {0}";
@@ -14,7 +15,7 @@ namespace A20_ex03_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus
           private const int k_MaxVolume = 100;
 
           public SoundSettingsMenu(Menu i_PrevMenu, GameScreen i_GameScreen) 
-               : base(i_PrevMenu, i_GameScreen)
+               : base(k_TitleName, i_PrevMenu, i_GameScreen)
           {
           }
 

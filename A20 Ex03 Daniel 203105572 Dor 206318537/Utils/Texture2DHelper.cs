@@ -17,11 +17,11 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Utils
 
           public static Texture2DPixels GetPixels(this Texture2D i_Texture, Rectangle i_SourceRectangle)
           {
-               int textureWidth    = i_Texture.Width;
-               int textureHeight   = i_Texture.Height;
-               int pixelsSize      = i_SourceRectangle.Width * i_SourceRectangle.Height;
-               Color[] colorData   = new Color[textureWidth * textureHeight];
-               Color[] pixels      = new Color[pixelsSize];
+               int textureWidth  = i_Texture.Width;
+               int textureHeight = i_Texture.Height;
+               int pixelsSize    = i_SourceRectangle.Width * i_SourceRectangle.Height;
+               Color[] colorData = new Color[textureWidth * textureHeight];
+               Color[] pixels    = new Color[pixelsSize];
 
                i_Texture.GetData(colorData);
 

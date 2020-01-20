@@ -7,12 +7,13 @@ namespace A20_ex03_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus
 {
      public class ScreenSettings : SubMenu
      {
-          private string k_FullScreenModeMsg = "Full Screen Mode: {0}";
-          private string k_MouseVisibilityMsg = "Mouse Visibilty: {0}";
-          private string k_WindowResizingMsg = "Allow Window Resizing: {0}";
+          private const string k_Title = "Screen Settings";
+          private const string k_FullScreenModeMsg = "Full Screen Mode: {0}";
+          private const string k_MouseVisibilityMsg = "Mouse Visibilty: {0}";
+          private const string k_WindowResizingMsg = "Allow Window Resizing: {0}";
 
           public ScreenSettings(Menu i_PrevMenu, GameScreen i_GameScreen) 
-               : base(i_PrevMenu, i_GameScreen)
+               : base(k_Title, i_PrevMenu, i_GameScreen)
           {
           }
 

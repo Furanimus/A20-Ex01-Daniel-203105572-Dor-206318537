@@ -17,8 +17,8 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 
           private const int k_MaxLevel = 5;
           private const int k_MatrixRows = 5;
-          private const int k_InitialVisibleRows = 5;
           private const int k_MatrixCols = 14;
+          private const int k_InitialVisibleRows = 5;
           private const int k_InitialVisibleCols = 9;
           private const int k_AlienEnemyVelocity = 32;
           private const int k_EnemyWidth = 32;
@@ -48,6 +48,8 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           private Enemy m_DownMostRepresentetive;
           private Enemy m_LeftMostRepresentetive;
           private TimeSpan m_IntervalToNextShoot;
+          private int m_VisibleCols = k_InitialVisibleCols;
+          private int m_VisibleRows = k_InitialVisibleRows;
           private int m_DeadEnemiesCounter;
           private readonly GameScreen r_GameScreen;
 
@@ -77,8 +79,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           }
 
           public int MaxShotsInMidAir { get; set; } = 1;
-          private int m_VisibleCols = k_InitialVisibleCols;
-          private int m_VisibleRows = k_InitialVisibleRows;
 
           public int VisibleRows
           {
@@ -127,6 +127,8 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 
           public void UpdateLevelDifficulty()
           {
+               this.VisibleCols++;
+
                foreach (List<Enemy> row in r_EnemyMatrix)
                {
                     foreach (Enemy enemy in row)

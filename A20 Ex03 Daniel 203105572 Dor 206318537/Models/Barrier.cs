@@ -10,8 +10,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
           private const string k_AssetName = @"Sprites\Barrier_44x32";
           private const int k_DefaultWidth = 44;
           private const int k_DefaultHeight = 32;
-          private const float k_XVelocity = 45;
-          private const float k_YVelocity = 0;
 
           public object GroupRepresentative { get; set; }
 
@@ -21,7 +19,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                this.BlendState = BlendState.NonPremultiplied;
                this.Width = k_DefaultWidth;
                this.Height = k_DefaultHeight;
-               this.Velocity = new Vector2(k_XVelocity, k_YVelocity);
                this.GameScreen.Add(this);
           }
 

@@ -93,12 +93,12 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
                }
           }
 
-          private void mainMenu_StateChanged(object sender, StateChangedEventArgs i_Args)
+          private void mainMenu_StateChanged(object i_Sender, StateChangedEventArgs i_Args)
           {
                if (i_Args.CurrentState == eScreenState.Closed)
                {
                     isDeactivated = false;
-                    this.ScreensManager.SetCurrentScreen(this);
+                    this.ExitScreen();
                }
           }
      }
