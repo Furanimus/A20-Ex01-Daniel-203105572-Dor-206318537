@@ -13,19 +13,19 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin Fonts/ArialFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=False
+/processorParam:TextureFormat=Compressed
+/build:Fonts/ArialFont.spritefont
+
 #begin Fonts/ComicSansMsFont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
+/processorParam:PremultiplyAlpha=False
 /processorParam:TextureFormat=Compressed
 /build:Fonts/ComicSansMsFont.spritefont
-
-#begin Fonts/InstructionFont.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:Fonts/InstructionFont.spritefont
 
 #begin Screens/blank.png
 /importer:TextureImporter

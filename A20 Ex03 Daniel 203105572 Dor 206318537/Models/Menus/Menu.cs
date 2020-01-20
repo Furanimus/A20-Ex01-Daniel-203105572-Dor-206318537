@@ -13,7 +13,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus
      public abstract class Menu : Sprite
      {
           private const int k_Spacing = 40;
-          private const string k_FontAssetName = @"Fonts\InstructionFont";
+          private const string k_FontAssetName = @"Fonts\ArialFont";
           private readonly List<MenuItem> r_Options;
           protected readonly IInputManager r_InputManager;
           protected Menu m_PrevMenu;

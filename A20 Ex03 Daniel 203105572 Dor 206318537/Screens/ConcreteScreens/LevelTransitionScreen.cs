@@ -14,7 +14,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
           private const float k_ActivationLength   = 0.5f;
           private const float k_DeactivationLength = 0.5f;
           private const float k_BlackTintAlpha     = 0.65f;
-          private const float k_YOffset            = 40;
+          private const float k_YOffset            = 60;
           private const string k_Level             = "Level {0}";
           private const string k_SecondsLeft       = "{0}";
           private const float k_TimeUntilExit      = 3f;
