@@ -21,10 +21,10 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                this.BlendState = BlendState.NonPremultiplied;
                this.TintColor = Color.Red;
                this.Score = 800;
-               this.Velocity = new Vector2(100, 0);
+               this.StartVelocity = new Vector2(100, 0);
                this.Width = 120;
                this.Height = 32;
-               this.StartingPosition = new Vector2(-Width, 32);
+               this.StartPosition = new Vector2(-Width, 32);
                this.RotationOrigin = new Vector2(this.Width / 2, this.Height / 2);
                this.PausePositionDuringAnimation = true;
           }

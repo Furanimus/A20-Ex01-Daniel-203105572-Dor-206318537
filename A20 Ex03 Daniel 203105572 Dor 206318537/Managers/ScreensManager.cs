@@ -7,12 +7,12 @@ using A20_Ex03_Daniel_203105572_Dor_206318537.Screens;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 {
-     public class ScreensMananger : CompositeDrawableComponent<GameScreen>, IScreensMananger
+     public class ScreensManager : CompositeDrawableComponent<GameScreen>, IScreensMananger
      {
           public event EventHandler<StateChangedEventArgs> ScreenStateChanged;
           private Stack<GameScreen> m_ScreensStack = new Stack<GameScreen>();
 
-          public ScreensMananger(Game i_Game)
+          public ScreensManager(Game i_Game)
               : base(i_Game)
           {
                i_Game.Components.Add(this);

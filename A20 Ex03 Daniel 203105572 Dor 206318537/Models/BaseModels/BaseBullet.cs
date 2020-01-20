@@ -29,9 +29,9 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.BaseModels
           {
           }
 
-          public override void Update(GameTime gameTime)
+          public override void Update(GameTime i_GameTime)
           {
-               base.Update(gameTime);
+               base.Update(i_GameTime);
 
                if (LeftWindowBounds != null)
                {
@@ -49,6 +49,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.BaseModels
           {
                this.Enabled = false;
                this.Visible = false;
+               this.Position = Vector2.Zero;
 
                if(CollidedWithSprite != null)
                {

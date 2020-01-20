@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Screens;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnimators;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Models.Animators;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
 {
@@ -20,6 +21,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
           private const float k_JumpAnimationIntervals = 0.5f;
           private const string k_AssetName = @"Sprites\EnemySpriteSheet_192x32";
           private const bool k_IsStartCellAnimationFromEnd = false;
+          private const string k_DeadAnimatorName = "Dead";
 
           public AlienMatrixEnemy(Rectangle i_SourceRectangle, GameScreen i_GameScreen)
                : this(i_SourceRectangle, k_DefaultScoreWorth, Color.White, i_GameScreen)
@@ -39,39 +41,57 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                this.RotationOrigin = new Vector2(Width / 2, Height / 2);
           }
 
+          public int MaxShotsInMidAir
+          {
+               get
+               {
+                    return this.Gun.Capacity;
+               }
+               set
+               {
+                    this.Gun.Capacity = value;
+               }
+          }
+
+
           public CellAnimator CellAnimation { get; set; }
 
           public override void Initialize()
           {
-               base.Initialize();
+               if (!IsInitialized)
+               {
+                    base.Initialize();
+                    this.Gun.Initialize();
+                    CompositeAnimator dead = new CompositeAnimator(
+                         k_DeadAnimatorName,
+                         TimeSpan.FromSeconds(k_RotationAnimationLength),
+                         this,
+                         new RotationAnimator(k_NumOfCirclesInOneSecond, TimeSpan.FromSeconds(k_RotationAnimationLength)),
+                         new ShrinkAnimator(TimeSpan.FromSeconds(k_ShrinkAnimationLength)));
+                    JumpMovementAnimator jump = new JumpMovementAnimator(TimeSpan.FromSeconds(k_JumpAnimationIntervals), TimeSpan.Zero);
 
-               RotationAnimator rotation = new RotationAnimator(k_NumOfCirclesInOneSecond, TimeSpan.FromSeconds(k_RotationAnimationLength));
-               ShrinkAnimator shrink = new ShrinkAnimator(TimeSpan.FromSeconds(k_ShrinkAnimationLength));
-               JumpMovementAnimator jump = new JumpMovementAnimator(TimeSpan.FromSeconds(k_JumpAnimationIntervals), TimeSpan.Zero);
-               this.Animations.Add(CellAnimation);
-               this.Animations.Add(rotation);
-               this.Animations.Add(shrink);
-               this.Animations.Add(jump);
-               this.Animations.Pause();
+                    this.Animations.Add(CellAnimation);
+                    this.Animations.Add(dead);
+                    this.Animations.Add(jump);
+                    this.Animations.Pause();
 
-               CellAnimation.Resume();
-               jump.Resume();
-               rotation.Finished += rotationAnimator_Finished;
+                    CellAnimation.Resume();
+                    jump.Resume();
+                    dead.Finished += dead_Finished;
 
-               this.Animations.Enabled = true;
+                    this.Animations.Enabled = true;
+               }
           }
 
-          private void rotationAnimator_Finished(object i_Sender, EventArgs i_Args)
+          private void dead_Finished(object i_Sender, EventArgs i_Args)
           {
                this.Enabled = false;
                this.Visible = false;
                this.Animations.Pause();
-               this.Lives--;
           }
 
           protected override void OnUpdate(float i_TotalSeconds)
           {
-               this.Rotation += this.AngularVelocity * i_TotalSeconds;
           }
 
           public override bool CheckCollision(ICollidable i_Source)

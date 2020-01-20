@@ -15,15 +15,17 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 
           public event Action AllEnemiesDied;
 
+          private const int k_MatrixRows = 5;
+          private const int k_VisibleRows = 5;
+          private const int k_MatrixCols = 10;
+          private const int k_VisibleCols = 9;
+          private const int k_AlienEnemyVelocity = 32;
           private const int k_EnemyWidth = 32;
           private const int k_EnemyHeight = 32;
           private const int k_PinkEnemyTextureX = 0;
           private const int k_LightBlueTextureX = 64;
           private const int k_LightYellowTextureX = 128;
           private const int k_EnemyTextureY = 0;
-          private const int k_MatrixCols = 9;
-          private const int k_MatrixRows = 5;
-          private const int k_NumOfEnemiesAtStart = k_MatrixCols * k_MatrixRows;
           private const int k_MaxRowForBlueEnemies = 3;
           private const int k_MaxRowForPinkEnemies = 1;
           private const int k_MaxMillisecondToRoll = 300;
@@ -58,7 +60,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 
           public override void Initialize()
           {
-               initMatrix();
                populateMatrix();
                setRepresentetives();
                this.Add(new RedMotherShip(r_GameScreen));
@@ -73,6 +74,12 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                setDownRepresentetive();
           }
 
+          public int MaxShotsInMidAir { get; set; } = 1;
+
+          public int VisibleRows { get; set; } = k_VisibleRows;
+
+          public int VisibleCols { get; set; } = k_VisibleCols;
+
           private void setDownRepresentetive()
           {
                bool isFound = false;
@@ -81,7 +88,9 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                {
                     for (int col = 0; col < k_MatrixCols && !isFound; col++)
                     {
-                         if (r_EnemyMatrix[row][col].IsAlive)
+                         Enemy enemy = r_EnemyMatrix[row][col];
+
+                         if (enemy.IsAlive && enemy.Visible)
                          {
                               isFound = true;
                               m_DownMostRepresentetive = r_EnemyMatrix[row][col];
@@ -98,7 +107,9 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                {
                     for (int row = 0; row < k_MatrixRows && !isFound; row++)
                     {
-                         if (r_EnemyMatrix[row][col].IsAlive)
+                         Enemy enemy = r_EnemyMatrix[row][col];
+
+                         if (enemy.IsAlive && enemy.Visible)
                          {
                               isFound = true;
                               m_LeftMostRepresentetive = r_EnemyMatrix[row][col];
@@ -115,20 +126,14 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                {
                     for (int row = 0; row < k_MatrixRows && !isFound; row++)
                     {
-                         if (r_EnemyMatrix[row][col].IsAlive)
+                         Enemy enemy = r_EnemyMatrix[row][col];
+
+                         if (enemy.IsAlive && enemy.Visible)
                          {
                               isFound = true;
                               m_RightMostRepresentetive = r_EnemyMatrix[row][col];
                          }
                     }
-               }
-          }
-
-          private void initMatrix()
-          {
-               for (int i = 0; i < r_EnemyMatrix.Capacity; i++)
-               {
-                    r_EnemyMatrix.Add(new List<Enemy>(k_MatrixCols));
                }
           }
 
@@ -161,7 +166,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           {
                bool isShoot = false;
 
-               if (i_Enemy.IsAlive && i_Enemy.Gun.BulletShot < i_Enemy.Gun.Capacity)
+               if (i_Enemy.IsAlive && i_Enemy.Visible)
                {
                     i_Enemy.Shoot();
                     isShoot = true;
@@ -196,11 +201,11 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                     }
                }
 
-               if (rightMostRepNextPosition.X >= this.Game.GraphicsDevice.Viewport.Width - m_RightMostRepresentetive.Width)
+               if (rightMostRepNextPosition.X >= this.Game.GraphicsDevice.Viewport.Width - m_RightMostRepresentetive.Width && m_RightMostRepresentetive.MoveDirection == Sprite.Right)
                {
                     handleWindowCollision(Sprite.Left);
                }
-               else if (leftMostRepNextPosition.X <= 0)
+               else if (leftMostRepNextPosition.X <= 0 && m_LeftMostRepresentetive.MoveDirection == Sprite.Left)
                {
                     handleWindowCollision(Sprite.Right);
                }
@@ -208,13 +213,11 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 
           private void handleWindowCollision(Vector2 i_DirectionChangeTo)
           {
-               for (int row = 0; row < k_MatrixRows; row++)
+               foreach (List<Enemy> row in r_EnemyMatrix)
                {
-                    for (int col = 0; col < k_MatrixCols; col++)
+                    foreach(Enemy enemy in row)
                     {
-                         Enemy enemy = r_EnemyMatrix[row][col];
                          enemy.Position += new Vector2(0, enemy.Height / 2);
-
                          enemy.Velocity += enemy.Velocity * k_IncVelocityOnRowDecendPercentage;
                          enemy.MoveDirection = i_DirectionChangeTo;
                     }
@@ -223,51 +226,118 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 
           private void populateMatrix()
           {
+               int rowsToAdd = k_MatrixRows - r_EnemyMatrix.Count;
+               updateRows(rowsToAdd);
+               updateCols(rowsToAdd);
+          }
+
+          private void updateRows(int i_RowsToAdd)
+          {
+               for (int row = 0; row < i_RowsToAdd; row++)
+               {
+                    r_EnemyMatrix.Add(new List<Enemy>(k_MatrixCols));
+               }
+          }
+
+          private void updateCols(int i_RowsAdded)
+          {
+               Color color;
+               int scoreWorth;
+               Rectangle sourceRectangle;
                float top = k_EnemiesStartingY;
 
                for (int row = 0; row < k_MatrixRows; row++)
                {
                     float left = k_EnemiesStartingX;
                     bool isStartAnimationFromSecondCell = row % 2 == 0;
-                    Color color;
-                    int scoreWorth;
-                    Rectangle sourceRectangle;
-
-                    if (row < k_MaxRowForPinkEnemies)
-                    {
-                         color = Color.Pink;
-                         scoreWorth = k_PinkEnemyScore;
-                         sourceRectangle = new Rectangle(k_PinkEnemyTextureX, k_EnemyTextureY, k_EnemyWidth, k_EnemyHeight);
-                    }
-                    else if (row < k_MaxRowForBlueEnemies)
-                    {
-                         color = Color.LightBlue;
-                         scoreWorth = k_LightBlueEnemyScore;
-                         sourceRectangle = new Rectangle(k_LightBlueTextureX, k_EnemyTextureY, k_EnemyWidth, k_EnemyHeight);
-                    }
-                    else
-                    {
-                         color = Color.LightYellow;
-                         scoreWorth = k_LightYellowEnemyScore;
-                         sourceRectangle = new Rectangle(k_LightYellowTextureX, k_EnemyTextureY, k_EnemyWidth, k_EnemyHeight);
-                    }
+                    initPropertiesForEnemy(out sourceRectangle, out color, out scoreWorth, row);
 
                     for (int col = 0; col < k_MatrixCols; col++)
                     {
                          AlienMatrixEnemy alienMatrixEnemy = new AlienMatrixEnemy(sourceRectangle, scoreWorth, color, r_GameScreen);
                          r_EnemyMatrix[row].Add(alienMatrixEnemy);
+
+                         alienMatrixEnemy.MaxShotsInMidAir = MaxShotsInMidAir;
+                         alienMatrixEnemy.CellAnimation = new CellAnimator(isStartAnimationFromSecondCell, TimeSpan.FromSeconds(k_CellTime), k_NumOfAnimationCells, TimeSpan.Zero);
+                         alienMatrixEnemy.StartPosition = new Vector2(left, top);
+                         alienMatrixEnemy.StartVelocity = new Vector2(k_AlienEnemyVelocity, 0);
+                         alienMatrixEnemy.VisibleChanged += enemy_VisibleChanged;
+                         alienMatrixEnemy.GroupRepresentative = this;
+
+                         setVisibility(alienMatrixEnemy, row, col);
                          this.Add(alienMatrixEnemy);
 
-                         AlienMatrixEnemy enemy = r_EnemyMatrix[row][col] as AlienMatrixEnemy;
-                         enemy.CellAnimation = new CellAnimator(isStartAnimationFromSecondCell, TimeSpan.FromSeconds(k_CellTime), k_NumOfAnimationCells, TimeSpan.Zero);
-                         enemy.StartingPosition = new Vector2(left, top);
-                         enemy.VisibleChanged += enemy_VisibleChanged;
-                         enemy.GroupRepresentative = this;
-                         left += enemy.Width + k_SpaceBetweenEnemies;
+                         left += alienMatrixEnemy.Width + k_SpaceBetweenEnemies;
                     }
 
-                    top += r_EnemyMatrix[row][0].Height + k_SpaceBetweenEnemies;
+                    top += k_EnemyHeight + k_SpaceBetweenEnemies;
                }
+          }
+
+          private void initPropertiesForEnemy(out Rectangle o_SourceRectangle, out Color o_Color, out int o_ScoreWorth, int i_CurrentRow)
+          {
+               if (i_CurrentRow < k_MaxRowForPinkEnemies)
+               {
+                    o_Color = Color.Pink;
+                    o_ScoreWorth = k_PinkEnemyScore;
+                    o_SourceRectangle = new Rectangle(k_PinkEnemyTextureX, k_EnemyTextureY, k_EnemyWidth, k_EnemyHeight);
+               }
+               else if (i_CurrentRow < k_MaxRowForBlueEnemies)
+               {
+                    o_Color = Color.LightBlue;
+                    o_ScoreWorth = k_LightBlueEnemyScore;
+                    o_SourceRectangle = new Rectangle(k_LightBlueTextureX, k_EnemyTextureY, k_EnemyWidth, k_EnemyHeight);
+               }
+               else
+               {
+                    o_Color = Color.LightYellow;
+                    o_ScoreWorth = k_LightYellowEnemyScore;
+                    o_SourceRectangle = new Rectangle(k_LightYellowTextureX, k_EnemyTextureY, k_EnemyWidth, k_EnemyHeight);
+               }
+          }
+
+          private void updateMatrix()
+          { 
+               for(int row = 0; row < k_MatrixRows; row++)
+               {
+                    for (int col = 0; col < k_MatrixCols; col++)
+                    {
+                         Enemy enemy = r_EnemyMatrix[row][col];
+                         setVisibility(enemy, row, col);
+                    }
+               }
+          }
+
+
+          private void setVisibility(Enemy i_Enemy, int i_Row, int i_Col)
+          {
+               if (i_Row < VisibleRows && i_Col < VisibleCols)
+               {
+                    i_Enemy.Visible = true;
+                    i_Enemy.Enabled = true;
+               }
+               else
+               {
+                    i_Enemy.Visible = false;
+                    i_Enemy.Enabled = false;
+               }
+          }
+
+          public void Reset()
+          {
+               updateMatrix();
+
+               foreach (List<Enemy> rows in r_EnemyMatrix)
+               {
+                    foreach (Enemy enemy in rows)
+                    {
+                         enemy.ResetProperties();
+                         enemy.Animations["JumpMovement"].Resume();
+                         enemy.Animations["Cell"].Resume();
+                    }
+               }
+               
+               setRepresentetives();
           }
 
           private void enemy_VisibleChanged(object i_Sender, EventArgs i_Args)
@@ -293,7 +363,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 
                     m_DeadEnemiesCounter++;
 
-                    if (AllEnemiesDied != null && m_DeadEnemiesCounter == k_NumOfEnemiesAtStart)
+                    if (AllEnemiesDied != null && m_DeadEnemiesCounter == k_MatrixRows * k_MatrixCols)
                     {
                          AllEnemiesDied.Invoke();
                     }

@@ -83,7 +83,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           private void setBarrierProperties(Barrier i_Barrier, Vector2 i_Pos)
           {
                i_Barrier.GroupRepresentative = this;
-               i_Barrier.StartingPosition = i_Pos;
+               i_Barrier.StartPosition = i_Pos;
           }
 
           public override void Update(GameTime i_GameTime)
@@ -103,8 +103,8 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           {
                Barrier representetive = r_Barriers[0];
                Vector2 BarriersRepresentetiveCurrPosition = representetive.Position;
-               bool isPassedRightOffsetToChangeBarrierDirection = BarriersRepresentetiveCurrPosition.X >= representetive.StartingPosition.X + k_OffsetToChangeDirection;
-               bool isPassedLeftOffsetToChangeBarrierDirection = BarriersRepresentetiveCurrPosition.X <= representetive.StartingPosition.X - k_OffsetToChangeDirection;
+               bool isPassedRightOffsetToChangeBarrierDirection = BarriersRepresentetiveCurrPosition.X >= representetive.StartPosition.X + k_OffsetToChangeDirection;
+               bool isPassedLeftOffsetToChangeBarrierDirection = BarriersRepresentetiveCurrPosition.X <= representetive.StartPosition.X - k_OffsetToChangeDirection;
 
                return isPassedRightOffsetToChangeBarrierDirection || isPassedLeftOffsetToChangeBarrierDirection;
           }

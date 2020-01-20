@@ -5,18 +5,21 @@ using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Utils;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Screens;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Models.Animators;
+using System;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
 {
      public partial class Sprite : LoadableDrawableComponent
      {
+          private readonly DeviceStates r_SavedDeviceStates;
+          protected readonly GameScreen r_GameScreen;
           protected Vector2 m_Position = Vector2.Zero;
           protected Vector2 m_Scales = Vector2.One;
           private bool m_UseSharedBatch = false;
           private SpriteBatch m_SpriteBatch;
           private Texture2DPixels m_TexturePixels;
-          private readonly DeviceStates r_SavedDeviceStates;
-          protected readonly GameScreen r_GameScreen;
+          private Vector2 m_StartPosition;
+          private Vector2 m_StartVelocity;
 
           public Sprite(string i_AssetName, GameScreen i_GameScreen, int i_UpdateOrder, int i_DrawOrder)
               : base(i_AssetName, i_GameScreen.Game, i_UpdateOrder, i_DrawOrder)
@@ -40,6 +43,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                base.Initialize();
 
                Animations = new CompositeAnimator(this);
+               IsInitialized = true;
           }
 
           protected override void LoadContent()
@@ -190,7 +194,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                         (int)this.Height);
                }
           }
-
+          
           public Rectangle BoundsBeforeScale
           {
                get
@@ -261,7 +265,32 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
 
           public Vector2 Velocity { get; set; }
 
+          public Vector2 StartVelocity 
+          {
+               get
+               {
+                    return m_StartVelocity;
+               }
+
+               set 
+               {
+                    m_StartVelocity = value;
+                    Velocity = value;
+               }
+          }
+
           public float AngularVelocity { get; set; }
+
+          public virtual void ResetProperties()
+          {
+               this.Animations.Reset();
+               this.Animations.Pause();
+               this.Animations.Enabled = true;
+               this.Velocity = this.StartVelocity;
+               this.Position = this.StartPosition;
+               this.Visible = true;
+               this.Enabled = true;
+          }
 
           protected override void InitBounds()
           {
@@ -277,14 +306,14 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                          this.Height = this.Texture.Height;
                     }
 
-                    InitSourceRectangle();
-                    InitOrigins();
                }
+
+               InitSourceRectangle();
+               InitOrigins();
           }
 
-          protected virtual void InitOrigins()
+          private void InitOrigins()
           {
-               m_Position = StartingPosition;
           }
 
           protected virtual void InitSourceRectangle()
@@ -331,7 +360,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                ICollidable2D target = this as ICollidable2D;
                ICollidable2D source = i_Source as ICollidable2D;
 
-               if (source != null && target.GroupRepresentative != i_Source.GroupRepresentative)
+               if (source != null && source.Visible && this.Visible && target.GroupRepresentative != i_Source.GroupRepresentative)
                {
                     collided = source.Bounds.Intersects(this.Bounds);
                }
@@ -362,7 +391,20 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                }
           }
 
-          public Vector2 StartingPosition { get; set; } = Vector2.Zero;
+
+          public Vector2 StartPosition
+          {
+               get
+               {
+                    return m_StartPosition;
+               }
+
+               set
+               {
+                    m_StartPosition = value;
+                    m_Position = value;
+               }
+          }
 
           public Vector2 ViewDirection { get; set; } = Sprite.Down;
 

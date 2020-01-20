@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Models;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -22,7 +23,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Components
           protected List<IUpdateable> m_UpdateableComponents = new List<IUpdateable>();
           protected List<IDrawable> m_DrawableComponents = new List<IDrawable>();
           protected List<Sprite> m_Sprites = new List<Sprite>();
-          private bool m_IsInitialized;
 
           public CompositeDrawableComponent(Game i_Game)
               : base(i_Game)
@@ -31,7 +31,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Components
 
           protected virtual void OnComponentAdded(GameComponentEventArgs<ComponentType> e)
           {
-               if (m_IsInitialized)
+               if (IsInitialized)
                {
                     initializeComponent(e.GameComponent);
                }
@@ -62,9 +62,11 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Components
                }
           }
 
+          public bool IsInitialized { get; set; }
+
           protected virtual void OnComponentRemoved(GameComponentEventArgs<ComponentType> e)
           {
-               if (!m_IsInitialized)
+               if (!IsInitialized)
                {
                     m_UninitializedComponents.Remove(e.GameComponent);
                }
@@ -162,18 +164,17 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Components
 
           public override void Initialize()
           {
-               if (!m_IsInitialized)
+               if (!IsInitialized)
                {
-                    // Initialize any un-initialized game components
                     while (m_UninitializedComponents.Count > 0)
                     {
                          initializeComponent(m_UninitializedComponents[0]);
                     }
 
-                    base.Initialize();
-
-                    m_IsInitialized = true;
+                    IsInitialized = true;
                }
+
+               base.Initialize();
           }
 
           private void initializeComponent(ComponentType i_Component)

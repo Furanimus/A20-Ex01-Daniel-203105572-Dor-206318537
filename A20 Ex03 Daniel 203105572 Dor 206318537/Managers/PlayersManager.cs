@@ -84,7 +84,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           public void AddPlayer(BasePlayer i_Player)
           {
                i_Player.PlayerCollided += player_Collided;
-               i_Player.StartingPosition = NextPosition;
+               i_Player.StartPosition = NextPosition;
                NextPosition -= new Vector2(i_Player.Width, 0);
                m_LivesManager.AddPlayer(i_Player);
                m_ScoreManager.AddPlayer(i_Player);
@@ -130,14 +130,9 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                }
           }
 
-
-
           private void OnGameOver()
           {
-               //string winMsg = getWinnerMsg();
-               //string message = string.Format(k_GameOverMsg, m_Player1.Score, m_Player2.Score, winMsg);
-               //System.Windows.Forms.MessageBox.Show(message, k_GameOverTitle, MessageBoxButtons.OK);
-               this.Game.Exit();
+               r_GameScreen.ExitScreen();
           }
 
           private void initServices()
@@ -162,6 +157,14 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                          r_Players[i].Visible = true;
                          r_Players[i].Enabled = true;
                     }
+               }
+          }
+
+          public void Reset()
+          {
+               for(int i = 0; i < m_GameSettings.PlayersCount; i++)
+               {
+                    r_Players[i].ResetProperties();
                }
           }
      }

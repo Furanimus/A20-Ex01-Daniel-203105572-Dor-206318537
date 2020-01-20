@@ -11,6 +11,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.BaseModels
      {
           protected readonly Sprite r_Shooter;
           private readonly LinkedList<BaseBullet> r_Bullets;
+          private readonly List<BaseBullet> r_BulletsForReset;
           private readonly Action<ICollidable> r_ExecuteWhenBulletCollided;
           private int m_BulletsAdded;
 
@@ -19,6 +20,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.BaseModels
           {
                r_Shooter = i_Shooter;
                r_Bullets = new LinkedList<BaseBullet>();
+               r_BulletsForReset = new List<BaseBullet>();
                r_ExecuteWhenBulletCollided = i_ExecuteWhenBulletCollided;
                i_Shooter.GameScreen.Add(this);
                this.BlendState = BlendState.NonPremultiplied;
@@ -31,6 +33,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.BaseModels
                     i_Bullet.CollidedWithSprite += r_ExecuteWhenBulletCollided;
                     m_BulletsAdded++;
                     r_Bullets.AddLast(i_Bullet);
+                    r_BulletsForReset.Add(i_Bullet);
                     this.Add(i_Bullet);
                }
           }
@@ -74,13 +77,12 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.BaseModels
                     {
                          ICollidable shooter = r_Shooter as ICollidable;
 
-                         if (bullet.GroupRepresentative == null && shooter != null)
+                         if(bullet.GroupRepresentative != shooter.GroupRepresentative)
                          {
                               bullet.GroupRepresentative = shooter.GroupRepresentative;
                          }
 
                          this.RemoveBullet();
-
                          bullet.Enabled = true;
                          bullet.Visible = true;
                     }
@@ -89,25 +91,24 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.BaseModels
 
           public override void Initialize()
           {
-               ICollidable shooter = r_Shooter as ICollidable;
-
-               InitializeBullets();
-
-               if (shooter != null)
+               if (!this.IsInitialized)
                {
+                    InitializeBullets();
+
                     foreach (BaseBullet bullet in r_Bullets)
                     {
-                         bullet.GroupRepresentative = shooter.GroupRepresentative;
                          bullet.LeftWindowBounds += onLeftWindowBounds;
                          bullet.VisibleChanged += bullet_VisibleChanged;
                     }
-               }
 
-               base.Initialize();
+                    base.Initialize();
+                    this.IsInitialized = true;
+               }
           }
 
           public override void Update(GameTime i_GameTime)
           {
+               base.Update(i_GameTime);
                this.GunDirection = r_Shooter.ViewDirection;
 
                foreach (BaseBullet bullet in r_Bullets)
@@ -115,8 +116,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.BaseModels
                     bullet.MoveDirection = this.GunDirection;
                     bullet.Position = getShootOrigin(bullet);
                }
-
-               base.Update(i_GameTime);
           }
 
           private void onLeftWindowBounds(object i_Sender, EventArgs i_Args)
@@ -161,10 +160,20 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.BaseModels
 
           public int BulletShot { get; set; }
 
-          public int Capacity { get; protected set; } = 2;
+          public int Capacity { get; set; } = 2;
 
           public Type BulletType { get; set; } = typeof(Bullet);
 
           protected abstract void InitializeBullets();
+
+          public virtual void Reset()
+          {
+               foreach(BaseBullet bullet in r_BulletsForReset)
+               {
+                    bullet.Position = Vector2.Zero;
+                    bullet.Visible = false;
+                    bullet.Enabled = false;
+               }
+          }
      }
 }

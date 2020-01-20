@@ -9,8 +9,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Utils
 {
      public class StrokeSpriteFont : Sprite
      {
-          private const float k_PulsePerSec = 1.5f;
-          private const float k_TargetScale = 1.03f;
           private const string k_FontAssetName = @"Fonts\InstructionFont";
           private SpriteFont m_SpriteFont;
           private float m_Scale = -1;
@@ -63,22 +61,15 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Utils
                }
           }
 
-          public bool IsInitialized { get; private set; }
-
           public override void Initialize()
           {
                if (!IsInitialized)
                {
-                    base.Initialize();
-                    IsInitialized = true;
-
-                    this.Animations.Add(new PulseAnimator(TimeSpan.Zero, k_TargetScale, k_PulsePerSec));
-                    this.Animations.Add(new WaypointsAnimator(100, TimeSpan.FromSeconds(0.2f), false, this.Position + new Vector2(-10, 0)));
-                    this.Animations.Enabled = false;
-
                     Vector2 dimension = m_SpriteFont.MeasureString(this.Text);
                     this.Width = dimension.X;
                     this.Height = dimension.Y;
+
+                    base.Initialize();
                }
           }
 

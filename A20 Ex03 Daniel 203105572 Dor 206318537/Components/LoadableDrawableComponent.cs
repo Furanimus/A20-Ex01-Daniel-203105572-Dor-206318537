@@ -90,9 +90,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Components
 
           protected abstract void InitBounds();
 
-          public override void Draw(GameTime gameTime)
-          {
-               base.Draw(gameTime);
-          }
+          public bool IsInitialized { get; set; }
      }
 }

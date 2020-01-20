@@ -9,11 +9,14 @@ using Microsoft.Xna.Framework.Input;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Models;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Screens;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnimators;
 
 namespace A20_ex03_Daniel_203105572_Dor_206318537.Models.Menus
 {
      public class MenuItem : Sprite
      {
+          private const float k_PulsePerSec = 1.5f;
+          private const float k_TargetScale = 1.03f;
           private readonly List<KeyValuePair<eInputButtons, Action<MenuItem>>> r_ButtonsToActions;
           private readonly List<KeyValuePair<Keys, Action<MenuItem>>> r_KeysToActions;
           private readonly Action<MenuItem> r_CheckMouseOrKBState;
@@ -79,8 +82,6 @@ namespace A20_ex03_Daniel_203105572_Dor_206318537.Models.Menus
                m_StrokeSpriteFont.Visible = this.Visible;
                this.Enabled = this.Visible;
           }
-
-          public bool IsInitialized { get; private set; }
 
           public Menu LinkedMenu { get; private set; }
 
@@ -148,6 +149,11 @@ namespace A20_ex03_Daniel_203105572_Dor_206318537.Models.Menus
                     {
                          StrokeSpriteFont.Initialize();
                     }
+
+                    StrokeSpriteFont.Animations.Add(new PulseAnimator(TimeSpan.Zero, k_TargetScale, k_PulsePerSec));
+                    StrokeSpriteFont.Animations.Add(new WaypointsAnimator(100, TimeSpan.FromSeconds(0.2f), false, this.Position + new Vector2(-10, 0)));
+                    StrokeSpriteFont.Animations.Enabled = false;
+
                }
           }
 

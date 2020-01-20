@@ -9,7 +9,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
 {
      public abstract class ShooterPlayer : BasePlayer
      {
-          private const int k_MaxShotInMidAir = 2;
+          private const int k_MaxShotInMidAir = 200;
 
           public ShooterPlayer(string i_AssetName, GameScreen i_GameScreen) 
                : this(i_AssetName, i_GameScreen, int.MaxValue)
@@ -25,6 +25,12 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                : base(i_AssetName, i_GameScreen, i_UpdateOrder, i_DrawOrder)
           {
                this.Gun = new Gun(k_MaxShotInMidAir, this, Bullet_Collided);
+          }
+
+          public override void ResetProperties()
+          {
+               this.Gun.Reset();
+               base.ResetProperties();
           }
 
           public BaseGun Gun { get; set; }

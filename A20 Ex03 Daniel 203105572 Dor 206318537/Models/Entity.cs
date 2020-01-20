@@ -4,6 +4,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
 {
      public abstract class Entity : Sprite
      {
+          private int m_LivesForReset = -1;
           protected int m_Lives;
 
           public Entity(string i_AssetName, GameScreen i_GameScreen)
@@ -33,6 +34,11 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                     if (value >= 0)
                     {
                          m_Lives = value;
+
+                         if(m_LivesForReset < 0)
+                         {
+                              m_LivesForReset = value;
+                         }
                     }
 
                     if(m_Lives == 0)
@@ -45,7 +51,13 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                     }
                }
           }
-          
+
+          public override void ResetProperties()
+          {
+               base.ResetProperties();
+               this.Lives = m_LivesForReset;
+          }
+
           public bool IsAlive { get; protected set; } = true;
      }
 }

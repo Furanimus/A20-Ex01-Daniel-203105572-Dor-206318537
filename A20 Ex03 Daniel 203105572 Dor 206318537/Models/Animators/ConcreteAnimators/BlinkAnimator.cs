@@ -7,23 +7,22 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnima
      public class BlinkAnimator : SpriteAnimator
      {
           private const string k_Name = "Blink";
+          private readonly TimeSpan r_BlinkLength;
           private TimeSpan m_TimeLeftForNextBlink;
-          
+
           public BlinkAnimator(string i_Name, TimeSpan i_BlinkLength, TimeSpan i_AnimationLength)
                : base(i_Name, i_AnimationLength)
           {
-               this.BlinkLength = i_BlinkLength;
+               r_BlinkLength = i_BlinkLength;
                this.m_TimeLeftForNextBlink = i_BlinkLength;
           }
 
           public BlinkAnimator(TimeSpan i_BlinkLength, TimeSpan i_AnimationLength)
                : this(k_Name, i_BlinkLength, i_AnimationLength)
           {
-               this.BlinkLength = i_BlinkLength;
+               r_BlinkLength = i_BlinkLength;
                this.m_TimeLeftForNextBlink = i_BlinkLength;
           }
-
-          public TimeSpan BlinkLength { get; set; }
 
           protected override void DoFrame(GameTime i_GameTime)
           {
@@ -32,7 +31,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnima
                if (m_TimeLeftForNextBlink.TotalSeconds < 0)
                {
                     this.BoundSprite.Visible = !this.BoundSprite.Visible;
-                    m_TimeLeftForNextBlink = BlinkLength;
+                    m_TimeLeftForNextBlink = r_BlinkLength;
                }
           }
 
@@ -48,6 +47,8 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnima
                {
                     this.BoundSprite.Visible = m_OriginalSpriteInfo.Visible;
                }
+
+               m_TimeLeftForNextBlink = r_BlinkLength;
           }
      }
 }

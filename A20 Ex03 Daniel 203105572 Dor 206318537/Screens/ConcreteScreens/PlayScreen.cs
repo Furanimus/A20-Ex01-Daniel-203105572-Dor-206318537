@@ -3,6 +3,8 @@ using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Models;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Models.BaseModels;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
+using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
 {
@@ -17,6 +19,8 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
           private EnemyManager m_EnemyManager;
           private BarrierManager m_BarrierManager;
           private IGameSettings r_GameSettings;
+          private LevelTransitionScreen r_LevelTransition;
+          private int m_Level = 1;
 
           public PlayScreen(Game i_Game)
                : base(i_Game)
@@ -26,6 +30,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
                r_GameSettings.GraphicsDeviceManager.PreferredBackBufferWidth = (int)r_Background.Width;
                r_GameSettings.GraphicsDeviceManager.PreferredBackBufferHeight = (int)r_Background.Height;
                r_GameSettings.GraphicsDeviceManager.ApplyChanges();
+               r_LevelTransition = new LevelTransitionScreen(this.Game);
           }
 
           public override void Initialize()
@@ -33,18 +38,46 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
                initServices();
                initPlayers();
                initDrawableManagers();
+               this.Game.Window.Title = k_GameTitle;
 
                base.Initialize();
+          }
+
+          private void showLevelTransition()
+          {
+               if (r_LevelTransition.CurrentLevel != m_Level)
+               {
+                    r_LevelTransition.CurrentLevel++;
+                    this.ScreensManager.SetCurrentScreen(r_LevelTransition);
+                    r_LevelTransition.StateChanged += levelTransition_StateChanged;
+               }
+          }
+
+          private void levelTransition_StateChanged(object i_Sender, StateChangedEventArgs i_Args)
+          {
+               if (i_Args.CurrentState == eScreenState.Closed)
+               {
+                    this.ScreensManager.SetCurrentScreen(this);
+               }
           }
 
           private void initDrawableManagers()
           {
                m_EnemyManager = new EnemyManager(this);
-               m_BarrierManager = new BarrierManager(this, m_PlayersManager[0].StartingPosition.Y, m_PlayersManager[0].Height);
+               m_BarrierManager = new BarrierManager(this, m_PlayersManager[0].StartPosition.Y, m_PlayersManager[0].Height);
 
                m_EnemyManager.MatrixReachedBottomWindow += OnGameOver;
-               m_EnemyManager.AllEnemiesDied += OnGameOver;
+               m_EnemyManager.AllEnemiesDied += enemyManager_AllEnemiesDied;
                m_PlayersManager.AllPlayersDied += OnGameOver;
+          }
+
+          private void enemyManager_AllEnemiesDied()
+          {
+               m_Level++;
+               m_EnemyManager.VisibleCols++;
+               m_PlayersManager.Reset();
+               m_EnemyManager.Reset();
+               showLevelTransition();
           }
 
           private void initPlayers()
@@ -53,9 +86,9 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
                m_PlayersManager.AddPlayer(k_Player2AssetName);
 
                Player player2 = m_PlayersManager.GetLastAddedPlayer() as Player;
-               player2.MoveLeftKey = Microsoft.Xna.Framework.Input.Keys.A;
-               player2.MoveRightKey = Microsoft.Xna.Framework.Input.Keys.D;
-               player2.ShootKey = Microsoft.Xna.Framework.Input.Keys.W;
+               player2.MoveLeftKey = Keys.A;
+               player2.MoveRightKey = Keys.D;
+               player2.ShootKey = Keys.W;
                player2.RepresentativeColor = Color.Green;
                player2.GroupRepresentative = m_PlayersManager[0];
           }
@@ -79,17 +112,18 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
 
           private void OnGameOver()
           {
-               this.Game.Exit();
+               ExitScreen();
           }
 
           public override void Update(GameTime i_GameTime)
           {
-               if (m_InputManager.KeyPressed(Microsoft.Xna.Framework.Input.Keys.Escape))
+               if (m_InputManager.KeyPressed(Keys.Escape))
                {
                     this.Game.Exit();
                }
 
-               this.Game.Window.Title = k_GameTitle;
+               showLevelTransition();
+
                base.Update(i_GameTime);
           }
      }

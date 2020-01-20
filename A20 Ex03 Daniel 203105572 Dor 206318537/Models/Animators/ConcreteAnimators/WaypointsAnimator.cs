@@ -27,6 +27,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnima
 
           protected override void RevertToOriginal()
           {
+               m_CurrentWaypoint = 0;
                this.BoundSprite.Position = m_OriginalSpriteInfo.Position;
           }
 

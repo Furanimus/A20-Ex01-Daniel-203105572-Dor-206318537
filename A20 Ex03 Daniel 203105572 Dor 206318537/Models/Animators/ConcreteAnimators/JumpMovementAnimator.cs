@@ -6,7 +6,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnima
      public class JumpMovementAnimator : SpriteAnimator
      {
           private const string k_Name = "JumpMovement";
-          private TimeSpan m_JumpIntervals;
+          private readonly TimeSpan r_JumpIntervals;
           private TimeSpan m_TimeUntilNextJump;
 
           public JumpMovementAnimator(string i_Name, TimeSpan i_AnimationLength) 
@@ -17,11 +17,12 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnima
           public JumpMovementAnimator(TimeSpan i_JumpsIntervals, TimeSpan i_AnimationLength)
                : this(k_Name, i_AnimationLength)
           {
-               m_TimeUntilNextJump = m_JumpIntervals = i_JumpsIntervals;
+               m_TimeUntilNextJump = r_JumpIntervals = i_JumpsIntervals;
           }
 
           protected override void RevertToOriginal()
           {
+               m_TimeUntilNextJump = r_JumpIntervals;
                this.BoundSprite.Position = m_OriginalSpriteInfo.Position;
           }
 
@@ -33,7 +34,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnima
 
                     if (m_TimeUntilNextJump.TotalSeconds <= 0)
                     {
-                         m_TimeUntilNextJump = m_JumpIntervals;
+                         m_TimeUntilNextJump = r_JumpIntervals;
                          jump();
                     }
                }

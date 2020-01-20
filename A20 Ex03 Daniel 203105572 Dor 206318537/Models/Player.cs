@@ -107,7 +107,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
 
           private void executeLostLifeAnimation()
           {
-               Position = StartingPosition;
+               Position = StartPosition;
                this.Animations["Blink"].Restart();
           }
 
