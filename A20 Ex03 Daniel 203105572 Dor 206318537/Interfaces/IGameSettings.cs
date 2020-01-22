@@ -6,12 +6,18 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces
      public interface IGameSettings
      {
           event EventHandler PlayersCountChanged;
-          event EventHandler IsFullScreenChanged;
-          event EventHandler IsMouseVisibleChanged;
-          event EventHandler IsWindowResizeAllowChanged;
+
+          event EventHandler FullScreenChanged;
+
+          event EventHandler MouseVisibleChanged;
+
+          event EventHandler WindowResizeAllowChanged;
+
           event EventHandler BackgroundMusicVolumeChanged;
+
           event EventHandler SoundEffectsVolumeChanged;
-          event EventHandler IsSoundChanged;
+
+          event EventHandler SoundChanged;
 
           GraphicsDeviceManager GraphicsDeviceManager { get; }
 

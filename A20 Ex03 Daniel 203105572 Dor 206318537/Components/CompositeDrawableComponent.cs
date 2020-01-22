@@ -64,14 +64,14 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Components
 
           public bool IsInitialized { get; set; }
 
-          protected virtual void OnComponentRemoved(GameComponentEventArgs<ComponentType> e)
+          protected virtual void OnComponentRemoved(GameComponentEventArgs<ComponentType> i_Args)
           {
                if (!IsInitialized)
                {
-                    m_UninitializedComponents.Remove(e.GameComponent);
+                    m_UninitializedComponents.Remove(i_Args.GameComponent);
                }
 
-               IUpdateable updatable = e.GameComponent as IUpdateable;
+               IUpdateable updatable = i_Args.GameComponent as IUpdateable;
 
                if (updatable != null)
                {
@@ -79,7 +79,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Components
                     updatable.UpdateOrderChanged -= childUpdateOrderChanged;
                }
 
-               Sprite sprite = e.GameComponent as Sprite;
+               Sprite sprite = i_Args.GameComponent as Sprite;
 
                if (sprite != null)
                {
@@ -89,7 +89,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Components
 
                else
                {
-                    IDrawable drawable = e.GameComponent as IDrawable;
+                    IDrawable drawable = i_Args.GameComponent as IDrawable;
                     if (drawable != null)
                     {
                          m_DrawableComponents.Remove(drawable);
@@ -99,7 +99,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Components
 
                if (ComponentRemoved != null)
                {
-                    ComponentRemoved(this, e);
+                    ComponentRemoved(this, i_Args);
                }
           }
 

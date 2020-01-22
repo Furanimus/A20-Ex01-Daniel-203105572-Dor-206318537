@@ -8,6 +8,11 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 {
      public class InputManager : GameService, IInputManager
      {
+          public InputManager(Game i_Game)
+              : base(i_Game, int.MinValue)
+          { 
+          }
+
           public KeyboardState PrevKeyboardState { get; private set; }
 
           public KeyboardState KeyboardState { get; private set; }
@@ -19,11 +24,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           public GamePadState PrevGamePadState { get; private set; }
 
           public GamePadState GamePadState { get; private set; }
-
-          public InputManager(Game i_Game)
-              : base(i_Game, int.MinValue)
-          { 
-          }
 
           public override void Initialize()
           {

@@ -9,6 +9,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
 {
      public abstract class ShooterEnemy : Enemy
      {
+          private const string k_DeadAnimationName = "Dead";
           private readonly Rectangle r_SourceRectangle;
           private readonly ICollisionsManager r_CollisionsManager;
 
@@ -61,7 +62,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
 
           private void onCollidedWithBullet(ICollidable I_Collidable)
           {
-               SpriteAnimator deadAnimator = this.Animations["Dead"];
+               SpriteAnimator deadAnimator = this.Animations[k_DeadAnimationName];
 
                if(deadAnimator != null)
                {

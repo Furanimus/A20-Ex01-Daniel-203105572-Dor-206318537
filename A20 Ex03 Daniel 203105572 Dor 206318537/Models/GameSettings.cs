@@ -7,19 +7,25 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
      public class GameSettings : IGameSettings
      {
           public event EventHandler PlayersCountChanged;
-          public event EventHandler IsFullScreenChanged;
-          public event EventHandler IsMouseVisibleChanged;
-          public event EventHandler IsWindowResizeAllowChanged;
+
+          public event EventHandler FullScreenChanged;
+
+          public event EventHandler MouseVisibleChanged;
+
+          public event EventHandler WindowResizeAllowChanged;
+
           public event EventHandler BackgroundMusicVolumeChanged;
+
           public event EventHandler SoundEffectsVolumeChanged;
-          public event EventHandler IsSoundChanged;
+
+          public event EventHandler SoundChanged;
 
           private bool m_IsFullScreen;
           private readonly Game r_Game;
-          private int m_PlayersCount = 1;
+          private int m_PlayersCount          = 1;
           private int m_BackgroundMusicVolume = 100;
-          private int m_SoundEffectsVolume = 100;
-          private bool m_IsSound = true;
+          private int m_SoundEffectsVolume    = 100;
+          private bool m_IsSound              = true;
 
           public GameSettings(Game i_Game)
           {
@@ -60,9 +66,9 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                          m_IsFullScreen = value;
                          GraphicsDeviceManager.ToggleFullScreen();
 
-                         if (IsFullScreenChanged != null)
+                         if (FullScreenChanged != null)
                          {
-                              IsFullScreenChanged.Invoke(this, null);
+                              FullScreenChanged.Invoke(this, null);
                          }
                     }
                }
@@ -80,9 +86,9 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                     {
                          r_Game.IsMouseVisible = value;
 
-                         if (IsMouseVisibleChanged != null)
+                         if (MouseVisibleChanged != null)
                          {
-                              IsMouseVisibleChanged.Invoke(this, null);
+                              MouseVisibleChanged.Invoke(this, null);
                          }
                     }
                }
@@ -100,9 +106,9 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                     {
                          r_Game.Window.AllowUserResizing = value;
 
-                         if (IsWindowResizeAllowChanged != null)
+                         if (WindowResizeAllowChanged != null)
                          {
-                              IsWindowResizeAllowChanged.Invoke(this, null);
+                              WindowResizeAllowChanged.Invoke(this, null);
                          }
                     }
                }
@@ -156,9 +162,9 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                {
                     m_IsSound = value;
 
-                    if (IsSoundChanged != null)
+                    if (SoundChanged != null)
                     {
-                         IsSoundChanged.Invoke(this, null);
+                         SoundChanged.Invoke(this, null);
                     }
                }
           }

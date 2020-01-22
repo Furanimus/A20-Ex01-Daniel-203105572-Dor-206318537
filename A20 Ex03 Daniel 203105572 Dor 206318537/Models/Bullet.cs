@@ -9,13 +9,13 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
 {
      public class Bullet : BaseBullet
      {
-          private const string k_GraphicPath = @"Sprites\Bullet";
-          private const int k_RandomFactor = 1;
-          private const int k_MaxRandom = 5;
-          private const int k_MinRandom = 0;
+          private const string k_GraphicPath             = @"Sprites\Bullet";
+          private const int k_RandomFactor               = 1;
+          private const int k_MaxRandom                  = 5;
+          private const int k_MinRandom                  = 0;
           private const float k_DestroyBarrierPercentage = 0.7f;
-          private const float k_YVelocity = 160;
-          private const float k_XVelocity = 0;
+          private const float k_YVelocity                = 160;
+          private const float k_XVelocity                = 0;
           private readonly IRandomBehavior r_RandomBehavior;
 
           public Bullet(GameScreen i_GameScreen) 
@@ -28,12 +28,12 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
           {
                r_RandomBehavior = this.Game.Services.GetService(typeof(IRandomBehavior)) as IRandomBehavior;
 
-               this.Width = 6;
-               this.Height = 16;
-               this.Enabled = false;
-               this.Visible = false;
+               this.Width     = 6;
+               this.Height    = 16;
+               this.Enabled   = false;
+               this.Visible   = false;
                this.TintColor = i_TintColor;
-               this.Velocity = new Vector2(k_XVelocity, k_YVelocity);
+               this.Velocity  = new Vector2(k_XVelocity, k_YVelocity);
           }
 
           public override void Collided(ICollidable i_Collidable)

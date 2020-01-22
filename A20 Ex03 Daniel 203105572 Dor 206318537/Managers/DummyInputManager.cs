@@ -7,17 +7,11 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 {
      public class DummyInputManager : IInputManager
      {
-          private GamePadState m_DummyPadState = new GamePadState();
+          public GamePadState GamePadState { get; } = new GamePadState();
 
-          public GamePadState GamePadState { get { return m_DummyPadState; } }
+          public KeyboardState KeyboardState { get; } = new KeyboardState();
 
-          KeyboardState m_DummyKeyboardState = new KeyboardState();
-
-          public KeyboardState KeyboardState { get { return m_DummyKeyboardState; } }
-
-          private MouseState m_DummyMouseState = new MouseState();
-
-          public MouseState MouseState { get { return m_DummyMouseState; } }
+          public MouseState MouseState { get; } = new MouseState();
 
           public bool ButtonIsDown(eInputButtons i_MouseButtons) { return false; }
 

@@ -7,11 +7,11 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Utils
 {
      public class RandomBehavior : GameService, IRandomBehavior
      {
-          private readonly Random r_Random;
           private readonly int r_RandomFactor = 10;
-          private readonly int r_RandomMin = 0;
-          private readonly int r_RandomMax = 5000;
+          private readonly int r_RandomMin    = 0;
+          private readonly int r_RandomMax    = 5000;
           private readonly Game r_Game;
+          private readonly Random r_Random;
           private double m_Delay;
           private double m_Timer;
 

@@ -10,9 +10,9 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Utils
      public class StrokeSpriteFont : Sprite
      {
           private const string k_DefaultFontAssetName = @"Fonts\ArialFont";
+          private float m_Scale                       = -1;
           private string m_FontAssetName;
           private SpriteFont m_SpriteFont;
-          private float m_Scale = -1;
           private Color m_StrokeColor;
 
           public StrokeSpriteFont(string i_Text, GameScreen i_GameScreen)

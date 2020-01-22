@@ -15,35 +15,36 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 
           public event Action AllEnemiesDied;
 
-          private const int k_MaxLevel = 5;
-          private const int k_MatrixRows = 5;
-          private const int k_MatrixCols = 14;
-          private const int k_InitialVisibleRows = 5;
-          private const int k_InitialVisibleCols = 9;
-          private const int k_AlienEnemyVelocity = 32;
-          private const int k_EnemyWidth = 32;
-          private const int k_EnemyHeight = 32;
-          private const int k_PinkEnemyTextureX = 0;
-          private const int k_LightBlueTextureX = 64;
-          private const int k_LightYellowTextureX = 128;
-          private const int k_EnemyTextureY = 0;
-          private const int k_MaxRowForBlueEnemies = 3;
-          private const int k_MaxRowForPinkEnemies = 1;
-          private const int k_MaxMillisecondToRoll = 300;
-          private const int k_NumOfDeadEnemiesToIncreaseVelocity = 5;
-          private const int k_NumOfAnimationCells = 2;
-          private const int k_StartingPinkEnemyScore = 250;
-          private const int k_StartingLightBlueEnemyScore = 150;
-          private const int k_StartingLightYellowEnemyScore = 100;
-          private const int k_AddedScoresOnNextLevel = 140;
-          private const float k_CellTime = 0.5f;
-          private const float k_EnemiesStartingY = 96;
-          private const float k_EnemiesStartingX = 0;
-          private const float k_SpaceBetweenEnemies = 32f * 0.6f;
-          private const float k_IncVelocityOnRowDecendPercentage = 0.05f;
+          private const int k_MaxLevel                                  = 5;
+          private const int k_MatrixRows                                = 5;
+          private const int k_MatrixCols                                = 14;
+          private const int k_InitialVisibleRows                        = 5;
+          private const int k_InitialVisibleCols                        = 9;
+          private const int k_AlienEnemyVelocity                        = 32;
+          private const int k_EnemyWidth                                = 32;
+          private const int k_EnemyHeight                               = 32;
+          private const int k_PinkEnemyTextureX                         = 0;
+          private const int k_LightBlueTextureX                         = 64;
+          private const int k_LightYellowTextureX                       = 128;
+          private const int k_EnemyTextureY                             = 0;
+          private const int k_MaxRowForBlueEnemies                      = 3;
+          private const int k_MaxRowForPinkEnemies                      = 1;
+          private const int k_MaxMillisecondToRoll                      = 300;
+          private const int k_NumOfDeadEnemiesToIncreaseVelocity        = 5;
+          private const int k_NumOfAnimationCells                       = 2;
+          private const int k_StartingPinkEnemyScore                    = 250;
+          private const int k_StartingLightBlueEnemyScore               = 150;
+          private const int k_StartingLightYellowEnemyScore             = 100;
+          private const int k_AddedScoresOnNextLevel                    = 140;
+          private const float k_CellTime                                = 0.5f;
+          private const float k_EnemiesStartingY                        = 96;
+          private const float k_EnemiesStartingX                        = 0;
+          private const float k_SpaceBetweenEnemies                     = 32f * 0.6f;
+          private const float k_IncVelocityOnRowDecendPercentage        = 0.05f;
           private const float k_IncVelocityOnNumOfDeadEnemiesPercentage = 0.03f;
           private readonly IRandomBehavior r_RandomBehavior;
           private readonly List<List<Enemy>> r_EnemyMatrix;
+          private readonly GameScreen r_GameScreen;
           private Enemy m_RightMostRepresentetive;
           private Enemy m_DownMostRepresentetive;
           private Enemy m_LeftMostRepresentetive;
@@ -51,7 +52,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           private int m_VisibleCols = k_InitialVisibleCols;
           private int m_VisibleRows = k_InitialVisibleRows;
           private int m_DeadEnemiesCounter;
-          private readonly GameScreen r_GameScreen;
 
           public EnemyManager(GameScreen i_GameScreen) : base(i_GameScreen.Game)
           {
@@ -295,24 +295,29 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 
                     for (int col = 0; col < k_MatrixCols; col++)
                     {
-                         AlienMatrixEnemy alienMatrixEnemy = new AlienMatrixEnemy(sourceRectangle, scoreWorth, color, r_GameScreen);
-                         r_EnemyMatrix[row].Add(alienMatrixEnemy);
+                         AlienMatrixEnemy enemy = new AlienMatrixEnemy(sourceRectangle, scoreWorth, color, r_GameScreen);
+                         r_EnemyMatrix[row].Add(enemy);
 
-                         alienMatrixEnemy.MaxShotsInMidAir = MaxShotsInMidAir;
-                         alienMatrixEnemy.CellAnimation = new CellAnimator(isStartAnimationFromSecondCell, TimeSpan.FromSeconds(k_CellTime), k_NumOfAnimationCells, TimeSpan.Zero);
-                         alienMatrixEnemy.StartPosition = new Vector2(left, top);
-                         alienMatrixEnemy.StartVelocity = new Vector2(k_AlienEnemyVelocity, 0);
-                         alienMatrixEnemy.VisibleChanged += enemy_VisibleChanged;
-                         alienMatrixEnemy.GroupRepresentative = this;
+                         setVisibility(enemy, row, col);
+                         initEnemy(enemy, left, top, 
+                              new CellAnimator(isStartAnimationFromSecondCell, TimeSpan.FromSeconds(k_CellTime), k_NumOfAnimationCells, TimeSpan.Zero));
 
-                         setVisibility(alienMatrixEnemy, row, col);
-                         this.Add(alienMatrixEnemy);
-
-                         left += alienMatrixEnemy.Width + k_SpaceBetweenEnemies;
+                         this.Add(enemy);
+                         left += enemy.Width + k_SpaceBetweenEnemies;
                     }
 
                     top += k_EnemyHeight + k_SpaceBetweenEnemies;
                }
+          }
+
+          private void initEnemy(AlienMatrixEnemy i_Enemy, float i_PositionX, float i_PositionY, CellAnimator i_CellAnimator = null)
+          {
+               i_Enemy.MaxShotsInMidAir = MaxShotsInMidAir;
+               i_Enemy.CellAnimation = i_CellAnimator;
+               i_Enemy.StartPosition = new Vector2(i_PositionX, i_PositionY);
+               i_Enemy.StartVelocity = new Vector2(k_AlienEnemyVelocity, 0);
+               i_Enemy.VisibleChanged += enemy_VisibleChanged;
+               i_Enemy.GroupRepresentative = this;
           }
 
           private void initPropertiesForEnemy(out Rectangle o_SourceRectangle, out Color o_Color, out int o_ScoreWorth, int i_CurrentRow)

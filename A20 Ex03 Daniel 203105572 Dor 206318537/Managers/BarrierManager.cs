@@ -11,15 +11,15 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 {
      public class BarrierManager : CompositeDrawableComponent<Barrier>
      {
-          private const float k_BarrierWidth = 44;
-          private const float k_BarrierHeight = 32;
-          private const int k_NumOfBarriers = 4;
-          private const int k_CallOrder = 5;
-          private const int k_MaxLevel = 5;
-          private const float k_StartingXVelocity = 45f;
-          private const float k_OffsetToChangeDirection = k_BarrierWidth / 2;
+          private const float k_BarrierWidth                      = 44;
+          private const float k_BarrierHeight                     = 32;
+          private const int k_NumOfBarriers                       = 4;
+          private const int k_CallOrder                           = 5;
+          private const int k_MaxLevel                            = 5;
+          private const float k_StartingXVelocity                 = 45f;
+          private const float k_OffsetToChangeDirection           = k_BarrierWidth / 2;
           private const float k_VelocityIncreaseOnLevelTransition = 0.04f;
-          private const string k_BarrierAsset = @"Sprites\Barrier_44x32";
+          private const string k_BarrierAsset                     = @"Sprites\Barrier_44x32";
           private readonly float r_PlayerStartingY;
           private readonly float r_PlayerHeight;
           private readonly List<Barrier> r_Barriers;
@@ -27,16 +27,14 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           private Texture2D m_BarrierTexture;
           private Texture2DPixels m_SampleBarrierPixels;
 
-          public float BarrierXVelocity { get; set; } = k_StartingXVelocity;
-
           public BarrierManager(GameScreen i_GameScreen, float i_PlayerStartingY, float i_PlayerHeight)
-                        : base(i_GameScreen.Game)
+               : base(i_GameScreen.Game)
           {
-               r_Barriers = new List<Barrier>(k_NumOfBarriers);
+               r_Barriers        = new List<Barrier>(k_NumOfBarriers);
                r_PlayerStartingY = i_PlayerStartingY;
-               r_PlayerHeight = i_PlayerHeight;
-               this.UpdateOrder = k_CallOrder;
-               r_GameScreen = i_GameScreen;
+               r_PlayerHeight    = i_PlayerHeight;
+               this.UpdateOrder  = k_CallOrder;
+               r_GameScreen      = i_GameScreen;
                r_GameScreen.Add(this);
           }
 
@@ -128,6 +126,8 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           }
 
           private int m_CurrentLevel = 1;
+
+          public float BarrierXVelocity { get; set; } = k_StartingXVelocity;
 
           public void UpdateLevelDifficulty()
           {

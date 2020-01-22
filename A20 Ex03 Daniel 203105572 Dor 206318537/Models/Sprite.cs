@@ -13,8 +13,8 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
      {
           private readonly DeviceStates r_SavedDeviceStates;
           protected readonly GameScreen r_GameScreen;
-          protected Vector2 m_Position = Vector2.Zero;
-          protected Vector2 m_Scales = Vector2.One;
+          protected Vector2 m_Position  = Vector2.Zero;
+          protected Vector2 m_Scales    = Vector2.One;
           private bool m_UseSharedBatch = false;
           private SpriteBatch m_SpriteBatch;
           private Texture2DPixels m_TexturePixels;

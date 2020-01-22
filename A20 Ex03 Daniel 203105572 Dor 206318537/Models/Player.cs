@@ -11,25 +11,26 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
 {
      public class Player : ShooterPlayer, ICollidable2D
      {
-          private const int k_ScoreLostOnDestroyed = 1200;
-          private const int k_RotationPerSeconed = 4;
-          private const float k_BlinksPerSecond = 6f;
-          private const float k_BlinkLength = 1 / k_BlinksPerSecond;
+          private const int k_ScoreLostOnDestroyed    = 1200;
+          private const int k_RotationPerSeconed      = 4;
+          private const float k_BlinksPerSecond       = 6f;
+          private const float k_BlinkLength           = 1 / k_BlinksPerSecond;
           private const float k_BlinksAnimationLength = 2.5f;
-          private const float k_DeadAnimationLength = 2.5f;
-          private const string k_DeadAnimatorName = "Dead";
+          private const float k_DeadAnimationLength   = 2.5f;
+          private const string k_DeadAnimatorName     = "Dead";
+          private const string k_BlinkAnimatorName    = "Blink";
 
           public Player(string i_AssetName, GameScreen i_GameScreen)
                : base(i_AssetName, i_GameScreen)
           {
-               this.BlendState = BlendState.NonPremultiplied;
-               this.Lives = 3;
-               this.Score = 0;
-               this.Width = 32;
-               this.Height = 32;
-               this.ViewDirection = Sprite.Up;
+               this.BlendState          = BlendState.NonPremultiplied;
+               this.Lives               = 3;
+               this.Score               = 0;
+               this.Width               = 32;
+               this.Height              = 32;
+               this.ViewDirection       = Sprite.Up;
                this.GroupRepresentative = this;
-               this.RotationOrigin = new Vector2(this.Width / 2, this.Height / 2);
+               this.RotationOrigin      = new Vector2(this.Width / 2, this.Height / 2);
           }
 
           public override void Initialize()
@@ -100,15 +101,15 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
 
           private void executeDeadAnimation()
           {
-               this.Animations["Blink"].Pause();
+               this.Animations[k_BlinkAnimatorName].Pause();
                this.Visible = true;
-               this.Animations["Dead"].Resume();
+               this.Animations[k_DeadAnimatorName].Resume();
           }
 
           private void executeLostLifeAnimation()
           {
                Position = StartPosition;
-               this.Animations["Blink"].Restart();
+               this.Animations[k_BlinkAnimatorName].Restart();
           }
 
           public object GroupRepresentative { get; set; }

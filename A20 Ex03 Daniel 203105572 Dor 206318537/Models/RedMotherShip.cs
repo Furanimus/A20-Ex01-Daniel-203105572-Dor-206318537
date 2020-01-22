@@ -9,23 +9,23 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
 {
      public class RedMotherShip : MotherShip
      {
-          private const string k_AssetName = @"Sprites\MotherShip_32x120";
-          private const string k_DeadAnimatorName = "Dead";
-          private const float k_BlinksPerSecond = 10f;
-          private const float k_BlinkLength = 1 / k_BlinksPerSecond;
+          private const string k_AssetName          = @"Sprites\MotherShip_32x120";
+          private const string k_DeadAnimatorName   = "Dead";
+          private const float k_BlinksPerSecond     = 10f;
+          private const float k_BlinkLength         = 1 / k_BlinksPerSecond;
           private const float k_DeadAnimationLength = 2.2f;
 
           public RedMotherShip(GameScreen i_GameScreen)
                : base(k_AssetName, i_GameScreen)
           {
-               this.BlendState = BlendState.NonPremultiplied;
-               this.TintColor = Color.Red;
-               this.Score = 800;
-               this.StartVelocity = new Vector2(100, 0);
-               this.Width = 120;
-               this.Height = 32;
-               this.StartPosition = new Vector2(-Width, 32);
-               this.RotationOrigin = new Vector2(this.Width / 2, this.Height / 2);
+               this.BlendState                   = BlendState.NonPremultiplied;
+               this.TintColor                    = Color.Red;
+               this.Score                        = 800;
+               this.StartVelocity                = new Vector2(100, 0);
+               this.Width                        = 120;
+               this.Height                       = 32;
+               this.StartPosition                = new Vector2(-Width, 32);
+               this.RotationOrigin               = new Vector2(this.Width / 2, this.Height / 2);
                this.PausePositionDuringAnimation = true;
           }
 
