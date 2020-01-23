@@ -6,7 +6,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Animators
 {
      public class CompositeAnimator : SpriteAnimator
      {
-          private const string k_Name = "AnimationsManager";
+          private const string k_Name                                              = "AnimationsManager";
           private readonly Dictionary<string, SpriteAnimator> AnimationsDictionary = new Dictionary<string, SpriteAnimator>();
           protected readonly List<SpriteAnimator> AnimationsList                   = new List<SpriteAnimator>();
 

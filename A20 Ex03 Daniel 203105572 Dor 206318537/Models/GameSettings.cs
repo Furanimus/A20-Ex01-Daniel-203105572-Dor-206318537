@@ -18,12 +18,12 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
 
           public event EventHandler SoundEffectsVolumeChanged;
 
-          public event EventHandler SoundChanged;
+          public event EventHandler SoundStateChanged;
 
           private readonly Game r_Game;
           private int m_PlayersCount          = 1;
-          private int m_BackgroundMusicVolume = 100;
-          private int m_SoundEffectsVolume    = 100;
+          private int m_BackgroundMusicVolume = 10;
+          private int m_SoundEffectsVolume    = 10;
           private bool m_IsSound              = true;
           private bool m_IsFullScreen;
 
@@ -162,9 +162,9 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                {
                     m_IsSound = value;
 
-                    if (SoundChanged != null)
+                    if (SoundStateChanged != null)
                     {
-                         SoundChanged.Invoke(this, null);
+                         SoundStateChanged.Invoke(this, null);
                     }
                }
           }

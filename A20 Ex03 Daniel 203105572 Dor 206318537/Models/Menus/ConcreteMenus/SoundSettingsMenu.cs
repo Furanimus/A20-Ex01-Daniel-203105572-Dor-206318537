@@ -7,12 +7,14 @@ namespace A20_ex03_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus
 {
      public class SoundSettingsMenu : SubMenu
      {
-          private const string k_TitleName = "Sound Settings";
+          private const string k_TitleName                 = "Sound Settings";
           private const string k_BackgroundMusicVolumeText = "Background Music Volume: {0}";
-          private const string k_SoundEffectVolumeText = "Sound Effect Volume: {0}";
-          private const string k_ToggleSoundText = "Toggle Sound: {0}";
-          private const int k_ChangeVolumeBy = 10;
-          private const int k_MaxVolume = 100;
+          private const string k_SoundEffectVolumeText     = "Sound Effect Volume: {0}";
+          private const string k_ToggleSoundText           = "Toggle Sound: {0}";
+          private const string k_OnText                    = "On";
+          private const string k_OffText                   = "Off";
+          private const int k_ChangeVolumeBy               = 10;
+          private const int k_MaxVolume                    = 100;
 
           public SoundSettingsMenu(Menu i_PrevMenu, GameScreen i_GameScreen) 
                : base(k_TitleName, i_PrevMenu, i_GameScreen)
@@ -28,11 +30,11 @@ namespace A20_ex03_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus
 
                MenuItem SoundEffectVolumeMenuItem
                     = new MenuItem(string.Format(k_SoundEffectVolumeText, GameSettings.SoundEffectsVolume), this.GameScreen);
-               SoundEffectVolumeMenuItem.BindActionToKeys(SoundEffectVolume_Clicked, Keys.PageDown, Keys.PageUp);
-               SoundEffectVolumeMenuItem.BindActionToMouseWheel(SoundEffectVolume_Clicked);
+               SoundEffectVolumeMenuItem.BindActionToKeys(soundEffectVolume_Clicked, Keys.PageDown, Keys.PageUp);
+               SoundEffectVolumeMenuItem.BindActionToMouseWheel(soundEffectVolume_Clicked);
 
                MenuItem toggleSoundMenuItem
-                    = new MenuItem(string.Format(k_ToggleSoundText, GameSettings.IsSound ? "On" : "Off"), this.GameScreen);
+                    = new MenuItem(string.Format(k_ToggleSoundText, GameSettings.IsSound ? k_OnText : k_OffText), this.GameScreen);
                toggleSoundMenuItem.BindActionToKeys(toggleSound_Clicked, Keys.PageDown, Keys.PageUp);
                toggleSoundMenuItem.BindActionToMouseButtons(toggleSound_Clicked, eInputButtons.Right);
                toggleSoundMenuItem.BindActionToMouseWheel(toggleSound_Clicked);
@@ -44,22 +46,22 @@ namespace A20_ex03_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus
                base.AddItems();
           }
 
-          private void toggleSound_Clicked(MenuItem i_ActionItem)
+          private void toggleSound_Clicked(MenuItem i_MenuItem)
           {
                GameSettings.IsSound = !GameSettings.IsSound;
-               i_ActionItem.StrokeSpriteFont.Text = string.Format(k_ToggleSoundText, GameSettings.IsSound ? "On" : "Off");
+               i_MenuItem.StrokeSpriteFont.Text = string.Format(k_ToggleSoundText, GameSettings.IsSound ? k_OnText : k_OffText);
           }
 
-          private void SoundEffectVolume_Clicked(MenuItem i_ActionItem)
+          private void soundEffectVolume_Clicked(MenuItem i_MenuItem)
           {
                updateSoundEffectVolumeInSettings();
-               i_ActionItem.StrokeSpriteFont.Text = string.Format(k_SoundEffectVolumeText, GameSettings.SoundEffectsVolume);
+               i_MenuItem.StrokeSpriteFont.Text = string.Format(k_SoundEffectVolumeText, GameSettings.SoundEffectsVolume);
           }
 
-          private void backgroundMusicVolume_Clicked(MenuItem i_ActionItem)
+          private void backgroundMusicVolume_Clicked(MenuItem i_MenuItem)
           {
                updateBackgroundMusicVolumeInSettings();
-               i_ActionItem.StrokeSpriteFont.Text = string.Format(k_BackgroundMusicVolumeText, GameSettings.BackgroundMusicVolume);
+               i_MenuItem.StrokeSpriteFont.Text = string.Format(k_BackgroundMusicVolumeText, GameSettings.BackgroundMusicVolume);
           }
 
           private void updateSoundEffectVolumeInSettings()

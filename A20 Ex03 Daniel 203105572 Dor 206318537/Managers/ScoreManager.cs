@@ -13,16 +13,19 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 {
      public class ScoreManager : GameService, IScoreManager
      {
-          private const int k_SpaceFactor = 12;
-          private const int k_SpaceBetweenScores = 10;
-          private const int k_LivesStartingY = 10;
-          private const int k_StartingXForDraw = 10;
-          private const string k_ScoreString = "P{0} Score: {1}";
-          private const string k_FontAssetName = @"Fonts\ComicSansMsFont";
-          private const string k_WinnerString = @"The Winner is player {0}";
-          private readonly List<BasePlayer> r_Players = new List<BasePlayer>();
+          private const int k_SpaceFactor                                    = 12;
+          private const int k_SpaceBetweenScores                             = 10;
+          private const int k_LivesStartingY                                 = 10;
+          private const int k_StartingXForDraw                               = 10;
+          private const string k_PlayerNum                                   = "Player{0}  ";
+          private const string k_TieMsg                                      = "It's a tie between:";
+          private const string k_ScoreString                                 = "P{0} Score: {1}";
+          private const string k_ResultScoreString                           = "Player{0} Scored {1} points";
+          private const string k_FontAssetName                               = @"Fonts\ComicSansMsFont";
+          private const string k_WinnerString                                = @"The Winner is player {0}";
+          private readonly List<BasePlayer> r_Players                        = new List<BasePlayer>();
           private readonly HashSet<BasePlayer> r_PlayersSetForCheckExistance = new HashSet<BasePlayer>();
-          private readonly List<GameScreen> r_GameScreens = new List<GameScreen>();
+          private readonly List<GameScreen> r_GameScreens                    = new List<GameScreen>();
           private SpriteFont m_ComicSansMsFont;
           private IGameSettings m_GameSettings;
           private StrokeSpriteFont m_Result;
@@ -113,7 +116,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 
           public Vector2 ResultPosition { get; set; }
 
-          public void ShowResult(GameScreen i_GameScreen)
+          private bool isSomeoneAlive()
           {
                bool isSomeoneAlive = false;
 
@@ -128,57 +131,79 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                     }
                }
 
-               if (!isSomeoneAlive && m_Result == null)
-               {
-                    StringBuilder result = new StringBuilder();
-                    int winnerIdx = 0;
-                    HashSet<int> ties = new HashSet<int>();
+               return isSomeoneAlive;
+          }
 
-                    for (int i = 0; i < m_GameSettings.PlayersCount; i++)
+          public void ShowResult(GameScreen i_GameScreen)
+          {
+               if (!isSomeoneAlive() && m_Result == null)
+               {
+                    int winnerIndex = 0;
+                    StringBuilder result = new StringBuilder();
+                    HashSet<int> ties    = new HashSet<int>();
+
+                    addPlayerScoreResult(result, winnerIndex);
+
+                    for (int i = 1; i < m_GameSettings.PlayersCount; i++)
                     {
                          BasePlayer player = r_Players[i];
 
-                         if (r_Players[winnerIdx].Score < player.Score)
+                         if (r_Players[winnerIndex].Score < player.Score)
                          {
-                              winnerIdx = i;
+                              winnerIndex = i;
 
                               if(ties.Count > 0)
                               {
                                    ties.Clear();
                               }
                          }
-                         else if (r_Players[winnerIdx].Score == player.Score)
+                         else if (r_Players[winnerIndex].Score == player.Score)
                          {
                               ties.Add(i);
-                              ties.Add(winnerIdx);
+                              ties.Add(winnerIndex);
                          }
 
-                         result.Append(string.Format(k_ScoreString, i + 1, player.Score));
-                         result.Append(Environment.NewLine);
+                         addPlayerScoreResult(result, i);
                     }
 
-                    if(ties.Count > 0)
-                    {
-                         result.Append("It's a tie between:");
-                         result.Append(Environment.NewLine);
-
-                         foreach (int playerIndex in ties)
-                         {
-                              result.Append(string.Format("Player{0}  ", playerIndex + 1));
-                         }
-                    }
-                    else if (m_GameSettings.PlayersCount > 1)
-                    {
-                         result.Append(string.Format(k_WinnerString, winnerIdx + 1));
-                    }
-
-                    m_Result = new StrokeSpriteFont(result.ToString(), i_GameScreen);
-                    m_Result.Initialize();
-                    m_Result.PositionOrigin = m_Result.SourceRectangleCenter;
-                    m_Result.RotationOrigin = m_Result.SourceRectangleCenter;
-                    m_Result.Position = ResultPosition;
-                    i_GameScreen.Add(m_Result);
+                    addResultString(result, ties, winnerIndex);
+                    positionResult(result.ToString(), i_GameScreen);
                }
+          }
+
+          private void addPlayerScoreResult(StringBuilder i_Result, int i_PlayerIndex)
+          {
+               i_Result.Append(string.Format(k_ResultScoreString, i_PlayerIndex + 1, r_Players[i_PlayerIndex].Score));
+               i_Result.Append(Environment.NewLine);
+          }
+
+          private void addResultString(StringBuilder i_Result, HashSet<int> i_PlayersIndicesWithSameScore, int i_WinnerIndex)
+          {
+               if (i_PlayersIndicesWithSameScore.Count > 0)
+               {
+                    i_Result.Append(Environment.NewLine);
+                    i_Result.Append(k_TieMsg);
+                    i_Result.Append(Environment.NewLine);
+
+                    foreach (int playerIndex in i_PlayersIndicesWithSameScore)
+                    {
+                         i_Result.Append(string.Format(k_PlayerNum, playerIndex + 1));
+                    }
+               }
+               else if (m_GameSettings.PlayersCount > 1)
+               {
+                    i_Result.Append(string.Format(k_WinnerString, i_WinnerIndex + 1));
+               }
+          }
+
+          private void positionResult(string i_ResultText, GameScreen i_GameScreen)
+          {
+               m_Result = new StrokeSpriteFont(i_ResultText, i_GameScreen);
+               m_Result.Initialize();
+               m_Result.PositionOrigin = m_Result.SourceRectangleCenter;
+               m_Result.RotationOrigin = m_Result.SourceRectangleCenter;
+               m_Result.Position = ResultPosition;
+               i_GameScreen.Add(m_Result);
           }
      }
 }

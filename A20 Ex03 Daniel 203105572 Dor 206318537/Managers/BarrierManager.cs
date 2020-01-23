@@ -5,7 +5,7 @@ using A20_Ex03_Daniel_203105572_Dor_206318537.Utils;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Components;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Models;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Screens;
-using System;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 {
@@ -24,6 +24,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           private readonly float r_PlayerHeight;
           private readonly List<Barrier> r_Barriers;
           private readonly GameScreen r_GameScreen;
+          private readonly ISoundManager r_SoundManager;
           private Texture2D m_BarrierTexture;
           private Texture2DPixels m_SampleBarrierPixels;
           private int m_CurrentLevel = 1;
@@ -31,6 +32,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           public BarrierManager(GameScreen i_GameScreen, float i_PlayerStartingY, float i_PlayerHeight)
                : base(i_GameScreen.Game)
           {
+               r_SoundManager    = this.Game.Services.GetService(typeof(SoundManager)) as ISoundManager;
                r_Barriers        = new List<Barrier>(k_NumOfBarriers);
                r_PlayerStartingY = i_PlayerStartingY;
                r_PlayerHeight    = i_PlayerHeight;
@@ -55,6 +57,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                     Barrier barrier = new Barrier(r_GameScreen);
                     setBarrierProperties(barrier, startingObstaclesPoint);
                     r_Barriers.Add(barrier);
+                    r_SoundManager.AddSoundEmitter(barrier);
                     startingObstaclesPoint.X += barrier.Width * 2;
                }
           }
@@ -131,7 +134,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                     barrier.Texture.SetData(barrier.TexturePixels.Pixels);
                }
           }
-
 
           public float BarrierXVelocity { get; set; } = k_StartingXVelocity;
 

@@ -54,7 +54,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
                }
           }
 
-          public int CurrentLevel { get; set; }
+          public int CurrentLevel { get; set; } = 1;
 
           private float SecondsLeft { get; set; } = 3;
 
@@ -86,6 +86,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
           {
                if (m_ShownLevel != CurrentLevel)
                {
+                    reset();
                     m_ShownLevel = CurrentLevel;
                     m_LevelText.Text = string.Format(k_Level, CurrentLevel);
                }
@@ -102,7 +103,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
 
                if (m_CurrentTime >= k_TimeUntilExit)
                {
-                    Reset();
                     ExitScreen();
                }
 
@@ -110,11 +110,19 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
                base.Update(i_GameTime);
           }
 
-          private void Reset()
+          private void reset()
           {
                m_CurrentTime = 0;
                m_OneSecondTimer = 1f;
                SecondsLeft = 3;
+               m_SecondsLeftText.Text = string.Format(k_SecondsLeft, SecondsLeft);
+          }
+
+          public void ResetAll()
+          {
+               m_ShownLevel = 0;
+               CurrentLevel = 0;
+               reset();
           }
 
           private void doTransition()

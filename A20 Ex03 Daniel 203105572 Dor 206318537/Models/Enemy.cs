@@ -12,9 +12,9 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
           public Enemy(string i_AssetName, GameScreen i_GameScreen) 
                : base(i_AssetName, i_GameScreen, k_CallOrder)
           {
-               this.StartVelocity = new Vector2(32, 0);
-               this.Lives = 1;
-               this.ViewDirection = Sprite.Down;
+               this.StartVelocity       = new Vector2(32, 0);
+               this.Lives               = 1;
+               this.ViewDirection       = Sprite.Down;
                this.GroupRepresentative = this;
           }
 

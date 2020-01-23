@@ -1,19 +1,18 @@
-﻿using Microsoft.Xna.Framework;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
+﻿using System;
 using Microsoft.Xna.Framework.Graphics;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Screens;
-using System;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
 {
      public class Barrier : Sprite, ICollidable2D, ISoundEmitter
      {
           private const string k_CollideSound = "BarrierHit";
-          private const string k_AssetName = @"Sprites\Barrier_44x32";
-          private const int k_DefaultWidth = 44;
-          private const int k_DefaultHeight = 32;
+          private const string k_AssetName    = @"Sprites\Barrier_44x32";
+          private const int k_DefaultWidth    = 44;
+          private const int k_DefaultHeight   = 32;
 
-          public event Action<string> ActionOccurred;
+          public event Action<string> SoundActionOccurred;
 
           public object GroupRepresentative { get; set; }
 
@@ -28,9 +27,9 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
 
           public override void Collided(ICollidable i_Collidable)
           {
-               if (ActionOccurred != null)
+               if (SoundActionOccurred != null)
                {
-                    ActionOccurred.Invoke(k_CollideSound);
+                    SoundActionOccurred.Invoke(k_CollideSound);
                }
           }
      }

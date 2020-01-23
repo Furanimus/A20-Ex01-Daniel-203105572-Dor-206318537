@@ -1,11 +1,11 @@
-﻿using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Utils;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework.Input;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Utils;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Models;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Screens;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus;
@@ -13,12 +13,15 @@ using A20_Ex03_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnimators
 
 namespace A20_ex03_Daniel_203105572_Dor_206318537.Models.Menus
 {
-     public class MenuItem : Sprite
+     public class MenuItem : Sprite, ISoundEmitter
      {
           public event Action<MenuItem> Clicked;
 
-          private const float k_PulsePerSec = 1.5f;
-          private const float k_TargetScale = 1.03f;
+          public event Action<string> SoundActionOccurred;
+
+          private const string k_MenuItemFocusSound = "MenuMove";
+          private const float k_PulsePerSec         = 1.5f;
+          private const float k_TargetScale         = 1.03f;
           private readonly List<KeyValuePair<eInputButtons, Action<MenuItem>>> r_ButtonsToActions;
           private readonly List<KeyValuePair<Keys, Action<MenuItem>>> r_KeysToActions;
           private readonly Action<MenuItem> r_CheckMouseOrKBState;
@@ -165,6 +168,7 @@ namespace A20_ex03_Daniel_203105572_Dor_206318537.Models.Menus
 
                if (IsInitialized)
                {
+                    SoundActionOccurred.Invoke(k_MenuItemFocusSound);
                     this.StrokeSpriteFont.TintColor = Color.DeepSkyBlue;
                     this.StrokeSpriteFont.Animations.Restart();
                }
@@ -190,59 +194,83 @@ namespace A20_ex03_Daniel_203105572_Dor_206318537.Models.Menus
                }
           }
 
+          private bool invokeKeyBindActions()
+          {
+               bool isClicked = false;
+
+               foreach (KeyValuePair<Keys, Action<MenuItem>> bind in r_KeysToActions)
+               {
+                    if (r_InputManager.KeyPressed(bind.Key))
+                    {
+                         bind.Value.Invoke(this);
+                         isClicked = true;
+                    }
+               }
+
+               return isClicked;
+          }
+
+          private bool invokeButtonBindActions()
+          {
+               bool isClicked = false;
+
+               foreach (KeyValuePair<eInputButtons, Action<MenuItem>> bind in r_ButtonsToActions)
+               {
+                    if (r_InputManager.ButtonPressed(bind.Key))
+                    {
+                         bind.Value.Invoke(this);
+                         isClicked = true;
+                    }
+               }
+
+               return isClicked;
+          }
+
+          private bool invokeMouseWheelBindAction()
+          {
+               bool isClicked = false;
+
+               if (m_WheelAction != null)
+               {
+                    if (r_InputManager.ScrollWheelDelta != 0)
+                    {
+                         m_WheelAction.Invoke(this);
+                         isClicked = true;
+                    }
+               }
+               else
+               {
+                    if (m_WheelUpAction != null)
+                    {
+                         if (r_InputManager.ScrollWheelDelta > 0)
+                         {
+                              m_WheelUpAction.Invoke(this);
+                              isClicked = true;
+                         }
+                    }
+
+                    if (m_WheelDownAction != null)
+                    {
+                         if (r_InputManager.ScrollWheelDelta < 0)
+                         {
+                              m_WheelDownAction.Invoke(this);
+                              isClicked = true;
+                         }
+                    }
+               }
+
+               return isClicked;
+          }
+
           public override void Update(GameTime i_GameTime)
           {
                if (IsFocused)
                {
-                    bool isClicked = false;
                     checkMouseOrKBStateCheckClick();
-
-                    foreach(KeyValuePair<Keys, Action<MenuItem>> bind in r_KeysToActions)
-                    {
-                         if (r_InputManager.KeyPressed(bind.Key))
-                         {
-                              bind.Value.Invoke(this);
-                              isClicked = true;
-                         }
-                    }
-
-                    foreach (KeyValuePair<eInputButtons, Action<MenuItem>> bind in r_ButtonsToActions)
-                    {
-                         if (r_InputManager.ButtonPressed(bind.Key))
-                         {
-                              bind.Value.Invoke(this);
-                              isClicked = true;
-                         }
-                    }
-
-                    if (m_WheelAction != null)
-                    {
-                         if (r_InputManager.ScrollWheelDelta != 0)
-                         {
-                              m_WheelAction.Invoke(this);
-                              isClicked = true;
-                         }
-                    }
-                    else
-                    {
-                         if (m_WheelUpAction != null)
-                         {
-                              if (r_InputManager.ScrollWheelDelta > 0)
-                              {
-                                   m_WheelUpAction.Invoke(this);
-                                   isClicked = true;
-                              }
-                         }
-
-                         if (m_WheelDownAction != null)
-                         {
-                              if (r_InputManager.ScrollWheelDelta < 0)
-                              {
-                                   m_WheelDownAction.Invoke(this);
-                                   isClicked = true;
-                              }
-                         }
-                    }
+                    bool isClicked = 
+                         invokeButtonBindActions() || 
+                         invokeKeyBindActions() || 
+                         invokeMouseWheelBindAction();
 
                     if (isClicked)
                     {

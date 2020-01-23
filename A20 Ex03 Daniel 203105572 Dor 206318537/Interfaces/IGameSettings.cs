@@ -1,5 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using System;
+﻿using System;
+using Microsoft.Xna.Framework;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces
 {
@@ -17,7 +17,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces
 
           event EventHandler SoundEffectsVolumeChanged;
 
-          event EventHandler SoundChanged;
+          event EventHandler SoundStateChanged;
 
           GraphicsDeviceManager GraphicsDeviceManager { get; }
 

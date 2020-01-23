@@ -1,22 +1,22 @@
-﻿using A20_ex03_Daniel_203105572_Dor_206318537.Models.Menus;
-using A20_ex03_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
+﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using A20_ex03_Daniel_203105572_Dor_206318537.Models.Menus;
+using A20_ex03_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Screens;
-using System;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus
 {
      public class MainMenu : Menu
      {
-          private const string k_Title = "Main Menu";
-          private const int k_NextPosX = 50;
-          private const string k_OnePlayerPlayText = "Players: {0}";
-          private const string k_PlayText = "Play";
-          private const string k_One = "One";
-          private const string k_Two = "Two";
-          private const string k_SoundSettingsMenuItem = "Sound Settings";
+          private const string k_Title                  = "Main Menu";
+          private const int k_NextPosX                  = 50;
+          private const string k_OnePlayerPlayText      = "Players: {0}";
+          private const string k_PlayText               = "Play";
+          private const string k_One                    = "One";
+          private const string k_Two                    = "Two";
+          private const string k_SoundSettingsMenuItem  = "Sound Settings";
           private const string k_ScreenSettingsMenuItem = "Screen Settings";
 
           public MainMenu(GameScreen i_GameScreen)

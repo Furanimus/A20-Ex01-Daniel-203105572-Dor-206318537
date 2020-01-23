@@ -17,26 +17,27 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
           private readonly LevelTransitionScreen r_LevelTransition;
           private readonly PauseScreen r_PauseScreen;
           private readonly IGameSettings r_GameSettings;
+          private readonly IScoreManager r_ScoreManager;
           private EnemyManager m_EnemyManager;
           private BarrierManager m_BarrierManager;
           private IPlayersManager m_PlayersManager;
           private IInputManager m_InputManager;
-          private IScoreManager m_ScoreManager;
+          private readonly ISoundManager r_SoundManager;
           private int m_Level = 1;
 
-          public PlayScreen(Game i_Game)
+          public PlayScreen(LevelTransitionScreen i_LevelTransitionScreen, Game i_Game)
                : base(i_Game)
           {
-               r_LevelTransition = new LevelTransitionScreen(this.Game);
+               r_LevelTransition = i_LevelTransitionScreen;
                r_PauseScreen     = new PauseScreen(this.Game);
                r_Background      = new Background(this);
+               r_ScoreManager    = this.Game.Services.GetService(typeof(IScoreManager)) as IScoreManager;
+               r_SoundManager    = this.Game.Services.GetService(typeof(SoundManager)) as ISoundManager;
                r_GameSettings    = this.Game.Services.GetService(typeof(IGameSettings)) as IGameSettings;
-               r_GameSettings.GraphicsDeviceManager.PreferredBackBufferWidth = (int)r_Background.Width;
+               r_ScoreManager.AddScreen(this);
+               r_GameSettings.GraphicsDeviceManager.PreferredBackBufferWidth  = (int)r_Background.Width;
                r_GameSettings.GraphicsDeviceManager.PreferredBackBufferHeight = (int)r_Background.Height;
                r_GameSettings.GraphicsDeviceManager.ApplyChanges();
-
-               m_ScoreManager = this.Game.Services.GetService(typeof(IScoreManager)) as IScoreManager;
-               m_ScoreManager.AddScreen(this);
           }
 
           public override void Initialize()
@@ -69,9 +70,9 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
                m_EnemyManager   = new EnemyManager(this);
                m_BarrierManager = new BarrierManager(this, m_PlayersManager[0].StartPosition.Y, m_PlayersManager[0].Height);
 
-               m_EnemyManager.MatrixReachedBottomWindow += OnGameOver;
+               m_EnemyManager.MatrixReachedBottomWindow += onGameOver;
                m_EnemyManager.AllEnemiesDied            += enemyManager_AllEnemiesDied;
-               m_PlayersManager.AllPlayersDied          += OnGameOver;
+               m_PlayersManager.AllPlayersDied          += onGameOver;
           }
 
           private void enemyManager_AllEnemiesDied()
@@ -99,7 +100,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
                if (i_Args.CurrentState == eScreenState.Closed)
                {
                     this.ScreensManager.SetCurrentScreen(this);
-                    m_EnemyManager.LevelReset();
                }
           }
 
@@ -129,12 +129,13 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
 
                if (enemy != null)
                {
-                    OnGameOver();
+                    onGameOver();
                }
           }
 
-          private void OnGameOver()
+          private void onGameOver()
           {
+               r_SoundManager.EnableMuteKey = false;
                ExitScreen();
           }
 
@@ -143,6 +144,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
                m_PlayersManager.ResetAll();
                m_EnemyManager.ResetAll();
                m_BarrierManager.ResetAll();
+               r_LevelTransition.ResetAll();
                m_Level = 1;
           }
 
@@ -158,6 +160,11 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
                     this.ScreensManager.SetCurrentScreen(r_PauseScreen);
                }
 
+               if(r_SoundManager.EnableMuteKey == false)
+               {
+                    r_SoundManager.EnableMuteKey = true;
+               }
+
                showLevelTransition();
 
                base.Update(i_GameTime);
@@ -166,7 +173,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
           public override void Draw(GameTime i_GameTime)
           {
                base.Draw(i_GameTime);
-               m_ScoreManager.DrawScores(this);
+               r_ScoreManager.DrawScores(this);
           }
      }
 }

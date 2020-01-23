@@ -12,13 +12,13 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
      {
           public event Action AllPlayersDied;
 
-          private const int k_SpaceBetweenLives = 10;
-          private const int k_LivesStartingY = 10;
-          private const float k_LivesAlpha = 0.5f;
-          private readonly List<BasePlayer> r_Players = new List<BasePlayer>();
+          private const int k_SpaceBetweenLives                              = 10;
+          private const int k_LivesStartingY                                 = 10;
+          private const float k_LivesAlpha                                   = 0.5f;
+          private readonly List<BasePlayer> r_Players                        = new List<BasePlayer>();
           private readonly HashSet<BasePlayer> r_PlayersSetForCheckExistance = new HashSet<BasePlayer>();
-          private readonly Vector2 r_LivesScale = new Vector2(0.5f, 0.5f);
-          private readonly Color r_Color = new Color(Color.White, k_LivesAlpha);
+          private readonly Vector2 r_LivesScale                              = new Vector2(0.5f, 0.5f);
+          private readonly Color r_Color                                     = new Color(Color.White, k_LivesAlpha);
           private readonly GameScreen r_GameScreen;
           private bool m_IsAllPlayerAlive = false;
           private IGameSettings m_GameSettings;

@@ -1,6 +1,6 @@
 ﻿using System;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Models.Animators;
 using Microsoft.Xna.Framework;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Models.Animators;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnimators
 {
@@ -25,8 +25,8 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnima
           protected override void DoFrame(GameTime i_GameTime)
           {
                m_TimePassed += (float)i_GameTime.ElapsedGameTime.TotalSeconds;
-               float opacity = MathHelper.Clamp(k_MaxOpacity - (m_TimePassed / (float)AnimationLength.TotalSeconds), k_MinOpacity, k_MaxOpacity);
-               this.BoundSprite.Opacity = opacity;
+               float opacity = k_MaxOpacity - (m_TimePassed / (float)AnimationLength.TotalSeconds);
+               this.BoundSprite.Opacity = MathHelper.Clamp(opacity, k_MinOpacity, k_MaxOpacity);
           }
 
           protected override void RevertToOriginal()

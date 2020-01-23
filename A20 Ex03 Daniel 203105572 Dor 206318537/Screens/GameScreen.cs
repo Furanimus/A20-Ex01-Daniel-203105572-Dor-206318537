@@ -12,7 +12,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens
      {
           public event EventHandler<StateChangedEventArgs> StateChanged;
 
-          protected eScreenState m_State = eScreenState.Inactive;
+          protected eScreenState m_State   = eScreenState.Inactive;
           protected float m_BlackTintAlpha = 0;
           private IInputManager m_InputManager;
           private IInputManager m_DummyInputManager = new DummyInputManager();

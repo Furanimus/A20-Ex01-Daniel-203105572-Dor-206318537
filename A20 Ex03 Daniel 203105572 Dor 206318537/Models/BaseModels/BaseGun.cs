@@ -9,7 +9,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.BaseModels
 {
      public abstract class BaseGun : CompositeDrawableComponent<BaseBullet>, ISoundEmitter
      {
-          public event Action<string> ActionOccurred;
+          public event Action<string> SoundActionOccurred;
 
           private const string k_ShootSound = "EnemyGunShot";
           protected readonly Sprite r_Shooter;
@@ -92,9 +92,9 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.BaseModels
                          bullet.Visible = true;
                     }
 
-                    if (ActionOccurred != null)
+                    if (SoundActionOccurred != null)
                     {
-                         ActionOccurred.Invoke(ShootSoundName);
+                         SoundActionOccurred.Invoke(ShootSoundName);
                     }
                }
           }

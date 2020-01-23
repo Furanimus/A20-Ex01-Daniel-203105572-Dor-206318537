@@ -9,19 +9,19 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
 {
      public class AlienMatrixEnemy : ShooterEnemy
      {
-          private const int k_MaxShotInMidAir = 1;
-          private const int k_DefaultWidth = 32;
-          private const int k_DefaultHeight = 32;
-          private const int k_DefaultScoreWorth = 0;
-          private const int k_NumOfCells = 2;
-          private const int k_NumOfCirclesInOneSecond = 6;
-          private const float k_CellAnimationTimePerCell = 0.5f;
-          private const float k_RotationAnimationLength = 1.2f;
-          private const float k_ShrinkAnimationLength = 1.2f;
-          private const float k_JumpAnimationIntervals = 0.5f;
-          private const string k_AssetName = @"Sprites\EnemySpriteSheet_192x32";
+          private const int k_MaxShotInMidAir              = 1;
+          private const int k_DefaultWidth                 = 32;
+          private const int k_DefaultHeight                = 32;
+          private const int k_DefaultScoreWorth            = 0;
+          private const int k_NumOfCells                   = 2;
+          private const int k_NumOfCirclesInOneSecond      = 6;
+          private const float k_CellAnimationTimePerCell   = 0.5f;
+          private const float k_RotationAnimationLength    = 1.2f;
+          private const float k_ShrinkAnimationLength      = 1.2f;
+          private const float k_JumpAnimationIntervals     = 0.5f;
+          private const string k_AssetName                 = @"Sprites\EnemySpriteSheet_192x32";
           private const bool k_IsStartCellAnimationFromEnd = false;
-          private const string k_DeadAnimatorName = "Dead";
+          private const string k_DeadAnimatorName          = "Dead";
 
           public AlienMatrixEnemy(Rectangle i_SourceRectangle, GameScreen i_GameScreen)
                : this(i_SourceRectangle, k_DefaultScoreWorth, Color.White, i_GameScreen)
@@ -49,13 +49,13 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                {
                     base.Initialize();
                     this.Gun.Initialize();
-                    CompositeAnimator dead = new CompositeAnimator(
+                    JumpMovementAnimator jump = new JumpMovementAnimator(TimeSpan.FromSeconds(k_JumpAnimationIntervals), TimeSpan.Zero);
+                    CompositeAnimator dead    = new CompositeAnimator(
                          k_DeadAnimatorName,
                          TimeSpan.FromSeconds(k_RotationAnimationLength),
                          this,
                          new RotationAnimator(k_NumOfCirclesInOneSecond, TimeSpan.FromSeconds(k_RotationAnimationLength)),
                          new ShrinkAnimator(TimeSpan.FromSeconds(k_ShrinkAnimationLength)));
-                    JumpMovementAnimator jump = new JumpMovementAnimator(TimeSpan.FromSeconds(k_JumpAnimationIntervals), TimeSpan.Zero);
 
                     this.Animations.Add(CellAnimation);
                     this.Animations.Add(dead);
@@ -74,7 +74,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
           {
                this.Enabled = false;
                this.Visible = false;
-               this.Animations.Pause();
           }
 
           protected override void OnUpdate(float i_TotalSeconds)

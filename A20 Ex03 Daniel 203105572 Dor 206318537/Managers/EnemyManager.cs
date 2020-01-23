@@ -46,6 +46,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           private readonly ISoundManager r_SoundManager;
           private readonly List<List<Enemy>> r_EnemyMatrix;
           private readonly GameScreen r_GameScreen;
+          private readonly RedMotherShip r_MotherShip;
           private Enemy m_RightMostRepresentetive;
           private Enemy m_DownMostRepresentetive;
           private Enemy m_LeftMostRepresentetive;
@@ -61,6 +62,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                r_RandomBehavior = this.Game.Services.GetService(typeof(IRandomBehavior)) as IRandomBehavior;
                r_SoundManager = this.Game.Services.GetService(typeof(SoundManager)) as ISoundManager;
                r_GameScreen.Add(this);
+               r_MotherShip = new RedMotherShip(r_GameScreen);
                this.DrawOrder = this.UpdateOrder = 5;
           }
 
@@ -68,7 +70,8 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           {
                populateMatrix();
                setRepresentetives();
-               this.Add(new RedMotherShip(r_GameScreen));
+               this.Add(r_MotherShip);
+               r_SoundManager.AddSoundEmitter(r_MotherShip);
 
                base.Initialize();
           }
@@ -361,24 +364,18 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                }
           }
 
-
           private void setVisibility(Enemy i_Enemy, int i_Row, int i_Col)
           {
-               if (i_Row < VisibleRows && i_Col < VisibleCols)
-               {
-                    i_Enemy.Visible = true;
-                    i_Enemy.Enabled = true;
-               }
-               else
-               {
-                    i_Enemy.Visible = false;
-                    i_Enemy.Enabled = false;
-               }
+               i_Enemy.Visible = i_Row < VisibleRows && i_Col < VisibleCols;
+               i_Enemy.Enabled = i_Row < VisibleRows && i_Col < VisibleCols;
           }
 
           public void ResetAll()
           {
                LevelReset();
+
+               VisibleCols = k_InitialVisibleCols;
+               VisibleRows = k_InitialVisibleRows;
 
                for (int row = 0; row < k_MatrixRows; row++)
                {
@@ -386,9 +383,9 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                     {
                          Enemy enemy = r_EnemyMatrix[row][col];
                          enemy.Score = enemy.StartingScore;
+                         setVisibility(enemy, row, col);
                     }
                }
-              
           }
 
           public void LevelReset()

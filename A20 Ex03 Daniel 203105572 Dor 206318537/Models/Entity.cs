@@ -6,10 +6,10 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
 {
      public abstract class Entity : Sprite, ISoundEmitter
      {
-          public event Action<string> ActionOccurred;
+          public event Action<string> SoundActionOccurred;
 
           private const string k_KillSoundName = @"EnemyKill";
-          private int m_LivesForReset = -1;
+          private int m_LivesForReset          = -1;
           protected int m_Lives;
 
           public Entity(string i_AssetName, GameScreen i_GameScreen)
@@ -47,25 +47,35 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                               m_LivesForReset = value;
                          }
 
-                         if (value != 0 && LifeLostSoundName != string.Empty && ActionOccurred != null)
-                         {
-                              ActionOccurred.Invoke(LifeLostSoundName);
-                         }
+                         playLostLifeSound(m_Lives);
                     }
 
-                    if (m_Lives == 0)
-                    {
-                         if (ActionOccurred != null)
-                         {
-                              ActionOccurred.Invoke(KilledSoundName);
-                         }
+                    checkIfAlive(m_Lives);
+               }
+          }
 
-                         IsAlive = false;
-                    }
-                    else if (m_Lives > 0)
+          private void playLostLifeSound(int i_Lives)
+          {
+               if (i_Lives != 0 && LifeLostSoundName != string.Empty && SoundActionOccurred != null)
+               {
+                    SoundActionOccurred.Invoke(LifeLostSoundName);
+               }
+          }
+
+          private void checkIfAlive(int i_Lives)
+          {
+               if (m_Lives == 0)
+               {
+                    if (SoundActionOccurred != null)
                     {
-                         IsAlive = true;
+                         SoundActionOccurred.Invoke(KilledSoundName);
                     }
+
+                    IsAlive = false;
+               }
+               else if (m_Lives > 0)
+               {
+                    IsAlive = true;
                }
           }
 

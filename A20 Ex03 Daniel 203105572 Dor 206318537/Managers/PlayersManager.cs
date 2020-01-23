@@ -16,9 +16,10 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           public event Action<BasePlayer, ICollidable2D> PlayerCollided;
 
           private const int k_RightSpace = 64;
-          private const int k_DownSpace = 64;
+          private const int k_DownSpace  = 64;
           private readonly List<BasePlayer> r_Players;
           private readonly GameScreen r_GameScreen;
+          private readonly ISoundManager r_SoundManager;
           private IGameSettings m_GameSettings;
           private IScoreManager m_ScoreManager;
           private LivesManager m_LivesManager;
@@ -29,6 +30,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           {
                r_GameScreen = i_GameScreen;
                r_Players = new List<BasePlayer>();
+               r_SoundManager = this.Game.Services.GetService(typeof(SoundManager)) as ISoundManager;
                NextPosition = new Vector2(r_GameScreen.Game.GraphicsDevice.Viewport.Width - k_RightSpace, r_GameScreen.Game.GraphicsDevice.Viewport.Height - k_DownSpace);
                initServices();
 
@@ -91,6 +93,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                r_GameScreen.Add(i_Player);
                r_Players.Add(i_Player);
                PlayersCount++;
+               r_SoundManager.AddSoundEmitter(i_Player);
 
                if (PlayersCount > m_GameSettings.PlayersCount)
                {
@@ -128,11 +131,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                     i_Player.IsMouseControllable = !m_IsMouseControlTaken;
                     m_IsMouseControlTaken = !m_IsMouseControlTaken;
                }
-          }
-
-          private void OnGameOver()
-          {
-               r_GameScreen.ExitScreen();
           }
 
           private void initServices()

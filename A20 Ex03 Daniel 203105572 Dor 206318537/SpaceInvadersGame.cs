@@ -10,10 +10,12 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537
           public SpaceInvadersGame()
           {
                Content.RootDirectory = "Content";
-               PlayScreen playScreen = new PlayScreen(this);
+               LevelTransitionScreen levelTransitionScreen = new LevelTransitionScreen(this);
+               PlayScreen playScreen = new PlayScreen(levelTransitionScreen, this);
                ScreensManager screensManager = new ScreensManager(this);
                screensManager.Push(new GameOverScreen(playScreen, this));
                screensManager.Push(playScreen);
+               screensManager.Push(levelTransitionScreen);
                screensManager.SetCurrentScreen(new WelcomeScreen(this));
                this.IsMouseVisible = true;
 

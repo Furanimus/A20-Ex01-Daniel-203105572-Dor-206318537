@@ -11,13 +11,14 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
 {
      public class GameOverScreen : ControlScreen
      {
-          private const string k_GameOverAssetName = @"Sprites\GameOverMessage";
+          private const string k_GameOverAssetName     = @"Sprites\GameOverMessage";
           private const string k_InstructionsAssetName = @"Sprites\Instructions";
-          private const string k_GameOverSoundName = "GameOver";
-          private const float k_PulseTargetScale   = 1.05f;
-          private const float k_PulsePerSec        = 0.7f;
-          private const int k_ActivationLength     = 1;
-          private const int k_Space                = 150;
+          private const string k_GameOverSoundName     = "GameOver";
+          private const float k_PulseTargetScale       = 1.05f;
+          private const float k_PulsePerSec            = 0.7f;
+          private const float k_SpaceFromGameOverMsg   = 150;
+          private const int k_ActivationLength         = 1;
+          private const int k_Space                    = 150;
           private readonly IScoreManager r_ScoreManager;
           private readonly ISoundManager r_SoundManager;
           private readonly PlayScreen r_PlayScreen;
@@ -28,15 +29,15 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
           public GameOverScreen(PlayScreen i_PlayScreen, Game i_Game)
                : base(i_Game)
           {
-               m_Background = new Background(this);
-               m_Background.TintColor = Color.Red;
-               m_GameOverMessage = new Sprite(k_GameOverAssetName, this);
-               m_Instructions = new Sprite(k_InstructionsAssetName, this);
-               r_ScoreManager = Game.Services.GetService(typeof(IScoreManager)) as IScoreManager;
-               r_SoundManager = Game.Services.GetService(typeof(SoundManager)) as ISoundManager;
-               r_ScoreManager.AddScreen(this);
-               r_PlayScreen = i_PlayScreen;
+               m_Background                        = new Background(this);
+               m_Background.TintColor              = Color.Red;
+               m_GameOverMessage                   = new Sprite(k_GameOverAssetName, this);
+               m_Instructions                      = new Sprite(k_InstructionsAssetName, this);
+               r_ScoreManager                      = Game.Services.GetService(typeof(IScoreManager)) as IScoreManager;
+               r_SoundManager                      = Game.Services.GetService(typeof(SoundManager)) as ISoundManager;
+               r_PlayScreen                        = i_PlayScreen;
                MainMenuScreen.MainMenu.PlayClicked = mainMenu_PlayClicked;
+               r_ScoreManager.AddScreen(this);
 
                this.Add(m_GameOverMessage);
                this.Add(m_Instructions);
@@ -72,7 +73,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
                     m_Instructions.RotationOrigin = m_Instructions.SourceRectangleCenter;
                     m_Instructions.Position = CenterOfViewPort + new Vector2(0, m_GameOverMessage.Height + k_Space);
 
-                    r_ScoreManager.ResultPosition = new Vector2(CenterOfViewPort.X, m_GameOverMessage.Position.Y - 100);
+                    r_ScoreManager.ResultPosition = new Vector2(CenterOfViewPort.X, m_GameOverMessage.Position.Y - k_SpaceFromGameOverMsg);
 
                     IsInitialized = true;
                }

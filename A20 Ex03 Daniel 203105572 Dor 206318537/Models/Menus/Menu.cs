@@ -1,40 +1,40 @@
-﻿using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Utils;
-using Microsoft.Xna.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Utils;
 using A20_ex03_Daniel_203105572_Dor_206318537.Models.Menus;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Screens;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus
 {
-     public abstract class Menu : Sprite, ISoundEmitter
+     public abstract class Menu : Sprite
      {
           public event Action<MenuItem> ItemClicked;
 
-          public event Action<string> ActionOccurred;
-
-          private const string k_TitleFontAssetName    = @"Fonts/HeadlineArialFont";
-          private const string k_QuitMenuItemName      = "Quit";
-          private const string k_ItemChangedSoundName  = "MenuMove";
-          private const int k_Spacing                  = 40;
-          private const float k_TitleHeight            = 100;
+          private const string k_TitleFontAssetName   = @"Fonts/HeadlineArialFont";
+          private const string k_QuitMenuItemName     = "Quit";
+          private const string k_ItemChangedSoundName = "MenuMove";
+          private const int k_Spacing                 = 40;
+          private const float k_TitleHeight           = 100;
           private readonly List<MenuItem> r_Options;
+          private readonly ISoundManager r_SoundManager;
           protected readonly IInputManager r_InputManager;
-          private int m_CurrentOptionIndex = -1;
+          private int m_CurrentOptionIndex            = -1;
 
           protected Menu(StrokeSpriteFont i_Title, GameScreen i_GameScreen) 
                : base("", i_GameScreen)
           {
                r_Options = new List<MenuItem>();
                r_InputManager = this.Game.Services.GetService(typeof(IInputManager)) as IInputManager;
+               r_SoundManager = this.Game.Services.GetService(typeof(SoundManager)) as ISoundManager;
 
                this.VisibleChanged += menu_VisibleChanged;
-               this.BlendState = BlendState.NonPremultiplied;
-               this.GameSettings = this.Game.Services.GetService(typeof(IGameSettings)) as IGameSettings;
+               this.BlendState      = BlendState.NonPremultiplied;
+               this.GameSettings    = this.Game.Services.GetService(typeof(IGameSettings)) as IGameSettings;
                this.Title = i_Title;
                this.Title.Visible = false;
 
@@ -122,11 +122,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus
                     }
 
                     focusCurrentOption();
-
-                    if(ActionOccurred != null)
-                    {
-                         ActionOccurred.Invoke(ItemChangedSoundName); //NULL
-                    }
                }
           }
 
@@ -170,6 +165,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus
                this.GameScreen.Add(i_Item);
                i_Item.Clicked += item_Clicked;
                setPosition(i_Item);
+               r_SoundManager.AddSoundEmitter(i_Item);
 
                if (!i_Item.IsInitialized)
                {
@@ -185,14 +181,14 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus
                }
           }
 
-          private void setPosition(MenuItem i_Item)
+          private void setPosition(MenuItem i_MenuItem)
           {
                if (NextPosition == Vector2.Zero)
                {
                     NextPosition = this.Position;
                }
 
-               i_Item.Position = NextPosition;
+               i_MenuItem.Position = NextPosition;
                NextPosition += new Vector2(0, k_Spacing);
           }
 

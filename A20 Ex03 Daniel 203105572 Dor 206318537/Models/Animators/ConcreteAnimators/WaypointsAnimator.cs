@@ -5,10 +5,10 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnima
 {
      public class WaypointsAnimator : SpriteAnimator
      {
-          private const string k_Name = "Waypoints";
+          private const string k_Name   = "Waypoints";
+          private readonly bool r_Loop  = false;
           private readonly float r_VelocityPerSecond;
           private readonly Vector2[] r_Waypoints;
-          private readonly bool r_Loop = false;
           private int m_CurrentWaypoint = 0;
 
           public WaypointsAnimator(float i_VelocityPerSecond, TimeSpan i_AnimationLength, bool i_Loop, params Vector2[] i_Waypoints)

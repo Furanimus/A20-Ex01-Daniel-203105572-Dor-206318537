@@ -7,10 +7,10 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Animators
      {
           public event EventHandler Finished;
 
-          private TimeSpan m_TimeLeft;
-          private bool m_IsFinished = false;
-          private bool m_Initialized = false;
+          private bool m_IsFinished         = false;
+          private bool m_Initialized        = false;
           protected bool m_ResetAfterFinish = true;
+          private TimeSpan m_TimeLeft;
           protected internal Sprite m_OriginalSpriteInfo;
 
           protected SpriteAnimator(string i_Name, TimeSpan i_AnimationLength)

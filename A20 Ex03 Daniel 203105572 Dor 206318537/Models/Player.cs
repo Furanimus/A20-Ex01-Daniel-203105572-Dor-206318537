@@ -32,7 +32,8 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                this.ViewDirection       = Sprite.Up;
                this.GroupRepresentative = this;
                this.RotationOrigin      = new Vector2(this.Width / 2, this.Height / 2);
-               this.LifeLostSoundName = k_LifeLostSoundName;
+               this.LifeLostSoundName   = k_LifeLostSoundName;
+               this.KilledSoundName     = k_LifeLostSoundName;
           }
 
           public override void Initialize()

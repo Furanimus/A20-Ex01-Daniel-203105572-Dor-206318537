@@ -7,10 +7,10 @@ namespace A20_ex03_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus
 {
      public class ScreenSettings : SubMenu
      {
-          private const string k_Title = "Screen Settings";
-          private const string k_FullScreenModeMsg = "Full Screen Mode: {0}";
+          private const string k_Title              = "Screen Settings";
+          private const string k_FullScreenModeMsg  = "Full Screen Mode: {0}";
           private const string k_MouseVisibilityMsg = "Mouse Visibilty: {0}";
-          private const string k_WindowResizingMsg = "Allow Window Resizing: {0}";
+          private const string k_WindowResizingMsg  = "Allow Window Resizing: {0}";
 
           public ScreenSettings(Menu i_PrevMenu, GameScreen i_GameScreen) 
                : base(k_Title, i_PrevMenu, i_GameScreen)
@@ -44,22 +44,22 @@ namespace A20_ex03_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus
                base.AddItems();
           }
 
-          private void windowResizing_Clicked(MenuItem i_ActionItem)
+          private void windowResizing_Clicked(MenuItem i_MenuItem)
           {
                GameSettings.IsWindowResizeAllow = !GameSettings.IsWindowResizeAllow;
-               i_ActionItem.StrokeSpriteFont.Text = string.Format(k_WindowResizingMsg, GameSettings.IsWindowResizeAllow ? "On" : "Off");
+               i_MenuItem.StrokeSpriteFont.Text = string.Format(k_WindowResizingMsg, GameSettings.IsWindowResizeAllow ? "On" : "Off");
           }
 
-          private void mouseVisability_Clicked(MenuItem i_ActionItem)
+          private void mouseVisability_Clicked(MenuItem i_MenuItem)
           {
                GameSettings.IsMouseVisible = !GameSettings.IsMouseVisible;
-               i_ActionItem.StrokeSpriteFont.Text = string.Format(k_MouseVisibilityMsg, GameSettings.IsMouseVisible ? "Visible" : "Invisible");
+               i_MenuItem.StrokeSpriteFont.Text = string.Format(k_MouseVisibilityMsg, GameSettings.IsMouseVisible ? "Visible" : "Invisible");
           }
 
-          private void fullScreenMode_Clicked(MenuItem i_ActionItem)
+          private void fullScreenMode_Clicked(MenuItem i_MenuItem)
           {
                GameSettings.IsFullScreen = !GameSettings.IsFullScreen;
-               i_ActionItem.StrokeSpriteFont.Text = string.Format(k_FullScreenModeMsg, GameSettings.IsFullScreen ? "On" : "Off");
+               i_MenuItem.StrokeSpriteFont.Text = string.Format(k_FullScreenModeMsg, GameSettings.IsFullScreen ? "On" : "Off");
           }
      }
 }

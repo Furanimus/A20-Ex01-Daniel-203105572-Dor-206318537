@@ -12,10 +12,10 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
           public MotherShip(string i_AssetName, GameScreen i_GameScreen) 
                : base(i_AssetName, i_GameScreen)
           {
-               r_RandomBehavior = this.Game.Services.GetService(typeof(IRandomBehavior)) as IRandomBehavior;
-               r_MaxLives = Lives;
+               r_RandomBehavior   = this.Game.Services.GetService(typeof(IRandomBehavior)) as IRandomBehavior;
+               r_MaxLives         = Lives;
                this.MoveDirection = Sprite.Right;
-               this.Visible = false;
+               this.Visible       = false;
           }
 
           protected bool IsDuringAnimation { get; set; } = false;
