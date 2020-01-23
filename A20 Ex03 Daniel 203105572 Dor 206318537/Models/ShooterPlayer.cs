@@ -10,7 +10,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
      public abstract class ShooterPlayer : BasePlayer
      {
           private const string k_ShootSoundName = "SSGunShot";
-          private const int k_MaxShotInMidAir = 200;
+          private const int k_MaxShotInMidAir = 2;
           private ISoundManager m_SoundManager;
           private BaseGun m_Gun;
 

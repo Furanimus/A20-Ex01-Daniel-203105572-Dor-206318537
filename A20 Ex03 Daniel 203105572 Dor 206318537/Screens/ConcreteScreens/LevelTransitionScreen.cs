@@ -37,17 +37,27 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
                this.DeactivationLength = TimeSpan.FromSeconds(k_DeactivationLength);
                this.BlendState = BlendState.NonPremultiplied;
                r_SoundManager = this.Game.Services.GetService(typeof(SoundManager)) as ISoundManager;
-               this.StateChanged += LevelTransitionScreen_StateChanged;
+               this.StateChanged += levelTransitionScreen_StateChanged;
           }
 
-          private void LevelTransitionScreen_StateChanged(object i_Sender, StateChangedEventArgs i_Args)
+          private void levelTransitionScreen_StateChanged(object i_Sender, StateChangedEventArgs i_Args)
           {
                if (i_Args.CurrentState == eScreenState.Closed)
                {
+                    if (r_SoundManager.EnableMuteKey == true)
+                    {
+                         r_SoundManager.EnableMuteKey = false;
+                    }
+
                     r_SoundManager.StopMusic(k_LevelWinSound);
                }
                else if (i_Args.CurrentState == eScreenState.Active)
                {
+                    if (r_SoundManager.EnableMuteKey == false)
+                    {
+                         r_SoundManager.EnableMuteKey = true;
+                    }
+
                     r_SoundManager.PlayMusic(k_LevelWinSound);
                }
           }
