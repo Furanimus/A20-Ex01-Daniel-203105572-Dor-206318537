@@ -7,7 +7,7 @@ using A20_Ex03_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnimators
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
 {
-     public class WelcomeScreen : GameScreen
+     public class WelcomeScreen : ControlScreen
      {
           private const string k_WelcomeAssetName      = @"Sprites\WelcomeMessage";
           private const string k_InstructionsAssetName = @"Sprites\Instructions";
@@ -19,13 +19,11 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
           private Sprite m_WelcomeMessage;
           private Background m_Background;
           private Sprite m_Instructions;
-          private MainMenuScreen m_MainMenu;
-          private bool isDeactivated;
+
 
           public WelcomeScreen(Game i_Game)
               : base(i_Game)
           {
-               m_MainMenu = new MainMenuScreen(this.Game);
                m_WelcomeMessage = new Sprite(k_WelcomeAssetName, this);
                m_Instructions = new Sprite(k_InstructionsAssetName, this);
                m_Background = new Background(this);
@@ -55,51 +53,15 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
                m_Instructions.RotationOrigin = m_WelcomeMessage.SourceRectangleCenter;
                m_Instructions.Position = CenterOfViewPort + new Vector2(0, m_WelcomeMessage.Height + k_Space);
           }
-          public override void Update(GameTime gameTime)
-          {
-               base.Update(gameTime);
 
-               if (InputManager.KeyPressed(Keys.Enter) && !isDeactivated)
-               {
-                    ExitScreen();
-               }
 
-               if (InputManager.KeyPressed(Keys.Escape))
-               {
-                    this.Game.Exit();
-               }
-
-               if (InputManager.KeyPressed(Keys.M) && !isDeactivated)
-               {
-                    openMainMenu();
-               }
-
-               doTransition();
-          }
-
-          private void openMainMenu()
-          {
-               isDeactivated = true;
-               this.ScreensManager.SetCurrentScreen(m_MainMenu);
-               m_MainMenu.StateChanged += mainMenu_StateChanged;
-          }
-
-          private void doTransition()
+          protected override void DoTransition()
           {
                if (this.TransitionPosition != 1 && this.TransitionPosition != 0)
                {
                     m_Background.Opacity = this.TransitionPosition;
                     m_WelcomeMessage.Opacity = this.TransitionPosition;
                     m_Instructions.Opacity = this.TransitionPosition;
-               }
-          }
-
-          private void mainMenu_StateChanged(object i_Sender, StateChangedEventArgs i_Args)
-          {
-               if (i_Args.CurrentState == eScreenState.Closed)
-               {
-                    isDeactivated = false;
-                    this.ExitScreen();
                }
           }
      }

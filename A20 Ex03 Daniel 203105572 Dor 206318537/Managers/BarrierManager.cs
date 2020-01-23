@@ -26,6 +26,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           private readonly GameScreen r_GameScreen;
           private Texture2D m_BarrierTexture;
           private Texture2DPixels m_SampleBarrierPixels;
+          private int m_CurrentLevel = 1;
 
           public BarrierManager(GameScreen i_GameScreen, float i_PlayerStartingY, float i_PlayerHeight)
                : base(i_GameScreen.Game)
@@ -103,9 +104,15 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                base.Update(i_GameTime);
           }
 
-          public void Reset()
+          public void ResetAll()
           {
-               if(m_SampleBarrierPixels == null)
+               LevelReset();
+               m_CurrentLevel = 1;
+          }
+
+          public void LevelReset()
+          {
+               if (m_SampleBarrierPixels == null)
                {
                     m_SampleBarrierPixels = m_BarrierTexture.GetPixels(m_BarrierTexture.Bounds);
                }
@@ -125,7 +132,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                }
           }
 
-          private int m_CurrentLevel = 1;
 
           public float BarrierXVelocity { get; set; } = k_StartingXVelocity;
 
@@ -135,7 +141,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                {
                     BarrierXVelocity = 0;
                }
-               else if(m_CurrentLevel % k_MaxLevel == 1)
+               else if (m_CurrentLevel % k_MaxLevel == 1)
                {
                     BarrierXVelocity = k_StartingXVelocity;
                }

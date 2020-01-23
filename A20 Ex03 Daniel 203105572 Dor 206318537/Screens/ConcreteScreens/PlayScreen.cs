@@ -16,11 +16,12 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
           private readonly Background r_Background;
           private readonly LevelTransitionScreen r_LevelTransition;
           private readonly PauseScreen r_PauseScreen;
+          private readonly IGameSettings r_GameSettings;
           private EnemyManager m_EnemyManager;
           private BarrierManager m_BarrierManager;
           private IPlayersManager m_PlayersManager;
           private IInputManager m_InputManager;
-          private IGameSettings r_GameSettings;
+          private IScoreManager m_ScoreManager;
           private int m_Level = 1;
 
           public PlayScreen(Game i_Game)
@@ -33,24 +34,31 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
                r_GameSettings.GraphicsDeviceManager.PreferredBackBufferWidth = (int)r_Background.Width;
                r_GameSettings.GraphicsDeviceManager.PreferredBackBufferHeight = (int)r_Background.Height;
                r_GameSettings.GraphicsDeviceManager.ApplyChanges();
+
+               m_ScoreManager = this.Game.Services.GetService(typeof(IScoreManager)) as IScoreManager;
+               m_ScoreManager.AddScreen(this);
           }
 
           public override void Initialize()
           {
-               r_LevelTransition.StateChanged += levelTransition_StateChanged;
-               r_PauseScreen.StateChanged     += pauseScreen_StateChanged;
-               this.Game.Window.Title         = k_GameTitle;
+               if (!IsInitialized)
+               {
+                    r_LevelTransition.StateChanged += levelTransition_StateChanged;
+                    r_PauseScreen.StateChanged += pauseScreen_StateChanged;
+                    this.Game.Window.Title = k_GameTitle;
 
-               initServices();
-               initPlayers();
-               initDrawableManagers();
+                    initServices();
+                    initPlayers();
+                    initDrawableManagers();
 
-               base.Initialize();
+                    base.Initialize();
+                    IsInitialized = true;
+               }
           }
 
           private void pauseScreen_StateChanged(object i_Sender, StateChangedEventArgs i_Args)
           {
-               if(i_Args.CurrentState == eScreenState.Closed)
+               if (i_Args.CurrentState == eScreenState.Closed)
                {
                     this.ScreensManager.SetCurrentScreen(this);
                }
@@ -71,9 +79,9 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
                m_Level++;
                m_EnemyManager.UpdateLevelDifficulty();
                m_BarrierManager.UpdateLevelDifficulty();
-               m_PlayersManager.Reset();
-               m_EnemyManager.Reset();
-               m_BarrierManager.Reset();
+               m_PlayersManager.LevelReset();
+               m_EnemyManager.LevelReset();
+               m_BarrierManager.LevelReset();
                showLevelTransition();
           }
 
@@ -91,7 +99,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
                if (i_Args.CurrentState == eScreenState.Closed)
                {
                     this.ScreensManager.SetCurrentScreen(this);
-                    m_EnemyManager.Reset();
+                    m_EnemyManager.LevelReset();
                }
           }
 
@@ -130,6 +138,14 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
                ExitScreen();
           }
 
+          public void ResetAll()
+          {
+               m_PlayersManager.ResetAll();
+               m_EnemyManager.ResetAll();
+               m_BarrierManager.ResetAll();
+               m_Level = 1;
+          }
+
           public override void Update(GameTime i_GameTime)
           {
                if (m_InputManager.KeyPressed(Keys.Escape))
@@ -145,6 +161,12 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
                showLevelTransition();
 
                base.Update(i_GameTime);
+          }
+
+          public override void Draw(GameTime i_GameTime)
+          {
+               base.Draw(i_GameTime);
+               m_ScoreManager.DrawScores(this);
           }
      }
 }

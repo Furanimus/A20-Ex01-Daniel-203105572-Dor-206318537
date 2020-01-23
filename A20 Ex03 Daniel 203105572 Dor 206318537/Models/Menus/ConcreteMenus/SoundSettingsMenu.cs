@@ -26,10 +26,10 @@ namespace A20_ex03_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus
                backgroundVolumeMeniItem.BindActionToKeys(backgroundMusicVolume_Clicked, Keys.PageDown, Keys.PageUp);
                backgroundVolumeMeniItem.BindActionToMouseWheel(backgroundMusicVolume_Clicked);
 
-               MenuItem soundEffectVolumeMenuItem
+               MenuItem SoundEffectVolumeMenuItem
                     = new MenuItem(string.Format(k_SoundEffectVolumeText, GameSettings.SoundEffectsVolume), this.GameScreen);
-               soundEffectVolumeMenuItem.BindActionToKeys(soundEffectVolume_Clicked, Keys.PageDown, Keys.PageUp);
-               soundEffectVolumeMenuItem.BindActionToMouseWheel(soundEffectVolume_Clicked);
+               SoundEffectVolumeMenuItem.BindActionToKeys(SoundEffectVolume_Clicked, Keys.PageDown, Keys.PageUp);
+               SoundEffectVolumeMenuItem.BindActionToMouseWheel(SoundEffectVolume_Clicked);
 
                MenuItem toggleSoundMenuItem
                     = new MenuItem(string.Format(k_ToggleSoundText, GameSettings.IsSound ? "On" : "Off"), this.GameScreen);
@@ -38,7 +38,7 @@ namespace A20_ex03_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus
                toggleSoundMenuItem.BindActionToMouseWheel(toggleSound_Clicked);
 
                this.AddMenuItem(backgroundVolumeMeniItem);
-               this.AddMenuItem(soundEffectVolumeMenuItem);
+               this.AddMenuItem(SoundEffectVolumeMenuItem);
                this.AddMenuItem(toggleSoundMenuItem);
 
                base.AddItems();
@@ -50,7 +50,7 @@ namespace A20_ex03_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus
                i_ActionItem.StrokeSpriteFont.Text = string.Format(k_ToggleSoundText, GameSettings.IsSound ? "On" : "Off");
           }
 
-          private void soundEffectVolume_Clicked(MenuItem i_ActionItem)
+          private void SoundEffectVolume_Clicked(MenuItem i_ActionItem)
           {
                updateSoundEffectVolumeInSettings();
                i_ActionItem.StrokeSpriteFont.Text = string.Format(k_SoundEffectVolumeText, GameSettings.SoundEffectsVolume);

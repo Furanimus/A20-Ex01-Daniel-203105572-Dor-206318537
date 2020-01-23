@@ -28,12 +28,12 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                     {
                          bullet.TintColor = Color.Red;
                     }
-                    else if(r_Shooter is Enemy)
+                    else if (r_Shooter is Enemy)
                     {
                          bullet.TintColor = Color.Blue;
                     }
 
-                    if(BulletsVelocity == Vector2.Zero)
+                    if (BulletsVelocity == Vector2.Zero)
                     {
                          BulletsVelocity = bullet.Velocity;
                     }

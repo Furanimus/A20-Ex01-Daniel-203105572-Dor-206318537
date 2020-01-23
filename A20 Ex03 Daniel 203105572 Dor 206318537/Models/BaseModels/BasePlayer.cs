@@ -13,6 +13,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.BaseModels
 
           protected readonly IInputManager r_InputManager;
           private readonly Vector2 r_Velocity;
+          private int m_Score;
 
           public BasePlayer(string i_AssetName, GameScreen i_GameScreen)
                : this(i_AssetName, i_GameScreen, int.MaxValue)
@@ -31,7 +32,25 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.BaseModels
                r_Velocity = new Vector2(145, 0);
           }
 
-          public int Score { get; set; }
+          public int Score
+          {
+               get
+               {
+                    return m_Score;
+               }
+
+               set
+               {
+                    m_Score = value;
+
+                    if (StartingScore < 0)
+                    {
+                         StartingScore = value;
+                    }
+               }
+          }
+
+          public int StartingScore { get; private set; } = -1;
 
           public bool IsMouseControllable { get; set; }
 
@@ -40,6 +59,11 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.BaseModels
           public Keys MoveRightKey { get; set; } = Keys.K;
 
           public Color RepresentativeColor { get; set; } = Color.Blue;
+
+          public override void ResetProperties()
+          {
+               base.ResetProperties();
+          }
 
           public override Vector2 Position
           {
@@ -65,7 +89,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.BaseModels
 
                if (scoreManager == null)
                {
-                    scoreManager = new ScoreManager(this.GameScreen);
+                    scoreManager = new ScoreManager(this.Game);
                     scoreManager.AddPlayer(this);
                }
                else

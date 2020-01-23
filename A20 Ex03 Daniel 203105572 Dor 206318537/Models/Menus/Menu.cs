@@ -11,12 +11,17 @@ using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus
 {
-     public abstract class Menu : Sprite
+     public abstract class Menu : Sprite, ISoundEmitter
      {
-          private const string k_TitleFontAssetName = @"Fonts/HeadlineArialFont";
-          private const string k_QuitMenuItemName   = "Quit";
-          private const int k_Spacing               = 40;
-          private const float k_TitleHeight         = 100;
+          public event Action<MenuItem> ItemClicked;
+
+          public event Action<string> ActionOccurred;
+
+          private const string k_TitleFontAssetName    = @"Fonts/HeadlineArialFont";
+          private const string k_QuitMenuItemName      = "Quit";
+          private const string k_ItemChangedSoundName  = "MenuMove";
+          private const int k_Spacing                  = 40;
+          private const float k_TitleHeight            = 100;
           private readonly List<MenuItem> r_Options;
           protected readonly IInputManager r_InputManager;
           private int m_CurrentOptionIndex = -1;
@@ -41,6 +46,8 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus
                : this(new StrokeSpriteFont(k_TitleFontAssetName, i_Title, i_GameScreen), i_GameScreen)
           {
           }
+
+          public string ItemChangedSoundName { get; set; } = k_ItemChangedSoundName;
 
           public StrokeSpriteFont Title { get; set; }
 
@@ -115,6 +122,11 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus
                     }
 
                     focusCurrentOption();
+
+                    if(ActionOccurred != null)
+                    {
+                         ActionOccurred.Invoke(ItemChangedSoundName); //NULL
+                    }
                }
           }
 
@@ -156,12 +168,20 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus
           {
                r_Options.Add(i_Item);
                this.GameScreen.Add(i_Item);
-
+               i_Item.Clicked += item_Clicked;
                setPosition(i_Item);
 
                if (!i_Item.IsInitialized)
                {
                     i_Item.Initialize();
+               }
+          }
+
+          private void item_Clicked(MenuItem i_MenuItem)
+          {
+               if (ItemClicked != null)
+               {
+                    ItemClicked.Invoke(i_MenuItem);
                }
           }
 
@@ -182,7 +202,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus
                {
                     MenuItem current = null;
 
-                    if(CurrentOptionIndex >= 0)
+                    if (CurrentOptionIndex >= 0)
                     {
                          current = r_Options[CurrentOptionIndex];
                     }
@@ -236,7 +256,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus
                AddItems();
                base.Initialize();
 
-               if(!this.Title.IsInitialized)
+               if (!this.Title.IsInitialized)
                {
                     this.Title.Initialize();
                }

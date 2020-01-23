@@ -4,6 +4,7 @@ using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Screens;
+using System;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus
 {
@@ -22,7 +23,10 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus
                : base(k_Title, i_GameScreen)
           {
                this.Title.Visible = true;
+               PlayClicked = play_Clicked;
           }
+
+          public Action<MenuItem> PlayClicked { get; set; }
 
           public override void Initialize()
           {
@@ -48,8 +52,8 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus
                screenSettingsMenuItem.BindActionToMouseButtons(subMenu_Clicked, eInputButtons.Left);
 
                MenuItem playMenuItem = new MenuItem(k_PlayText, this.GameScreen);
-               playMenuItem.BindActionToKeys(play_Clicked, Keys.Enter);
-               playMenuItem.BindActionToMouseButtons(play_Clicked, eInputButtons.Left);
+               playMenuItem.BindActionToKeys(PlayClicked, Keys.Enter);
+               playMenuItem.BindActionToMouseButtons(PlayClicked, eInputButtons.Left);
 
                this.AddMenuItem(playersCountMenuItem);
                this.AddMenuItem(screenSettingsMenuItem);

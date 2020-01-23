@@ -9,6 +9,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
 {
      public class RedMotherShip : MotherShip
      {
+          private const string k_KilledSoundName    = "MotherShipKill";
           private const string k_AssetName          = @"Sprites\MotherShip_32x120";
           private const string k_DeadAnimatorName   = "Dead";
           private const float k_BlinksPerSecond     = 10f;
@@ -27,6 +28,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                this.StartPosition                = new Vector2(-Width, 32);
                this.RotationOrigin               = new Vector2(this.Width / 2, this.Height / 2);
                this.PausePositionDuringAnimation = true;
+               this.KilledSoundName              = k_KilledSoundName;
           }
 
           public override void Initialize()

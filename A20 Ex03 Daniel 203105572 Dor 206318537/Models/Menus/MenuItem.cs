@@ -15,6 +15,8 @@ namespace A20_ex03_Daniel_203105572_Dor_206318537.Models.Menus
 {
      public class MenuItem : Sprite
      {
+          public event Action<MenuItem> Clicked;
+
           private const float k_PulsePerSec = 1.5f;
           private const float k_TargetScale = 1.03f;
           private readonly List<KeyValuePair<eInputButtons, Action<MenuItem>>> r_ButtonsToActions;
@@ -190,15 +192,17 @@ namespace A20_ex03_Daniel_203105572_Dor_206318537.Models.Menus
 
           public override void Update(GameTime i_GameTime)
           {
-               if(IsFocused)
+               if (IsFocused)
                {
+                    bool isClicked = false;
                     checkMouseOrKBStateCheckClick();
 
                     foreach(KeyValuePair<Keys, Action<MenuItem>> bind in r_KeysToActions)
                     {
-                         if(r_InputManager.KeyPressed(bind.Key))
+                         if (r_InputManager.KeyPressed(bind.Key))
                          {
                               bind.Value.Invoke(this);
+                              isClicked = true;
                          }
                     }
 
@@ -207,14 +211,16 @@ namespace A20_ex03_Daniel_203105572_Dor_206318537.Models.Menus
                          if (r_InputManager.ButtonPressed(bind.Key))
                          {
                               bind.Value.Invoke(this);
+                              isClicked = true;
                          }
                     }
 
-                    if(m_WheelAction != null)
+                    if (m_WheelAction != null)
                     {
                          if (r_InputManager.ScrollWheelDelta != 0)
                          {
                               m_WheelAction.Invoke(this);
+                              isClicked = true;
                          }
                     }
                     else
@@ -224,6 +230,7 @@ namespace A20_ex03_Daniel_203105572_Dor_206318537.Models.Menus
                               if (r_InputManager.ScrollWheelDelta > 0)
                               {
                                    m_WheelUpAction.Invoke(this);
+                                   isClicked = true;
                               }
                          }
 
@@ -232,12 +239,26 @@ namespace A20_ex03_Daniel_203105572_Dor_206318537.Models.Menus
                               if (r_InputManager.ScrollWheelDelta < 0)
                               {
                                    m_WheelDownAction.Invoke(this);
+                                   isClicked = true;
                               }
                          }
+                    }
+
+                    if (isClicked)
+                    {
+                         Clicked.Invoke(this);
                     }
                }
 
                base.Update(i_GameTime);
+          }
+
+          public string Text
+          {
+               get
+               {
+                    return m_StrokeSpriteFont.Text;
+               }
           }
      }
 }

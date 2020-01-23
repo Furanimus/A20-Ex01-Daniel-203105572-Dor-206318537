@@ -19,6 +19,8 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces
 
           int PlayersCount { get; set; }
 
-          void Reset();
+          void LevelReset();
+
+          void ResetAll();
      }
 }

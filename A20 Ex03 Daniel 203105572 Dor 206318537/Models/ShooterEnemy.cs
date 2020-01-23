@@ -4,6 +4,7 @@ using A20_Ex03_Daniel_203105572_Dor_206318537.Utils;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Screens;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Models.BaseModels;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Models.Animators;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
 {
@@ -12,15 +13,35 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
           private const string k_DeadAnimationName = "Dead";
           private readonly Rectangle r_SourceRectangle;
           private readonly ICollisionsManager r_CollisionsManager;
+          private readonly ISoundManager r_SoundManager;
+          private BaseGun m_Gun;
 
           protected ShooterEnemy(string i_AssetName, Rectangle i_SourceRectangle, GameScreen i_GameScreen) 
                : base(i_AssetName, i_GameScreen)
           {
                r_SourceRectangle = i_SourceRectangle;
                r_CollisionsManager = this.Game.Services.GetService(typeof(ICollisionsManager)) as ICollisionsManager;
+               r_SoundManager = this.Game.Services.GetService(typeof(SoundManager)) as ISoundManager;
           }
 
-          public BaseGun Gun { get; set; }
+          public BaseGun Gun
+          {
+               get
+               {
+                    return m_Gun;
+               }
+
+               set
+               {
+                    if (m_Gun != null)
+                    {
+                         r_SoundManager.RemoveSoundEmitter(m_Gun);
+                    }
+
+                    m_Gun = value;
+                    r_SoundManager.AddSoundEmitter(m_Gun);
+               }
+          }
 
           public void Shoot()
           {
@@ -64,7 +85,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
           {
                SpriteAnimator deadAnimator = this.Animations[k_DeadAnimationName];
 
-               if(deadAnimator != null)
+               if (deadAnimator != null)
                {
                     deadAnimator.Restart();
                }

@@ -7,6 +7,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
      public abstract class Enemy : Entity, ICollidable2D
      {
           private const int k_CallOrder = 5;
+          private int m_Score;
 
           public Enemy(string i_AssetName, GameScreen i_GameScreen) 
                : base(i_AssetName, i_GameScreen, k_CallOrder)
@@ -17,7 +18,26 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                this.GroupRepresentative = this;
           }
 
-          public int Score { get; set; }
+          public int Score
+          {
+               get
+               {
+                    return m_Score;
+               }
+
+               set
+               {
+                    m_Score = value;
+
+                    if (StartingScore < 0)
+                    {
+                         StartingScore = value;
+                    }
+               }
+          }
+
+
+          public int StartingScore { get; private set; } = -1;
 
           public object GroupRepresentative { get; set; }
      }

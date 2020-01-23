@@ -81,7 +81,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                          {
                               if (target.CheckCollision(i_Source))
                               {
-                                   if(isPixelCollided(target, i_Source))
+                                   if (isPixelCollided(target, i_Source))
                                    {
                                         collidedComponents.Add(target);
                                    }
@@ -104,7 +104,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                Sprite target = i_Target as Sprite;
                Sprite source = i_Source as Sprite;
 
-               if(target != null && source != null)
+               if (target != null && source != null)
                {
                     Rectangle targetIntersectedRect; 
                     Rectangle sourceIntersectedRect; 

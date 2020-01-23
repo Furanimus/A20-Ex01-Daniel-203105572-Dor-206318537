@@ -19,6 +19,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
           private const float k_DeadAnimationLength   = 2.5f;
           private const string k_DeadAnimatorName     = "Dead";
           private const string k_BlinkAnimatorName    = "Blink";
+          private const string k_LifeLostSoundName    = "LifeDie";
 
           public Player(string i_AssetName, GameScreen i_GameScreen)
                : base(i_AssetName, i_GameScreen)
@@ -31,6 +32,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                this.ViewDirection       = Sprite.Up;
                this.GroupRepresentative = this;
                this.RotationOrigin      = new Vector2(this.Width / 2, this.Height / 2);
+               this.LifeLostSoundName = k_LifeLostSoundName;
           }
 
           public override void Initialize()

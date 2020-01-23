@@ -20,8 +20,8 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           private readonly List<BasePlayer> r_Players;
           private readonly GameScreen r_GameScreen;
           private IGameSettings m_GameSettings;
+          private IScoreManager m_ScoreManager;
           private LivesManager m_LivesManager;
-          private ScoreManager m_ScoreManager;
           private bool m_IsMouseControlTaken;
 
           public PlayersManager(GameScreen i_GameScreen)
@@ -138,7 +138,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           private void initServices()
           {
                m_LivesManager = new LivesManager(r_GameScreen);
-               m_ScoreManager = new ScoreManager(r_GameScreen);
+               m_ScoreManager = this.Game.Services.GetService(typeof(IScoreManager)) as IScoreManager;
                m_GameSettings = this.Game.Services.GetService(typeof(IGameSettings)) as IGameSettings;
                m_LivesManager.AllPlayersDied += livesManager_AllPlayersDied;
           }
@@ -160,11 +160,21 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                }
           }
 
-          public void Reset()
+          public void LevelReset()
           {
                for(int i = 0; i < m_GameSettings.PlayersCount; i++)
                {
                     r_Players[i].ResetProperties();
+               }
+          }
+
+          public void ResetAll()
+          {
+               LevelReset();
+
+               foreach(BasePlayer player in r_Players)
+               {
+                    player.Score = player.StartingScore;
                }
           }
      }

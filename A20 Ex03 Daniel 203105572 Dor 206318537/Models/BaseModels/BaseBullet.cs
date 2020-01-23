@@ -51,7 +51,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.BaseModels
                this.Visible = false;
                this.Position = Vector2.Zero;
 
-               if(CollidedWithSprite != null)
+               if (CollidedWithSprite != null)
                {
                     CollidedWithSprite.Invoke(i_Collidable);
                }

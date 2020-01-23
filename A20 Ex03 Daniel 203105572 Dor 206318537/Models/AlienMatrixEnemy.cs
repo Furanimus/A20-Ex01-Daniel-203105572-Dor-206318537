@@ -85,7 +85,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
           {
                bool isCollide = false;
 
-               if(IsAlive)
+               if (IsAlive)
                {
                     isCollide = base.CheckCollision(i_Source);
                }

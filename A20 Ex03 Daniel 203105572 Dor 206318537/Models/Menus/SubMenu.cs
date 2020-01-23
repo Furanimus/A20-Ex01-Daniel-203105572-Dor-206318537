@@ -8,7 +8,7 @@ namespace A20_ex03_Daniel_203105572_Dor_206318537.Models.Menus
 {
      public class SubMenu : Menu
      {
-          private const string k_PrevMenuItemName = "done";
+          private const string k_PrevMenuItemName = "Done";
           private Menu m_PrevMenu;
 
           public SubMenu(StrokeSpriteFont i_Title, Menu i_PrevMenu, GameScreen i_GameScreen) 
@@ -31,7 +31,7 @@ namespace A20_ex03_Daniel_203105572_Dor_206318537.Models.Menus
 
           private void done_CheckMouseOrKBState(MenuItem i_MenuItem)
           {
-               if(r_InputManager.KeyPressed(Keys.Enter) 
+               if (r_InputManager.KeyPressed(Keys.Enter) 
                     || r_InputManager.ButtonPressed(eInputButtons.Left))
                {
                     m_PrevMenu.Visible = true;

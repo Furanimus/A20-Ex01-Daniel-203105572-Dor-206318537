@@ -26,11 +26,15 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537
                InputManager = new InputManager(this);
                CollisionsManager = new CollisionsManager(this);
                RandomBehavior = new RandomBehavior(this);
+               ScoreManager = new ScoreManager(this);
+               SoundManager = new SoundManager(this);
           }
 
           public GameTime GameTime { get; set; }
 
           protected IInputManager InputManager { get; set; }
+
+          protected IScoreManager ScoreManager { get; set; }
 
           protected IPlayersManager PlayersManager { get; set; }
 
@@ -39,5 +43,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537
           protected IRandomBehavior RandomBehavior { get; set; }
 
           protected IGameSettings GameSettings { get; set; }
+
+          protected ISoundManager SoundManager { get; set; }
      }
 }

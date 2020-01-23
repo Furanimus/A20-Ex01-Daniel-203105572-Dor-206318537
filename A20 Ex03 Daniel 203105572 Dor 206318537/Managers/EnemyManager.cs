@@ -43,6 +43,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           private const float k_IncVelocityOnRowDecendPercentage        = 0.05f;
           private const float k_IncVelocityOnNumOfDeadEnemiesPercentage = 0.03f;
           private readonly IRandomBehavior r_RandomBehavior;
+          private readonly ISoundManager r_SoundManager;
           private readonly List<List<Enemy>> r_EnemyMatrix;
           private readonly GameScreen r_GameScreen;
           private Enemy m_RightMostRepresentetive;
@@ -58,6 +59,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                r_GameScreen = i_GameScreen;
                r_EnemyMatrix = new List<List<Enemy>>(k_MatrixRows);
                r_RandomBehavior = this.Game.Services.GetService(typeof(IRandomBehavior)) as IRandomBehavior;
+               r_SoundManager = this.Game.Services.GetService(typeof(SoundManager)) as ISoundManager;
                r_GameScreen.Add(this);
                this.DrawOrder = this.UpdateOrder = 5;
           }
@@ -133,7 +135,10 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                {
                     foreach (Enemy enemy in row)
                     {
-                         enemy.Score += k_AddedScoresOnNextLevel;
+                         enemy.Score = this.VisibleCols == k_InitialVisibleCols ? 
+                              enemy.StartingScore 
+                              : 
+                              enemy.Score + k_AddedScoresOnNextLevel;
                          (enemy as ShooterEnemy).MaxShotsInMidAir++;
                     }
                }
@@ -304,6 +309,8 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 
                          this.Add(enemy);
                          left += enemy.Width + k_SpaceBetweenEnemies;
+
+                         r_SoundManager.AddSoundEmitter(enemy);
                     }
 
                     top += k_EnemyHeight + k_SpaceBetweenEnemies;
@@ -369,7 +376,22 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                }
           }
 
-          public void Reset()
+          public void ResetAll()
+          {
+               LevelReset();
+
+               for (int row = 0; row < k_MatrixRows; row++)
+               {
+                    for (int col = 0; col < k_MatrixCols; col++)
+                    {
+                         Enemy enemy = r_EnemyMatrix[row][col];
+                         enemy.Score = enemy.StartingScore;
+                    }
+               }
+              
+          }
+
+          public void LevelReset()
           {
                foreach (List<Enemy> rows in r_EnemyMatrix)
                {

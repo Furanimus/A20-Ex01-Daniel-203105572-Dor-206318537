@@ -1,4 +1,5 @@
-﻿using A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus;
+﻿using A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -11,13 +12,12 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
           private const float k_ActivationLength   = 0.5f;
           private const float k_DeactivationLength = 0.5f;
           private const float k_BlackTintAlpha     = 0.65f;
-          private MainMenu m_MainMenu;
 
           public MainMenuScreen(Game i_Game) 
                : base(i_Game)
           {
-               m_MainMenu = new MainMenu(this);
-               
+               MainMenu = new MainMenu(this);
+
                this.IsOverlayed           = true;
                this.UseGradientBackground = true;
                this.BlackTintAlpha        = k_BlackTintAlpha;
@@ -27,13 +27,15 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
                this.BlendState            = BlendState.NonPremultiplied;
           }
 
+          public MainMenu MainMenu { get; private set; }
+
           public override void Update(GameTime i_GameTime)
           {
                base.Update(i_GameTime);
 
                if (this.TransitionPosition != 1 && this.TransitionPosition != 0)
                {
-                    m_MainMenu.Opacity = this.TransitionPosition;
+                    MainMenu.Opacity = this.TransitionPosition;
                }
           }
      }

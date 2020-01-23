@@ -1,4 +1,5 @@
-﻿using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
+﻿using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnimators;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Utils;
 using Microsoft.Xna.Framework;
@@ -10,6 +11,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
      public class LevelTransitionScreen : GameScreen
      {
           private const string k_FontName          = @"Fonts/HeadlineArialFont";
+          private const string k_LevelWinSound     = "LevelWin";
           private const float k_ActivationLength   = 0.5f;
           private const float k_DeactivationLength = 0.5f;
           private const float k_BlackTintAlpha     = 0.65f;
@@ -17,6 +19,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
           private const string k_Level             = "Level {0}";
           private const string k_SecondsLeft       = "{0}";
           private const float k_TimeUntilExit      = 3f;
+          private readonly ISoundManager r_SoundManager;
           private float m_CurrentTime              = 0;
           private float m_OneSecondTimer           = 1f;
           private int m_ShownLevel                 = 0;
@@ -34,6 +37,21 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
                this.ActivationLength = TimeSpan.FromSeconds(k_ActivationLength);
                this.DeactivationLength = TimeSpan.FromSeconds(k_DeactivationLength);
                this.BlendState = BlendState.NonPremultiplied;
+               r_SoundManager = this.Game.Services.GetService(typeof(SoundManager)) as ISoundManager;
+               this.StateChanged += LevelTransitionScreen_StateChanged;
+
+          }
+
+          private void LevelTransitionScreen_StateChanged(object i_Sender, StateChangedEventArgs i_Args)
+          {
+               if (i_Args.CurrentState == eScreenState.Closed)
+               {
+                    r_SoundManager.StopMusic(k_LevelWinSound);
+               }
+               else if (i_Args.CurrentState == eScreenState.Active)
+               {
+                    r_SoundManager.PlayMusic(k_LevelWinSound);
+               }
           }
 
           public int CurrentLevel { get; set; }

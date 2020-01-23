@@ -20,12 +20,12 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
 
           public event EventHandler SoundChanged;
 
-          private bool m_IsFullScreen;
           private readonly Game r_Game;
           private int m_PlayersCount          = 1;
           private int m_BackgroundMusicVolume = 100;
           private int m_SoundEffectsVolume    = 100;
           private bool m_IsSound              = true;
+          private bool m_IsFullScreen;
 
           public GameSettings(Game i_Game)
           {

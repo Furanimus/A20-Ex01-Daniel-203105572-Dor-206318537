@@ -7,8 +7,11 @@ using A20_Ex03_Daniel_203105572_Dor_206318537.Components;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.BaseModels
 {
-     public abstract class BaseGun : CompositeDrawableComponent<BaseBullet>
+     public abstract class BaseGun : CompositeDrawableComponent<BaseBullet>, ISoundEmitter
      {
+          public event Action<string> ActionOccurred;
+
+          private const string k_ShootSound = "EnemyGunShot";
           protected readonly Sprite r_Shooter;
           private readonly LinkedList<BaseBullet> r_Bullets;
           private readonly List<BaseBullet> r_BulletsForReset;
@@ -46,6 +49,8 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.BaseModels
                }
           }
 
+          public string ShootSoundName { get; set; } = k_ShootSound;
+
           protected BaseBullet GetFirstBullet()
           {
                BaseBullet first = null;
@@ -77,7 +82,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.BaseModels
                     {
                          ICollidable shooter = r_Shooter as ICollidable;
 
-                         if(bullet.GroupRepresentative != shooter.GroupRepresentative)
+                         if (bullet.GroupRepresentative != shooter.GroupRepresentative)
                          {
                               bullet.GroupRepresentative = shooter.GroupRepresentative;
                          }
@@ -85,6 +90,11 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.BaseModels
                          this.RemoveBullet();
                          bullet.Enabled = true;
                          bullet.Visible = true;
+                    }
+
+                    if (ActionOccurred != null)
+                    {
+                         ActionOccurred.Invoke(ShootSoundName);
                     }
                }
           }

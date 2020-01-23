@@ -35,7 +35,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                               Visible = false;
                          }
                     }
-                    else if(!Visible)
+                    else if (!Visible)
                     {
                          trySpawn();
                     }
@@ -49,7 +49,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                     m_Position.X = -Width;
                     Visible = true;
 
-                    if(Lives < r_MaxLives)
+                    if (Lives < r_MaxLives)
                     {
                          Lives++;
                     }

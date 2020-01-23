@@ -22,7 +22,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnima
                r_Loop = i_AnimationLength == TimeSpan.Zero;
                r_IsStartFromEnd = i_IsStartFromEnd;
 
-               if(r_IsStartFromEnd)
+               if (r_IsStartFromEnd)
                {
                     m_CurrCellIdx = i_NumOfCells - 1;
                }

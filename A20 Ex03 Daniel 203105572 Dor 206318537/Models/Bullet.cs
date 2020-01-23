@@ -40,13 +40,13 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
           {
                Barrier barrier = i_Collidable as Barrier;
 
-               if(barrier != null)
+               if (barrier != null)
                {
                     handleBarrierCollision(barrier);
                }
                else if (i_Collidable is Bullet && i_Collidable.GroupRepresentative is BasePlayer && this.GroupRepresentative is EnemyManager)
                {
-                    if(r_RandomBehavior.Roll(k_RandomFactor, k_MinRandom, k_MaxRandom))
+                    if (r_RandomBehavior.Roll(k_RandomFactor, k_MinRandom, k_MaxRandom))
                     {
                          base.Collided(i_Collidable);
                     }
@@ -81,7 +81,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                          
                          barrierX = barrierX < 0 ? barrierX + (int)this.Width - 1 : barrierX;
 
-                         if(this.MoveDirection == Sprite.Down)
+                         if (this.MoveDirection == Sprite.Down)
                          {
                               barrierY = barrierY + (int)this.Height - 1;
                          }

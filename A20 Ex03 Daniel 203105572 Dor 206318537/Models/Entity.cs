@@ -1,9 +1,14 @@
-﻿using A20_Ex03_Daniel_203105572_Dor_206318537.Screens;
+﻿using System;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Screens;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
 {
-     public abstract class Entity : Sprite
+     public abstract class Entity : Sprite, ISoundEmitter
      {
+          public event Action<string> ActionOccurred;
+
+          private const string k_KillSoundName = @"EnemyKill";
           private int m_LivesForReset = -1;
           protected int m_Lives;
 
@@ -22,6 +27,8 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
           {
           }
 
+          public string KilledSoundName { get; set; } = k_KillSoundName;
+
           public int Lives
           {
                get
@@ -35,22 +42,34 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                     {
                          m_Lives = value;
 
-                         if(m_LivesForReset < 0)
+                         if (m_LivesForReset < 0)
                          {
                               m_LivesForReset = value;
                          }
+
+                         if (value != 0 && LifeLostSoundName != string.Empty && ActionOccurred != null)
+                         {
+                              ActionOccurred.Invoke(LifeLostSoundName);
+                         }
                     }
 
-                    if(m_Lives == 0)
+                    if (m_Lives == 0)
                     {
+                         if (ActionOccurred != null)
+                         {
+                              ActionOccurred.Invoke(KilledSoundName);
+                         }
+
                          IsAlive = false;
                     }
-                    else if(m_Lives > 0)
+                    else if (m_Lives > 0)
                     {
                          IsAlive = true;
                     }
                }
           }
+
+          public string LifeLostSoundName { get; set; } = k_KillSoundName;
 
           public override void ResetProperties()
           {

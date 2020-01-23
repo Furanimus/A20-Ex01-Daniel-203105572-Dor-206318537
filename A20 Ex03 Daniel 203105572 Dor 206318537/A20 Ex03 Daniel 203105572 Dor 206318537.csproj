@@ -49,6 +49,8 @@
     <Compile Include="Interfaces\IPlayersManager.cs" />
     <Compile Include="Interfaces\IScoreManager.cs" />
     <Compile Include="Components\UpdateableComparer.cs" />
+    <Compile Include="Interfaces\ISoundEmitter.cs" />
+    <Compile Include="Interfaces\ISoundManager.cs" />
     <Compile Include="Managers\eInputButtons.cs" />
     <Compile Include="Interfaces\IGameSettings.cs" />
     <Compile Include="Managers\BarrierManager.cs" />
@@ -58,6 +60,7 @@
     <Compile Include="Managers\PlayersManager.cs" />
     <Compile Include="Managers\ScoreManager.cs" />
     <Compile Include="Managers\ScreensManager.cs" />
+    <Compile Include="Managers\SoundManager.cs" />
     <Compile Include="Models\AlienMatrixEnemy.cs" />
     <Compile Include="Models\Animators\CompositeAnimator.cs" />
     <Compile Include="Models\Animators\ConcreteAnimators\BlinkAnimator.cs" />
@@ -85,6 +88,7 @@
     <Compile Include="Models\Menus\Menu.cs" />
     <Compile Include="Models\Menus\MenuItem.cs" />
     <Compile Include="Models\Menus\SubMenu.cs" />
+    <Compile Include="Screens\ConcreteScreens\ControlScreen.cs" />
     <Compile Include="Utils\StrokeSpriteFont.cs" />
     <Compile Include="Screens\ConcreteScreens\MainMenuScreen.cs" />
     <Compile Include="Screens\DeviceStates.cs" />
@@ -137,6 +141,11 @@
     <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="app.manifest" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Win\*.*">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+</ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
