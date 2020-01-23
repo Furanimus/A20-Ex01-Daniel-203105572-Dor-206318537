@@ -7,7 +7,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
 {
      public abstract class ControlScreen : GameScreen
      {
-          private bool isDeactivated;
+          protected bool m_IsDeactivated;
 
           public ControlScreen(Game i_Game) 
                : base(i_Game)
@@ -19,7 +19,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
 
           protected virtual void GetPlayerInput()
           {
-               if (InputManager.KeyPressed(Keys.Enter) && !isDeactivated)
+               if (InputManager.KeyPressed(Keys.Enter) && !m_IsDeactivated)
                {
                     OnEnterClicked();
                }
@@ -29,7 +29,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
                     OnEscClicked();
                }
 
-               if (InputManager.KeyPressed(Keys.M) && !isDeactivated)
+               if (InputManager.KeyPressed(Keys.M) && !m_IsDeactivated)
                {
                     OnKeysMClicked();
                }
@@ -52,7 +52,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
 
           protected virtual void OpenMainMenu()
           {
-               isDeactivated = true;
+               m_IsDeactivated = true;
                this.ScreensManager.SetCurrentScreen(MainMenuScreen);
                MainMenuScreen.StateChanged += MainMenu_StateChanged;
           }
@@ -61,7 +61,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
           {
                if (i_Args.CurrentState == eScreenState.Closed)
                {
-                    isDeactivated = false;
+                    m_IsDeactivated = false;
                     this.ExitScreen();
                }
           }

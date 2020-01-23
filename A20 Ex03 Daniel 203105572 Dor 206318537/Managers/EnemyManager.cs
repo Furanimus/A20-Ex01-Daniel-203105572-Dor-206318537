@@ -29,7 +29,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           private const int k_EnemyTextureY                             = 0;
           private const int k_MaxRowForBlueEnemies                      = 3;
           private const int k_MaxRowForPinkEnemies                      = 1;
-          private const int k_MaxMillisecondToRoll                      = 300;
           private const int k_NumOfDeadEnemiesToIncreaseVelocity        = 5;
           private const int k_NumOfAnimationCells                       = 2;
           private const int k_StartingPinkEnemyScore                    = 250;
@@ -42,6 +41,9 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           private const float k_SpaceBetweenEnemies                     = 32f * 0.6f;
           private const float k_IncVelocityOnRowDecendPercentage        = 0.05f;
           private const float k_IncVelocityOnNumOfDeadEnemiesPercentage = 0.03f;
+          private const float k_ChanceToShootIncrease                   = 0.05f;
+          private const float k_InitialChanceOfShooting                 = 0.1f;
+          List<KeyValuePair<int, int>> r_AliveEnemyIndices;
           private readonly IRandomBehavior r_RandomBehavior;
           private readonly ISoundManager r_SoundManager;
           private readonly List<List<Enemy>> r_EnemyMatrix;
@@ -50,20 +52,21 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           private Enemy m_RightMostRepresentetive;
           private Enemy m_DownMostRepresentetive;
           private Enemy m_LeftMostRepresentetive;
-          private TimeSpan m_IntervalToNextShoot;
           private int m_VisibleCols = k_InitialVisibleCols;
           private int m_VisibleRows = k_InitialVisibleRows;
           private int m_DeadEnemiesCounter;
+          private int m_NumOfUpdateLevel = 0;
 
           public EnemyManager(GameScreen i_GameScreen) : base(i_GameScreen.Game)
           {
-               r_GameScreen = i_GameScreen;
-               r_EnemyMatrix = new List<List<Enemy>>(k_MatrixRows);
-               r_RandomBehavior = this.Game.Services.GetService(typeof(IRandomBehavior)) as IRandomBehavior;
-               r_SoundManager = this.Game.Services.GetService(typeof(SoundManager)) as ISoundManager;
+               r_AliveEnemyIndices = new List<KeyValuePair<int, int>>();
+               r_GameScreen        = i_GameScreen;
+               r_EnemyMatrix       = new List<List<Enemy>>(k_MatrixRows);
+               r_RandomBehavior    = this.Game.Services.GetService(typeof(IRandomBehavior)) as IRandomBehavior;
+               r_SoundManager      = this.Game.Services.GetService(typeof(SoundManager)) as ISoundManager;
+               r_MotherShip        = new RedMotherShip(r_GameScreen);
+               this.DrawOrder      = this.UpdateOrder = 5;
                r_GameScreen.Add(this);
-               r_MotherShip = new RedMotherShip(r_GameScreen);
-               this.DrawOrder = this.UpdateOrder = 5;
           }
 
           public override void Initialize()
@@ -132,6 +135,18 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 
           public void UpdateLevelDifficulty()
           {
+               m_NumOfUpdateLevel++;
+               m_NumOfUpdateLevel %= k_MaxLevel;
+
+               if(m_NumOfUpdateLevel == 0)
+               {
+                    this.ChanceToShoot = k_InitialChanceOfShooting;
+               }
+               else
+               {
+                    this.ChanceToShoot += k_ChanceToShootIncrease;
+               }
+
                this.VisibleCols++;
 
                foreach (List<Enemy> row in r_EnemyMatrix)
@@ -188,46 +203,51 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           public override void Update(GameTime i_GameTime)
           {
                checkWindowCollision();
-               handleEnemyToShoot(i_GameTime);
+               handleEnemyToShoot();
 
                base.Update(i_GameTime);
           }
 
-          private void handleEnemyToShoot(GameTime i_GameTime)
+          private void handleEnemyToShoot()
           {
-               m_IntervalToNextShoot -= i_GameTime.ElapsedGameTime;
-               bool isIntervalFinished = m_IntervalToNextShoot <= TimeSpan.Zero;
+               ShooterEnemy enemy = chooseEnemyShoot();
+               tryToShoot(enemy);
+          }
 
-               if (isIntervalFinished)
+          public float ChanceToShoot { get; set; } = k_InitialChanceOfShooting;
+
+          private void tryToShoot(ShooterEnemy i_Enemy)
+          {
+               if (i_Enemy.IsAlive && i_Enemy.Visible)
                {
-                    ShooterEnemy enemy = chooseEnemyShoot();
-                    bool isShoot = tryShoot(enemy);
-
-                    if (isShoot)
+                    if (r_RandomBehavior.GetRandomNumber(0, (int)(1 / ChanceToShoot)) == 0)
                     {
-                         m_IntervalToNextShoot = r_RandomBehavior.GetRandomIntervalMilliseconds(k_MaxMillisecondToRoll);
+                         i_Enemy.Shoot();
                     }
                }
           }
 
-          private bool tryShoot(ShooterEnemy i_Enemy)
-          {
-               bool isShoot = false;
-
-               if (i_Enemy.IsAlive && i_Enemy.Visible)
-               {
-                    i_Enemy.Shoot();
-                    isShoot = true;
-               }
-
-               return isShoot;
-          }
-
           private ShooterEnemy chooseEnemyShoot()
           {
-               int randomRow = r_RandomBehavior.GetRandomNumber(0, k_MatrixRows);
-               int randomCol = r_RandomBehavior.GetRandomNumber(0, k_MatrixCols);
-               Enemy enemy = r_EnemyMatrix[randomRow][randomCol];
+               int aliveEnemies = 0;
+               r_AliveEnemyIndices.Clear();
+
+               for(int row = 0; row < VisibleRows; row++)
+               {
+                    for (int col = 0; col < VisibleCols; col++)
+                    {
+                         if (r_EnemyMatrix[row][col].Visible)
+                         {
+                              r_AliveEnemyIndices.Add(new KeyValuePair<int, int>(row, col));
+                              aliveEnemies++;
+                         }
+                    }
+               }
+
+               int aliveEnemyIndex = r_RandomBehavior.GetRandomNumber(0, aliveEnemies);
+               int aliveEnemyRow = r_AliveEnemyIndices[aliveEnemyIndex].Key;
+               int aliveEnemyCol = r_AliveEnemyIndices[aliveEnemyIndex].Value;
+               Enemy enemy = r_EnemyMatrix[aliveEnemyRow][aliveEnemyCol];
 
                return enemy as ShooterEnemy;
           }

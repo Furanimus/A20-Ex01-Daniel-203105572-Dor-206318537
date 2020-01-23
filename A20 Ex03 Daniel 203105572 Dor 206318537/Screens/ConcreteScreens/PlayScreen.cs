@@ -90,6 +90,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
           {
                if (r_LevelTransition.CurrentLevel < m_Level)
                {
+                    this.Deactivate();
                     r_LevelTransition.CurrentLevel++;
                     this.ScreensManager.SetCurrentScreen(r_LevelTransition);
                }

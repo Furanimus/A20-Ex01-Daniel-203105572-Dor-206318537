@@ -40,23 +40,22 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                {
                     if (value >= 0)
                     {
+                         playLostLifeSound(m_Lives, value);
                          m_Lives = value;
 
                          if (m_LivesForReset < 0)
                          {
                               m_LivesForReset = value;
                          }
-
-                         playLostLifeSound(m_Lives);
                     }
 
                     checkIfAlive(m_Lives);
                }
           }
 
-          private void playLostLifeSound(int i_Lives)
+          private void playLostLifeSound(int i_OldLives, int i_NewLives)
           {
-               if (i_Lives != 0 && LifeLostSoundName != string.Empty && SoundActionOccurred != null)
+               if (i_OldLives > i_NewLives && LifeLostSoundName != string.Empty && SoundActionOccurred != null)
                {
                     SoundActionOccurred.Invoke(LifeLostSoundName);
                }

@@ -19,6 +19,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           private readonly IInputManager r_InputManager;
           private readonly IGameSettings r_GameSettings;
           private readonly SoundBank r_SoundBank;
+          private readonly WaveBank r_WaveBank;
           private readonly AudioEngine r_AudioEngine;
           private readonly List<MusicCatagoryManager> r_CatagoryManagers;
           private readonly Dictionary<string, MusicCatagoryManager> r_CatagoryManagersLookup;
@@ -27,12 +28,14 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           public SoundManager(Game i_Game)
                : base(i_Game)
           {
-               r_InputManager = i_Game.Services.GetService(typeof(IInputManager)) as IInputManager;
-               r_GameSettings = i_Game.Services.GetService(typeof(IGameSettings)) as IGameSettings;
-               r_CatagoryManagers = new List<MusicCatagoryManager>();
+               r_InputManager           = i_Game.Services.GetService(typeof(IInputManager)) as IInputManager;
+               r_GameSettings           = i_Game.Services.GetService(typeof(IGameSettings)) as IGameSettings;
+               r_CatagoryManagers       = new List<MusicCatagoryManager>();
                r_CatagoryManagersLookup = new Dictionary<string, MusicCatagoryManager>();
-               r_AudioEngine = new AudioEngine(k_AudioEnginePath);
-               r_SoundBank = new SoundBank(r_AudioEngine, k_SoundBankPath);
+               r_AudioEngine            = new AudioEngine(k_AudioEnginePath);
+               r_WaveBank               = new WaveBank(r_AudioEngine, k_WaveBankPath);
+               r_SoundBank              = new SoundBank(r_AudioEngine, k_SoundBankPath);
+
                InitCatagories();
           }
 
