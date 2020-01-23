@@ -13,16 +13,16 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 {
      public class ScoreManager : GameService, IScoreManager
      {
-          private const int k_SpaceFactor                                    = 12;
-          private const int k_SpaceBetweenScores                             = 10;
-          private const int k_LivesStartingY                                 = 10;
-          private const int k_StartingXForDraw                               = 10;
           private const string k_PlayerNum                                   = "Player{0}  ";
           private const string k_TieMsg                                      = "It's a tie between:";
           private const string k_ScoreString                                 = "P{0} Score: {1}";
           private const string k_ResultScoreString                           = "Player{0} Scored {1} points";
           private const string k_FontAssetName                               = @"Fonts\ComicSansMsFont";
           private const string k_WinnerString                                = @"The Winner is player {0}";
+          private const int k_SpaceFactor                                    = 12;
+          private const int k_SpaceBetweenScores                             = 10;
+          private const int k_LivesStartingY                                 = 10;
+          private const int k_StartingXForDraw                               = 10;
           private readonly List<BasePlayer> r_Players                        = new List<BasePlayer>();
           private readonly HashSet<BasePlayer> r_PlayersSetForCheckExistance = new HashSet<BasePlayer>();
           private readonly List<GameScreen> r_GameScreens                    = new List<GameScreen>();

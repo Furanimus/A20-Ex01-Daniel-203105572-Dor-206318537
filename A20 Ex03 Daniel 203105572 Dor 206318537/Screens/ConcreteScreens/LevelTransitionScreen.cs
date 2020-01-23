@@ -1,10 +1,9 @@
-﻿using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnimators;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Utils;
+﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Utils;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
 {
@@ -39,7 +38,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
                this.BlendState = BlendState.NonPremultiplied;
                r_SoundManager = this.Game.Services.GetService(typeof(SoundManager)) as ISoundManager;
                this.StateChanged += LevelTransitionScreen_StateChanged;
-
           }
 
           private void LevelTransitionScreen_StateChanged(object i_Sender, StateChangedEventArgs i_Args)

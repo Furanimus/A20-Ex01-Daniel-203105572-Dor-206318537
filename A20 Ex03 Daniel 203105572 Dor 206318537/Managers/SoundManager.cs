@@ -1,11 +1,10 @@
-﻿using Microsoft.Xna.Framework;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Components;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Input;
-using System.Collections.Generic;
-using A20_ex03_Daniel_203105572_Dor_206318537.Models.Menus;
-using System;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Components;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 {

@@ -1,9 +1,7 @@
-﻿using A20_Ex03_Daniel_203105572_Dor_206318537.Models;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnimators;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Screens;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Models;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Screens;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Utils
 {
@@ -21,7 +19,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Utils
           }
 
           public StrokeSpriteFont(string i_FontAssetName, string i_Text, GameScreen i_GameScreen)
-               : base("", i_GameScreen, int.MaxValue)
+               : base(string.Empty, i_GameScreen, int.MaxValue)
           {
                m_FontAssetName = i_FontAssetName;
                m_StrokeColor = new Color(Color.Black, this.TintColor.A);

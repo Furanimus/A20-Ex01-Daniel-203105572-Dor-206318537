@@ -1,6 +1,6 @@
-﻿using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
+﻿using System;
 using Microsoft.Xna.Framework;
-using System;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
 {
@@ -80,6 +80,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                {
                     return r_Game.IsMouseVisible;
                }
+
                set
                {
                     if (r_Game.IsMouseVisible != value)
@@ -100,6 +101,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                {
                     return r_Game.Window.AllowUserResizing;
                }
+
                set
                {
                     if (r_Game.Window.AllowUserResizing != value)
@@ -131,7 +133,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                     }
                }
           }
-
 
           public int SoundEffectsVolume
           {

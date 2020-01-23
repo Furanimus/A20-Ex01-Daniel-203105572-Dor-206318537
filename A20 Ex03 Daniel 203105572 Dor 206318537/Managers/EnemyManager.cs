@@ -43,7 +43,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           private const float k_IncVelocityOnNumOfDeadEnemiesPercentage = 0.03f;
           private const float k_ChanceToShootIncrease                   = 0.05f;
           private const float k_InitialChanceOfShooting                 = 0.1f;
-          List<KeyValuePair<int, int>> r_AliveEnemyIndices;
+          private readonly List<KeyValuePair<int, int>> r_AliveEnemyIndices;
           private readonly IRandomBehavior r_RandomBehavior;
           private readonly ISoundManager r_SoundManager;
           private readonly List<List<Enemy>> r_EnemyMatrix;
@@ -97,7 +97,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 
                set
                {
-                    m_VisibleRows = k_InitialVisibleRows + (value - k_InitialVisibleRows) % k_MaxLevel;
+                    m_VisibleRows = k_InitialVisibleRows + ((value - k_InitialVisibleRows) % k_MaxLevel);
                }
           }
 
@@ -110,7 +110,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 
                set
                {
-                    m_VisibleCols = k_InitialVisibleCols + (value - k_InitialVisibleCols) % k_MaxLevel;
+                    m_VisibleCols = k_InitialVisibleCols + ((value - k_InitialVisibleCols) % k_MaxLevel);
                }
           }
 
@@ -327,7 +327,10 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                          r_EnemyMatrix[row].Add(enemy);
 
                          setVisibility(enemy, row, col);
-                         initEnemy(enemy, left, top, 
+                         initEnemy(
+                              enemy, 
+                              left,
+                              top, 
                               new CellAnimator(isStartAnimationFromSecondCell, TimeSpan.FromSeconds(k_CellTime), k_NumOfAnimationCells, TimeSpan.Zero));
 
                          this.Add(enemy);

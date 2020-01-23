@@ -7,7 +7,6 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens
 {
-
      public abstract class GameScreen : CompositeDrawableComponent<IGameComponent>
      {
           public event EventHandler<StateChangedEventArgs> StateChanged;
@@ -100,7 +99,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens
                }
           }
 
-
           public IInputManager InputManager
           {
                get 
@@ -187,7 +185,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens
                TransitionPosition = 0;
           }
 
-          
           protected override void LoadContent()
           {
                base.LoadContent();
@@ -230,10 +227,11 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens
                Texture2D background = UseGradientBackground ? m_GradientTexture : m_BlankTexture;
 
                SpriteBatch.Begin();
-               SpriteBatch.Draw(background,
-                                new Rectangle(0, 0, viewport.Width, viewport.Height),
-                                new Color((byte)0, (byte)0, (byte)0, i_Alpha));
-               SpriteBatch.End();
+               SpriteBatch.Draw(
+                    background,
+                    new Rectangle(0, 0, viewport.Width, viewport.Height),
+                    new Color((byte)0, (byte)0, (byte)0, i_Alpha));
+                    SpriteBatch.End();
           }
 
           public TimeSpan ActivationLength { get; protected set; } = TimeSpan.Zero;
@@ -331,7 +329,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens
           {
                get 
                { 
-                    return (byte)(Byte.MaxValue * TransitionPosition * m_BlackTintAlpha); 
+                    return (byte)(byte.MaxValue * TransitionPosition * m_BlackTintAlpha); 
                }
           }
 

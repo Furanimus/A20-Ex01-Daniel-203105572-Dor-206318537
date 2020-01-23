@@ -2,11 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Models;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Models;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Components
 {
@@ -29,18 +28,18 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Components
           {
           }
 
-          protected virtual void OnComponentAdded(GameComponentEventArgs<ComponentType> e)
+          protected virtual void OnComponentAdded(GameComponentEventArgs<ComponentType> i_Args)
           {
                if (IsInitialized)
                {
-                    initializeComponent(e.GameComponent);
+                    initializeComponent(i_Args.GameComponent);
                }
                else
                {
-                    m_UninitializedComponents.Add(e.GameComponent);
+                    m_UninitializedComponents.Add(i_Args.GameComponent);
                }
 
-               IUpdateable updatable = e.GameComponent as IUpdateable;
+               IUpdateable updatable = i_Args.GameComponent as IUpdateable;
 
                if (updatable != null)
                {
@@ -48,7 +47,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Components
                     updatable.UpdateOrderChanged += new EventHandler<EventArgs>(childUpdateOrderChanged);
                }
 
-               IDrawable drawable = e.GameComponent as IDrawable;
+               IDrawable drawable = i_Args.GameComponent as IDrawable;
 
                if (drawable != null)
                {
@@ -58,7 +57,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Components
 
                if (ComponentAdded != null)
                {
-                    ComponentAdded(this, e);
+                    ComponentAdded(this, i_Args);
                }
           }
 
@@ -86,7 +85,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Components
                     m_Sprites.Remove(sprite);
                     sprite.DrawOrderChanged -= childDrawOrderChanged;
                }
-
                else
                {
                     IDrawable drawable = i_Args.GameComponent as IDrawable;
@@ -128,14 +126,15 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Components
                insertSorted(drawable);
           }
 
-          private void insertSorted(IUpdateable i_Updatable)
+          private void insertSorted(IUpdateable i_Updateable)
           {
-               int idx = m_UpdateableComponents.BinarySearch(i_Updatable, UpdateableComparer.Default);
+               int idx = m_UpdateableComponents.BinarySearch(i_Updateable, UpdateableComparer.Default);
                if (idx < 0)
                {
                     idx = ~idx;
                }
-               m_UpdateableComponents.Insert(idx, i_Updatable);
+
+               m_UpdateableComponents.Insert(idx, i_Updateable);
           }
 
           private void insertSorted(IDrawable i_Drawable)
@@ -149,6 +148,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Components
                     {
                          idx = ~idx;
                     }
+
                     m_Sprites.Insert(idx, sprite);
                }
                else
@@ -158,6 +158,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Components
                     {
                          idx = ~idx;
                     }
+
                     m_DrawableComponents.Insert(idx, i_Drawable);
                }
           }
@@ -221,8 +222,13 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Components
           public override void Draw(GameTime i_GameTime)
           {
                SpriteBatch.Begin(
-                   this.SpritesSortMode, this.BlendState, this.SamplerState,
-                   this.DepthStencilState, this.RasterizerState, this.Shader, this.TransformMatrix);
+                   this.SpritesSortMode, 
+                   this.BlendState, 
+                   this.SamplerState,
+                   this.DepthStencilState, 
+                   this.RasterizerState, 
+                   this.Shader, 
+                   this.TransformMatrix);
 
                foreach (Sprite sprite in m_Sprites)
                {

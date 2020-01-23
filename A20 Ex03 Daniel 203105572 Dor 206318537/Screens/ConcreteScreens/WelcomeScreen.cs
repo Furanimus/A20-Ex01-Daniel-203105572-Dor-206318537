@@ -1,6 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
-using System;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Models;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnimators;
@@ -52,7 +51,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
                m_Instructions.RotationOrigin = m_WelcomeMessage.SourceRectangleCenter;
                m_Instructions.Position = CenterOfViewPort + new Vector2(0, m_WelcomeMessage.Height + k_Space);
           }
-
 
           protected override void DoTransition()
           {

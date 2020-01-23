@@ -32,7 +32,7 @@ namespace A20_ex03_Daniel_203105572_Dor_206318537.Models.Menus
           private Action<MenuItem> m_WheelAction;
 
           public MenuItem(StrokeSpriteFont i_StrokeSpriteFont, GameScreen i_GameScreen, Menu i_LinkedMenu = null, Action<MenuItem> i_CheckMosueOrKBState = null) 
-               : base("", i_GameScreen)
+               : base(string.Empty, i_GameScreen)
           {
                r_CheckMouseOrKBState = i_CheckMosueOrKBState;
                r_InputManager = this.Game.Services.GetService(typeof(IInputManager)) as IInputManager;
@@ -158,7 +158,6 @@ namespace A20_ex03_Daniel_203105572_Dor_206318537.Models.Menus
                     StrokeSpriteFont.Animations.Add(new PulseAnimator(TimeSpan.Zero, k_TargetScale, k_PulsePerSec));
                     StrokeSpriteFont.Animations.Add(new WaypointsAnimator(100, TimeSpan.FromSeconds(0.2f), false, this.Position + new Vector2(-10, 0)));
                     StrokeSpriteFont.Animations.Enabled = false;
-
                }
           }
 

@@ -1,10 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Models;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Models.BaseModels;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Managers;
-using Microsoft.Xna.Framework.Input;
-using System;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
 {
@@ -18,11 +17,11 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
           private readonly PauseScreen r_PauseScreen;
           private readonly IGameSettings r_GameSettings;
           private readonly IScoreManager r_ScoreManager;
+          private readonly ISoundManager r_SoundManager;
           private EnemyManager m_EnemyManager;
           private BarrierManager m_BarrierManager;
           private IPlayersManager m_PlayersManager;
           private IInputManager m_InputManager;
-          private readonly ISoundManager r_SoundManager;
           private int m_Level = 1;
 
           public PlayScreen(LevelTransitionScreen i_LevelTransitionScreen, Game i_Game)

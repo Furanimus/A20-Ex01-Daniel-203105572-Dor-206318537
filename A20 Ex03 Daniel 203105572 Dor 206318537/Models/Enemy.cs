@@ -36,7 +36,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                }
           }
 
-
           public int StartingScore { get; private set; } = -1;
 
           public object GroupRepresentative { get; set; }

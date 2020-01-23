@@ -5,7 +5,6 @@ using A20_Ex03_Daniel_203105572_Dor_206318537.Interfaces;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Utils;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Screens;
 using A20_Ex03_Daniel_203105572_Dor_206318537.Models.Animators;
-using System;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
 {
@@ -97,8 +96,13 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                     }
 
                     m_SpriteBatch.Begin(
-                        SortMode, BlendState, SamplerState,
-                        DepthStencilState, RasterizerState, Shader, TransformMatrix);
+                        SortMode,
+                        BlendState, 
+                        SamplerState,
+                        DepthStencilState, 
+                        RasterizerState, 
+                        Shader, 
+                        TransformMatrix);
                }
 
                OnDraw();
@@ -120,10 +124,16 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
           {
                if (Texture != null)
                {
-                    m_SpriteBatch.Draw(Texture, this.PositionForDraw,
-                         this.SourceRectangle, this.TintColor,
-                        this.Rotation, this.RotationOrigin, this.Scales,
-                        SpriteEffects.None, this.LayerDepth);
+                    m_SpriteBatch.Draw(
+                        Texture, 
+                        this.PositionForDraw,
+                        this.SourceRectangle, 
+                        this.TintColor,
+                        this.Rotation, 
+                        this.RotationOrigin, 
+                        this.Scales,
+                        SpriteEffects.None, 
+                        this.LayerDepth);
                }
           }
 
@@ -305,7 +315,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                     {
                          this.Height = this.Texture.Height;
                     }
-
                }
 
                InitSourceRectangle();
@@ -351,7 +360,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                GraphicsDevice.RasterizerState = r_SavedDeviceStates.RasterizerState;
           }
 
-
           public bool SaveAndRestoreDeviceState { get; set; }
 
           public virtual bool CheckCollision(ICollidable i_Source)
@@ -390,7 +398,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models
                     return m_TexturePixels;
                }
           }
-
 
           public Vector2 StartPosition
           {

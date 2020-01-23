@@ -11,7 +11,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Animators.ConcreteAnima
           private const string k_Name = "Transparency";
           private float m_TimePassed;
 
-
           public TransparencyAnimator(TimeSpan i_AnimationLength)
                : this(k_Name, i_AnimationLength)
           {

@@ -26,7 +26,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus
           private int m_CurrentOptionIndex            = -1;
 
           protected Menu(StrokeSpriteFont i_Title, GameScreen i_GameScreen) 
-               : base("", i_GameScreen)
+               : base(string.Empty, i_GameScreen)
           {
                r_Options = new List<MenuItem>();
                r_InputManager = this.Game.Services.GetService(typeof(IInputManager)) as IInputManager;

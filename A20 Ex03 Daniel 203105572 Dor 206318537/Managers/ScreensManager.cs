@@ -10,6 +10,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
      public class ScreensManager : CompositeDrawableComponent<GameScreen>, IScreensMananger
      {
           public event EventHandler<StateChangedEventArgs> ScreenStateChanged;
+
           private Stack<GameScreen> m_ScreensStack = new Stack<GameScreen>();
 
           public ScreensManager(Game i_Game)

@@ -97,8 +97,16 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                          float xPos = this.Game.GraphicsDevice.Viewport.Width - (life * player.Width);
                          Vector2 positionForDraw = new Vector2(xPos, yPos);
 
-                         r_GameScreen.SpriteBatch.Draw(player.Texture, positionForDraw, player.SourceRectangle, r_Color,
-                              0, Vector2.Zero, r_LivesScale, SpriteEffects.None, player.LayerDepth);
+                         r_GameScreen.SpriteBatch.Draw(
+                              player.Texture, 
+                              positionForDraw, 
+                              player.SourceRectangle, 
+                              r_Color,
+                              0, 
+                              Vector2.Zero,
+                              r_LivesScale, 
+                              SpriteEffects.None, 
+                              player.LayerDepth);
                     }
 
                     float nextLivesPos = (player.Height * r_LivesScale.Y) + k_SpaceBetweenLives;

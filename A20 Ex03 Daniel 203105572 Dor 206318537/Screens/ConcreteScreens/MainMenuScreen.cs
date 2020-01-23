@@ -1,12 +1,10 @@
-﻿using A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus;
-using A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus;
+﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
+using A20_Ex03_Daniel_203105572_Dor_206318537.Models.Menus.ConcreteMenus;
 
 namespace A20_Ex03_Daniel_203105572_Dor_206318537.Screens.ConcreteScreens
 {
-
      public class MainMenuScreen : GameScreen
      {
           private const float k_ActivationLength   = 0.5f;

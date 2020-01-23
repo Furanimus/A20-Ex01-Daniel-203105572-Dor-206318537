@@ -4,7 +4,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 {
      public class MusicCatagoryManager
      {
-          private float k_MaxVolume = 100;
+          private const float k_MaxVolume = 100;
           private readonly AudioEngine r_AudioEngine;
           private int m_Volume;
           private int m_PrevVolume;
@@ -59,7 +59,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
           public void Resume()
           {
                r_AudioEngine.GetCategory(Name).Resume();
-
           }
 
           public void Stop()

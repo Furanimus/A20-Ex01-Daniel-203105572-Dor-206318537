@@ -13,6 +13,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
      public class PlayersManager : GameService, IPlayersManager
      {
           public event Action AllPlayersDied;
+
           public event Action<BasePlayer, ICollidable2D> PlayerCollided;
 
           private const int k_RightSpace = 64;

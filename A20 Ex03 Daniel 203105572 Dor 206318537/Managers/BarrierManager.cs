@@ -74,7 +74,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
                }
           }
 
-
           private Vector2 getStartingPosition()
           {
                float posX = (this.Game.GraphicsDevice.Viewport.Width - getObstaclesLength()) / 2;
@@ -122,7 +121,6 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 
                foreach (Barrier barrier in r_Barriers)
                {
-                    
                     for (int row = 0; row < barrier.TexturePixels.Rows; row++)
                     {
                          for(int col = 0; col < barrier.TexturePixels.Cols; col++)
@@ -156,7 +154,7 @@ namespace A20_Ex03_Daniel_203105572_Dor_206318537.Managers
 
                foreach (Barrier barrier in r_Barriers)
                {
-                    barrier.Velocity = new Vector2 (BarrierXVelocity, 0);
+                    barrier.Velocity = new Vector2(BarrierXVelocity, 0);
                }
           }
 
